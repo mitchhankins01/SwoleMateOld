@@ -13,8 +13,8 @@ import PopupDialog, {
 
 import themeStyles from '../components/styles';
 import Header from '../components/Header';
-//import RenderProgram from '../components/program';
-//import ExpandingButton from '../components/actionButton';
+import Programs from '../components/Programs';
+import ExpandingButton from '../components/actionButton';
 import Greeting from '../components/Greeting';
 
 //import ProgramForm from '../components/form';
@@ -38,8 +38,11 @@ class Home extends Component {
    constructor(props) {
      super(props);
      this.state = {
+       expandingButtonType: 'main',
+       showAllPrograms: false,
        theme: 'standard',
-       popupType: '-'
+       screenIndex: -1,
+       popupType: '-',
      };
    }
 
@@ -47,9 +50,12 @@ class Home extends Component {
      const uid = firebase.auth().currentUser.uid;
 
      firebase.firestore().collection('users').doc(uid)
-       .onSnapshot(userDoc => {
-           this.setState({ theme: userDoc.data().theme });
-       });
+      .onSnapshot(userDoc => {
+        //console.log(userDoc.data());
+        this.setState({
+          theme: userDoc.data().theme,
+        });
+      });
    }
 
   popupDismissed(type) {
@@ -124,26 +130,24 @@ class Home extends Component {
   }
 
   render() {
-    //const styles = themeStyles[this.props.theme];
-    const styles = themeStyles[this.state.theme];
-
+    const { theme, showAllPrograms } = this.state;
+    const styles = themeStyles[theme];
     const gradients = [
       styles.$primaryColor,
       styles.$secondaryColor,
       styles.$tertiaryColor
     ];
-    //const { showAll, indexAllPrograms } = this.props.program;
-    const showAll = false;
-    const indexAllPrograms = 69;
+    const showAllProgramsToggle = !showAllPrograms;
+    console.log(this.state.showAllPrograms);
 
-    let expandingButtonType = 'home';
-    if (indexAllPrograms === 69 && showAll === true) {
-      expandingButtonType = 'allPrograms';
-    } else if (indexAllPrograms !== 69 && showAll === true) {
-      expandingButtonType = 'allProgramsDetails';
-    } else {
-      expandingButtonType = 'home';
-    }
+    // let expandingButtonType = 'home';
+    // if (indexAllPrograms === 69 && showAll === true) {
+    //   expandingButtonType = 'allPrograms';
+    // } else if (indexAllPrograms !== 69 && showAll === true) {
+    //   expandingButtonType = 'allProgramsDetails';
+    // } else {
+    //   expandingButtonType = 'home';
+    // }
 
     return (
       <LinearGradient
@@ -151,7 +155,7 @@ class Home extends Component {
         style={[styles.container, { justifyContent: 'flex-start' }]}
       >
         <Header
-          title={showAll ? 'All Programs' : 'Home'}
+          title={showAllPrograms ? 'All Programs' : 'Home'}
           bgColor={styles.$secondaryColor}
           textColor={styles.$primaryColor}
           onLeftPress={() => console.log('menu')}
@@ -165,18 +169,14 @@ class Home extends Component {
           style={{ height: DEVICE_HEIGHT * 0.6 }}
         >
           <ScrollView>
-            <List
-              containerStyle={[
-                styles.list,
-                { backgroundColor: 'rgba(237, 240, 241, 0.1)',
-                borderTopColor: styles.$primaryColor }
-              ]}
-            >
-              {/*<RenderProgram />*/}
+            <List containerStyle={styles.list}>
+              <Programs
+                type={this.state.expandingButtonType}
+                styles={styles}
+              />
             </List>
           </ScrollView>
         </Animatable.View>
-        {/*
         <ExpandingButton
           onPressAddNewProgram={
             () => this.programPopup('newProgram')
@@ -184,9 +184,12 @@ class Home extends Component {
           onPressAddNewProgramDay={
             () => this.programPopup('newProgramDay')
           }
-          type={expandingButtonType}
+          onPressShowAllPrograms={
+            () => this.setState({ showAllPrograms: showAllProgramsToggle })
+          }
+          type={this.state.expandingButtonType}
+          styles={styles}
         />
-        */}
         {this.renderPopup(styles, gradients)}
 
         <DropdownAlert

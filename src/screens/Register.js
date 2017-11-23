@@ -24,7 +24,6 @@ class Register extends Component {
 
   componentWillMount() {
     const { email, password } = this.props.navigation.state.params;
-    // Does AND work?
     if (email && password) {
       this.setState({ email, password });
     }

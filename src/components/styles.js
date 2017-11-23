@@ -69,14 +69,37 @@ const themeStyles = themes.createStyleSheet({
     fontSize: 16,
   },
   list: {
-    backgroundColor: 'transparent',
-    width: WIDTH / 1.2,
+    backgroundColor: 'rgba(237, 240, 241, 0.1)',
+    borderTopColor: '$primaryColor',
     alignSelf: 'center',
-    borderTopColor: '$primaryColor'
+    width: WIDTH / 1.2,
+  },
+  listItem: {
+    height: 80,
+    justifyContent: 'center',
+    borderBottomColor: '$primaryColor'
   },
   listItemTitle: {
     fontFamily: 'Exo-Medium',
     color: '$primaryColor',
+  },
+  listItemProgramsTitle: {
+    fontFamily: 'Exo-Medium',
+    color: '$tertiaryColor',
+    alignSelf: 'center',
+    marginLeft: -10,
+    fontSize: 18
+  },
+  listItemProgramsSubtitle: {
+    color: '$secondaryColor',
+    alignSelf: 'center',
+    fontFamily: 'exo',
+    fontSize: 14,
+  },
+  listItemIcon: {
+    color: '$tertiaryColor',
+    alignSelf: 'center',
+    paddingLeft: 10
   },
   avatar: {
     marginTop: 20,

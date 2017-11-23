@@ -137,8 +137,6 @@ class Home extends Component {
       styles.$secondaryColor,
       styles.$tertiaryColor
     ];
-    const showAllProgramsToggle = !showAllPrograms;
-    console.log(this.state.showAllPrograms);
 
     // let expandingButtonType = 'home';
     // if (indexAllPrograms === 69 && showAll === true) {
@@ -158,8 +156,6 @@ class Home extends Component {
           title={showAllPrograms ? 'All Programs' : 'Home'}
           bgColor={styles.$secondaryColor}
           textColor={styles.$primaryColor}
-          onLeftPress={() => console.log('menu')}
-          onRightPress={() => console.log('signout')}
         />
         <Greeting styles={styles} />
         <Animatable.View
@@ -171,13 +167,17 @@ class Home extends Component {
           <ScrollView>
             <List containerStyle={styles.list}>
               <Programs
-                type={this.state.expandingButtonType}
                 styles={styles}
+                type={this.state.expandingButtonType}
+                showAllPrograms={this.state.showAllPrograms}
               />
             </List>
           </ScrollView>
         </Animatable.View>
+
         <ExpandingButton
+          styles={styles}
+          type={this.state.expandingButtonType}
           onPressAddNewProgram={
             () => this.programPopup('newProgram')
           }
@@ -185,11 +185,10 @@ class Home extends Component {
             () => this.programPopup('newProgramDay')
           }
           onPressShowAllPrograms={
-            () => this.setState({ showAllPrograms: showAllProgramsToggle })
+            () => this.setState({ showAllPrograms: !this.state.showAllPrograms })
           }
-          type={this.state.expandingButtonType}
-          styles={styles}
         />
+
         {this.renderPopup(styles, gradients)}
 
         <DropdownAlert

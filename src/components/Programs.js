@@ -95,7 +95,8 @@ class Programs extends Component {
   }
 
   renderAllPrograms = styles => {
-
+    console.log(this.state.programs);
+    return null;
   }
 
   renderPrimaryProgram = styles => {
@@ -145,7 +146,7 @@ class Programs extends Component {
   }
 
   render() {
-    const { styles, type } = this.props;
+    const { styles, type, showAllPrograms } = this.props;
 
     if (this.state.loading) {
       return <Text> Loading </Text>;
@@ -155,15 +156,9 @@ class Programs extends Component {
       case 0:
         return this.renderPrimaryProgramDetails(styles);
       default:
+        if (showAllPrograms) { return this.renderAllPrograms(styles); }
         return this.renderPrimaryProgram(styles);
     }
-    // return this.renderContent(
-    //   styles,
-    //   this.state.days,
-    //   80,
-    //   false,
-    //   () => {},
-    // );
   }
 }
 

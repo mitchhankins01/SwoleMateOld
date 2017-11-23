@@ -94,6 +94,7 @@ const themeStyles = themes.createStyleSheet({
     color: '$secondaryColor',
     alignSelf: 'center',
     fontFamily: 'exo',
+    paddingTop: 5,
     fontSize: 14,
   },
   listItemIcon: {

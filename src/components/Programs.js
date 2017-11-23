@@ -96,7 +96,26 @@ class Programs extends Component {
 
   renderAllPrograms = styles => {
     console.log(this.state.programs);
-    return null;
+    return (
+      this.state.programs.map(program => {
+        const subtitle = `${program.days} Days - ${program.level} - ${program.type}`;
+
+        return (
+          <ListItem
+            hideChevron
+            key={program.key}
+            subtitle={subtitle}
+            title={program.name}
+            underlayColor={'transparent'}
+            containerStyle={styles.listItem}
+            titleStyle={styles.listItemProgramsTitle}
+            subtitleStyle={styles.listItemProgramsSubtitle}
+            leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
+            onPress={() => {}}//onPress(i)}
+          />
+        );
+      })
+    );
   }
 
   renderPrimaryProgram = styles => {
@@ -110,8 +129,7 @@ class Programs extends Component {
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
-            subtitleStyle={styles.listItemProgramsSubtitle}
-            leftIcon={<Entypo style={styles.listItemIcon} name={'calendar'} size={30} />}
+            leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
             onPress={() => this.setState({ screenIndex: 0, selectedDayKey: day.key })}//onPress(i)}
           />
         );

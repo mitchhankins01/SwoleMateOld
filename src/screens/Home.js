@@ -15,7 +15,7 @@ import PopupDialog, {
 import themeStyles from '../components/styles';
 import Header from '../components/Header';
 import Programs from '../components/Programs';
-import ExpandingButton from '../components/actionButton';
+import HomeButtons from '../components/HomeButtons';
 import Greeting from '../components/Greeting';
 
 //import ProgramForm from '../components/form';
@@ -179,28 +179,8 @@ class Home extends Component {
           </ScrollView>
         </Animatable.View>
 
-        <ExpandingButton
-          styles={styles}
-          showAllPrograms={this.state.showAllPrograms}
-          type={this.state.expandingButtonType}
-          showPrimaryButton={
-            () => this.setState({
-              expandingButtonType: 'main',
-              showAllPrograms: !this.state.showAllPrograms
-            })
-          }
-          onPressAddNewProgram={
-            () => this.programPopup('newProgram')
-          }
-          onPressAddNewProgramDay={
-            () => this.programPopup('newProgramDay')
-          }
-          onPressShowAllPrograms={
-            () => this.setState({
-              expandingButtonType: 'allPrograms',
-              showAllPrograms: !this.state.showAllPrograms
-            })
-          }
+        <HomeButtons
+         styles={styles}
         />
 
         {this.renderPopup(styles, gradients)}

@@ -63,8 +63,8 @@ class Programs extends Component {
   fetchPrimaryProgram(primaryProgramKey) {
     const days = [];
     const exercises = [];
-    const primaryProgramRef =
-      firebase.firestore().collection('userPrograms').doc(primaryProgramKey);
+    const primaryProgramRef = firebase.firestore()
+      .collection('userPrograms').doc(primaryProgramKey);
 
     primaryProgramRef.get()
     .then(primaryProgram => {
@@ -94,8 +94,12 @@ class Programs extends Component {
     });
   }
 
+  updateScreen(index, key) {
+    this.props.primaryProgramDetailsButton();
+    this.setState({ screenIndex: index, selectedDayKey: key });
+  }
+
   renderAllPrograms = styles => {
-    console.log(this.state.programs);
     return (
       this.state.programs.map(program => {
         const subtitle = `${program.days} Days - ${program.level} - ${program.type}`;
@@ -111,7 +115,7 @@ class Programs extends Component {
             titleStyle={styles.listItemProgramsTitle}
             subtitleStyle={styles.listItemProgramsSubtitle}
             leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
-            onPress={() => {}}//onPress(i)}
+            onPress={() => {}}
           />
         );
       })
@@ -129,8 +133,8 @@ class Programs extends Component {
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
+            onPress={() => this.updateScreen(0, day.key)}
             leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
-            onPress={() => this.setState({ screenIndex: 0, selectedDayKey: day.key })}//onPress(i)}
           />
         );
       })
@@ -138,11 +142,14 @@ class Programs extends Component {
   }
 
   renderPrimaryProgramDetails = styles => {
+    if (this.props.type === 'main') {
+      return this.renderPrimaryProgram(this.props.styles);
+    }
+
     return (
       this.state.exercises.map(exercise => {
         if (exercise.day === this.state.selectedDayKey) {
           const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
-
           return (
             <ListItem
               hideChevron
@@ -154,7 +161,7 @@ class Programs extends Component {
               titleStyle={styles.listItemProgramsTitle}
               subtitleStyle={styles.listItemProgramsSubtitle}
               leftIcon={<MaterialIcons style={styles.listItemIcon} name={'dumbbell'} size={30} />}
-              onPress={() => {}}//onPress(i)}
+              onPress={() => {}}
             />
           );
         }
@@ -166,15 +173,14 @@ class Programs extends Component {
   render() {
     const { styles, type, showAllPrograms } = this.props;
 
-    if (this.state.loading) {
-      return <Text> Loading </Text>;
-    }
+    if (this.state.loading) { return <Text> Loading </Text>; }
+
+    if (showAllPrograms) { return this.renderAllPrograms(styles); }
 
     switch (this.state.screenIndex) {
       case 0:
         return this.renderPrimaryProgramDetails(styles);
       default:
-        if (showAllPrograms) { return this.renderAllPrograms(styles); }
         return this.renderPrimaryProgram(styles);
     }
   }

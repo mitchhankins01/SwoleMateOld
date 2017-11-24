@@ -79,9 +79,9 @@ const themeStyles = themes.createStyleSheet({
     justifyContent: 'center',
     borderBottomColor: '$primaryColor'
   },
-  listItemTitle: {
+  listItemSettingsTitle: {
     fontFamily: 'Exo-Medium',
-    color: '$primaryColor',
+    color: '$tertiaryColor',
   },
   listItemProgramsTitle: {
     fontFamily: 'Exo-Medium',
@@ -91,7 +91,7 @@ const themeStyles = themes.createStyleSheet({
     fontSize: 18
   },
   listItemProgramsSubtitle: {
-    color: '$secondaryColor',
+    color: '$tertiaryColor',
     alignSelf: 'center',
     fontFamily: 'exo',
     paddingTop: 5,

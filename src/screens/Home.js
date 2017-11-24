@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { ScrollView, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { List } from 'react-native-elements';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { List, Button } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import firebase from 'react-native-firebase';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -137,7 +138,7 @@ class Home extends Component {
       styles.$secondaryColor,
       styles.$tertiaryColor
     ];
-
+    //console.log(this.state.expandingButtonType);
     // let expandingButtonType = 'home';
     // if (indexAllPrograms === 69 && showAll === true) {
     //   expandingButtonType = 'allPrograms';
@@ -170,6 +171,9 @@ class Home extends Component {
                 styles={styles}
                 type={this.state.expandingButtonType}
                 showAllPrograms={this.state.showAllPrograms}
+                primaryProgramDetailsButton={
+                  () => this.setState({ expandingButtonType: 'primaryProgramDetails' })
+                }
               />
             </List>
           </ScrollView>
@@ -177,7 +181,14 @@ class Home extends Component {
 
         <ExpandingButton
           styles={styles}
+          showAllPrograms={this.state.showAllPrograms}
           type={this.state.expandingButtonType}
+          showPrimaryButton={
+            () => this.setState({
+              expandingButtonType: 'main',
+              showAllPrograms: !this.state.showAllPrograms
+            })
+          }
           onPressAddNewProgram={
             () => this.programPopup('newProgram')
           }
@@ -185,7 +196,10 @@ class Home extends Component {
             () => this.programPopup('newProgramDay')
           }
           onPressShowAllPrograms={
-            () => this.setState({ showAllPrograms: !this.state.showAllPrograms })
+            () => this.setState({
+              expandingButtonType: 'allPrograms',
+              showAllPrograms: !this.state.showAllPrograms
+            })
           }
         />
 

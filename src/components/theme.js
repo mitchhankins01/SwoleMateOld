@@ -23,9 +23,9 @@ export const standard2 = {
 };
 
 export const standard3 = {
-  $primaryColor: '#F8CB4B',
-  $secondaryColor: '#B09134',
-  $tertiaryColor: '#7B6623',
+  $primaryColor: '#E69435',
+  $secondaryColor: '#C56F28',
+  $tertiaryColor: '#AA521E',
 };
 
 export default {

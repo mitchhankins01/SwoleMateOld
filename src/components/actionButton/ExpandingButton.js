@@ -4,18 +4,12 @@ import Color from 'color';
 //import { renderAllPrograms } from '../program';
 import ActionButton from './ActionButton';
 
-const icon = (styles, type) => {
-   let iconName = 'grid';
-  // if (indexAllPrograms === 69 && showAll === true) {
-  //   iconName = 'dots-three-vertical';
-  // } else if (indexAllPrograms !== 69 && showAll === true) {
-  //   iconName = 'add-to-list';
-  // } else {
-  //   iconName = 'grid';
-  // }
-
-  if (type === 'main') {
-    iconName = 'grid';
+const icon = (styles, type, showAllPrograms) => {
+  let iconName = 'grid';
+  if (showAllPrograms) {
+    iconName = 'dots-three-vertical';
+  } else if (type === 'primaryProgramDetails') {
+    iconName = 'dots-three-vertical';
   }
 
   return (
@@ -46,11 +40,29 @@ class ExpandingButton extends Component {
     },
   ];
 
+  buttonConfigPrimaryProgramDetails = [
+    {
+      iconType: Entypo,
+      icon: 'back',
+      onPress: this.props.showPrimaryButton
+    },
+    {
+      iconType: Entypo,
+      icon: 'add-to-list',
+      onPress: this.props.onPressAddNewProgram,
+    },
+    {
+      iconType: Entypo,
+      icon: 'trash',
+      onPress: () => console.log(this.props.program),
+    },
+  ];
+
   buttonConfigAllPrograms = [
     {
       iconType: Entypo,
       icon: 'back',
-      onPress: () => {}//renderAllPrograms(this.props.dispatch, !this.props.program.showAll),
+      onPress: this.props.showPrimaryButton
     },
     {
       iconType: Entypo,
@@ -86,6 +98,8 @@ class ExpandingButton extends Component {
     switch (type) {
       case 'main':
         return this.renderContent(styles, this.buttonConfigMain);
+      case 'primaryProgramDetails':
+        return this.renderContent(styles, this.buttonConfigPrimaryProgramDetails);
       case 'allPrograms':
         return this.renderContent(styles, this.buttonConfigAllPrograms);
       case 'allProgramsDetails':
@@ -117,12 +131,12 @@ class ExpandingButton extends Component {
   }
 
   render() {
-    const { styles, type } = this.props;
+    const { styles, type, showAllPrograms } = this.props;
     const bgColor = Color(styles.$primaryColor).alpha(0.5);
 
     return (
       <ActionButton
-        icon={icon(styles, type)}
+        icon={icon(styles, type, showAllPrograms)}
         bgColor={bgColor.toString()}
         buttonColor={styles.$secondaryColor}
       >

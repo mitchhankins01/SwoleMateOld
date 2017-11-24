@@ -58,23 +58,20 @@ class Settings extends Component {
       styles.$primaryColor
     ];
 
-    // Came from redux props Settings
-    const dispatch = () => {};
-
     switch (this.state.screenIndex) {
       case 0:
         return (
           profileOptions.map((item, i) => (
             <ListItem
-              onPress={() => handleProfileSelection(i, () => this.setState({ screenIndex: -1 }))}
-              containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
-              hideChevron={i === profileOptions - 1}
-              underlayColor={styles.$secondaryColor}
-              chevronColor={styles.$primaryColor}
-              titleStyle={styles.listItemTitle}
-              title={item.title}
               key={i}
+              title={item.title}
+              underlayColor={'transparent'}
+              chevronColor={styles.$primaryColor}
+              titleStyle={styles.listItemSettingsTitle}
+              hideChevron={i === profileOptions.length - 1}
+              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
+              containerStyle={{ borderBottomColor: styles.$primaryColor }}
+              onPress={() => handleProfileSelection(i, () => this.setState({ screenIndex: -1 }))}
             />
           ))
         );
@@ -82,15 +79,15 @@ class Settings extends Component {
         return (
           generalOptions.map((item, i) => (
             <ListItem
-              onPress={() => handleGeneralSelection(i, () => this.setState({ screenIndex: -1 }))}
-              containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
-              hideChevron={i === profileOptions - 1}
-              underlayColor={styles.$secondaryColor}
-              chevronColor={styles.$primaryColor}
-              titleStyle={styles.listItemTitle}
-              title={item.title}
               key={i}
+              title={item.title}
+              underlayColor={'transparent'}
+              chevronColor={styles.$primaryColor}
+              titleStyle={styles.listItemSettingsTitle}
+              hideChevron={i === generalOptions.length - 1}
+              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
+              containerStyle={{ borderBottomColor: styles.$primaryColor }}
+              onPress={() => handleGeneralSelection(i, () => this.setState({ screenIndex: -1 }))}
             />
           ))
         );
@@ -98,17 +95,17 @@ class Settings extends Component {
         return (
           themes.map((theme, i) => (
             <ListItem
+              key={i}
+              title={theme.title}
+              underlayColor={'transparent'}
+              chevronColor={themeOptions[i]}
+              hideChevron={i === themes.length - 1}
+              leftIcon={{ name: theme.icon, color: themeOptions[i] }}
+              containerStyle={{ borderBottomColor: styles.$primaryColor }}
+              titleStyle={[styles.listItemSettingsTitle, { color: themeOptions[i] }]}
               onPress={() => handleThemeSelection(
                 themes, i, theme.name, () => this.setState({ screenIndex: -1 })
               )}
-              titleStyle={[styles.listItemTitle, { color: themeOptions[i] }]}
-              containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              leftIcon={{ name: theme.icon, color: themeOptions[i] }}
-              hideChevron={i === themes.length - 1}
-              underlayColor={styles.$secondaryColor}
-              chevronColor={themeOptions[i]}
-              title={theme.title}
-              key={i}
             />
           ))
         );
@@ -116,19 +113,19 @@ class Settings extends Component {
         return (
           main.map((item, i) => (
             <ListItem
+              key={i}
+              title={item.title}
+              underlayColor={'transparent'}
+              hideChevron={i === main.length - 1}
+              chevronColor={styles.$primaryColor}
+              titleStyle={styles.listItemSettingsTitle}
+              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
+              containerStyle={{ borderBottomColor: styles.$primaryColor }}
               onPress={
                 i === main.length - 1
                 ? () => firebase.auth().signOut()
                 : () => this.setState({ screenIndex: i })
               }
-              containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
-              hideChevron={i === main.length - 1}
-              underlayColor={styles.$secondaryColor}
-              chevronColor={styles.$primaryColor}
-              titleStyle={styles.listItemTitle}
-              title={item.title}
-              key={i}
             />
           ))
         );

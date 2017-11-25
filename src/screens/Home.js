@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { List, Button } from 'react-native-elements';
+import { List } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import firebase from 'react-native-firebase';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -13,8 +12,6 @@ import Header from '../components/Header';
 import Programs from '../components/Programs';
 import ActionBar from '../components/ActionBar';
 import Greeting from '../components/Greeting';
-
-//import ProgramForm from '../components/form';
 
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
@@ -53,6 +50,14 @@ class Home extends Component {
       });
    }
 
+   componentWillUpdate() {
+     const { programView } = this.refs;
+
+     if (programView) {
+       programView.flipInY();
+     }
+   }
+
   render() {
     const { theme, showAllPrograms, actionBarType } = this.state;
     const styles = themeStyles[theme];
@@ -73,11 +78,12 @@ class Home extends Component {
           textColor={styles.$primaryColor}
         />
         <Greeting styles={styles} />
+
         <Animatable.View
-          animation='slideInLeft'
-          duration={1500}
-          delay={0}
-          style={{ height: DEVICE_HEIGHT * 0.6 }}
+          duration={500}
+          ref='programView'
+          animation='flipInY'
+          //style={{ height: DEVICE_HEIGHT * 0.6 }}
         >
           <ScrollView>
             <List containerStyle={styles.list}>

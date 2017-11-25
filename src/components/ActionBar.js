@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 
@@ -12,7 +13,7 @@ class ActionBar extends Component {
     return (
       <Animatable.View
         delay={delay}
-        duration={1250}
+        duration={500}
         animation='zoomIn'
         style={{ alignSelf: 'center' }}
       >
@@ -28,43 +29,43 @@ class ActionBar extends Component {
     );
   }
 
-  renderAllProgramsActionBar(styles) {
+  renderPrimaryProgramActionBar(styles) {
     return (
-      <Animatable.View animation='zoomIn' duration={1250} style={styles.actionBar} >
-        {this.renderButton(styles, 'back', 30, 750, this.props.onPressShowPrimaryProgram)}
-        {this.renderButton(styles, 'add-to-list', 30, 500, this.props.onPressAddNewProgram)}
-        {this.renderButton(styles, 'trash', 20, 250)}
-      </Animatable.View>
+      <View style={styles.actionBarView}>
+        {this.renderButton(styles, 'list', 30, 400, this.props.onPressShowAllPrograms)}
+        {this.renderButton(styles, 'add-to-list', 30, 300)}
+        {this.renderButton(styles, 'edit', 22, 200)}
+        {this.renderButton(styles, 'help', 22, 100)}
+      </View>
     );
   }
 
-  renderPrimaryProgramActionBar(styles) {
+  renderAllProgramsActionBar(styles) {
     return (
-      <Animatable.View animation='zoomIn' duration={1250} style={styles.actionBar} >
-        {this.renderButton(styles, 'list', 30, 1000, this.props.onPressShowAllPrograms)}
-        {this.renderButton(styles, 'add-to-list', 30, 750)}
-        {this.renderButton(styles, 'edit', 22, 500)}
-        {this.renderButton(styles, 'help', 22, 250)}
+      <Animatable.View style={styles.actionBarView} >
+        {this.renderButton(styles, 'back', 30, 300, this.props.onPressShowPrimaryProgram)}
+        {this.renderButton(styles, 'add-to-list', 30, 200, this.props.onPressAddNewProgram)}
+        {this.renderButton(styles, 'trash', 20, 100)}
       </Animatable.View>
     );
   }
 
   renderPrimaryProgramDetailsActionBar(styles) {
     return (
-      <Animatable.View animation='zoomIn' duration={1250} style={styles.actionBar} >
-        {this.renderButton(styles, 'back', 30, 750, this.props.onPressBackToPrimaryProgram)}
-        {this.renderButton(styles, 'add-to-list', 30, 500)}
-        {this.renderButton(styles, 'trash', 20, 250)}
+      <Animatable.View style={styles.actionBarView}>
+        {this.renderButton(styles, 'back', 30, 300, this.props.onPressBackToPrimaryProgram)}
+        {this.renderButton(styles, 'add-to-list', 30, 200)}
+        {this.renderButton(styles, 'trash', 20, 100)}
       </Animatable.View>
     );
   }
 
   renderAddNewProgramActionBar(styles) {
     return (
-      <Animatable.View animation='zoomIn' duration={1250} style={styles.actionBar} >
-        {this.renderButton(styles, 'back', 30, 750, () => this.props.navigation.goBack(null))}
-        {this.renderButton(styles, 'help', 22, 500)}
-        {this.renderButton(styles, 'check', 25, 250, this.props.onPressSave)}
+      <Animatable.View style={styles.actionBarView}>
+        {this.renderButton(styles, 'back', 30, 300, () => this.props.navigation.goBack(null))}
+        {this.renderButton(styles, 'help', 22, 200)}
+        {this.renderButton(styles, 'check', 25, 100, this.props.onPressSave)}
       </Animatable.View>
     );
   }
@@ -72,18 +73,28 @@ class ActionBar extends Component {
   render() {
     const { styles, actionBarType } = this.props;
 
+    let renderType;
     switch (actionBarType) {
       default:
         return;
       case 'allPrograms':
-        return this.renderAllProgramsActionBar(styles);
+        renderType = this.renderAllProgramsActionBar(styles);
+        break;
       case 'primaryProgram':
-        return this.renderPrimaryProgramActionBar(styles);
+        renderType = this.renderPrimaryProgramActionBar(styles);
+        break;
       case 'primaryProgramDetails':
-        return this.renderPrimaryProgramDetailsActionBar(styles);
+        renderType = this.renderPrimaryProgramDetailsActionBar(styles);
+        break;
       case 'addNewProgram':
-        return this.renderAddNewProgramActionBar(styles);
+        renderType = this.renderAddNewProgramActionBar(styles);
     }
+
+    return (
+      <Animatable.View style={styles.actionBar} animation='zoomIn' duration={500}>
+        {renderType}
+      </Animatable.View>
+    );
   }
 }
 

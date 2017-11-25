@@ -1,12 +1,10 @@
 import { Dimensions } from 'react-native';
 import themes from './theme';
 
-const WIDTH = Dimensions.get('window').width;
-const HEIGHT = Dimensions.get('window').height;
+const DEVICE_WIDTH = Dimensions.get('window').width;
 
 const themeStyles = themes.createStyleSheet({
   container: {
-    //alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
     width: null,
@@ -14,31 +12,39 @@ const themeStyles = themes.createStyleSheet({
   },
   appName: {
     fontSize: 40,
-    fontFamily: 'Exo-Bold',
     color: '#FFF',
-    backgroundColor: 'transparent',
-    alignSelf: 'center',
-    //marginTop: 50,
     marginBottom: 20,
+    alignSelf: 'center',
+    fontFamily: 'Exo-Bold',
+    backgroundColor: 'transparent',
   },
   header: {
     fontSize: 30,
-    fontFamily: 'Exo-Medium',
-    fontWeight: '400',
     color: '#FFF',
-    backgroundColor: 'transparent',
+    fontWeight: '400',
     alignSelf: 'center',
+    fontFamily: 'Exo-Medium',
+    backgroundColor: 'transparent',
   },
   actionBar: {
     left: 20,
     right: 20,
     bottom: 20,
-    height: 40,
+    height: 50,
     borderRadius: 10,
     position: 'absolute',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    //justifyContent: 'space-around',
     backgroundColor: '$secondaryColor',
+  },
+  actionBarView: {
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 50,
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   formLabel: {
     backgroundColor: 'transparent',
@@ -83,7 +89,7 @@ const themeStyles = themes.createStyleSheet({
     backgroundColor: 'rgba(237, 240, 241, 0.1)',
     borderTopColor: '$primaryColor',
     alignSelf: 'center',
-    width: WIDTH / 1.2,
+    width: DEVICE_WIDTH / 1.1,
   },
   listItem: {
     height: 80,
@@ -136,19 +142,23 @@ const themeStyles = themes.createStyleSheet({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: WIDTH * 0.8,
+    width: DEVICE_WIDTH * 0.8,
   },
   popupTitle: {
     color: '$primaryColor',
     fontFamily: 'Exo-Medium',
     fontSize: 20,
   },
+  popupTitleContainer: {
+    backgroundColor: '$secondaryColor',
+    borderBottomWidth: 0,
+  },
   popupDropdown: {
     backgroundColor: '$tertiaryColor',
     justifyContent: 'center',
     alignSelf: 'center',
     marginVertical: 10,
-    width: WIDTH * 0.7,
+    width: DEVICE_WIDTH * 0.7,
     borderRadius: 5,
     height: 30,
   },
@@ -156,7 +166,7 @@ const themeStyles = themes.createStyleSheet({
     backgroundColor: 'transparent',
     fontFamily: 'Exo-Medium',
     color: '$primaryColor',
-    width: WIDTH * 0.7,
+    width: DEVICE_WIDTH * 0.7,
     marginLeft: 5,
     fontSize: 14,
     borderWidth: 0,
@@ -170,7 +180,7 @@ const themeStyles = themes.createStyleSheet({
   },
   popupInputContainer: {
     alignSelf: 'center',
-    width: WIDTH * 0.7,
+    width: DEVICE_WIDTH * 0.7,
     marginBottom: 5,
     borderRadius: 5,
   },
@@ -183,6 +193,20 @@ const themeStyles = themes.createStyleSheet({
     justifyContent: 'center',
     flexDirection: 'row',
     marginVertical: 15,
+  },
+  popupText: {
+    fontSize: 16,
+    marginTop: 10,
+    alignSelf: 'center',
+    color: '$primaryColor',
+    fontFamily: 'Exo-Medium',
+    backgroundColor: 'transparent',
+  },
+  popupButton: {
+    height: 50,
+    justifyContent: 'center',
+    width: DEVICE_WIDTH * 0.8,
+    backgroundColor: '$secondaryColor',
   },
 });
 

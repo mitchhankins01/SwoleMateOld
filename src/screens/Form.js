@@ -1,27 +1,58 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import * as Animatable from 'react-native-animatable';
-import ModalDropdown from 'react-native-modal-dropdown';
-import firebase from 'react-native-firebase';
-import DropdownAlert from 'react-native-dropdownalert';
-import { Jiro } from 'react-native-textinput-effects';
 import Color from 'color';
+import React, { Component } from 'react';
+import firebase from 'react-native-firebase';
+import { Button, Icon } from 'react-native-elements';
+import { Jiro } from 'react-native-textinput-effects';
+import * as Animatable from 'react-native-animatable';
+import { Dimensions, View, Text } from 'react-native';
+import DropdownAlert from 'react-native-dropdownalert';
+import ModalDropdown from 'react-native-modal-dropdown';
+import LinearGradient from 'react-native-linear-gradient';
+import PopupDialog, {
+  DialogButton,
+  DialogTitle,
+  SlideAnimation
+} from 'react-native-popup-dialog';
+
 import Header from '../components/Header';
 import ActionBar from '../components/ActionBar';
+
+
+const DEVICE_WIDTH = Dimensions.get('window').width;
 
 class Form extends Component {
   constructor(props) {
      super(props);
      this.state = {
        // Add a Program
-       programName: '',
-       description: '',
        type: '',
        level: '',
        frequency: '',
+       programName: '',
+       description: '',
        // Add Program Day
      };
+   }
+
+   submitForm(programName, description, type, level, frequency) {
+     const uid = firebase.auth().currentUser.uid;
+     const ref = firebase.firestore().collection('userProgramsTest');
+
+     ref.add({
+       type,
+       level,
+       frequency,
+       author: uid,
+       description,
+       name: programName,
+     })
+     .then(() => {
+       this.dropdown.alertWithType('success', 'Saved, Changes Saved');
+       this.props.navigation.goBack(null);
+     })
+     .catch(error => {
+       this.dropdown.alertWithType('error', 'Oops, something went wrong', error.message);
+     });
    }
 
    validateForm(actionBarType) {
@@ -30,9 +61,12 @@ class Form extends Component {
          const { programName, description, type, level, frequency } = this.state;
 
          if (programName && description && type && level && frequency) {
-           break;
+           this.popup.show();
+           //this.submitForm(programName, description, type, level, frequency);
          } else {
-           this.dropdown.alertWithType('error', 'Missing Fields', 'Please fill out all fields');
+           this.popup.show();
+           this.dropdown.alertWithType(
+             'error', 'Missing Fields', 'Please fill out all fields');
          }
          break;
        }
@@ -51,6 +85,45 @@ class Form extends Component {
        case 3: return this.setState({ workoutDay: value });
        default: return;
      }
+   }
+
+   renderPopupTitle(styles) {
+     return (
+       <DialogTitle
+         title={'Success'}
+         titleTextStyle={styles.popupTitle}
+         titleStyle={styles.popupTitleContainer}
+       />
+     );
+   }
+
+   renderPopup(styles, gradients) {
+     return (
+       <PopupDialog
+         width={DEVICE_WIDTH * 0.9}
+         dialogTitle={this.renderPopupTitle(styles)}
+         ref={(popupDialog) => { this.popup = popupDialog; }}
+         dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+       >
+        <LinearGradient colors={gradients} style={[styles.container, { justifyContent: 'space-around' }]}>
+          <Icon
+            name={'check'}
+            size={80}
+            type='entypo'
+            color={styles.$tertiaryColor}
+          />
+          <Text style={styles.popupText}>
+            Your changes were successfully saved.
+          </Text>
+          <Button
+            title='Close'
+            buttonStyle={styles.popupButton}
+            textStyle={{ color: styles.$primaryColor }}
+            onPress={() => this.props.navigation.goBack(null)}
+          />
+        </LinearGradient>
+       </PopupDialog>
+     );
    }
 
    renderJiro(styles, title, stateRef) {
@@ -154,6 +227,8 @@ class Form extends Component {
           navigation={this.props.navigation}
           onPressSave={() => this.validateForm(actionBarType)}
         />
+
+        {this.renderPopup(styles, gradients)}
 
         <DropdownAlert
           ref={ref => (this.dropdown = ref)}

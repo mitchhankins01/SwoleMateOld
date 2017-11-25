@@ -4,6 +4,7 @@ import firebase from 'react-native-firebase';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ListItem, Button } from 'react-native-elements';
+import * as Animatable from 'react-native-animatable';
 
 class Programs extends Component {
   constructor(props) {
@@ -29,6 +30,14 @@ class Programs extends Component {
      });
 
     this.fetchAllPrograms(uid);
+  }
+
+  componentWillUpdate() {
+    const { renderView } = this.refs;
+
+    if (renderView) {
+      renderView.flipInY();
+    }
   }
 
   fetchAllPrograms(uid) {
@@ -107,7 +116,7 @@ class Programs extends Component {
         return (
           <ListItem
             hideChevron
-            key={program.key}
+            key={program.name}
             subtitle={subtitle}
             title={program.name}
             underlayColor={'transparent'}
@@ -175,14 +184,24 @@ class Programs extends Component {
 
     if (this.state.loading) { return <Text> Loading </Text>; }
 
-    if (showAllPrograms) { return this.renderAllPrograms(styles); }
-
+    let renderType;
     switch (this.state.screenIndex) {
       case 0:
-        return this.renderPrimaryProgramDetails(styles);
+        renderType = this.renderPrimaryProgramDetails(styles);
+        break;
       default:
-        return this.renderPrimaryProgram(styles);
+        renderType = this.renderPrimaryProgram(styles);
     }
+
+    if (showAllPrograms) {
+      renderType = this.renderAllPrograms(styles);
+    }
+
+    return (
+      <Animatable.View ref='renderView' animation='flipInY' duration={500}>
+        {renderType}
+      </Animatable.View>
+    );
   }
 }
 

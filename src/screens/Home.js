@@ -7,21 +7,16 @@ import { List, Button } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import firebase from 'react-native-firebase';
 import DropdownAlert from 'react-native-dropdownalert';
-import PopupDialog, {
-  DialogTitle,
-  SlideAnimation
-} from 'react-native-popup-dialog';
 
 import themeStyles from '../components/styles';
 import Header from '../components/Header';
 import Programs from '../components/Programs';
-import HomeButtons from '../components/HomeButtons';
+import ActionBar from '../components/ActionBar';
 import Greeting from '../components/Greeting';
 
 //import ProgramForm from '../components/form';
 
 const DEVICE_HEIGHT = Dimensions.get('window').height;
-const DEVICE_WIDTH = Dimensions.get('window').width;
 
 class Home extends Component {
 
@@ -39,11 +34,10 @@ class Home extends Component {
    constructor(props) {
      super(props);
      this.state = {
-       expandingButtonType: 'main',
+       actionBarType: 'primaryProgram',
        showAllPrograms: false,
        theme: 'standard',
        screenIndex: -1,
-       popupType: '-',
      };
    }
 
@@ -59,94 +53,14 @@ class Home extends Component {
       });
    }
 
-  popupDismissed(type) {
-    switch (type) {
-      case 'cancel':
-        return (
-          this.popup.dismiss(),
-          this.dropdown.alertWithType(
-            'error', 'Cancelled', 'Any changes were not saved'
-          )
-        );
-      case 'save':
-        return (
-          this.popup.dismiss(),
-          this.dropdown.alertWithType(
-            'success', 'Saved', 'Changes successfully saved'
-          )
-        );
-      default:
-        return;
-    }
-  }
-
-  programPopup(type) {
-    this.setState({ popupType: type }, () => {
-      this.popup.show();
-    });
-  }
-
-  renderPopup(styles, gradients) {
-    const type = this.state.popupType;
-    let title = '';
-
-    if (type === 'newProgram') {
-      title = 'Add New Program';
-    } else if (type === 'newProgramDay') {
-      title = 'Add Workout Day';
-    }
-
-    return (
-      <PopupDialog
-        ref={(popupDialog) => { this.popup = popupDialog; }}
-        dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
-        width={DEVICE_WIDTH * 0.9}
-        height={DEVICE_HEIGHT * 0.7}
-        dialogTitle={
-          <DialogTitle
-          title={title}
-          titleStyle={{ backgroundColor: styles.$secondaryColor, borderBottomWidth: 0 }}
-          titleTextStyle={styles.popupTitle}
-          />}
-      >
-      <LinearGradient
-        colors={gradients}
-        style={[styles.container, { justifyContent: 'flex-start' }]}
-      >
-      {/*
-        <ProgramForm
-          type={type}
-          onCancel={() => this.popupDismissed('cancel')}
-          onSave={() => this.popupDismissed('save')}
-          emptyFields={
-            () => this.dropdown.alertWithType(
-            'error', 'Missing Fields', 'Please fill out all fields'
-            )
-          }
-        />
-      */}
-      </LinearGradient>
-      </PopupDialog>
-    );
-  }
-
   render() {
-    const { theme, showAllPrograms } = this.state;
+    const { theme, showAllPrograms, actionBarType } = this.state;
     const styles = themeStyles[theme];
     const gradients = [
       styles.$primaryColor,
       styles.$secondaryColor,
       styles.$tertiaryColor
     ];
-    //console.log(this.state.expandingButtonType);
-    // let expandingButtonType = 'home';
-    // if (indexAllPrograms === 69 && showAll === true) {
-    //   expandingButtonType = 'allPrograms';
-    // } else if (indexAllPrograms !== 69 && showAll === true) {
-    //   expandingButtonType = 'allProgramsDetails';
-    // } else {
-    //   expandingButtonType = 'home';
-    // }
 
     return (
       <LinearGradient
@@ -169,21 +83,38 @@ class Home extends Component {
             <List containerStyle={styles.list}>
               <Programs
                 styles={styles}
-                type={this.state.expandingButtonType}
+                type={actionBarType}
                 showAllPrograms={this.state.showAllPrograms}
-                primaryProgramDetailsButton={
-                  () => this.setState({ expandingButtonType: 'primaryProgramDetails' })
+                primaryProgramDetailsButton={() => this.setState({
+                  actionBarType: 'primaryProgramDetails' })
                 }
               />
             </List>
           </ScrollView>
         </Animatable.View>
 
-        <HomeButtons
-         styles={styles}
-        />
+        <ActionBar
+          styles={styles}
+          actionBarType={actionBarType}
+          onPressAddNewProgram={() => this.props.navigation.navigate('Form', {
+            styles,
+            title: 'Add a Program',
+            actionBarType: 'addNewProgram'
+          })}
+          onPressShowAllPrograms={() => this.setState({
+            actionBarType: 'allPrograms',
+            showAllPrograms: !this.state.showAllPrograms
+          })}
+          onPressShowPrimaryProgram={() => this.setState({
+            actionBarType: 'primaryProgram',
+            showAllPrograms: !this.state.showAllPrograms
+          })}
+          onPressBackToPrimaryProgram={() => this.setState({
+            actionBarType: 'primaryProgram',
+            showAllPrograms: false
+          })}
 
-        {this.renderPopup(styles, gradients)}
+        />
 
         <DropdownAlert
           ref={ref => (this.dropdown = ref)}

@@ -172,7 +172,6 @@ class Register extends Component {
 
   render() {
     const { sex, email, password, imperial, theme } = this.state;
-    //const styles = themeStyles[this.props.theme];
     const styles = themeStyles[theme];
     const sexBG = ['Male', 'Female', 'Other'];
     const imperialBG = ['Imperial (lbs)', 'Metric (kgs)'];

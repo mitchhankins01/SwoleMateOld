@@ -29,6 +29,17 @@ const themeStyles = themes.createStyleSheet({
     backgroundColor: 'transparent',
     alignSelf: 'center',
   },
+  actionBar: {
+    left: 20,
+    right: 20,
+    bottom: 20,
+    height: 40,
+    borderRadius: 10,
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '$secondaryColor',
+  },
   formLabel: {
     backgroundColor: 'transparent',
   },

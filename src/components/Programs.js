@@ -142,7 +142,7 @@ class Programs extends Component {
   }
 
   renderPrimaryProgramDetails = styles => {
-    if (this.props.type === 'main') {
+    if (this.props.type === 'primaryProgram') {
       return this.renderPrimaryProgram(this.props.styles);
     }
 

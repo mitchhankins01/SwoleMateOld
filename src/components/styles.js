@@ -142,7 +142,6 @@ const themeStyles = themes.createStyleSheet({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: DEVICE_WIDTH * 0.8,
   },
   popupTitle: {
     color: '$primaryColor',
@@ -204,8 +203,10 @@ const themeStyles = themes.createStyleSheet({
   },
   popupButton: {
     height: 50,
+    width: 50,
+    borderRadius: 25,
+    marginBottom: 0,
     justifyContent: 'center',
-    width: DEVICE_WIDTH * 0.8,
     backgroundColor: '$secondaryColor',
   },
 });

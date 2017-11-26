@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { Button, Icon } from 'react-native-elements';
 import { Jiro } from 'react-native-textinput-effects';
-import * as Animatable from 'react-native-animatable';
+import * as A from 'react-native-animatable';
 import { Dimensions, View, Text } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -87,40 +87,58 @@ class Form extends Component {
      }
    }
 
-   renderPopupTitle(styles) {
-     return (
-       <DialogTitle
-         title={'Success'}
-         titleTextStyle={styles.popupTitle}
-         titleStyle={styles.popupTitleContainer}
-       />
-     );
+   renderPopupComponent(component, styles) {
+     const iconStyle = { marginBottom: 50 };
+     const buttonStyle = { position: 'absolute', bottom: 20 };
+
+     switch (component) {
+       default: return;
+       case 'title':
+         return (
+           <DialogTitle
+           title={'Changes Saved'}
+           titleTextStyle={styles.popupTitle}
+           titleStyle={styles.popupTitleContainer}
+           />
+         );
+        case 'icon':
+          return (
+            <A.View duration={2500} animation='zoomIn' iterationCount='infinite' style={iconStyle}>
+              <A.View duration={2500} animation='rotate' iterationCount='infinite'>
+                <Icon size={100} name='check' type='entypo' color={styles.$tertiaryColor} />
+              </A.View>
+            </A.View>
+        );
+       case 'button':
+         return (
+           <A.View animation='slideInLeft' duration={2500} style={buttonStyle} >
+             <Icon
+               raised
+               size={40}
+               name='close'
+               type='font-awesome'
+               color={styles.$tertiaryColor}
+               containerStyle={styles.popupButton}
+               onPress={() => this.props.navigation.goBack(null)}
+             />
+           </A.View>
+         );
+      }
    }
 
    renderPopup(styles, gradients) {
      return (
        <PopupDialog
          width={DEVICE_WIDTH * 0.9}
-         dialogTitle={this.renderPopupTitle(styles)}
+         dismissOnTouchOutside={false}
+         dismissOnHardwareBackPress={false}
          ref={(popupDialog) => { this.popup = popupDialog; }}
+         dialogTitle={this.renderPopupComponent('title', styles)}
          dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
        >
-        <LinearGradient colors={gradients} style={[styles.container, { justifyContent: 'space-around' }]}>
-          <Icon
-            name={'check'}
-            size={80}
-            type='entypo'
-            color={styles.$tertiaryColor}
-          />
-          <Text style={styles.popupText}>
-            Your changes were successfully saved.
-          </Text>
-          <Button
-            title='Close'
-            buttonStyle={styles.popupButton}
-            textStyle={{ color: styles.$primaryColor }}
-            onPress={() => this.props.navigation.goBack(null)}
-          />
+        <LinearGradient colors={gradients} style={styles.popup}>
+          {this.renderPopupComponent('icon', styles)}
+          {this.renderPopupComponent('button', styles)}
         </LinearGradient>
        </PopupDialog>
      );
@@ -213,13 +231,13 @@ class Form extends Component {
           bgColor={styles.$secondaryColor}
           textColor={styles.$primaryColor}
         />
-        <Animatable.View
+        <A.View
           animation='slideInLeft'
           duration={1500}
           delay={0}
         >
           {this.renderContentSwitch(styles, actionBarType)}
-        </Animatable.View>
+        </A.View>
 
         <ActionBar
           styles={styles}

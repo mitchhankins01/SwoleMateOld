@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, Dimensions } from 'react-native';
+import { ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { List } from 'react-native-elements';
@@ -12,8 +12,6 @@ import Header from '../components/Header';
 import Programs from '../components/Programs';
 import ActionBar from '../components/ActionBar';
 import Greeting from '../components/Greeting';
-
-const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 class Home extends Component {
 
@@ -34,7 +32,6 @@ class Home extends Component {
        actionBarType: 'primaryProgram',
        showAllPrograms: false,
        theme: 'standard',
-       screenIndex: -1,
      };
    }
 
@@ -43,7 +40,6 @@ class Home extends Component {
 
      firebase.firestore().collection('users').doc(uid)
       .onSnapshot(userDoc => {
-        //console.log(userDoc.data());
         this.setState({
           theme: userDoc.data().theme,
         });
@@ -62,9 +58,7 @@ class Home extends Component {
     const { theme, showAllPrograms, actionBarType } = this.state;
     const styles = themeStyles[theme];
     const gradients = [
-      styles.$primaryColor,
-      styles.$secondaryColor,
-      styles.$tertiaryColor
+      styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor
     ];
 
     return (
@@ -79,20 +73,20 @@ class Home extends Component {
         />
         <Greeting styles={styles} />
 
-        <Animatable.View
-          duration={500}
-          ref='programView'
-          animation='flipInY'
-          //style={{ height: DEVICE_HEIGHT * 0.6 }}
-        >
+        <Animatable.View duration={500} ref='programView' animation='flipInY'>
           <ScrollView>
             <List containerStyle={styles.list}>
               <Programs
                 styles={styles}
                 type={actionBarType}
                 showAllPrograms={this.state.showAllPrograms}
-                primaryProgramDetailsButton={() => this.setState({
+                onPressPrimaryProgramDetails={() => this.setState({
                   actionBarType: 'primaryProgramDetails' })
+                }
+                onPressAllProgramsDetails={() => this.setState({
+                  showAllPrograms: false,
+                  actionBarType: 'allProgramsDetails'
+                })
                 }
               />
             </List>
@@ -114,6 +108,10 @@ class Home extends Component {
           onPressShowPrimaryProgram={() => this.setState({
             actionBarType: 'primaryProgram',
             showAllPrograms: !this.state.showAllPrograms
+          })}
+          onPressBackToAllPrograms={() => this.setState({
+            actionBarType: 'allPrograms',
+            showAllPrograms: true
           })}
           onPressBackToPrimaryProgram={() => this.setState({
             actionBarType: 'primaryProgram',

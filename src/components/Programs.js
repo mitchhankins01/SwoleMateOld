@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import firebase from 'react-native-firebase';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { ListItem, Button } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 
 class Programs extends Component {
@@ -43,19 +43,19 @@ class Programs extends Component {
   fetchAllPrograms(uid) {
     const programs = [];
 
-    firebase.firestore().collection('userPrograms').where('author', '==', uid)
+    firebase.firestore().collection('userProgramsTest').where('author', '==', uid)
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(program => {
         const {
-          author, days, description, level, name, type
+          author, frequency, description, level, name, type
         } = program.data();
 
         programs.push({
           key: program.id,
           program, // DocumentSnapshot
           author,
-          days,
+          frequency,
           description,
           level,
           name,
@@ -104,14 +104,25 @@ class Programs extends Component {
   }
 
   updateScreen(index, key) {
-    this.props.primaryProgramDetailsButton();
-    this.setState({ screenIndex: index, selectedDayKey: key });
+    switch (index) {
+      default:
+        this.setState({ screenIndex: -1 });
+        break;
+      case 0:
+        this.props.onPressPrimaryProgramDetails();
+        this.setState({ screenIndex: 0, selectedDayKey: key });
+        break;
+      case 1:
+        this.props.onPressAllProgramsDetails();
+        this.setState({ screenIndex: 1 });
+        break;
+    }
   }
 
   renderAllPrograms = styles => {
     return (
       this.state.programs.map(program => {
-        const subtitle = `${program.days} Days - ${program.level} - ${program.type}`;
+        const subtitle = `${program.frequency} Days - ${program.level} - ${program.type}`;
 
         return (
           <ListItem
@@ -124,10 +135,20 @@ class Programs extends Component {
             titleStyle={styles.listItemProgramsTitle}
             subtitleStyle={styles.listItemProgramsSubtitle}
             leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
-            onPress={() => {}}
+            onPress={() => this.updateScreen(1)}
           />
         );
       })
+    );
+  }
+
+  renderAllProgramsDetails = styles => {
+    if (this.props.type === 'primaryProgram') {
+      //return this.renderPrimaryProgram(this.props.styles);
+      return this.updateScreen(-1);
+    }
+    return (
+      <Text> Details </Text>
     );
   }
 
@@ -152,7 +173,8 @@ class Programs extends Component {
 
   renderPrimaryProgramDetails = styles => {
     if (this.props.type === 'primaryProgram') {
-      return this.renderPrimaryProgram(this.props.styles);
+      //return this.renderPrimaryProgram(this.props.styles);
+      return this.updateScreen(-1);
     }
 
     return (
@@ -186,11 +208,15 @@ class Programs extends Component {
 
     let renderType;
     switch (this.state.screenIndex) {
+      default:
+        renderType = this.renderPrimaryProgram(styles);
+        break;
       case 0:
         renderType = this.renderPrimaryProgramDetails(styles);
         break;
-      default:
-        renderType = this.renderPrimaryProgram(styles);
+      case 1:
+        renderType = this.renderAllProgramsDetails(styles);
+        break;
     }
 
     if (showAllPrograms) {

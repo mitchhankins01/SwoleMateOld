@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import { View } from 'react-native';
+import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 
@@ -50,6 +50,16 @@ class ActionBar extends Component {
     );
   }
 
+  renderAllProgramsDetailsActionBar(styles) {
+    return (
+      <View style={styles.actionBarView}>
+        {this.renderButton(styles, 'back', 30, 300, this.props.onPressBackToAllPrograms)}
+        {this.renderButton(styles, 'add-to-list', 30, 200)}
+        {this.renderButton(styles, 'trash', 20, 100)}
+      </View>
+    );
+  }
+
   renderPrimaryProgramDetailsActionBar(styles) {
     return (
       <Animatable.View style={styles.actionBarView}>
@@ -79,6 +89,9 @@ class ActionBar extends Component {
         return;
       case 'allPrograms':
         renderType = this.renderAllProgramsActionBar(styles);
+        break;
+      case 'allProgramsDetails':
+        renderType = this.renderAllProgramsDetailsActionBar(styles);
         break;
       case 'primaryProgram':
         renderType = this.renderPrimaryProgramActionBar(styles);

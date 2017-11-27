@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
 import { Text } from 'react-native';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ListItem } from 'react-native-elements';
+import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { fetchAllPrograms, updateScreenIndex } from '../actions/program_actions';
 
 class Programs extends Component {
   constructor(props) {
@@ -13,7 +16,6 @@ class Programs extends Component {
     this.state = {
       primaryProgram: {},
       selectedDayKey: '',
-      screenIndex: -1,
       exercises: [],
       loading: true,
       programs: [],
@@ -22,14 +24,8 @@ class Programs extends Component {
   }
 
   componentWillMount() {
-    const uid = firebase.auth().currentUser.uid;
-
-    firebase.firestore().collection('users').doc(uid)
-     .onSnapshot(userDoc => {
-       this.fetchPrimaryProgram(userDoc.data().primaryProgram);
-     });
-
-    this.fetchAllPrograms(uid);
+    const { dispatch } = this.props;
+    dispatch(fetchAllPrograms());
   }
 
   componentWillUpdate() {
@@ -40,33 +36,9 @@ class Programs extends Component {
     }
   }
 
-  fetchAllPrograms(uid) {
-    const programs = [];
-
-    firebase.firestore().collection('userProgramsTest').where('author', '==', uid)
-    .get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(program => {
-        const {
-          author, frequency, description, level, name, type
-        } = program.data();
-
-        programs.push({
-          key: program.id,
-          program, // DocumentSnapshot
-          author,
-          frequency,
-          description,
-          level,
-          name,
-          type
-        });
-      });
-    });
-
-    this.setState({
-      programs,
-    });
+  updateScreenIndex(index) {
+    const { dispatch } = this.props;
+    dispatch(updateScreenIndex(index));
   }
 
   fetchPrimaryProgram(primaryProgramKey) {
@@ -103,22 +75,6 @@ class Programs extends Component {
     });
   }
 
-  updateScreen(index, key) {
-    switch (index) {
-      default:
-        this.setState({ screenIndex: -1 });
-        break;
-      case 0:
-        this.props.onPressPrimaryProgramDetails();
-        this.setState({ screenIndex: 0, selectedDayKey: key });
-        break;
-      case 1:
-        this.props.onPressAllProgramsDetails();
-        this.setState({ screenIndex: 1 });
-        break;
-    }
-  }
-
   renderAllPrograms = styles => {
     return (
       this.state.programs.map(program => {
@@ -135,7 +91,7 @@ class Programs extends Component {
             titleStyle={styles.listItemProgramsTitle}
             subtitleStyle={styles.listItemProgramsSubtitle}
             leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
-            onPress={() => this.updateScreen(1)}
+            onPress={() => this.updateScreenIndex('allProgramsDetails')}
           />
         );
       })
@@ -143,10 +99,6 @@ class Programs extends Component {
   }
 
   renderAllProgramsDetails = styles => {
-    if (this.props.type === 'primaryProgram') {
-      //return this.renderPrimaryProgram(this.props.styles);
-      return this.updateScreen(-1);
-    }
     return (
       <Text> Details </Text>
     );
@@ -163,7 +115,8 @@ class Programs extends Component {
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
-            onPress={() => this.updateScreen(0, day.key)}
+            onPress={() => this.updateScreenIndex('primaryProgramDetails')}
+            //onPress={() => this.updateScreen(0, day.key)}
             leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
           />
         );
@@ -172,11 +125,6 @@ class Programs extends Component {
   }
 
   renderPrimaryProgramDetails = styles => {
-    if (this.props.type === 'primaryProgram') {
-      //return this.renderPrimaryProgram(this.props.styles);
-      return this.updateScreen(-1);
-    }
-
     return (
       this.state.exercises.map(exercise => {
         if (exercise.day === this.state.selectedDayKey) {
@@ -202,25 +150,27 @@ class Programs extends Component {
   }
 
   render() {
-    const { styles, type, showAllPrograms } = this.props;
+    const { styles, screenIndex } = this.props;
 
+    // IMPLEMENT is not working correctly
     if (this.state.loading) { return <Text> Loading </Text>; }
 
     let renderType;
-    switch (this.state.screenIndex) {
+    switch (screenIndex) {
       default:
-        renderType = this.renderPrimaryProgram(styles);
+        return;
+      case 'allPrograms':
+        renderType = this.renderAllPrograms(styles);
         break;
-      case 0:
-        renderType = this.renderPrimaryProgramDetails(styles);
-        break;
-      case 1:
+      case 'allProgramsDetails':
         renderType = this.renderAllProgramsDetails(styles);
         break;
-    }
-
-    if (showAllPrograms) {
-      renderType = this.renderAllPrograms(styles);
+      case 'primaryProgram':
+        renderType = this.renderPrimaryProgram(styles);
+        break;
+      case 'primaryProgramDetails':
+        renderType = this.renderPrimaryProgramDetails(styles);
+        break;
     }
 
     return (
@@ -231,4 +181,10 @@ class Programs extends Component {
   }
 }
 
-export default Programs;
+const mapStateToProps = (state) => {
+  return {
+    screenIndex: state.program.screenIndex,
+  };
+};
+
+export default connect(mapStateToProps)(Programs);

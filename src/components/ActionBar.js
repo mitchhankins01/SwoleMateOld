@@ -1,12 +1,15 @@
 import { View } from 'react-native';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 
+import { updateScreenIndex } from '../actions/program_actions';
+
 class ActionBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  updateScreenIndex(index) {
+    const { dispatch } = this.props;
+    dispatch(updateScreenIndex(index));
   }
 
   renderButton(styles, name, size, delay, onPress) {
@@ -32,7 +35,9 @@ class ActionBar extends Component {
   renderPrimaryProgramActionBar(styles) {
     return (
       <View style={styles.actionBarView}>
-        {this.renderButton(styles, 'list', 30, 400, this.props.onPressShowAllPrograms)}
+        {this.renderButton(styles, 'list', 30, 400,
+          () => this.updateScreenIndex('allPrograms')
+        )}
         {this.renderButton(styles, 'add-to-list', 30, 300)}
         {this.renderButton(styles, 'edit', 22, 200)}
         {this.renderButton(styles, 'help', 22, 100)}
@@ -43,8 +48,12 @@ class ActionBar extends Component {
   renderAllProgramsActionBar(styles) {
     return (
       <Animatable.View style={styles.actionBarView} >
-        {this.renderButton(styles, 'back', 30, 300, this.props.onPressShowPrimaryProgram)}
-        {this.renderButton(styles, 'add-to-list', 30, 200, this.props.onPressAddNewProgram)}
+        {this.renderButton(styles, 'back', 30, 300,
+          () => this.updateScreenIndex('primaryProgram')
+        )}
+        {this.renderButton(styles, 'add-to-list', 30, 200,
+          () => this.updateScreenIndex('addNewProgram')
+        )}
         {this.renderButton(styles, 'trash', 20, 100)}
       </Animatable.View>
     );
@@ -53,7 +62,9 @@ class ActionBar extends Component {
   renderAllProgramsDetailsActionBar(styles) {
     return (
       <View style={styles.actionBarView}>
-        {this.renderButton(styles, 'back', 30, 300, this.props.onPressBackToAllPrograms)}
+        {this.renderButton(styles, 'back', 30, 300,
+          () => this.updateScreenIndex('allPrograms')
+        )}
         {this.renderButton(styles, 'add-to-list', 30, 200)}
         {this.renderButton(styles, 'trash', 20, 100)}
       </View>
@@ -63,7 +74,9 @@ class ActionBar extends Component {
   renderPrimaryProgramDetailsActionBar(styles) {
     return (
       <Animatable.View style={styles.actionBarView}>
-        {this.renderButton(styles, 'back', 30, 300, this.props.onPressBackToPrimaryProgram)}
+        {this.renderButton(styles, 'back', 30, 300,
+          () => this.updateScreenIndex('primaryProgram')
+        )}
         {this.renderButton(styles, 'add-to-list', 30, 200)}
         {this.renderButton(styles, 'trash', 20, 100)}
       </Animatable.View>
@@ -73,18 +86,22 @@ class ActionBar extends Component {
   renderAddNewProgramActionBar(styles) {
     return (
       <Animatable.View style={styles.actionBarView}>
-        {this.renderButton(styles, 'back', 30, 300, () => this.props.navigation.goBack(null))}
+        {this.renderButton(styles, 'back', 30, 300,
+          () => this.props.navigation.goBack(null)
+        )}
         {this.renderButton(styles, 'help', 22, 200)}
-        {this.renderButton(styles, 'check', 25, 100, this.props.onPressSave)}
+        {this.renderButton(styles, 'check', 25, 100,
+          this.props.onPressSave
+        )}
       </Animatable.View>
     );
   }
 
   render() {
-    const { styles, actionBarType } = this.props;
+    const { styles, screenIndex } = this.props;
 
     let renderType;
-    switch (actionBarType) {
+    switch (screenIndex) {
       default:
         return;
       case 'allPrograms':
@@ -111,4 +128,10 @@ class ActionBar extends Component {
   }
 }
 
-export default ActionBar;
+const mapStateToProps = (state) => {
+  return {
+    screenIndex: state.program.screenIndex,
+  };
+};
+
+export default connect(mapStateToProps)(ActionBar);

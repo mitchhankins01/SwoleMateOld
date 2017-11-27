@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { Header as NativeHeader } from 'react-native-elements';
 
-const Header = ({ title, bgColor, textColor, onLeftPress, onRightPress }) => {
+const Header = ({ title, styles, onLeftPress, onRightPress }) => {
   return (
     <NativeHeader
       /*leftComponent={{
@@ -14,7 +14,7 @@ const Header = ({ title, bgColor, textColor, onLeftPress, onRightPress }) => {
       }}*/
       centerComponent={{
         text: title,
-        style: { fontFamily: 'Exo-Medium', color: textColor, fontSize: 20 }
+        style: { fontFamily: 'Exo-Medium', color: styles.$primaryColor, fontSize: 20 }
       }}
       /*rightComponent={{
         icon: 'exit-to-app',
@@ -24,9 +24,9 @@ const Header = ({ title, bgColor, textColor, onLeftPress, onRightPress }) => {
         underlayColor: 'transparent'
       }} */
       outerContainerStyles={{
-        backgroundColor: bgColor,
+        backgroundColor: styles.$secondaryColor,
         borderBottomWidth: 0,
-        height: Platform.OS === 'android' ? 75 : 65
+        //height: Platform.OS === 'android' ? 75 : 65
       }}
     />
   );

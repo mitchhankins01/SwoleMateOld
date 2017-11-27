@@ -145,11 +145,7 @@ class Settings extends Component {
         colors={gradients}
         style={[styles.container, { justifyContent: 'flex-start' }]}
       >
-      <Header
-        title={'Settings'}
-        bgColor={styles.$secondaryColor}
-        textColor={styles.$primaryColor}
-      />
+      <Header title={'Settings'} styles={styles} />
         <Avatar
           xlarge
           rounded

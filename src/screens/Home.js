@@ -1,11 +1,12 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
+import { List } from 'react-native-elements';
+import firebase from 'react-native-firebase';
+import * as Animatable from 'react-native-animatable';
+import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { List } from 'react-native-elements';
-import * as Animatable from 'react-native-animatable';
-import firebase from 'react-native-firebase';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import themeStyles from '../components/styles';
 import Header from '../components/Header';
@@ -29,13 +30,14 @@ class Home extends Component {
    constructor(props) {
      super(props);
      this.state = {
-       actionBarType: 'primaryProgram',
-       showAllPrograms: false,
        theme: 'standard',
      };
    }
 
    componentDidMount() {
+     /* Check for error from loading FB Programs */
+     this.renderError(this.props.programError);
+
      const uid = firebase.auth().currentUser.uid;
 
      firebase.firestore().collection('users').doc(uid)
@@ -54,81 +56,59 @@ class Home extends Component {
      }
    }
 
+   renderError(error) {
+     if (error) {
+       this.dropdown.alertWithType(
+         'error',
+         'Something went wrong',
+         error
+       );
+     }
+   }
+
   render() {
-    const { theme, showAllPrograms, actionBarType } = this.state;
+    const { theme } = this.state;
     const styles = themeStyles[theme];
     const gradients = [
       styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor
     ];
 
+    // IMPLEMENT redux source
+    const showAllPrograms = false;
+
     return (
       <LinearGradient
-        colors={gradients}
-        style={[styles.container, { justifyContent: 'flex-start' }]}
+        colors={gradients} style={[styles.container, { justifyContent: 'flex-start' }]}
       >
-        <Header
-          title={showAllPrograms ? 'All Programs' : 'Home'}
-          bgColor={styles.$secondaryColor}
-          textColor={styles.$primaryColor}
-        />
+        <Header title={showAllPrograms ? 'All Programs' : 'Home'} styles={styles} />
+
         <Greeting styles={styles} />
 
         <Animatable.View duration={500} ref='programView' animation='flipInY'>
           <ScrollView>
             <List containerStyle={styles.list}>
-              <Programs
-                styles={styles}
-                type={actionBarType}
-                showAllPrograms={this.state.showAllPrograms}
-                onPressPrimaryProgramDetails={() => this.setState({
-                  actionBarType: 'primaryProgramDetails' })
-                }
-                onPressAllProgramsDetails={() => this.setState({
-                  showAllPrograms: false,
-                  actionBarType: 'allProgramsDetails'
-                })
-                }
-              />
+              <Programs styles={styles} />
             </List>
           </ScrollView>
         </Animatable.View>
 
-        <ActionBar
-          styles={styles}
-          actionBarType={actionBarType}
-          onPressAddNewProgram={() => this.props.navigation.navigate('Form', {
-            styles,
-            title: 'Add a Program',
-            actionBarType: 'addNewProgram'
-          })}
-          onPressShowAllPrograms={() => this.setState({
-            actionBarType: 'allPrograms',
-            showAllPrograms: !this.state.showAllPrograms
-          })}
-          onPressShowPrimaryProgram={() => this.setState({
-            actionBarType: 'primaryProgram',
-            showAllPrograms: !this.state.showAllPrograms
-          })}
-          onPressBackToAllPrograms={() => this.setState({
-            actionBarType: 'allPrograms',
-            showAllPrograms: true
-          })}
-          onPressBackToPrimaryProgram={() => this.setState({
-            actionBarType: 'primaryProgram',
-            showAllPrograms: false
-          })}
-
-        />
+        <ActionBar styles={styles} />
 
         <DropdownAlert
-          ref={ref => (this.dropdown = ref)}
           translucent
-          updateStatusBar={false}
           closeInterval={2000}
+          updateStatusBar={false}
+          ref={ref => (this.dropdown = ref)}
         />
       </LinearGradient>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    programError: state.program.error,
+  };
+};
+
+export default connect(mapStateToProps)(Home);

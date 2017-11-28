@@ -2,13 +2,37 @@ import { Dimensions } from 'react-native';
 import themes from './theme';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const themeStyles = themes.createStyleSheet({
   container: {
-    justifyContent: 'center',
     flex: 1,
     width: null,
     height: null,
+    justifyContent: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    paddingVertical: 50,
+    alignItems: 'center',
+    height: DEVICE_HEIGHT * 0.53,
+    justifyContent: 'space-around',
+    backgroundColor: '$secondaryColor',
+  },
+  loadingText: {
+    fontSize: 40,
+    alignSelf: 'center',
+    color: '$primaryColor',
+    fontFamily: 'Exo-Bold',
+    backgroundColor: 'transparent',
+  },
+  loadingTextSub: {
+    fontSize: 30,
+    marginBottom: 10,
+    alignSelf: 'center',
+    color: '$primaryColor',
+    fontFamily: 'Exo-Medium',
+    backgroundColor: 'transparent',
   },
   appName: {
     fontSize: 40,

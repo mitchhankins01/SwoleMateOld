@@ -74,11 +74,12 @@ class ActionBar extends Component {
   renderPrimaryProgramDetailsActionBar(styles) {
     return (
       <Animatable.View style={styles.actionBarView}>
-        {this.renderButton(styles, 'back', 30, 300,
+        {this.renderButton(styles, 'back', 30, 400,
           () => this.updateScreenIndex('primaryProgram')
         )}
-        {this.renderButton(styles, 'add-to-list', 30, 200)}
-        {this.renderButton(styles, 'trash', 20, 100)}
+        {this.renderButton(styles, 'add-to-list', 30, 300)}
+        {this.renderButton(styles, 'trash', 20, 200)}
+        {this.renderButton(styles, 'rocket', 25, 100)}
       </Animatable.View>
     );
   }

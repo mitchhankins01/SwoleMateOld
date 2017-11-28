@@ -1,31 +1,36 @@
-import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 import firebase from 'react-native-firebase';
 import { ListItem } from 'react-native-elements';
+import ProgressBar from 'react-native-progress/Bar';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { fetchAllPrograms, updateScreenIndex } from '../actions/program_actions';
+import {
+  fetchAllPrograms,
+  fetchPrimaryProgram,
+  updateScreenIndex
+} from '../actions/program_actions';
 
 class Programs extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      primaryProgram: {},
-      selectedDayKey: '',
-      exercises: [],
-      loading: true,
-      programs: [],
+      // Primary Program
       days: [],
+      info: [],
+      exercises: [],
+      selectedDayKey: '',
     };
   }
 
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(fetchAllPrograms());
+    dispatch(fetchPrimaryProgram('1lpxLYtOGcayIWh5QJlN'));
   }
 
   componentWillUpdate() {
@@ -36,48 +41,15 @@ class Programs extends Component {
     }
   }
 
-  updateScreenIndex(index) {
+  updateScreenIndex(index, selectedDayKey) {
     const { dispatch } = this.props;
     dispatch(updateScreenIndex(index));
-  }
-
-  fetchPrimaryProgram(primaryProgramKey) {
-    const days = [];
-    const exercises = [];
-    const primaryProgramRef = firebase.firestore()
-      .collection('userPrograms').doc(primaryProgramKey);
-
-    primaryProgramRef.get()
-    .then(primaryProgram => {
-      this.setState({ primaryProgram: primaryProgram.data() });
-    });
-
-    primaryProgramRef.collection('days').get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(day => {
-          const { key, name } = day.data();
-          days.push({ key, name });
-        });
-      });
-
-    primaryProgramRef.collection('exercises').get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(details => {
-          const { day, name, sets, reps, rest } = details.data();
-          exercises.push({ key: details.id, day, name, sets, reps, rest });
-        });
-      });
-
-    this.setState({
-      days,
-      exercises,
-      loading: false
-    });
+    if (selectedDayKey) { this.setState({ selectedDayKey }); }
   }
 
   renderAllPrograms = styles => {
     return (
-      this.state.programs.map(program => {
+      this.props.allPrograms.map(program => {
         const subtitle = `${program.frequency} Days - ${program.level} - ${program.type}`;
 
         return (
@@ -106,7 +78,7 @@ class Programs extends Component {
 
   renderPrimaryProgram = styles => {
     return (
-      this.state.days.map(day => {
+      this.props.programDays.map(day => {
         return (
           <ListItem
             hideChevron
@@ -115,8 +87,7 @@ class Programs extends Component {
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
-            onPress={() => this.updateScreenIndex('primaryProgramDetails')}
-            //onPress={() => this.updateScreen(0, day.key)}
+            onPress={() => this.updateScreenIndex('primaryProgramDetails', day.key)}
             leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
           />
         );
@@ -126,7 +97,8 @@ class Programs extends Component {
 
   renderPrimaryProgramDetails = styles => {
     return (
-      this.state.exercises.map(exercise => {
+      this.props.programExercises.map(exercise => {
+        console.log(exercise);
         if (exercise.day === this.state.selectedDayKey) {
           const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
           return (
@@ -150,10 +122,17 @@ class Programs extends Component {
   }
 
   render() {
-    const { styles, screenIndex } = this.props;
+    const { loading, styles, screenIndex } = this.props;
 
-    // IMPLEMENT is not working correctly
-    if (this.state.loading) { return <Text> Loading </Text>; }
+    if (loading) {
+      return (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>SwoleMate</Text>
+          <Text style={styles.loadingTextSub}>Loading...</Text>
+          <ProgressBar width={200} indeterminate color={styles.$primaryColor} />
+        </View>
+      );
+    }
 
     let renderType;
     switch (screenIndex) {
@@ -183,7 +162,12 @@ class Programs extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    loading: state.program.loading,
+    programInfo: state.program.info,
+    programDays: state.program.days,
+    allPrograms: state.program.programs,
     screenIndex: state.program.screenIndex,
+    programExercises: state.program.exercises,
   };
 };
 

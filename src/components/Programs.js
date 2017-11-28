@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import firebase from 'react-native-firebase';
 import { ListItem } from 'react-native-elements';
 import ProgressBar from 'react-native-progress/Bar';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -10,8 +9,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   fetchAllPrograms,
+  updateScreenIndex,
   fetchPrimaryProgram,
-  updateScreenIndex
+  fetchAllProgramsSelected,
 } from '../actions/program_actions';
 
 class Programs extends Component {
@@ -20,9 +20,6 @@ class Programs extends Component {
 
     this.state = {
       // Primary Program
-      days: [],
-      info: [],
-      exercises: [],
       selectedDayKey: '',
     };
   }
@@ -30,7 +27,7 @@ class Programs extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(fetchAllPrograms());
-    dispatch(fetchPrimaryProgram('1lpxLYtOGcayIWh5QJlN'));
+    dispatch(fetchPrimaryProgram());
   }
 
   componentWillUpdate() {
@@ -41,10 +38,15 @@ class Programs extends Component {
     }
   }
 
-  updateScreenIndex(index, selectedDayKey) {
+  updateScreenIndex(index, selectedDayKey, allProgramSelectedKey) {
     const { dispatch } = this.props;
     dispatch(updateScreenIndex(index));
+
     if (selectedDayKey) { this.setState({ selectedDayKey }); }
+
+    if (allProgramSelectedKey) {
+      dispatch(fetchAllProgramsSelected(allProgramSelectedKey));
+    }
   }
 
   renderAllPrograms = styles => {
@@ -63,16 +65,31 @@ class Programs extends Component {
             titleStyle={styles.listItemProgramsTitle}
             subtitleStyle={styles.listItemProgramsSubtitle}
             leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
-            onPress={() => this.updateScreenIndex('allProgramsDetails')}
+            onPress={() => this.updateScreenIndex('allProgramsSelected', null, program.key)}
           />
         );
       })
     );
   }
 
-  renderAllProgramsDetails = styles => {
+  renderallProgramsSelected = styles => {
+    console.log(this.props.selectedProgramDays, this.props.selectedProgramExercises);
+    //console.log(this.props.selectedProgramDays, this.props.selectedProgramExercises);
     return (
-      <Text> Details </Text>
+      this.props.selectedProgramDays.map(day => {
+        return (
+          <ListItem
+            hideChevron
+            key={day.key}
+            title={day.name}
+            underlayColor={'transparent'}
+            containerStyle={styles.listItem}
+            titleStyle={styles.listItemProgramsTitle}
+            onPress={() => this.updateScreenIndex('selectedProgramDetails', day.key)}
+            leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
+          />
+        );
+      })
     );
   }
 
@@ -98,7 +115,6 @@ class Programs extends Component {
   renderPrimaryProgramDetails = styles => {
     return (
       this.props.programExercises.map(exercise => {
-        console.log(exercise);
         if (exercise.day === this.state.selectedDayKey) {
           const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
           return (
@@ -141,8 +157,8 @@ class Programs extends Component {
       case 'allPrograms':
         renderType = this.renderAllPrograms(styles);
         break;
-      case 'allProgramsDetails':
-        renderType = this.renderAllProgramsDetails(styles);
+      case 'allProgramsSelected':
+        renderType = this.renderallProgramsSelected(styles);
         break;
       case 'primaryProgram':
         renderType = this.renderPrimaryProgram(styles);
@@ -150,6 +166,8 @@ class Programs extends Component {
       case 'primaryProgramDetails':
         renderType = this.renderPrimaryProgramDetails(styles);
         break;
+      case 'addNewProgram':
+        this.props.navigation.navigate('Form', { title: 'Add new Program', styles });
     }
 
     return (
@@ -162,11 +180,17 @@ class Programs extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    // Various
     loading: state.program.loading,
+    screenIndex: state.program.screenIndex,
+    // All Programs
+    allPrograms: state.program.programs,
+    // All Programs Selected
+    selectedProgramDays: state.program.selectedDays,
+    selectedProgramExercises: state.program.selectedExercises,
+    // Primary Program
     programInfo: state.program.info,
     programDays: state.program.days,
-    allPrograms: state.program.programs,
-    screenIndex: state.program.screenIndex,
     programExercises: state.program.exercises,
   };
 };

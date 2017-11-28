@@ -1,22 +1,24 @@
 import Color from 'color';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import firebase from 'react-native-firebase';
-import { Button, Icon } from 'react-native-elements';
-import { Jiro } from 'react-native-textinput-effects';
+import { Icon } from 'react-native-elements';
 import * as A from 'react-native-animatable';
-import { Dimensions, View, Text } from 'react-native';
+import { Dimensions, View } from 'react-native';
+import { Jiro } from 'react-native-textinput-effects';
 import DropdownAlert from 'react-native-dropdownalert';
 import ModalDropdown from 'react-native-modal-dropdown';
 import LinearGradient from 'react-native-linear-gradient';
 import PopupDialog, {
-  DialogButton,
   DialogTitle,
   SlideAnimation
 } from 'react-native-popup-dialog';
 
 import Header from '../components/Header';
 import ActionBar from '../components/ActionBar';
-
+import {
+  addNewProgram,
+  fetchAllPrograms,
+} from '../actions/program_actions';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -34,37 +36,19 @@ class Form extends Component {
      };
    }
 
-   submitForm(programName, description, type, level, frequency) {
-     const uid = firebase.auth().currentUser.uid;
-     const ref = firebase.firestore().collection('userProgramsTest');
+   validateForm(screenIndex) {
+     const { dispatch } = this.props;
 
-     ref.add({
-       type,
-       level,
-       frequency,
-       author: uid,
-       description,
-       name: programName,
-     })
-     .then(() => {
-       this.dropdown.alertWithType('success', 'Saved, Changes Saved');
-       this.props.navigation.goBack(null);
-     })
-     .catch(error => {
-       this.dropdown.alertWithType('error', 'Oops, something went wrong', error.message);
-     });
-   }
-
-   validateForm(actionBarType) {
-     switch (actionBarType) {
+     switch (screenIndex) {
        case 'addNewProgram': {
          const { programName, description, type, level, frequency } = this.state;
 
          if (programName && description && type && level && frequency) {
-           this.popup.show();
-           //this.submitForm(programName, description, type, level, frequency);
+           dispatch(addNewProgram(programName, description, type, level, frequency, () => {
+             dispatch(fetchAllPrograms());
+             this.popup.show();
+           }));
          } else {
-           this.popup.show();
            this.dropdown.alertWithType(
              'error', 'Missing Fields', 'Please fill out all fields');
          }
@@ -206,8 +190,8 @@ class Form extends Component {
      );
    }
 
-   renderContentSwitch(styles, type) {
-     switch (type) {
+   renderContentSwitch(styles, screenIndex) {
+     switch (screenIndex) {
        default:
         return;
       case 'addNewProgram':
@@ -216,47 +200,41 @@ class Form extends Component {
    }
 
   render() {
-    const { actionBarType, styles, title } = this.props.navigation.state.params;
+    const { screenIndex } = this.props;
+    const { styles, title } = this.props.navigation.state.params;
     const gradients = [
       styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor
     ];
 
     return (
       <LinearGradient
-        colors={gradients}
-        style={[styles.container, { justifyContent: 'flex-start' }]}
+        colors={gradients} style={[styles.container, { justifyContent: 'flex-start' }]}
       >
-        <Header
-          title={title}
-          bgColor={styles.$secondaryColor}
-          textColor={styles.$primaryColor}
-        />
-        <A.View
-          animation='slideInLeft'
-          duration={1500}
-          delay={0}
-        >
-          {this.renderContentSwitch(styles, actionBarType)}
+        <Header title={title} styles={styles} />
+        <A.View delay={0} duration={1500} animation='slideInLeft' >
+          {this.renderContentSwitch(styles, screenIndex)}
         </A.View>
-
         <ActionBar
           styles={styles}
-          actionBarType={actionBarType}
           navigation={this.props.navigation}
-          onPressSave={() => this.validateForm(actionBarType)}
+          onPressSave={() => this.validateForm(screenIndex)}
         />
-
         {this.renderPopup(styles, gradients)}
-
         <DropdownAlert
-          ref={ref => (this.dropdown = ref)}
           translucent
+          closeInterval={5000}
           updateStatusBar={false}
-          closeInterval={2000}
+          ref={ref => (this.dropdown = ref)}
         />
       </LinearGradient>
     );
   }
 }
 
-export default Form;
+const mapStateToProps = (state) => {
+  return {
+    screenIndex: state.program.screenIndex,
+  };
+};
+
+export default connect(mapStateToProps)(Form);

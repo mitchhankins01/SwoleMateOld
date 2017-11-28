@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
 import { List } from 'react-native-elements';
 import firebase from 'react-native-firebase';
+import { Dimensions, ScrollView } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,6 +13,8 @@ import Header from '../components/Header';
 import Programs from '../components/Programs';
 import ActionBar from '../components/ActionBar';
 import Greeting from '../components/Greeting';
+
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 class Home extends Component {
 
@@ -85,9 +87,9 @@ class Home extends Component {
         <Greeting styles={styles} />
 
         <Animatable.View duration={500} ref='programView' animation='flipInY'>
-          <ScrollView>
+          <ScrollView style={{ marginBottom: 230 }}>
             <List containerStyle={styles.list}>
-              <Programs styles={styles} />
+              <Programs styles={styles} navigation={this.props.navigation} />
             </List>
           </ScrollView>
         </Animatable.View>

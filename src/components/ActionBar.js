@@ -7,9 +7,10 @@ import * as Animatable from 'react-native-animatable';
 import { updateScreenIndex } from '../actions/program_actions';
 
 class ActionBar extends Component {
-  updateScreenIndex(index) {
+  updateScreenIndex(index, goBack) {
     const { dispatch } = this.props;
     dispatch(updateScreenIndex(index));
+    if (goBack) { this.props.navigation.goBack(null); }
   }
 
   renderButton(styles, name, size, delay, onPress) {
@@ -88,7 +89,7 @@ class ActionBar extends Component {
     return (
       <Animatable.View style={styles.actionBarView}>
         {this.renderButton(styles, 'back', 30, 300,
-          () => this.props.navigation.goBack(null)
+          () => this.updateScreenIndex('allPrograms', true)
         )}
         {this.renderButton(styles, 'help', 22, 200)}
         {this.renderButton(styles, 'check', 25, 100,
@@ -108,7 +109,7 @@ class ActionBar extends Component {
       case 'allPrograms':
         renderType = this.renderAllProgramsActionBar(styles);
         break;
-      case 'allProgramsDetails':
+      case 'allProgramsSelected':
         renderType = this.renderAllProgramsDetailsActionBar(styles);
         break;
       case 'primaryProgram':

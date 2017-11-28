@@ -4,12 +4,19 @@ import firebase from 'react-native-firebase';
 export const UPDATE_SCREEN_INDEX = 'UPDATE_SCREEN_INDEX';
 // Fetch All Programs
 export const FETCH_ALL_PROGRAMS = 'FETCH_ALL_PROGRAMS';
-export const FETCH_ALL_PROGRAMS_SUCCESS = 'FETCH_ALL_PROGRAMS_SUCCESS';
 export const FETCH_ALL_PROGRAMS_FAILURE = 'FETCH_ALL_PROGRAMS_FAILURE';
+export const FETCH_ALL_PROGRAMS_SUCCESS = 'FETCH_ALL_PROGRAMS_SUCCESS';
+// Fetch Selected from All Programs
+export const FETCH_ALL_PROGRAMS_SELECTED = 'FETCH_ALL_PROGRAMS_SELECTED';
+export const FETCH_ALL_PROGRAMS_SELECTED_FAILURE = 'FETCH_ALL_PROGRAMS_SELECTED_FAILURE';
+export const FETCH_ALL_PROGRAMS_SELECTED_SUCCESS = 'FETCH_ALL_PROGRAMS_SELECTED_SUCCESS';
 // Fetch Primary Programs
 export const FETCH_PRIMARY_PROGRAM = 'FETCH_PRIMARY_PROGRAM';
-export const FETCH_PRIMARY_PROGRAM_SUCCESS = 'FETCH_PRIMARY_PROGRAM_SUCCESS';
 export const FETCH_PRIMARY_PROGRAM_FAILURE = 'FETCH_PRIMARY_PROGRAM_FAILURE';
+export const FETCH_PRIMARY_PROGRAM_SUCCESS = 'FETCH_PRIMARY_PROGRAM_SUCCESS';
+// Add New Program
+export const ADD_NEW_PROGRAM = 'ADD_NEW_PROGRAM';
+export const ADD_NEW_PROGRAM_FAILURE = 'ADD_NEW_PROGRAM_FAILURE';
 
 // Screen Index
 export const updateScreenIndex = index => {
@@ -27,7 +34,7 @@ export const fetchAllPrograms = () => {
     const uid = firebase.auth().currentUser.uid;
     const programs = [];
 
-    firebase.firestore().collection('userProgramsTest').where('author', '==', uid)
+    firebase.firestore().collection('userPrograms').where('author', '==', uid)
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(program => {
@@ -68,28 +75,18 @@ const fetchAllProgramsSuccess = (dispatch, programs) => {
   });
 };
 
-// Primary Program
-export const fetchPrimaryProgram = primaryProgramKey => {
+// Selected from All Programs
+export const fetchAllProgramsSelected = allProgramSelectedKey => {
   return (dispatch) => {
-    dispatch({ type: FETCH_PRIMARY_PROGRAM });
+    dispatch({ type: FETCH_ALL_PROGRAMS_SELECTED });
 
-    const info = [];
     const days = [];
     const exercises = [];
 
-    const primaryProgramRef = firebase.firestore()
-      .collection('userPrograms').doc(primaryProgramKey);
+    const allProgramsSelectedRef = firebase.firestore()
+      .collection('userPrograms').doc(allProgramSelectedKey);
 
-    primaryProgramRef.get()
-    .then(primaryProgram => {
-      const { author, frequency, description, level, name, type } = primaryProgram.data();
-      info.push({ author, frequency, description, level, name, type });
-    })
-    .catch(error => {
-      fetchPrimaryProgramFailure(dispatch, error);
-    });
-
-    primaryProgramRef.collection('days').get()
+    allProgramsSelectedRef.collection('days').get()
     .then(querySnapshot => {
       querySnapshot.forEach(day => {
         const { key, name } = day.data();
@@ -97,16 +94,94 @@ export const fetchPrimaryProgram = primaryProgramKey => {
       });
     })
     .catch(error => {
-      fetchPrimaryProgramFailure(dispatch, error);
+      fetchAllProgramsSelectedFailure(dispatch, error);
     });
 
-    primaryProgramRef.collection('exercises').get()
+    allProgramsSelectedRef.collection('exercises').get()
     .then(querySnapshot => {
       querySnapshot.forEach(details => {
         const { day, name, sets, reps, rest } = details.data();
         exercises.push({ key: details.id, day, name, sets, reps, rest });
       });
-      fetchPrimaryProgramSuccess(dispatch, info, days, exercises);
+      fetchAllProgramsSelectedSuccess(dispatch, days, exercises);
+    })
+    .catch(error => {
+      fetchAllProgramsSelectedFailure(dispatch, error);
+    });
+  };
+};
+
+const fetchAllProgramsSelectedFailure = (dispatch, error) => {
+  dispatch({
+    payload: error,
+    type: FETCH_ALL_PROGRAMS_SELECTED_FAILURE,
+  });
+};
+
+const fetchAllProgramsSelectedSuccess = (dispatch, days, exercises) => {
+  dispatch({
+    days,
+    exercises,
+    type: FETCH_ALL_PROGRAMS_SELECTED_SUCCESS,
+  });
+};
+
+// Primary Program
+export const fetchPrimaryProgram = () => {
+  return (dispatch) => {
+    dispatch({ type: FETCH_PRIMARY_PROGRAM });
+
+    const info = [];
+    const days = [];
+    const exercises = [];
+
+    // Testing using onSnapshot
+    // const uid = firebase.auth().currentUser.uid;
+    // firebase.firestore().collection('users').doc(uid)
+    // .onSnapshot(userDoc => {
+    //   console.log(userDoc.data());
+    // }, (error) => {
+    //   console.log(error);
+    // });
+
+    // Get primaryProgram key and program details
+    const uid = firebase.auth().currentUser.uid;
+    firebase.firestore().collection('users').doc(uid).get()
+    .then(userDoc => {
+      const primaryProgramRef = firebase.firestore()
+        .collection('userPrograms').doc(userDoc.data().primaryProgram);
+
+      primaryProgramRef.get()
+      .then(primaryProgram => {
+        const { author, frequency, description, level, name, type } = primaryProgram.data();
+        info.push({ author, frequency, description, level, name, type });
+      })
+      .catch(error => {
+        fetchPrimaryProgramFailure(dispatch, error);
+      });
+
+      primaryProgramRef.collection('days').get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(day => {
+          const { key, name } = day.data();
+          days.push({ key, name });
+        });
+      })
+      .catch(error => {
+        fetchPrimaryProgramFailure(dispatch, error);
+      });
+
+      primaryProgramRef.collection('exercises').get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(details => {
+          const { day, name, sets, reps, rest } = details.data();
+          exercises.push({ key: details.id, day, name, sets, reps, rest });
+        });
+        fetchPrimaryProgramSuccess(dispatch, info, days, exercises);
+      })
+      .catch(error => {
+        fetchPrimaryProgramFailure(dispatch, error);
+      });
     })
     .catch(error => {
       fetchPrimaryProgramFailure(dispatch, error);
@@ -127,5 +202,37 @@ const fetchPrimaryProgramSuccess = (dispatch, info, days, exercises) => {
     days,
     exercises,
     type: FETCH_PRIMARY_PROGRAM_SUCCESS,
+  });
+};
+
+// Add Program
+export const addNewProgram = (programName, description, type, level, frequency, callback) => {
+  return (dispatch) => {
+    dispatch({ type: ADD_NEW_PROGRAM });
+
+    const uid = firebase.auth().currentUser.uid;
+    const ref = firebase.firestore().collection('userPrograms');
+
+    ref.add({
+      type,
+      level,
+      frequency,
+      author: uid,
+      description,
+      name: programName,
+    })
+    .then(() => {
+      callback();
+    })
+    .catch(error => {
+      addNewProgramFailure(dispatch, error);
+    });
+  };
+};
+
+const addNewProgramFailure = (dispatch, error) => {
+  dispatch({
+    payload: error,
+    type: ADD_NEW_PROGRAM_FAILURE,
   });
 };

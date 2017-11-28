@@ -110,10 +110,10 @@ const themeStyles = themes.createStyleSheet({
     fontSize: 16,
   },
   list: {
-    backgroundColor: 'rgba(237, 240, 241, 0.1)',
-    borderTopColor: '$primaryColor',
     alignSelf: 'center',
     width: DEVICE_WIDTH / 1.1,
+    borderTopColor: '$primaryColor',
+    backgroundColor: 'rgba(237, 240, 241, 0.1)',
   },
   listItem: {
     height: 80,

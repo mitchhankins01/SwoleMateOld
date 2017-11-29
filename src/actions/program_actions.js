@@ -12,11 +12,11 @@ export const FETCH_PROGRAM = 'FETCH_PROGRAM';
 export const FETCH_PROGRAM_FAILURE = 'FETCH_PROGRAM_FAILURE';
 export const FETCH_PROGRAM_SUCCESS = 'FETCH_PROGRAM_SUCCESS';
 // Add New Program
-export const ADD_NEW_PROGRAM = 'ADD_NEW_PROGRAM';
-export const ADD_NEW_PROGRAM_FAILURE = 'ADD_NEW_PROGRAM_FAILURE';
+export const ADD_PROGRAM = 'ADD_PROGRAM';
+export const ADD_PROGRAM_FAILURE = 'ADD_PROGRAM_FAILURE';
 // Add New Program Day
-export const ADD_NEW_PROGRAM_DAY = 'ADD_NEW_PROGRAM_DAY';
-export const ADD_NEW_PROGRAM_DAY_FAILURE = 'ADD_NEW_PROGRAM_DAY_FAILURE';
+export const ADD_PROGRAM_DAY = 'ADD_PROGRAM_DAY';
+export const ADD_PROGRAM_DAY_FAILURE = 'ADD_PROGRAM_DAY_FAILURE';
 
 // Screen Index && Day Key
 export const updateScreenIndex = index => {
@@ -164,9 +164,9 @@ const fetchProgramSuccess = (dispatch, info, days, exercises) => {
 };
 
 // Add Program
-export const addNewProgram = (programName, description, type, level, frequency, callback) => {
+export const addProgram = (programName, description, type, level, frequency, callback) => {
   return (dispatch) => {
-    dispatch({ type: ADD_NEW_PROGRAM });
+    dispatch({ type: ADD_PROGRAM });
 
     const uid = firebase.auth().currentUser.uid;
     const ref = firebase.firestore().collection('userPrograms');
@@ -183,23 +183,23 @@ export const addNewProgram = (programName, description, type, level, frequency, 
       callback();
     })
     .catch(error => {
-      addNewProgramFailure(dispatch, error);
+      addProgramFailure(dispatch, error);
     });
   };
 };
 
-const addNewProgramFailure = (dispatch, error) => {
+const addProgramFailure = (dispatch, error) => {
   dispatch({
     payload: error,
-    type: ADD_NEW_PROGRAM_FAILURE,
+    type: ADD_PROGRAM_FAILURE,
   });
 };
 
 // Add Program
-export const addNewProgramDay =
+export const addProgramDay =
  (programKey, dayName, dayDescription, primaryGroup, secondaryGroup, callback) => {
   return (dispatch) => {
-    dispatch({ type: ADD_NEW_PROGRAM_DAY });
+    dispatch({ type: ADD_PROGRAM_DAY });
 
     const uid = firebase.auth().currentUser.uid;
     const ref = firebase.firestore().collection('userPrograms')
@@ -217,14 +217,14 @@ export const addNewProgramDay =
       callback();
     })
     .catch(error => {
-      addNewProgramDayFailure(dispatch, error);
+      addProgramDayFailure(dispatch, error);
     });
   };
 };
 
-const addNewProgramDayFailure = (dispatch, error) => {
+const addProgramDayFailure = (dispatch, error) => {
   dispatch({
     payload: error,
-    type: ADD_NEW_PROGRAM_DAY_FAILURE,
+    type: ADD_PROGRAM_DAY_FAILURE,
   });
 };

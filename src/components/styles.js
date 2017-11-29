@@ -95,31 +95,31 @@ const themeStyles = themes.createStyleSheet({
     width: '100%',
   },
   errorTextStyle: {
-    fontSize: 20,
     margin: 10,
-    alignSelf: 'center',
+    fontSize: 20,
     color: 'red',
-    backgroundColor: 'transparent',
+    alignSelf: 'center',
     fontFamily: 'Exo-Bold',
+    backgroundColor: 'transparent',
   },
   buttonGroup: {
-    marginTop: 10,
-    backgroundColor: 'transparent',
-    borderColor: '#EDF0F1',
-    borderWidth: 0,
     width: '90%',
+    marginTop: 10,
+    borderWidth: 0,
     alignSelf: 'center',
+    borderColor: '#EDF0F1',
+    backgroundColor: 'transparent',
   },
   buttonGroupText: {
+    fontSize: 16,
     color: '#FFF',
     fontFamily: 'Exo-Medium',
-    fontSize: 16,
   },
   list: {
     alignSelf: 'center',
     width: DEVICE_WIDTH / 1.1,
     borderTopColor: '$primaryColor',
-    backgroundColor: 'rgba(237, 240, 241, 0.1)',
+    backgroundColor: 'rgba(237, 240, 241, 0.07)',
   },
   listItem: {
     height: 80,
@@ -127,8 +127,8 @@ const themeStyles = themes.createStyleSheet({
     borderBottomColor: '$primaryColor'
   },
   listItemSettingsTitle: {
-    fontFamily: 'Exo-Medium',
     color: '$tertiaryColor',
+    fontFamily: 'Exo-Medium',
   },
   listItemProgramsTitle: {
     fontFamily: 'Exo-Medium',

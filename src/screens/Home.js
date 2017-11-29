@@ -92,7 +92,7 @@ class Home extends Component {
           </ScrollView>
         </Animatable.View>
 
-        <ActionBar styles={styles} />
+        <ActionBar styles={styles} navigation={this.props.navigation} />
 
         <DropdownAlert
           translucent

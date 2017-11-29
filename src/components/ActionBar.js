@@ -8,10 +8,24 @@ import { fetchProgram, updateScreenIndex } from '../actions/program_actions';
 
 class ActionBar extends Component {
   updateScreenIndex(screenIndex, goBack) {
-    const { dispatch } = this.props;
+    const { dispatch, navigation, styles } = this.props;
+
     dispatch(updateScreenIndex(screenIndex));
+
     if (goBack) { this.props.navigation.goBack(null); }
     if (screenIndex === 'primaryProgram') { dispatch(fetchProgram()); }
+
+    switch (screenIndex) {
+      default: break;
+      case 'addProgram':
+        navigation.navigate('Form', { title: 'Add new Program', styles });
+        break;
+      case 'addProgramDay':
+        navigation.navigate('Form', { title: 'Add new Day', styles });
+        break;
+      case 'addProgramExercise':
+        navigation.navigate('Form', { title: 'Add Exercise', styles });
+    }
   }
 
   renderButton(styles, name, size, delay, onPress) {
@@ -41,7 +55,7 @@ class ActionBar extends Component {
           () => this.updateScreenIndex('primaryProgram')
         )}
         {this.renderButton(styles, 'add-to-list', 30, 200,
-          () => this.updateScreenIndex('addNewProgram')
+          () => this.updateScreenIndex('addProgram')
         )}
         {this.renderButton(styles, 'trash', 20, 100)}
       </Animatable.View>
@@ -55,7 +69,7 @@ class ActionBar extends Component {
           () => this.updateScreenIndex('allPrograms')
         )}
         {this.renderButton(styles, 'add-to-list', 30, 300,
-          () => this.updateScreenIndex('addNewProgramDay')
+          () => this.updateScreenIndex('addProgramDay')
         )}
         {this.renderButton(styles, 'edit', 22, 200)}
         {this.renderButton(styles, 'help', 22, 100)}
@@ -69,7 +83,9 @@ class ActionBar extends Component {
         {this.renderButton(styles, 'back', 30, 400,
           () => this.updateScreenIndex('selectedProgram')
         )}
-        {this.renderButton(styles, 'add-to-list', 30, 300)}
+        {this.renderButton(styles, 'add-to-list', 30, 300,
+          () => this.updateScreenIndex('addProgramExercise')
+        )}
         {this.renderButton(styles, 'trash', 20, 200)}
         {this.renderButton(styles, 'rocket', 25, 100)}
       </Animatable.View>
@@ -107,8 +123,9 @@ class ActionBar extends Component {
       case 'programExercises':
         renderType = this.renderProgramExercisesActionBar(styles);
         break;
-      case 'addNewProgram':
-      case 'addNewProgramDay':
+      case 'addProgram':
+      case 'addProgramDay':
+      case 'addProgramExercise':
         renderType = this.renderFormActionBar(styles);
     }
 

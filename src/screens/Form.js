@@ -17,8 +17,8 @@ import Header from '../components/Header';
 import ActionBar from '../components/ActionBar';
 import {
   fetchProgram,
-  addNewProgram,
-  addNewProgramDay,
+  addProgram,
+  addProgramDay,
   fetchAllPrograms,
 } from '../actions/program_actions';
 
@@ -46,11 +46,11 @@ class Form extends Component {
      const { dispatch } = this.props;
 
      switch (screenIndex) {
-       case 'addNewProgram': {
+       case 'addProgram': {
          const { programName, description, type, level, frequency } = this.state;
 
          if (programName && description && type && level && frequency) {
-           dispatch(addNewProgram(programName, description, type, level, frequency, () => {
+           dispatch(addProgram(programName, description, type, level, frequency, () => {
              dispatch(fetchAllPrograms());
              this.popup.show();
            }));
@@ -60,12 +60,12 @@ class Form extends Component {
          }
          break;
        }
-       case 'addNewProgramDay': {
+       case 'addProgramDay': {
          const { dayName, dayDescription, primaryGroup, secondaryGroup } = this.state;
          const key = this.props.programInfo[0].key;
 
          if (dayName && dayDescription && primaryGroup && secondaryGroup) {
-           dispatch(addNewProgramDay(
+           dispatch(addProgramDay(
              key, dayName, dayDescription, primaryGroup, secondaryGroup, () => {
              this.popup.show();
            }));
@@ -196,7 +196,7 @@ class Form extends Component {
      );
    }
 
-   renderAddNewProgram(styles) {
+   renderAddProgram(styles) {
      const bgColor = Color(styles.$tertiaryColor).alpha(0.7);
 
      return (
@@ -218,7 +218,7 @@ class Form extends Component {
      );
    }
 
-   renderAddNewProgramDay(styles) {
+   renderAddProgramDay(styles) {
      const bgColor = Color(styles.$tertiaryColor).alpha(0.7);
 
      return (
@@ -240,10 +240,10 @@ class Form extends Component {
      switch (screenIndex) {
       default:
         break;
-      case 'addNewProgram':
-        return this.renderAddNewProgram(styles);
-      case 'addNewProgramDay':
-        return this.renderAddNewProgramDay(styles);
+      case 'addProgram':
+        return this.renderAddProgram(styles);
+      case 'addProgramDay':
+        return this.renderAddProgramDay(styles);
      }
    }
 

@@ -129,11 +129,10 @@ class Programs extends Component {
       case 'programExercises':
         renderType = this.renderProgramExercises(styles, this.props.programExercises);
         break;
-      case 'addNewProgram':
-        this.props.navigation.navigate('Form', { title: 'Add new Program', styles });
-        break;
-      case 'addNewProgramDay':
-        this.props.navigation.navigate('Form', { title: 'Add new Day', styles });
+      case 'addProgram':
+      case 'addProgramDay':
+      case 'addProgramExercise':
+        return null;
     }
 
     return (

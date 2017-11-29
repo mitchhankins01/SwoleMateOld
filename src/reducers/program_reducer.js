@@ -11,11 +11,11 @@ import {
   FETCH_PROGRAM_FAILURE,
   FETCH_PROGRAM_SUCCESS,
   // Add New Programs
-  ADD_NEW_PROGRAM,
-  ADD_NEW_PROGRAM_FAILURE,
+  ADD_PROGRAM,
+  ADD_PROGRAM_FAILURE,
   // Add New Program Day
-  ADD_NEW_PROGRAM_DAY,
-  ADD_NEW_PROGRAM_DAY_FAILURE
+  ADD_PROGRAM_DAY,
+  ADD_PROGRAM_DAY_FAILURE
 } from '../actions/program_actions';
 
 const INITIAL_STATE = {
@@ -68,18 +68,18 @@ export default (state = INITIAL_STATE, action) => {
         loading: false };
 
     // Add new Program
-    case ADD_NEW_PROGRAM:
+    case ADD_PROGRAM:
       return { ...state, error: '', screenIndex: 'allPrograms' };
-    case ADD_NEW_PROGRAM_FAILURE:
+    case ADD_PROGRAM_FAILURE:
       return { ...state,
         error: action.payload.message
         || 'An error occured, please try again later',
       };
 
     // Add new Program Day
-    case ADD_NEW_PROGRAM_DAY:
+    case ADD_PROGRAM_DAY:
       return { ...state, error: '', screenIndex: 'primaryProgram' };
-    case ADD_NEW_PROGRAM_DAY_FAILURE:
+    case ADD_PROGRAM_DAY_FAILURE:
       return { ...state,
         error: action.payload.message
         || 'An error occured, please try again later',

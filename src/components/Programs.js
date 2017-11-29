@@ -8,10 +8,9 @@ import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
+  fetchProgram,
   fetchAllPrograms,
   updateScreenIndex,
-  fetchPrimaryProgram,
-  fetchAllProgramsSelected,
 } from '../actions/program_actions';
 
 class Programs extends Component {
@@ -27,7 +26,7 @@ class Programs extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(fetchAllPrograms());
-    dispatch(fetchPrimaryProgram());
+    dispatch(fetchProgram());
   }
 
   componentWillUpdate() {
@@ -38,14 +37,14 @@ class Programs extends Component {
     }
   }
 
-  updateScreenIndex(index, selectedDayKey, allProgramSelectedKey) {
+  updateScreenIndex(index, selectedDayKey, selectedProgram) {
     const { dispatch } = this.props;
     dispatch(updateScreenIndex(index));
 
     if (selectedDayKey) { this.setState({ selectedDayKey }); }
 
-    if (allProgramSelectedKey) {
-      dispatch(fetchAllProgramsSelected(allProgramSelectedKey));
+    if (selectedProgram) {
+      dispatch(fetchProgram(selectedProgram));
     }
   }
 
@@ -84,60 +83,15 @@ class Programs extends Component {
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
             leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
-            onPress={() => this.updateScreenIndex('allProgramsSelectedDetails', day.key)}
           />
         );
       })
     );
   }
 
-  renderAllProgramsSelectedDetails = styles => {
+  renderProgramExercises = (styles, exercises) => {
     return (
-      this.props.selectedProgramExercises.map(exercise => {
-        if (exercise.day === this.state.selectedDayKey) {
-          const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
-          return (
-            <ListItem
-              hideChevron
-              key={exercise.key}
-              subtitle={subtitle}
-              title={exercise.name}
-              underlayColor={'transparent'}
-              containerStyle={styles.listItem}
-              titleStyle={styles.listItemProgramsTitle}
-              subtitleStyle={styles.listItemProgramsSubtitle}
-              leftIcon={<MaterialIcons style={styles.listItemIcon} name={'dumbbell'} size={30} />}
-              onPress={() => {}}
-            />
-          );
-        }
-        return null;
-      })
-    );
-  }
-
-  renderPrimaryProgram = styles => {
-    return (
-      this.props.programDays.map(day => {
-        return (
-          <ListItem
-            hideChevron
-            key={day.key}
-            title={day.name}
-            underlayColor={'transparent'}
-            containerStyle={styles.listItem}
-            titleStyle={styles.listItemProgramsTitle}
-            onPress={() => this.updateScreenIndex('primaryProgramDetails', day.key)}
-            leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
-          />
-        );
-      })
-    );
-  }
-
-  renderPrimaryProgramDetails = styles => {
-    return (
-      this.props.programExercises.map(exercise => {
+      exercises.map(exercise => {
         if (exercise.day === this.state.selectedDayKey) {
           const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
           return (
@@ -180,17 +134,14 @@ class Programs extends Component {
       case 'allPrograms':
         renderType = this.renderAllPrograms(styles);
         break;
-      case 'allProgramsSelected':
-        renderType = this.renderallProgramsSelected(styles);
-        break;
-      case 'allProgramsSelectedDetails':
-        renderType = this.renderAllProgramsSelectedDetails(styles);
+      case 'selectedProgram':
+        renderType = this.renderProgramDays(styles, this.props.programDays);
         break;
       case 'primaryProgram':
-        renderType = this.renderPrimaryProgram(styles);
+        renderType = this.renderProgramDays(styles, this.props.programDays);
         break;
-      case 'primaryProgramDetails':
-        renderType = this.renderPrimaryProgramDetails(styles);
+      case 'programExercises':
+        renderType = this.renderProgramExercises(styles, this.props.programExercises);
         break;
       case 'addNewProgram':
         this.props.navigation.navigate('Form', { title: 'Add new Program', styles });

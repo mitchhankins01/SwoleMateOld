@@ -33,7 +33,21 @@ class ActionBar extends Component {
     );
   }
 
-  renderPrimaryProgramActionBar(styles) {
+  renderAllProgramsActionBar(styles) {
+    return (
+      <Animatable.View style={styles.actionBarView} >
+        {this.renderButton(styles, 'back', 30, 300,
+          () => this.updateScreenIndex('selectedProgram')
+        )}
+        {this.renderButton(styles, 'add-to-list', 30, 200,
+          () => this.updateScreenIndex('addNewProgram')
+        )}
+        {this.renderButton(styles, 'trash', 20, 100)}
+      </Animatable.View>
+    );
+  }
+
+  renderProgramActionBar(styles) {
     return (
       <View style={styles.actionBarView}>
         {this.renderButton(styles, 'list', 30, 400,
@@ -46,49 +60,11 @@ class ActionBar extends Component {
     );
   }
 
-  renderAllProgramsActionBar(styles) {
-    return (
-      <Animatable.View style={styles.actionBarView} >
-        {this.renderButton(styles, 'back', 30, 300,
-          () => this.updateScreenIndex('primaryProgram')
-        )}
-        {this.renderButton(styles, 'add-to-list', 30, 200,
-          () => this.updateScreenIndex('addNewProgram')
-        )}
-        {this.renderButton(styles, 'trash', 20, 100)}
-      </Animatable.View>
-    );
-  }
-
-  renderAllProgramsSelectedActionBar(styles) {
-    return (
-      <View style={styles.actionBarView}>
-        {this.renderButton(styles, 'back', 30, 300,
-          () => this.updateScreenIndex('allPrograms')
-        )}
-        {this.renderButton(styles, 'add-to-list', 30, 200)}
-        {this.renderButton(styles, 'trash', 20, 100)}
-      </View>
-    );
-  }
-
-  renderAllProgramsSelectedDetailsActionBar(styles) {
-    return (
-      <View style={styles.actionBarView}>
-        {this.renderButton(styles, 'back', 30, 300,
-          () => this.updateScreenIndex('allPrograms')
-        )}
-        {this.renderButton(styles, 'add-to-list', 30, 200)}
-        {this.renderButton(styles, 'trash', 20, 100)}
-      </View>
-    );
-  }
-
-  renderPrimaryProgramDetailsActionBar(styles) {
+  renderProgramExercisesActionBar(styles) {
     return (
       <Animatable.View style={styles.actionBarView}>
         {this.renderButton(styles, 'back', 30, 400,
-          () => this.updateScreenIndex('primaryProgram')
+          () => this.updateScreenIndex('selectedProgram')
         )}
         {this.renderButton(styles, 'add-to-list', 30, 300)}
         {this.renderButton(styles, 'trash', 20, 200)}
@@ -121,17 +97,12 @@ class ActionBar extends Component {
       case 'allPrograms':
         renderType = this.renderAllProgramsActionBar(styles);
         break;
-      case 'allProgramsSelected':
-        renderType = this.renderAllProgramsSelectedActionBar(styles);
-        break;
-      case 'allProgramsSelectedDetails':
-        renderType = this.renderAllProgramsSelectedDetailsActionBar(styles);
-        break;
       case 'primaryProgram':
-        renderType = this.renderPrimaryProgramActionBar(styles);
+      case 'selectedProgram':
+        renderType = this.renderProgramActionBar(styles);
         break;
-      case 'primaryProgramDetails':
-        renderType = this.renderPrimaryProgramDetailsActionBar(styles);
+      case 'programExercises':
+        renderType = this.renderProgramExercisesActionBar(styles);
         break;
       case 'addNewProgram':
         renderType = this.renderAddNewProgramActionBar(styles);

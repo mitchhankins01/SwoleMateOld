@@ -5,14 +5,10 @@ import {
   FETCH_ALL_PROGRAMS,
   FETCH_ALL_PROGRAMS_FAILURE,
   FETCH_ALL_PROGRAMS_SUCCESS,
-  // Fetch All Programs Selected
-  FETCH_ALL_PROGRAMS_SELECTED,
-  FETCH_ALL_PROGRAMS_SELECTED_FAILURE,
-  FETCH_ALL_PROGRAMS_SELECTED_SUCCESS,
   // Fetch Primary Program
-  FETCH_PRIMARY_PROGRAM,
-  FETCH_PRIMARY_PROGRAM_FAILURE,
-  FETCH_PRIMARY_PROGRAM_SUCCESS,
+  FETCH_PROGRAM,
+  FETCH_PROGRAM_FAILURE,
+  FETCH_PROGRAM_SUCCESS,
   // Add New Programs
   ADD_NEW_PROGRAM,
   ADD_NEW_PROGRAM_FAILURE,
@@ -23,13 +19,10 @@ const INITIAL_STATE = {
   programs: [],
   loading: false,
   screenIndex: 'primaryProgram',
-  // Primary Program
+  // Program
   info: [],
   days: [],
   exercises: [],
-  // All Programs Selected
-  selectedDays: [],
-  selectedExercises: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -50,32 +43,16 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_ALL_PROGRAMS_SUCCESS:
       return { ...state, programs: action.payload, error: '', loading: false };
 
-    // All Programs Selected
-    case FETCH_ALL_PROGRAMS_SELECTED:
+    // Selected or Primary Program
+    case FETCH_PROGRAM:
       return { ...state, loading: true, error: '' };
-    case FETCH_ALL_PROGRAMS_SELECTED_FAILURE:
+    case FETCH_PROGRAM_FAILURE:
       return { ...state,
         error: action.payload.message
         || 'An error occured, please try again later',
         loading: false
       };
-    case FETCH_ALL_PROGRAMS_SELECTED_SUCCESS:
-      return { ...state,
-        error: '',
-        selectedDays: action.days,
-        selectedExercises: action.exercises,
-        loading: false };
-
-    // Primary Program
-    case FETCH_PRIMARY_PROGRAM:
-      return { ...state, loading: true, error: '' };
-    case FETCH_PRIMARY_PROGRAM_FAILURE:
-      return { ...state,
-        error: action.payload.message
-        || 'An error occured, please try again later',
-        loading: false
-      };
-    case FETCH_PRIMARY_PROGRAM_SUCCESS:
+    case FETCH_PROGRAM_SUCCESS:
       return { ...state,
         error: '',
         info: action.info,

@@ -8,10 +8,9 @@ import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
+  fetchProgram,
   fetchAllPrograms,
   updateScreenIndex,
-  fetchPrimaryProgram,
-  fetchAllProgramsSelected,
 } from '../actions/program_actions';
 
 class Programs extends Component {
@@ -27,7 +26,7 @@ class Programs extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(fetchAllPrograms());
-    dispatch(fetchPrimaryProgram());
+    dispatch(fetchProgram());
   }
 
   componentWillUpdate() {
@@ -38,14 +37,14 @@ class Programs extends Component {
     }
   }
 
-  updateScreenIndex(index, selectedDayKey, allProgramSelectedKey) {
+  updateScreenIndex(index, selectedDayKey, selectedProgram) {
     const { dispatch } = this.props;
     dispatch(updateScreenIndex(index));
 
     if (selectedDayKey) { this.setState({ selectedDayKey }); }
 
-    if (allProgramSelectedKey) {
-      dispatch(fetchAllProgramsSelected(allProgramSelectedKey));
+    if (selectedProgram) {
+      dispatch(fetchProgram(selectedProgram));
     }
   }
 
@@ -53,11 +52,10 @@ class Programs extends Component {
     return (
       this.props.allPrograms.map(program => {
         const subtitle = `${program.frequency} Days - ${program.level} - ${program.type}`;
-
         return (
           <ListItem
             hideChevron
-            key={program.name}
+            key={program.key}
             subtitle={subtitle}
             title={program.name}
             underlayColor={'transparent'}
@@ -65,16 +63,16 @@ class Programs extends Component {
             titleStyle={styles.listItemProgramsTitle}
             subtitleStyle={styles.listItemProgramsSubtitle}
             leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
-            onPress={() => this.updateScreenIndex('allProgramsSelected', null, program.key)}
+            onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
           />
         );
       })
     );
   }
 
-  renderallProgramsSelected = styles => {
+  renderProgramDays = (styles, program) => {
     return (
-      this.props.selectedProgramDays.map(day => {
+      program.map(day => {
         return (
           <ListItem
             hideChevron
@@ -83,51 +81,7 @@ class Programs extends Component {
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
-            leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
-            onPress={() => this.updateScreenIndex('allProgramsSelectedDetails', day.key)}
-          />
-        );
-      })
-    );
-  }
-
-  renderAllProgramsSelectedDetails = styles => {
-    return (
-      this.props.selectedProgramExercises.map(exercise => {
-        if (exercise.day === this.state.selectedDayKey) {
-          const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
-          return (
-            <ListItem
-              hideChevron
-              key={exercise.key}
-              subtitle={subtitle}
-              title={exercise.name}
-              underlayColor={'transparent'}
-              containerStyle={styles.listItem}
-              titleStyle={styles.listItemProgramsTitle}
-              subtitleStyle={styles.listItemProgramsSubtitle}
-              leftIcon={<MaterialIcons style={styles.listItemIcon} name={'dumbbell'} size={30} />}
-              onPress={() => {}}
-            />
-          );
-        }
-        return null;
-      })
-    );
-  }
-
-  renderPrimaryProgram = styles => {
-    return (
-      this.props.programDays.map(day => {
-        return (
-          <ListItem
-            hideChevron
-            key={day.key}
-            title={day.name}
-            underlayColor={'transparent'}
-            containerStyle={styles.listItem}
-            titleStyle={styles.listItemProgramsTitle}
-            onPress={() => this.updateScreenIndex('primaryProgramDetails', day.key)}
+            onPress={() => this.updateScreenIndex('programExercises', day.key)}
             leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
           />
         );
@@ -135,9 +89,9 @@ class Programs extends Component {
     );
   }
 
-  renderPrimaryProgramDetails = styles => {
+  renderProgramExercises = (styles, exercises) => {
     return (
-      this.props.programExercises.map(exercise => {
+      exercises.map(exercise => {
         if (exercise.day === this.state.selectedDayKey) {
           const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
           return (
@@ -180,17 +134,14 @@ class Programs extends Component {
       case 'allPrograms':
         renderType = this.renderAllPrograms(styles);
         break;
-      case 'allProgramsSelected':
-        renderType = this.renderallProgramsSelected(styles);
-        break;
-      case 'allProgramsSelectedDetails':
-        renderType = this.renderAllProgramsSelectedDetails(styles);
+      case 'selectedProgram':
+        renderType = this.renderProgramDays(styles, this.props.programDays);
         break;
       case 'primaryProgram':
-        renderType = this.renderPrimaryProgram(styles);
+        renderType = this.renderProgramDays(styles, this.props.programDays);
         break;
-      case 'primaryProgramDetails':
-        renderType = this.renderPrimaryProgramDetails(styles);
+      case 'programExercises':
+        renderType = this.renderProgramExercises(styles, this.props.programExercises);
         break;
       case 'addNewProgram':
         this.props.navigation.navigate('Form', { title: 'Add new Program', styles });

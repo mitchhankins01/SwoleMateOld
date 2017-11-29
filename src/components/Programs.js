@@ -73,8 +73,6 @@ class Programs extends Component {
   }
 
   renderallProgramsSelected = styles => {
-    console.log(this.props.selectedProgramDays, this.props.selectedProgramExercises);
-    //console.log(this.props.selectedProgramDays, this.props.selectedProgramExercises);
     return (
       this.props.selectedProgramDays.map(day => {
         return (
@@ -85,10 +83,35 @@ class Programs extends Component {
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
-            onPress={() => this.updateScreenIndex('selectedProgramDetails', day.key)}
             leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
+            onPress={() => this.updateScreenIndex('allProgramsSelectedDetails', day.key)}
           />
         );
+      })
+    );
+  }
+
+  renderAllProgramsSelectedDetails = styles => {
+    return (
+      this.props.selectedProgramExercises.map(exercise => {
+        if (exercise.day === this.state.selectedDayKey) {
+          const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
+          return (
+            <ListItem
+              hideChevron
+              key={exercise.key}
+              subtitle={subtitle}
+              title={exercise.name}
+              underlayColor={'transparent'}
+              containerStyle={styles.listItem}
+              titleStyle={styles.listItemProgramsTitle}
+              subtitleStyle={styles.listItemProgramsSubtitle}
+              leftIcon={<MaterialIcons style={styles.listItemIcon} name={'dumbbell'} size={30} />}
+              onPress={() => {}}
+            />
+          );
+        }
+        return null;
       })
     );
   }
@@ -159,6 +182,9 @@ class Programs extends Component {
         break;
       case 'allProgramsSelected':
         renderType = this.renderallProgramsSelected(styles);
+        break;
+      case 'allProgramsSelectedDetails':
+        renderType = this.renderAllProgramsSelectedDetails(styles);
         break;
       case 'primaryProgram':
         renderType = this.renderPrimaryProgram(styles);

@@ -18,8 +18,7 @@ class Greeting extends Component {
   }
 
   render() {
-    const styles = this.props.styles;
-    //const { name } = this.props.userDetails;
+    const { styles } = this.props;
 
     const dateNow = new Date();
     let greeting = '';

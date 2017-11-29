@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import { ScrollView, Text } from 'react-native';
 import { List } from 'react-native-elements';
 import firebase from 'react-native-firebase';
-import { Dimensions, ScrollView } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,8 +13,6 @@ import Header from '../components/Header';
 import Programs from '../components/Programs';
 import ActionBar from '../components/ActionBar';
 import Greeting from '../components/Greeting';
-
-const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 class Home extends Component {
 
@@ -51,10 +49,14 @@ class Home extends Component {
    }
 
    componentWillUpdate() {
-     const { programView } = this.refs;
+     const { programView, titleView } = this.refs;
 
      if (programView) {
        programView.flipInY();
+     }
+
+     if (titleView) {
+       titleView.zoomIn();
      }
    }
 
@@ -68,6 +70,18 @@ class Home extends Component {
      }
    }
 
+   renderTitle() {
+     const { screenIndex } = this.props;
+
+     if (screenIndex === 'primaryProgram') {
+       return this.props.programInfo.map(info => info.name);
+     } else if (screenIndex === 'allPrograms') {
+       return 'All Programs';
+     } else if (screenIndex === 'primaryProgramDetails') {
+       return;
+     }
+   }
+
   render() {
     const { theme } = this.state;
     const styles = themeStyles[theme];
@@ -75,16 +89,16 @@ class Home extends Component {
       styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor
     ];
 
-    // IMPLEMENT redux source
-    const showAllPrograms = false;
-
     return (
-      <LinearGradient
-        colors={gradients} style={[styles.container, { justifyContent: 'flex-start' }]}
-      >
-        <Header title={showAllPrograms ? 'All Programs' : 'Home'} styles={styles} />
+      <LinearGradient colors={gradients} style={styles.homeContainer} >
+
+        <Header title={'Home'} styles={styles} />
 
         <Greeting styles={styles} />
+
+        <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
+          {this.renderTitle()}
+        </Animatable.Text>
 
         <Animatable.View duration={500} ref='programView' animation='flipInY'>
           <ScrollView style={{ marginBottom: 230 }}>
@@ -109,7 +123,12 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    programInfo: state.program.info,
     programError: state.program.error,
+    screenIndex: state.program.screenIndex,
+
+    // Potentially used in renderTitle
+    programExercises: state.program.exercises,
   };
 };
 

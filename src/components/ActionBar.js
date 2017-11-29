@@ -60,7 +60,19 @@ class ActionBar extends Component {
     );
   }
 
-  renderAllProgramsDetailsActionBar(styles) {
+  renderAllProgramsSelectedActionBar(styles) {
+    return (
+      <View style={styles.actionBarView}>
+        {this.renderButton(styles, 'back', 30, 300,
+          () => this.updateScreenIndex('allPrograms')
+        )}
+        {this.renderButton(styles, 'add-to-list', 30, 200)}
+        {this.renderButton(styles, 'trash', 20, 100)}
+      </View>
+    );
+  }
+
+  renderAllProgramsSelectedDetailsActionBar(styles) {
     return (
       <View style={styles.actionBarView}>
         {this.renderButton(styles, 'back', 30, 300,
@@ -110,7 +122,10 @@ class ActionBar extends Component {
         renderType = this.renderAllProgramsActionBar(styles);
         break;
       case 'allProgramsSelected':
-        renderType = this.renderAllProgramsDetailsActionBar(styles);
+        renderType = this.renderAllProgramsSelectedActionBar(styles);
+        break;
+      case 'allProgramsSelectedDetails':
+        renderType = this.renderAllProgramsSelectedDetailsActionBar(styles);
         break;
       case 'primaryProgram':
         renderType = this.renderPrimaryProgramActionBar(styles);

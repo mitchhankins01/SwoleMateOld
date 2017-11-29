@@ -11,6 +11,12 @@ const themeStyles = themes.createStyleSheet({
     height: null,
     justifyContent: 'center',
   },
+  homeContainer: {
+    flex: 1,
+    width: null,
+    height: null,
+    justifyContent: 'flex-start',
+  },
   loadingContainer: {
     flex: 1,
     paddingVertical: 50,
@@ -232,6 +238,13 @@ const themeStyles = themes.createStyleSheet({
     marginBottom: 0,
     justifyContent: 'center',
     backgroundColor: '$secondaryColor',
+  },
+  title: {
+    fontSize: 22,
+    alignSelf: 'center',
+    color: '$secondaryColor',
+    fontFamily: 'Exo-Medium',
+    backgroundColor: 'transparent',
   },
 });
 

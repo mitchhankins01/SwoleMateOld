@@ -2,6 +2,7 @@ import firebase from 'react-native-firebase';
 
 // Screen Index
 export const UPDATE_SCREEN_INDEX = 'UPDATE_SCREEN_INDEX';
+export const UPDATE_SELECTED_DAY_KEY = 'UPDATE_SELECTED_DAY_KEY';
 // Fetch All Programs
 export const FETCH_ALL_PROGRAMS = 'FETCH_ALL_PROGRAMS';
 export const FETCH_ALL_PROGRAMS_FAILURE = 'FETCH_ALL_PROGRAMS_FAILURE';
@@ -17,11 +18,18 @@ export const ADD_NEW_PROGRAM_FAILURE = 'ADD_NEW_PROGRAM_FAILURE';
 export const ADD_NEW_PROGRAM_DAY = 'ADD_NEW_PROGRAM_DAY';
 export const ADD_NEW_PROGRAM_DAY_FAILURE = 'ADD_NEW_PROGRAM_DAY_FAILURE';
 
-// Screen Index
+// Screen Index && Day Key
 export const updateScreenIndex = index => {
   return {
     payload: index,
     type: UPDATE_SCREEN_INDEX,
+  };
+};
+
+export const updateSelectedDayKey = key => {
+  return {
+    payload: key,
+    type: UPDATE_SELECTED_DAY_KEY,
   };
 };
 
@@ -113,8 +121,8 @@ export const fetchProgram = selectedProgram => {
       programRef.collection('days').get()
       .then(querySnapshot => {
         querySnapshot.forEach(day => {
-          const { key, name } = day.data();
-          days.push({ key, name });
+          const { author, description, key, name, primaryGroup, secondaryGroup } = day.data();
+          days.push({ author, description, key, name, primaryGroup, secondaryGroup });
         });
       })
       .catch(error => {

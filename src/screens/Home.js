@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView } from 'react-native';
 import { List } from 'react-native-elements';
 import firebase from 'react-native-firebase';
 import * as Animatable from 'react-native-animatable';
@@ -8,11 +8,11 @@ import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import themeStyles from '../components/styles';
 import Header from '../components/Header';
 import Programs from '../components/Programs';
-import ActionBar from '../components/ActionBar';
 import Greeting from '../components/Greeting';
+import themeStyles from '../components/styles';
+import ActionBar from '../components/ActionBar';
 
 class Home extends Component {
 
@@ -29,9 +29,7 @@ class Home extends Component {
 
    constructor(props) {
      super(props);
-     this.state = {
-       theme: 'standard',
-     };
+     this.state = { theme: 'standard' };
    }
 
    componentDidMount() {
@@ -39,7 +37,7 @@ class Home extends Component {
      this.renderError(this.props.programError);
 
      const uid = firebase.auth().currentUser.uid;
-
+     // IMPLEMENT, move over to redux
      firebase.firestore().collection('users').doc(uid)
       .onSnapshot(userDoc => {
         this.setState({
@@ -50,44 +48,30 @@ class Home extends Component {
 
    componentWillUpdate() {
      const { programView, titleView } = this.refs;
-
-     if (programView) {
-       programView.flipInY();
-     }
-
-     if (titleView) {
-       titleView.zoomIn();
-     }
+     if (titleView) { titleView.zoomIn(); }
+     if (programView) { programView.flipInY(); }
    }
 
    renderError(error) {
-     if (error) {
-       this.dropdown.alertWithType(
-         'error',
-         'Something went wrong',
-         error
-       );
-     }
+     if (error) { this.dropdown.alertWithType('error', 'Something went wrong', error); }
    }
 
    renderTitle() {
-     const { screenIndex } = this.props;
+     const { programDays, programInfo, screenIndex, selectedDayKey } = this.props;
 
      if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
-       return this.props.programInfo.map(info => info.name);
+       return programInfo.map(info => info.name);
+     } else if (screenIndex === 'programExercises') {
+       return programDays.filter(day => day.key === selectedDayKey).map(info => info.name);
      } else if (screenIndex === 'allPrograms') {
        return 'All Programs';
-     } else if (screenIndex === 'primaryProgramDetails') {
-       return 'Fix this pls';
      }
    }
 
   render() {
     const { theme } = this.state;
     const styles = themeStyles[theme];
-    const gradients = [
-      styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor
-    ];
+    const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >
@@ -121,14 +105,13 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ program }) => {
   return {
-    programInfo: state.program.info,
-    programError: state.program.error,
-    screenIndex: state.program.screenIndex,
-
-    // Potentially used in renderTitle
-    programExercises: state.program.exercises,
+    programInfo: program.info,
+    programDays: program.days,
+    programError: program.error,
+    screenIndex: program.screenIndex,
+    selectedDayKey: program.selectedDayKey,
   };
 };
 

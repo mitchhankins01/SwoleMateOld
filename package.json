@@ -46,13 +46,9 @@
   "rnpm": {
     "assets": [
       "./assets/fonts/"
-<<<<<<< HEAD
     ],
     "react": "^16.0.0",
     "react-native": "^0.50.3",
     "react-native-firebase": "^3.1.0"
-=======
-    ]
->>>>>>> parent of 8aa8540... Merge branch 'master' of https://github.com/invertase/react-native-firebase-starter
   }
 }

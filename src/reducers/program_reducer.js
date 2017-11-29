@@ -1,6 +1,7 @@
 import {
-  // Screen Index
+  // Screen Index && Day Key
   UPDATE_SCREEN_INDEX,
+  UPDATE_SELECTED_DAY_KEY,
   // Fetch All Programs
   FETCH_ALL_PROGRAMS,
   FETCH_ALL_PROGRAMS_FAILURE,
@@ -21,6 +22,7 @@ const INITIAL_STATE = {
   error: '',
   programs: [],
   loading: false,
+  selectedDayKey: '',
   screenIndex: 'primaryProgram',
   // Program
   info: [],
@@ -30,9 +32,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    // Screen Index
+    // Screen Index && DAY KEY
     case UPDATE_SCREEN_INDEX:
       return { ...state, screenIndex: action.payload };
+    case UPDATE_SELECTED_DAY_KEY:
+      return { ...state, selectedDayKey: action.payload };
 
     // All Programs
     case FETCH_ALL_PROGRAMS:

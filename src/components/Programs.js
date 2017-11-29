@@ -11,41 +11,26 @@ import {
   fetchProgram,
   fetchAllPrograms,
   updateScreenIndex,
+  updateSelectedDayKey,
 } from '../actions/program_actions';
 
 class Programs extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      // Primary Program
-      selectedDayKey: '',
-    };
-  }
-
   componentWillMount() {
     const { dispatch } = this.props;
-    dispatch(fetchAllPrograms());
     dispatch(fetchProgram());
+    dispatch(fetchAllPrograms());
   }
 
   componentWillUpdate() {
     const { renderView } = this.refs;
-
-    if (renderView) {
-      renderView.flipInY();
-    }
+    if (renderView) { renderView.flipInY(); }
   }
 
-  updateScreenIndex(index, selectedDayKey, selectedProgram) {
+  updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
     const { dispatch } = this.props;
-    dispatch(updateScreenIndex(index));
-
-    if (selectedDayKey) { this.setState({ selectedDayKey }); }
-
-    if (selectedProgram) {
-      dispatch(fetchProgram(selectedProgram));
-    }
+    dispatch(updateScreenIndex(screenIndex));
+    if (selectedDayKey) { dispatch(updateSelectedDayKey(selectedDayKey)); }
+    if (selectedProgram) { dispatch(fetchProgram(selectedProgram)); }
   }
 
   renderAllPrograms = styles => {
@@ -62,8 +47,8 @@ class Programs extends Component {
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
             subtitleStyle={styles.listItemProgramsSubtitle}
-            leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
             onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
+            leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
           />
         );
       })
@@ -73,14 +58,17 @@ class Programs extends Component {
   renderProgramDays = (styles, program) => {
     return (
       program.map(day => {
+        const subtitle = `${day.primaryGroup} - ${day.secondaryGroup}`;
         return (
           <ListItem
             hideChevron
             key={day.key}
             title={day.name}
+            subtitle={subtitle}
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
+            subtitleStyle={styles.listItemProgramsSubtitle}
             onPress={() => this.updateScreenIndex('programExercises', day.key)}
             leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
           />
@@ -92,7 +80,7 @@ class Programs extends Component {
   renderProgramExercises = (styles, exercises) => {
     return (
       exercises.map(exercise => {
-        if (exercise.day === this.state.selectedDayKey) {
+        if (exercise.day === this.props.selectedDayKey) {
           const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
           return (
             <ListItem
@@ -115,7 +103,7 @@ class Programs extends Component {
   }
 
   render() {
-    const { dispatch, loading, styles, screenIndex } = this.props;
+    const { loading, styles, screenIndex } = this.props;
 
     if (loading) {
       return (
@@ -134,10 +122,8 @@ class Programs extends Component {
       case 'allPrograms':
         renderType = this.renderAllPrograms(styles);
         break;
-      case 'selectedProgram':
-        renderType = this.renderProgramDays(styles, this.props.programDays);
-        break;
       case 'primaryProgram':
+      case 'selectedProgram':
         renderType = this.renderProgramDays(styles, this.props.programDays);
         break;
       case 'programExercises':
@@ -158,20 +144,18 @@ class Programs extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ program }) => {
   return {
     // Various
-    loading: state.program.loading,
-    screenIndex: state.program.screenIndex,
+    loading: program.loading,
+    screenIndex: program.screenIndex,
+    selectedDayKey: program.selectedDayKey,
     // All Programs
-    allPrograms: state.program.programs,
-    // All Programs Selected
-    selectedProgramDays: state.program.selectedDays,
-    selectedProgramExercises: state.program.selectedExercises,
-    // Primary Program
-    programInfo: state.program.info,
-    programDays: state.program.days,
-    programExercises: state.program.exercises,
+    allPrograms: program.programs,
+    // Primary or Selected Program
+    programInfo: program.info,
+    programDays: program.days,
+    programExercises: program.exercises,
   };
 };
 

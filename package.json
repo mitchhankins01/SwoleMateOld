@@ -4,13 +4,16 @@
   "private": true,
   "devDependencies": {
     "babel-preset-react-native-stage-0": "^1.0.1",
+    "fs-extra": "^4.0.2",
     "jest-expo": "^21.0.2",
-    "react-test-renderer": "16.0.0-beta.5"
+    "react-test-renderer": "16.0.0-beta.5",
+    "replace-in-file": "^3.0.0"
   },
   "scripts": {
-    "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "rename": "node ./bin/rename.js",
+    "start": "react-native start",
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
@@ -22,6 +25,7 @@
     "color": "^2.0.1",
     "eslint-config-rallycoding": "^3.2.0",
     "fbjs": "^0.8.16",
+<<<<<<< HEAD
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react": "^16.0.0-beta.5",
@@ -47,5 +51,10 @@
     "assets": [
       "./assets/fonts/"
     ]
+=======
+    "react": "^16.0.0",
+    "react-native": "^0.50.3",
+    "react-native-firebase": "^3.1.0"
+>>>>>>> 6bc92b9890a56ab9df9728bf931f47c2897df9b3
   }
 }

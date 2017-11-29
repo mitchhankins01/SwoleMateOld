@@ -16,6 +16,7 @@ import PopupDialog, {
 import Header from '../components/Header';
 import ActionBar from '../components/ActionBar';
 import {
+  fetchProgram,
   addNewProgram,
   addNewProgramDay,
   fetchAllPrograms,
@@ -61,12 +62,13 @@ class Form extends Component {
        }
        case 'addNewProgramDay': {
          const { dayName, dayDescription, primaryGroup, secondaryGroup } = this.state;
+         const key = this.props.programInfo[0].key;
 
          if (dayName && dayDescription && primaryGroup && secondaryGroup) {
-           // dispatch(addNewProgramDay(dayName, dayDescription, primaryGroup, secondaryGroup, () => {
-           //   dispatch(fetchAllPrograms());
-           //   this.popup.show();
-           // }));
+           dispatch(addNewProgramDay(
+             key, dayName, dayDescription, primaryGroup, secondaryGroup, () => {
+             this.popup.show();
+           }));
          } else {
            this.dropdown.alertWithType(
              'error', 'Missing Fields', 'Please fill out all fields');
@@ -89,6 +91,12 @@ class Form extends Component {
        case 4: return this.setState({ secondaryGroup: value });
        default: return;
      }
+   }
+
+   onClosePressed() {
+     const { dispatch, navigation } = this.props;
+     dispatch(fetchProgram());
+     navigation.goBack(null);
    }
 
    renderPopupComponent(component, styles) {
@@ -123,7 +131,7 @@ class Form extends Component {
                type='font-awesome'
                color={styles.$tertiaryColor}
                containerStyle={styles.popupButton}
-               onPress={() => this.props.navigation.goBack(null)}
+               onPress={() => this.onClosePressed()}
              />
            </A.View>
          );
@@ -273,6 +281,7 @@ class Form extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    programInfo: state.program.info,
     screenIndex: state.program.screenIndex,
   };
 };

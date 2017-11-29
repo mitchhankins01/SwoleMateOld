@@ -37,12 +37,8 @@
 		2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E941DF850E9000B6D8A /* libRCTText-tvOS.a */; };
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
-<<<<<<< HEAD:ios/SwoleMate.xcodeproj/project.pbxproj
 		2DCD954D1E0B4F2C00145EB5 /* SwoleMateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SwoleMateTests.m */; };
 		380C086166724A438CAD4995 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C601E58A4B4D460EBBAFD83F /* SimpleLineIcons.ttf */; };
-=======
-		2DCD954D1E0B4F2C00145EB5 /* RNFirebaseStarterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNFirebaseStarterTests.m */; };
->>>>>>> 6bc92b9890a56ab9df9728bf931f47c2897df9b3:ios/RNFirebaseStarter.xcodeproj/project.pbxproj
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6360CEBCCE5D4C86AAE6AA69 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 80920C7EB6B34613A7DB25A0 /* MaterialCommunityIcons.ttf */; };
 		68B70528A2734DEA89C8B214 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC8C743C046423C960F2237 /* libRNFirebase.a */; };
@@ -329,48 +325,6 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		836AA8D91FACD2AC0010E64B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3DBE0D001F3B181A0099AA32;
-			remoteInfo = fishhook;
-		};
-		836AA8DB1FACD2AC0010E64B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3DBE0D0D1F3B181C0099AA32;
-			remoteInfo = "fishhook-tvOS";
-		};
-		836AA8E91FACD2AC0010E64B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 139D7ECE1E25DB7D00323FB7;
-			remoteInfo = "third-party";
-		};
-		836AA8EB1FACD2AC0010E64B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3D383D3C1EBD27B6005632C8;
-			remoteInfo = "third-party-tvOS";
-		};
-		836AA8ED1FACD2AC0010E64B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 139D7E881E25C6D100323FB7;
-			remoteInfo = "double-conversion";
-		};
-		836AA8EF1FACD2AC0010E64B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
-			remoteInfo = "double-conversion-tvOS";
-		};
 		8E7D4B011F8AFD6F00699FE4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -580,13 +534,8 @@
 			children = (
 				139FDEF41B06529B00C62182 /* libRCTWebSocket.a */,
 				3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */,
-<<<<<<< HEAD:ios/SwoleMate.xcodeproj/project.pbxproj
 				30DF4D7F1FC367C7002606F8 /* libfishhook.a */,
 				30DF4D811FC367C7002606F8 /* libfishhook-tvOS.a */,
-=======
-				836AA8DA1FACD2AC0010E64B /* libfishhook.a */,
-				836AA8DC1FACD2AC0010E64B /* libfishhook-tvOS.a */,
->>>>>>> 6bc92b9890a56ab9df9728bf931f47c2897df9b3:ios/RNFirebaseStarter.xcodeproj/project.pbxproj
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -616,7 +565,6 @@
 				3DAD3EAB1DF850E9000B6D8A /* libcxxreact.a */,
 				3DAD3EAD1DF850E9000B6D8A /* libjschelpers.a */,
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
-<<<<<<< HEAD:ios/SwoleMate.xcodeproj/project.pbxproj
 				30DF4D8F1FC367C7002606F8 /* libthird-party.a */,
 				30DF4D911FC367C7002606F8 /* libthird-party.a */,
 				30DF4D931FC367C7002606F8 /* libdouble-conversion.a */,
@@ -647,12 +595,6 @@
 			children = (
 				30E3DC621FCCA91000C87DA6 /* libRNSpinkit.a */,
 				30E3DC641FCCA91000C87DA6 /* libRNSpinkit.a */,
-=======
-				836AA8EA1FACD2AC0010E64B /* libthird-party.a */,
-				836AA8EC1FACD2AC0010E64B /* libthird-party.a */,
-				836AA8EE1FACD2AC0010E64B /* libdouble-conversion.a */,
-				836AA8F01FACD2AC0010E64B /* libdouble-conversion.a */,
->>>>>>> 6bc92b9890a56ab9df9728bf931f47c2897df9b3:ios/RNFirebaseStarter.xcodeproj/project.pbxproj
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1244,48 +1186,6 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		836AA8DA1FACD2AC0010E64B /* libfishhook.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libfishhook.a;
-			remoteRef = 836AA8D91FACD2AC0010E64B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		836AA8DC1FACD2AC0010E64B /* libfishhook-tvOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libfishhook-tvOS.a";
-			remoteRef = 836AA8DB1FACD2AC0010E64B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		836AA8EA1FACD2AC0010E64B /* libthird-party.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libthird-party.a";
-			remoteRef = 836AA8E91FACD2AC0010E64B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		836AA8EC1FACD2AC0010E64B /* libthird-party.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libthird-party.a";
-			remoteRef = 836AA8EB1FACD2AC0010E64B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		836AA8EE1FACD2AC0010E64B /* libdouble-conversion.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libdouble-conversion.a";
-			remoteRef = 836AA8ED1FACD2AC0010E64B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		836AA8F01FACD2AC0010E64B /* libdouble-conversion.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libdouble-conversion.a";
-			remoteRef = 836AA8EF1FACD2AC0010E64B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		8E7D4B021F8AFD6F00699FE4 /* libRCTBlob-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1569,7 +1469,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DISPLAY_NAME = RNFirebaseStarter;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1584,12 +1483,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-<<<<<<< HEAD:ios/SwoleMate.xcodeproj/project.pbxproj
 				PRODUCT_NAME = SwoleMate;
-=======
-				PRODUCT_BUNDLE_IDENTIFIER = com.invertase.rnfirebasestarter;
-				PRODUCT_NAME = RNFirebaseStarter;
->>>>>>> 6bc92b9890a56ab9df9728bf931f47c2897df9b3:ios/RNFirebaseStarter.xcodeproj/project.pbxproj
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1600,7 +1494,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DISPLAY_NAME = RNFirebaseStarter;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1615,12 +1508,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-<<<<<<< HEAD:ios/SwoleMate.xcodeproj/project.pbxproj
 				PRODUCT_NAME = SwoleMate;
-=======
-				PRODUCT_BUNDLE_IDENTIFIER = com.invertase.rnfirebasestarter;
-				PRODUCT_NAME = RNFirebaseStarter;
->>>>>>> 6bc92b9890a56ab9df9728bf931f47c2897df9b3:ios/RNFirebaseStarter.xcodeproj/project.pbxproj
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

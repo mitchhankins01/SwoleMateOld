@@ -57,5 +57,3 @@ buck-out/
 #
 .expo/
 /ios/Pods/
-google-services.json
-GoogleService-Info.plist

@@ -25,7 +25,6 @@
     "color": "^2.0.1",
     "eslint-config-rallycoding": "^3.2.0",
     "fbjs": "^0.8.16",
-<<<<<<< HEAD
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react": "^16.0.0-beta.5",
@@ -50,11 +49,9 @@
   "rnpm": {
     "assets": [
       "./assets/fonts/"
-    ]
-=======
+    ],
     "react": "^16.0.0",
     "react-native": "^0.50.3",
     "react-native-firebase": "^3.1.0"
->>>>>>> 6bc92b9890a56ab9df9728bf931f47c2897df9b3
   }
 }

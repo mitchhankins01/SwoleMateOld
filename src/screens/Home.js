@@ -101,7 +101,7 @@ class Home extends Component {
         </Animatable.Text>
 
         <Animatable.View duration={500} ref='programView' animation='flipInY'>
-          <ScrollView style={{ marginBottom: 230 }}>
+          <ScrollView style={{ marginBottom: 250, marginTop: 10 }}>
             <List containerStyle={styles.list}>
               <Programs styles={styles} navigation={this.props.navigation} />
             </List>

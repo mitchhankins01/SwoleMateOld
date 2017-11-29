@@ -52,11 +52,10 @@ class Programs extends Component {
     return (
       this.props.allPrograms.map(program => {
         const subtitle = `${program.frequency} Days - ${program.level} - ${program.type}`;
-
         return (
           <ListItem
             hideChevron
-            key={program.name}
+            key={program.key}
             subtitle={subtitle}
             title={program.name}
             underlayColor={'transparent'}
@@ -64,16 +63,16 @@ class Programs extends Component {
             titleStyle={styles.listItemProgramsTitle}
             subtitleStyle={styles.listItemProgramsSubtitle}
             leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
-            onPress={() => this.updateScreenIndex('allProgramsSelected', null, program.key)}
+            onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
           />
         );
       })
     );
   }
 
-  renderallProgramsSelected = styles => {
+  renderProgramDays = (styles, program) => {
     return (
-      this.props.selectedProgramDays.map(day => {
+      program.map(day => {
         return (
           <ListItem
             hideChevron
@@ -82,6 +81,7 @@ class Programs extends Component {
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
             titleStyle={styles.listItemProgramsTitle}
+            onPress={() => this.updateScreenIndex('programExercises', day.key)}
             leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
           />
         );

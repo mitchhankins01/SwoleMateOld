@@ -73,12 +73,12 @@ class Home extends Component {
    renderTitle() {
      const { screenIndex } = this.props;
 
-     if (screenIndex === 'primaryProgram') {
+     if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
        return this.props.programInfo.map(info => info.name);
      } else if (screenIndex === 'allPrograms') {
        return 'All Programs';
      } else if (screenIndex === 'primaryProgramDetails') {
-       return;
+       return 'Fix this pls';
      }
    }
 

@@ -17,6 +17,7 @@ import Header from '../components/Header';
 import ActionBar from '../components/ActionBar';
 import {
   addNewProgram,
+  addNewProgramDay,
   fetchAllPrograms,
 } from '../actions/program_actions';
 
@@ -33,6 +34,10 @@ class Form extends Component {
        programName: '',
        description: '',
        // Add Program Day
+       dayName: '',
+       dayDescription: '',
+       primaryGroup: '',
+       secondaryGroup: '',
      };
    }
 
@@ -54,6 +59,20 @@ class Form extends Component {
          }
          break;
        }
+       case 'addNewProgramDay': {
+         const { dayName, dayDescription, primaryGroup, secondaryGroup } = this.state;
+
+         if (dayName && dayDescription && primaryGroup && secondaryGroup) {
+           // dispatch(addNewProgramDay(dayName, dayDescription, primaryGroup, secondaryGroup, () => {
+           //   dispatch(fetchAllPrograms());
+           //   this.popup.show();
+           // }));
+         } else {
+           this.dropdown.alertWithType(
+             'error', 'Missing Fields', 'Please fill out all fields');
+         }
+         break;
+       }
        default:
          return;
      }
@@ -66,7 +85,8 @@ class Form extends Component {
        case 0: return this.setState({ type: value });
        case 1: return this.setState({ level: value });
        case 2: return this.setState({ frequency: incrementedIndex });
-       case 3: return this.setState({ workoutDay: value });
+       case 3: return this.setState({ primaryGroup: value });
+       case 4: return this.setState({ secondaryGroup: value });
        default: return;
      }
    }
@@ -190,12 +210,32 @@ class Form extends Component {
      );
    }
 
+   renderAddNewProgramDay(styles) {
+     const bgColor = Color(styles.$tertiaryColor).alpha(0.7);
+
+     return (
+       <View>
+         {this.renderJiro(styles, 'Day Name', 'dayName')}
+         {this.renderJiro(styles, 'Description', 'dayDescription')}
+         <View style={{ marginBottom: 10 }} />
+         {this.renderDropdown(styles, 3, 'Select Primary Group...',
+           ['Biceps', 'Triceps', 'Legs', 'Calves'], bgColor
+         )}
+         {this.renderDropdown(styles, 4, 'Select Secondary Group...',
+           ['Legs', 'Shoulders', 'Arms'], bgColor
+         )}
+       </View>
+     );
+   }
+
    renderContentSwitch(styles, screenIndex) {
      switch (screenIndex) {
-       default:
-        return;
+      default:
+        break;
       case 'addNewProgram':
         return this.renderAddNewProgram(styles);
+      case 'addNewProgramDay':
+        return this.renderAddNewProgramDay(styles);
      }
    }
 

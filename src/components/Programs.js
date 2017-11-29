@@ -115,7 +115,7 @@ class Programs extends Component {
   }
 
   render() {
-    const { loading, styles, screenIndex } = this.props;
+    const { dispatch, loading, styles, screenIndex } = this.props;
 
     if (loading) {
       return (
@@ -145,6 +145,9 @@ class Programs extends Component {
         break;
       case 'addNewProgram':
         this.props.navigation.navigate('Form', { title: 'Add new Program', styles });
+        break;
+      case 'addNewProgramDay':
+        this.props.navigation.navigate('Form', { title: 'Add new Day', styles });
     }
 
     return (

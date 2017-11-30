@@ -150,6 +150,12 @@ const themeStyles = themes.createStyleSheet({
     paddingLeft: 10,
     marginRight: -35,
   },
+  listItemAllExercisesIcon: {
+    color: '$primaryColor',
+    alignSelf: 'center',
+    paddingLeft: 10,
+    marginRight: -35,
+  },
   avatar: {
     marginTop: 20,
     alignSelf: 'center',
@@ -170,8 +176,8 @@ const themeStyles = themes.createStyleSheet({
     color: '$primaryColor'
   },
   formExerciseInput: {
-    height: 80,
-    width: 300,
+    height: 90,
+    width: DEVICE_WIDTH / 1.1,
     marginTop: 20,
     borderRadius: 10,
     alignSelf: 'center',

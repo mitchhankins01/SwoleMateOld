@@ -1,12 +1,15 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import firebase from 'react-native-firebase';
+import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { List, ListItem, Avatar } from 'react-native-elements';
-import DropdownAlert from 'react-native-dropdownalert';
-import firebase from 'react-native-firebase';
-import themeStyles from '../components/styles';
+
 import Header from '../components/Header';
-import { standard, standard2, standard3, handleThemeSelection } from '../components/theme';
+import themeStyles from '../components/styles';
+import { changeTheme } from '../actions/themeActions';
+import { standard, standard2, standard3 } from '../components/theme';
 import {
   main,
   generalOptions,
@@ -31,19 +34,7 @@ class Settings extends Component {
 
   constructor() {
     super();
-    this.state = {
-      theme: 'standard',
-      screenIndex: -1
-    };
-  }
-
-  componentDidMount() {
-    const uid = firebase.auth().currentUser.uid;
-
-    firebase.firestore().collection('users').doc(uid)
-      .onSnapshot(userDoc => {
-          this.setState({ theme: userDoc.data().theme });
-      });
+    this.state = { screenIndex: -1 };
   }
 
   showDropdown(type, title, message) {
@@ -103,8 +94,8 @@ class Settings extends Component {
               leftIcon={{ name: theme.icon, color: themeOptions[i] }}
               containerStyle={{ borderBottomColor: styles.$primaryColor }}
               titleStyle={[styles.listItemSettingsTitle, { color: themeOptions[i] }]}
-              onPress={() => handleThemeSelection(
-                themes, i, theme.name, () => this.setState({ screenIndex: -1 })
+              onPress={() => this.props.dispatch(
+                changeTheme(themes, i, theme.name, () => this.setState({ screenIndex: -1 }))
               )}
             />
           ))
@@ -133,7 +124,7 @@ class Settings extends Component {
   }
 
   render() {
-    const styles = themeStyles[this.state.theme];
+    const styles = themeStyles[this.props.theme];
     const gradients = [
       styles.$primaryColor,
       styles.$secondaryColor,
@@ -168,4 +159,10 @@ class Settings extends Component {
   }
 }
 
-export default Settings;
+const mapStateToProps = ({ theme }) => {
+  return {
+    theme: theme.selected,
+  };
+};
+
+export default connect(mapStateToProps)(Settings);

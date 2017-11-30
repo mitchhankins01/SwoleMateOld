@@ -14,15 +14,15 @@ import PopupDialog, {
   SlideAnimation
 } from 'react-native-popup-dialog';
 
-import Header from '../components/Header';
-import ActionBar from '../components/ActionBar';
+import Header from '../../components/Header';
+import ActionBar from '../../components/ActionBar';
 import {
   fetchProgram,
   addProgram,
   addProgramDay,
   fetchAllPrograms,
   fetchAllExercises,
-} from '../actions/program_actions';
+} from '../../actions/program_actions';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -191,31 +191,36 @@ class Form extends Component {
      );
    }
 
-   renderJiro(styles, title, stateRef, width) {
-     let style =
-       width ? style = [styles.jiroInputContainer, { width }] : style = styles.jiroInputContainer;
+   renderJiro(styles, title, stateRef, width, inputColor) {
+     const style = [styles.jiroInputContainer];
+     if (width) { style.push({ width }); }
+     const inputStyle = [styles.jiroInput];
+     let colorInput = styles.$tertiaryColor;
+
      return (
        <Jiro
          style={style}
          label={title}
          inputStyle={styles.jiroInput}
-         borderColor={styles.$tertiaryColor}
+         borderColor={colorInput}
          onChangeText={value => this.setState({ [stateRef]: value })}
-         labelStyle={[styles.jiroInput, { color: styles.$tertiaryColor }]}
+         labelStyle={[styles.jiroInput, { color: colorInput }]}
        />
      );
    }
 
-   renderDropdown(styles, componentIndex, title, options, backgroundColor) {
+   renderDropdown(styles, componentIndex, title, options, bgColor, containerColor) {
+     const style = [styles.dropdown];
+     if (containerColor) { style.push({ backgroundColor: containerColor }); }
      return (
        <ModalDropdown
+         style={style}
          options={options}
          defaultValue={title}
-         style={styles.dropdown}
          textStyle={styles.dropdownText}
          dropdownTextStyle={styles.dropdownText}
-         dropdownStyle={[styles.dropdownList, { backgroundColor }]}
          renderSeparator={() => this.renderDropdownSeparator(styles)}
+         dropdownStyle={[styles.dropdownList, { backgroundColor: bgColor }]}
          onSelect={(index, value) => this.updateState(componentIndex, index, value)}
        />
      );
@@ -268,22 +273,23 @@ class Form extends Component {
    }
 
    renderAddProgramExercise(styles) {
-     const bgColor = Color(styles.$tertiaryColor).alpha(0.7);
+     const bgColor = Color(styles.$secondaryColor).alpha(0.7);
+
      return (
        <View>
          <View style={{ marginBottom: 20 }} />
          {this.renderDropdown(styles, 5, 'Show All',
-           ['Show All', 'Abs', 'Back', 'Biceps', 'Calves', 'Chest',
-           'Fore-arms', 'Glutes', 'Shoulders', 'Triceps', 'Cardio'], bgColor
+           ['Show All', 'Abs', 'Back', 'Biceps', 'Calves', 'Chest', 'Fore-arms',
+           'Glutes', 'Shoulders', 'Triceps', 'Cardio'], bgColor, styles.$secondaryColor
          )}
          <View style={styles.formExerciseInput} >
-           {this.renderJiro(styles, 'Sets', 'sets', 75)}
-           {this.renderJiro(styles, 'Reps', 'reps', 75)}
-           {this.renderJiro(styles, 'Rest', 'rest', 75)}
+           {this.renderJiro(styles, 'Sets', 'sets', 75, styles.$primaryColor)}
+           {this.renderJiro(styles, 'Reps', 'reps', 75, styles.$primaryColor)}
+           {this.renderJiro(styles, 'Rest', 'rest', 75, styles.$primaryColor)}
          </View>
          <A.View duration={500} ref='programView' animation='flipInY'>
            <ScrollView style={{ marginTop: 10 }}>
-             <List containerStyle={styles.list}>
+             <List containerStyle={[styles.list, { backgroundColor: 'transparent' }]}>
                {this.renderExerciseList(styles)}
              </List>
            </ScrollView>
@@ -296,10 +302,11 @@ class Form extends Component {
      const { exerciseList, selectedExercise } = this.state;
      return (
        exerciseList.map(exercise => {
-         const icon = exercise.key === selectedExercise ?
-           <Entypo style={styles.listItemIcon} name={'check'} size={30} /> : null;
-         const style = exercise.key === selectedExercise ?
-           [styles.listItem, { backgroundColor: 'rgba(237, 240, 241, 0.075)' }] : styles.listItem;
+         const icon = exercise.key === selectedExercise
+           ? <Entypo style={styles.listItemAllExercisesIcon} name={'check'} size={30} /> : null;
+         const style = exercise.key === selectedExercise
+           ? [styles.listItem, { backgroundColor: 'rgba(237, 240, 241, 0.075)' }]
+           : [styles.listItem, { backgroundColor: styles.$secondaryColor }];
          return (
            <ListItem
              hideChevron
@@ -309,9 +316,9 @@ class Form extends Component {
              containerStyle={style}
              subtitle={exercise.group}
              underlayColor={'transparent'}
-             titleStyle={styles.listItemProgramsTitle}
-             subtitleStyle={styles.listItemProgramsSubtitle}
              onPress={() => this.handleExerciseClick(exercise, selectedExercise)}
+             titleStyle={[styles.listItemProgramsTitle, { color: styles.$primaryColor }]}
+             subtitleStyle={[styles.listItemProgramsSubtitle, { color: styles.$primaryColor }]}
            />
          );
        })

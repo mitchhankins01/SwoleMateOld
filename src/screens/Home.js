@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { List } from 'react-native-elements';
-import firebase from 'react-native-firebase';
 import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,6 +12,7 @@ import Programs from '../components/Programs';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
 import ActionBar from '../components/ActionBar';
+import { fetchTheme } from '../actions/themeActions';
 
 class Home extends Component {
 
@@ -27,23 +27,13 @@ class Home extends Component {
      ),
    };
 
-   constructor(props) {
-     super(props);
-     this.state = { theme: 'standard' };
+   componentWillMount() {
+     this.props.dispatch(fetchTheme());
    }
 
    componentDidMount() {
      /* Check for error from loading FB Programs */
      this.renderError(this.props.programError);
-
-     const uid = firebase.auth().currentUser.uid;
-     // IMPLEMENT, move over to redux
-     firebase.firestore().collection('users').doc(uid)
-      .onSnapshot(userDoc => {
-        this.setState({
-          theme: userDoc.data().theme,
-        });
-      });
    }
 
    componentWillUpdate() {
@@ -69,8 +59,7 @@ class Home extends Component {
    }
 
   render() {
-    const { theme } = this.state;
-    const styles = themeStyles[theme];
+    const styles = themeStyles[this.props.theme];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
     return (
@@ -105,8 +94,9 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = ({ program }) => {
+const mapStateToProps = ({ program, theme }) => {
   return {
+    theme: theme.selected,
     programInfo: program.info,
     programDays: program.days,
     programError: program.error,

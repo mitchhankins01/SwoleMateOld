@@ -1,14 +1,4 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
-import firebase from 'react-native-firebase';
-
-export const handleThemeSelection = (themes, i, theme, goBack) => {
-  if (i === themes.length - 1) {
-    goBack();
-  } else {
-    const uid = firebase.auth().currentUser.uid;
-    firebase.firestore().collection('users').doc(uid).update({ theme });
-  }
-};
 
 export const standard = {
   $primaryColor: '#70B2F9',

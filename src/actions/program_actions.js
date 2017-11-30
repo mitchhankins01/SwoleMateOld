@@ -21,6 +21,9 @@ export const ADD_PROGRAM_FAILURE = 'ADD_PROGRAM_FAILURE';
 // Add New Program Day
 export const ADD_PROGRAM_DAY = 'ADD_PROGRAM_DAY';
 export const ADD_PROGRAM_DAY_FAILURE = 'ADD_PROGRAM_DAY_FAILURE';
+// Add New Program Exercise
+export const ADD_PROGRAM_EXERCISE = 'ADD_PROGRAM_EXERCISE';
+export const ADD_PROGRAM_EXERCISE_FAILURE = 'ADD_PROGRAM_EXERCISE_FAILURE';
 
 // Screen Index && Day Key
 export const updateScreenIndex = index => {
@@ -276,5 +279,40 @@ const addProgramDayFailure = (dispatch, error) => {
   dispatch({
     payload: error,
     type: ADD_PROGRAM_DAY_FAILURE,
+  });
+};
+
+// Add Program Exercise
+export const addProgramExercise =
+ (programKey, dayKey, selectedExercise, sets, reps, rest, callback) => {
+  return (dispatch) => {
+    dispatch({ type: ADD_PROGRAM_EXERCISE });
+
+    const uid = firebase.auth().currentUser.uid;
+    const ref = firebase.firestore().collection('userPrograms')
+      .doc(programKey).collection('exercises').doc();
+
+    ref.set({
+      sets,
+      reps,
+      rest,
+      author: uid,
+      key: ref.id,
+      day: dayKey,
+      exerciseKey: selectedExercise,
+    })
+    .then(() => {
+      callback();
+    })
+    .catch(error => {
+      addProgramExerciseFailure(dispatch, error);
+    });
+  };
+};
+
+const addProgramExerciseFailure = (dispatch, error) => {
+  dispatch({
+    payload: error,
+    type: ADD_PROGRAM_EXERCISE_FAILURE,
   });
 };

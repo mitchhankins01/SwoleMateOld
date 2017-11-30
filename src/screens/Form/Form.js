@@ -23,6 +23,7 @@ import {
   addProgramDay,
   fetchAllPrograms,
   fetchAllExercises,
+  addProgramExercise,
 } from '../../actions/program_actions';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -43,6 +44,9 @@ class Form extends Component {
        primaryGroup: '',
        secondaryGroup: '',
        // Add Program Exercise
+       sets: 0,
+       reps: 0,
+       rest: 0,
        exerciseList: [],
        selectedExercise: '',
      };
@@ -102,12 +106,28 @@ class Form extends Component {
          break;
        }
        case 'addProgramDay': {
-         const { dayName, dayDescription, primaryGroup, secondaryGroup } = this.state;
          const key = this.props.programInfo[0].key;
+         const { dayName, dayDescription, primaryGroup, secondaryGroup } = this.state;
 
          if (dayName && dayDescription && primaryGroup && secondaryGroup) {
            dispatch(addProgramDay(
              key, dayName, dayDescription, primaryGroup, secondaryGroup, () => {
+             this.popup.show();
+           }));
+         } else {
+           this.dropdown.alertWithType(
+             'error', 'Missing Fields', 'Please fill out all fields');
+         }
+         break;
+       }
+       case 'addProgramExercise': {
+         const dayKey = this.props.selectedDayKey;
+         const programKey = this.props.programInfo[0].key;
+         const { selectedExercise, sets, reps, rest } = this.state;
+
+         if (selectedExercise && sets && reps && rest) {
+           dispatch(addProgramExercise(
+             programKey, dayKey, selectedExercise, sets, reps, rest, () => {
              this.popup.show();
            }));
          } else {
@@ -342,8 +362,8 @@ class Form extends Component {
    }
 
   render() {
-    const styles = themeStyles[this.props.theme];
-    const { screenIndex } = this.props;
+    const { screenIndex, theme } = this.props;
+    const styles = themeStyles[theme];
     const { title } = this.props.navigation.state.params;
     const gradients = [
       styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor
@@ -379,6 +399,7 @@ const mapStateToProps = ({ program, theme }) => {
     programInfo: program.info,
     screenIndex: program.screenIndex,
     allExercises: program.allExercises,
+    selectedDayKey: program.selectedDayKey,
   };
 };
 

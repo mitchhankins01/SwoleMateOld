@@ -19,7 +19,10 @@ import {
   ADD_PROGRAM_FAILURE,
   // Add New Program Day
   ADD_PROGRAM_DAY,
-  ADD_PROGRAM_DAY_FAILURE
+  ADD_PROGRAM_DAY_FAILURE,
+  // Add New Program Exercise
+  ADD_PROGRAM_EXERCISE,
+  ADD_PROGRAM_EXERCISE_FAILURE,
 } from '../actions/program_actions';
 
 const INITIAL_STATE = {
@@ -94,10 +97,19 @@ export default (state = INITIAL_STATE, action) => {
         || 'An error occured, please try again later',
       };
 
-    // Add new Program Day
+    // Add New Program Day
     case ADD_PROGRAM_DAY:
       return { ...state, error: '', screenIndex: 'primaryProgram' };
     case ADD_PROGRAM_DAY_FAILURE:
+      return { ...state,
+        error: action.payload.message
+        || 'An error occured, please try again later',
+      };
+
+    // Add New Program Exercise
+    case ADD_PROGRAM_EXERCISE:
+      return { ...state, error: '', screenIndex: 'programExercises' };
+    case ADD_PROGRAM_EXERCISE_FAILURE:
       return { ...state,
         error: action.payload.message
         || 'An error occured, please try again later',

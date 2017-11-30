@@ -26,7 +26,9 @@ const Header = ({ title, styles, onLeftPress, onRightPress }) => {
       outerContainerStyles={{
         backgroundColor: styles.$secondaryColor,
         borderBottomWidth: 0,
-        //height: Platform.OS === 'android' ? 75 : 65
+        elevation: 1,
+        shadowOpacity: 1,
+        height: 70, //Platform.OS === 'android' ? 75 : 65
       }}
     />
   );

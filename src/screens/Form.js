@@ -51,14 +51,35 @@ class Form extends Component {
      this.props.dispatch(fetchAllExercises());
    }
 
-   componentWillUpdate() {
-     if (!this.props.loading) { this.filterExercises('Show All'); }
+   componentWillReceiveProps(nextProps) {
+     if (!nextProps.loading) {
+       this.setState({ exerciseList: nextProps.allExercises });
+     }
    }
 
    onClosePressed() {
      const { dispatch, navigation } = this.props;
      dispatch(fetchProgram());
      navigation.goBack(null);
+   }
+
+   filterExercises(value) {
+     if (value === 'Show All') {
+       return this.setState({ exerciseList: this.props.allExercises });
+     }
+
+     const filteredExercises = this.props.allExercises.filter(exercise => {
+       return exercise.group === value;
+     });
+
+     this.setState({ exerciseList: filteredExercises });
+   }
+
+
+   handleExerciseClick(exercise, selectedExercise) {
+     if (exercise.key === selectedExercise) {
+       this.setState({ selectedExercise: '' });
+     } else { this.setState({ selectedExercise: exercise.key }); }
    }
 
    validateForm(screenIndex) {
@@ -297,24 +318,6 @@ class Form extends Component {
      );
    }
 
-   handleExerciseClick(exercise, selectedExercise) {
-     if (exercise.key === selectedExercise) {
-       this.setState({ selectedExercise: '' });
-     } else { this.setState({ selectedExercise: exercise.key }); }
-   }
-
-   filterExercises(value) {
-     if (value === 'Show All') {
-       return this.setState({ exerciseList: this.props.allExercises });
-     }
-
-     const filteredExercises = this.props.allExercises.filter(exercise => {
-       return exercise.group === value;
-     });
-
-     this.setState({ exerciseList: filteredExercises });
-   }
-
    renderContentSwitch(styles, screenIndex) {
      switch (screenIndex) {
       default:
@@ -336,11 +339,9 @@ class Form extends Component {
     ];
 
     return (
-      <LinearGradient
-        colors={gradients} style={[styles.container, { justifyContent: 'flex-start' }]}
-      >
+      <LinearGradient colors={gradients} style={styles.homeContainer}>
         <Header title={title} styles={styles} />
-        <A.View delay={0} duration={1500} animation='slideInLeft' >
+        <A.View delay={0} duration={1500} animation='slideInLeft'>
           {this.renderContentSwitch(styles, screenIndex)}
         </A.View>
         <ActionBar

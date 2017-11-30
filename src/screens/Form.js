@@ -1,13 +1,14 @@
 import Color from 'color';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { Icon } from 'react-native-elements';
 import * as A from 'react-native-animatable';
-import { Dimensions, View } from 'react-native';
 import { Jiro } from 'react-native-textinput-effects';
+import Entypo from 'react-native-vector-icons/Entypo';
 import DropdownAlert from 'react-native-dropdownalert';
 import ModalDropdown from 'react-native-modal-dropdown';
 import LinearGradient from 'react-native-linear-gradient';
+import { Dimensions, View, ScrollView } from 'react-native';
+import { Icon, List, ListItem } from 'react-native-elements';
 import PopupDialog, {
   DialogTitle,
   SlideAnimation
@@ -20,6 +21,7 @@ import {
   addProgram,
   addProgramDay,
   fetchAllPrograms,
+  fetchAllExercises,
 } from '../actions/program_actions';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -39,7 +41,15 @@ class Form extends Component {
        dayDescription: '',
        primaryGroup: '',
        secondaryGroup: '',
+       // Add Program Exercise
+       exerciseList: [],
+       selectedExercise: '',
      };
+   }
+
+   componentWillMount() {
+     // IMPLEMENT, move to fetch all programs etc?
+     this.props.dispatch(fetchAllExercises());
    }
 
    validateForm(screenIndex) {
@@ -89,6 +99,7 @@ class Form extends Component {
        case 2: return this.setState({ frequency: incrementedIndex });
        case 3: return this.setState({ primaryGroup: value });
        case 4: return this.setState({ secondaryGroup: value });
+       case 5: return this.filterExercises(value);
        default: return;
      }
    }
@@ -156,13 +167,15 @@ class Form extends Component {
      );
    }
 
-   renderJiro(styles, title, stateRef) {
+   renderJiro(styles, title, stateRef, width) {
+     let style =
+       width ? style = [styles.popupInputContainer, { width }] : style = styles.popupInputContainer;
      return (
        <Jiro
          labelStyle={[styles.popupInput, { color: styles.$tertiaryColor }]}
          onChangeText={value => this.setState({ [stateRef]: value })}
          borderColor={styles.$tertiaryColor}
-         style={styles.popupInputContainer}
+         style={style}
          inputStyle={styles.popupInput}
          label={title}
        />
@@ -236,6 +249,72 @@ class Form extends Component {
      );
    }
 
+   renderAddProgramExercise(styles) {
+     const bgColor = Color(styles.$tertiaryColor).alpha(0.7);
+
+     return (
+       <View>
+         <View style={{ marginBottom: 20 }} />
+         {this.renderDropdown(styles, 5, 'Select Body Part...',
+           ['Show All', 'Abs', 'Back', 'Biceps', 'Calves', 'Chest',
+           'Fore-arms', 'Glutes', 'Shoulders', 'Triceps', 'Cardio'], bgColor
+         )}
+         <View style={styles.formExerciseInput} >
+           {this.renderJiro(styles, 'Sets', 'sets', 75)}
+           {this.renderJiro(styles, 'Reps', 'reps', 75)}
+           {this.renderJiro(styles, 'Rest', 'rest', 75)}
+         </View>
+         <A.View duration={500} ref='programView' animation='flipInY'>
+           <ScrollView style={{ marginTop: 10 }}>
+             <List containerStyle={styles.list}>
+               {this.renderExerciseList(styles)}
+             </List>
+           </ScrollView>
+         </A.View>
+       </View>
+     );
+   }
+
+   renderExerciseList(styles) {
+     const { exerciseList, selectedExercise } = this.state;
+     return (
+       exerciseList.map(exercise => {
+         const icon = exercise.key === selectedExercise ?
+           <Entypo style={styles.listItemIcon} name={'check'} size={30} /> : null;
+         return (
+           <ListItem
+             hideChevron
+             leftIcon={icon}
+             key={exercise.key}
+             title={exercise.name}
+             subtitle={exercise.group}
+             underlayColor={'transparent'}
+             containerStyle={styles.listItem}
+             titleStyle={styles.listItemProgramsTitle}
+             subtitleStyle={styles.listItemProgramsSubtitle}
+             onPress={() => this.handleExerciseClick(exercise, selectedExercise)}
+           />
+         );
+       })
+     );
+   }
+
+   handleExerciseClick(exercise, selectedExercise) {
+     if (exercise.key === selectedExercise) {
+       this.setState({ selectedExercise: '' });
+     } else { this.setState({ selectedExercise: exercise.key }); }
+   }
+
+   filterExercises(value) {
+     if (value === 'Show All') { return this.setState({ exerciseList: this.props.allExercises }); }
+
+     const filteredExercises = this.props.allExercises.filter(exercise => {
+       return exercise.group === value;
+     });
+
+     this.setState({ exerciseList: filteredExercises });
+   }
+
    renderContentSwitch(styles, screenIndex) {
      switch (screenIndex) {
       default:
@@ -244,6 +323,8 @@ class Form extends Component {
         return this.renderAddProgram(styles);
       case 'addProgramDay':
         return this.renderAddProgramDay(styles);
+      case 'addProgramExercise':
+        return this.renderAddProgramExercise(styles);
      }
    }
 
@@ -279,10 +360,11 @@ class Form extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ program }) => {
   return {
-    programInfo: state.program.info,
-    screenIndex: state.program.screenIndex,
+    programInfo: program.info,
+    allExercises: program.exercises,
+    screenIndex: program.screenIndex,
   };
 };
 

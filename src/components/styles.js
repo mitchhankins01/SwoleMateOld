@@ -147,7 +147,8 @@ const themeStyles = themes.createStyleSheet({
   listItemIcon: {
     color: '$tertiaryColor',
     alignSelf: 'center',
-    paddingLeft: 10
+    paddingLeft: 10,
+    marginRight: -35,
   },
   avatar: {
     marginTop: 20,
@@ -167,6 +168,16 @@ const themeStyles = themes.createStyleSheet({
     fontFamily: 'Exo-Bold',
     fontSize: 25,
     color: '$primaryColor'
+  },
+  formExerciseInput: {
+    height: 80,
+    width: 300,
+    marginTop: 20,
+    borderRadius: 10,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '$secondaryColor',
   },
   popup: {
     flex: 1,

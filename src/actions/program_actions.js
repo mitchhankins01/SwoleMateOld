@@ -7,6 +7,10 @@ export const UPDATE_SELECTED_DAY_KEY = 'UPDATE_SELECTED_DAY_KEY';
 export const FETCH_ALL_PROGRAMS = 'FETCH_ALL_PROGRAMS';
 export const FETCH_ALL_PROGRAMS_FAILURE = 'FETCH_ALL_PROGRAMS_FAILURE';
 export const FETCH_ALL_PROGRAMS_SUCCESS = 'FETCH_ALL_PROGRAMS_SUCCESS';
+// Fetch All exercises
+export const FETCH_ALL_EXERCISES = 'FETCH_ALL_EXERCISES';
+export const FETCH_ALL_EXERCISES_FAILURE = 'FETCH_ALL_EXERCISES_FAILURE';
+export const FETCH_ALL_EXERCISES_SUCCESS = 'FETCH_ALL_EXERCISES_SUCCESS';
 // Fetch Program
 export const FETCH_PROGRAM = 'FETCH_PROGRAM';
 export const FETCH_PROGRAM_FAILURE = 'FETCH_PROGRAM_FAILURE';
@@ -81,6 +85,52 @@ const fetchAllProgramsSuccess = (dispatch, programs) => {
     type: FETCH_ALL_PROGRAMS_SUCCESS,
   });
 };
+
+// Fetch All Exercises
+export const fetchAllExercises = () => {
+  return (dispatch) => {
+    dispatch({ type: FETCH_ALL_EXERCISES });
+
+    const exercises = [];
+    
+    firebase.firestore().collection('exercises')
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(exercise => {
+        const {
+          description, group, key, name
+        } = exercise.data();
+
+        exercises.push({
+          key,
+          name,
+          group,
+          description,
+        });
+      });
+      fetchAllExercisesSuccess(dispatch, exercises);
+    })
+    .catch(error => {
+      // IMPLEMENT, error is not coming through
+      fetchAllExercisesFailure(dispatch, error);
+    });
+  };
+};
+
+const fetchAllExercisesFailure = (dispatch, error) => {
+  dispatch({
+    payload: error,
+    type: FETCH_ALL_EXERCISES_FAILURE,
+  });
+};
+
+const fetchAllExercisesSuccess = (dispatch, exercises) => {
+  dispatch({
+    payload: exercises,
+    type: FETCH_ALL_EXERCISES_SUCCESS,
+  });
+};
+
 
 // Fetch Program
 export const fetchProgram = selectedProgram => {

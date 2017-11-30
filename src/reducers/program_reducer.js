@@ -6,6 +6,10 @@ import {
   FETCH_ALL_PROGRAMS,
   FETCH_ALL_PROGRAMS_FAILURE,
   FETCH_ALL_PROGRAMS_SUCCESS,
+  // Fetch All Exercises
+  FETCH_ALL_EXERCISES,
+  FETCH_ALL_EXERCISES_FAILURE,
+  FETCH_ALL_EXERCISES_SUCCESS,
   // Fetch Primary Program
   FETCH_PROGRAM,
   FETCH_PROGRAM_FAILURE,
@@ -21,6 +25,7 @@ import {
 const INITIAL_STATE = {
   error: '',
   programs: [],
+  exercises: [],
   loading: false,
   selectedDayKey: '',
   screenIndex: 'primaryProgram',
@@ -49,6 +54,19 @@ export default (state = INITIAL_STATE, action) => {
       };
     case FETCH_ALL_PROGRAMS_SUCCESS:
       return { ...state, programs: action.payload, error: '', loading: false };
+
+    // All Exercises
+    // IMPLEMENT, spinner on form screen for loading
+    case FETCH_ALL_EXERCISES:
+      return { ...state, loading: true, error: '' };
+    case FETCH_ALL_EXERCISES_FAILURE:
+      return { ...state,
+        error: action.payload.message
+        || 'An error occured, please try again later',
+        loading: false
+      };
+    case FETCH_ALL_EXERCISES_SUCCESS:
+      return { ...state, exercises: action.payload, error: '', loading: false };
 
     // Selected or Primary Program
     case FETCH_PROGRAM:

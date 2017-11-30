@@ -96,7 +96,7 @@ class ActionBar extends Component {
     return (
       <Animatable.View style={styles.actionBarView}>
         {this.renderButton(styles, 'back', 30, 300,
-          () => this.updateScreenIndex('allPrograms', true)
+          () => this.updateScreenIndex('primaryProgram', true)
         )}
         {this.renderButton(styles, 'help', 22, 200)}
         {this.renderButton(styles, 'check', 25, 100,

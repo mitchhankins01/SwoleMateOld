@@ -281,15 +281,17 @@ class Form extends Component {
        exerciseList.map(exercise => {
          const icon = exercise.key === selectedExercise ?
            <Entypo style={styles.listItemIcon} name={'check'} size={30} /> : null;
+         const style = exercise.key === selectedExercise ?
+           [styles.listItem, { backgroundColor: 'rgba(237, 240, 241, 0.075)' }] : styles.listItem;
          return (
            <ListItem
              hideChevron
              leftIcon={icon}
              key={exercise.key}
              title={exercise.name}
+             containerStyle={style}
              subtitle={exercise.group}
              underlayColor={'transparent'}
-             containerStyle={styles.listItem}
              titleStyle={styles.listItemProgramsTitle}
              subtitleStyle={styles.listItemProgramsSubtitle}
              onPress={() => this.handleExerciseClick(exercise, selectedExercise)}

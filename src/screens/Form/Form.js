@@ -53,7 +53,7 @@ class Form extends Component {
    }
 
    componentWillMount() {
-     this.props.dispatch(fetchAllExercises());
+    // this.props.dispatch(fetchAllExercises());
    }
 
    componentWillReceiveProps(nextProps) {

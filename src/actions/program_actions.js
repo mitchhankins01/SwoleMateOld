@@ -185,8 +185,16 @@ export const fetchProgram = selectedProgram => {
       programRef.collection('exercises').get()
       .then(querySnapshot => {
         querySnapshot.forEach(details => {
-          const { day, name, sets, reps, rest } = details.data();
-          exercises.push({ key: details.id, day, name, sets, reps, rest });
+          const { author, day, exerciseKey, key, reps, rest, sets } = details.data();
+          exercises.push({
+            day,
+            key,
+            reps,
+            rest,
+            sets,
+            author,
+            exerciseKey,
+          });
         });
         fetchProgramSuccess(dispatch, info, days, exercises);
       })

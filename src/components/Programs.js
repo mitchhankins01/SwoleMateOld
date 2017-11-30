@@ -10,6 +10,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   fetchProgram,
   fetchAllPrograms,
+  fetchAllExercises,
   updateScreenIndex,
   updateSelectedDayKey,
 } from '../actions/program_actions';
@@ -19,6 +20,7 @@ class Programs extends Component {
     const { dispatch } = this.props;
     dispatch(fetchProgram());
     dispatch(fetchAllPrograms());
+    dispatch(fetchAllExercises());
   }
 
   componentWillUpdate() {
@@ -81,13 +83,17 @@ class Programs extends Component {
     return (
       exercises.map(exercise => {
         if (exercise.day === this.props.selectedDayKey) {
+          const match = this.props.allExercises.find(eachExercise => {
+            return eachExercise.key === exercise.exerciseKey;
+          });
+
           const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
           return (
             <ListItem
               hideChevron
               key={exercise.key}
+              title={match.name}
               subtitle={subtitle}
-              title={exercise.name}
               underlayColor={'transparent'}
               containerStyle={styles.listItem}
               titleStyle={styles.listItemProgramsTitle}
@@ -149,6 +155,8 @@ const mapStateToProps = ({ program }) => {
     loading: program.loading,
     screenIndex: program.screenIndex,
     selectedDayKey: program.selectedDayKey,
+    // All Exercises
+    allExercises: program.allExercises,
     // All Programs
     allPrograms: program.programs,
     // Primary or Selected Program

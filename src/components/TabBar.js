@@ -1,26 +1,13 @@
-import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Platform } from 'react-native';
+import React, { Component } from 'react';
 import { TabBarBottom } from 'react-navigation';
-import firebase from 'react-native-firebase';
+
 import themeStyles from './styles';
 
 class TabBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { theme: 'standard' };
-  }
-
-  componentDidMount() {
-    const uid = firebase.auth().currentUser.uid;
-
-    firebase.firestore().collection('users').doc(uid)
-      .onSnapshot(userDoc => {
-          this.setState({ theme: userDoc.data().theme });
-      });
-  }
-
   render() {
-    const styles = themeStyles[this.state.theme];
+    const styles = themeStyles[this.props.theme];
 
     return (
       <TabBarBottom
@@ -37,4 +24,10 @@ class TabBar extends Component {
   }
 }
 
-export default TabBar;
+const mapStateToProps = ({ theme }) => {
+  return {
+    theme: theme.selected,
+  };
+};
+
+export default connect(mapStateToProps)(TabBar);

@@ -11,7 +11,7 @@ import Header from '../components/Header';
 import Programs from '../components/Programs';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
-import ActionBar from '../components/ActionBar';
+import { ActionBar } from '../components/ActionBar';
 import { fetchTheme } from '../actions/themeActions';
 
 class Home extends Component {

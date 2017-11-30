@@ -177,11 +177,11 @@ const themeStyles = themes.createStyleSheet({
   },
   formExerciseInput: {
     height: 90,
-    width: DEVICE_WIDTH / 1.1,
     marginTop: 20,
     borderRadius: 10,
     alignSelf: 'center',
     flexDirection: 'row',
+    width: DEVICE_WIDTH / 1.1,
     justifyContent: 'space-around',
     backgroundColor: '$secondaryColor',
   },

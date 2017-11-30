@@ -4,7 +4,11 @@ import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 
-import { fetchProgram, updateScreenIndex } from '../actions/program_actions';
+import themeStyles from './styles';
+import {
+  fetchProgram,
+  updateScreenIndex
+} from '../../actions/program_actions';
 
 class ActionBar extends Component {
   updateScreenIndex(screenIndex, goBack) {
@@ -107,7 +111,8 @@ class ActionBar extends Component {
   }
 
   render() {
-    const { styles, screenIndex } = this.props;
+    const { theme, screenIndex } = this.props;
+    const styles = themeStyles[theme];
 
     let renderType;
     switch (screenIndex) {
@@ -137,9 +142,10 @@ class ActionBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ program, theme }) => {
   return {
-    screenIndex: state.program.screenIndex,
+    theme: theme.selected,
+    screenIndex: program.screenIndex,
   };
 };
 

@@ -14,8 +14,9 @@ import PopupDialog, {
   SlideAnimation
 } from 'react-native-popup-dialog';
 
+import themeStyles from './styles';
 import Header from '../../components/Header';
-import ActionBar from '../../components/ActionBar';
+import { ActionBar } from '../../components/ActionBar';
 import {
   fetchProgram,
   addProgram,
@@ -192,19 +193,20 @@ class Form extends Component {
    }
 
    renderJiro(styles, title, stateRef, width, inputColor) {
-     const style = [styles.jiroInputContainer];
-     if (width) { style.push({ width }); }
+     const colorInput = inputColor || styles.$tertiaryColor;
+     const jiroInputContainer = [styles.jiroInputContainer];
+       if (width) { jiroInputContainer.push({ width }); }
      const inputStyle = [styles.jiroInput];
-     let colorInput = styles.$tertiaryColor;
+       if (inputColor) { inputStyle.push({ color: styles.$tertiaryColor }); }
 
      return (
        <Jiro
-         style={style}
          label={title}
-         inputStyle={styles.jiroInput}
+         inputStyle={inputStyle}
          borderColor={colorInput}
-         onChangeText={value => this.setState({ [stateRef]: value })}
+         style={jiroInputContainer}
          labelStyle={[styles.jiroInput, { color: colorInput }]}
+         onChangeText={value => this.setState({ [stateRef]: value })}
        />
      );
    }
@@ -212,6 +214,7 @@ class Form extends Component {
    renderDropdown(styles, componentIndex, title, options, bgColor, containerColor) {
      const style = [styles.dropdown];
      if (containerColor) { style.push({ backgroundColor: containerColor }); }
+
      return (
        <ModalDropdown
          style={style}
@@ -317,8 +320,8 @@ class Form extends Component {
              subtitle={exercise.group}
              underlayColor={'transparent'}
              onPress={() => this.handleExerciseClick(exercise, selectedExercise)}
-             titleStyle={[styles.listItemProgramsTitle, { color: styles.$primaryColor }]}
-             subtitleStyle={[styles.listItemProgramsSubtitle, { color: styles.$primaryColor }]}
+             titleStyle={[styles.listItemTitle, { color: styles.$primaryColor }]}
+             subtitleStyle={[styles.listItemSubtitle, { color: styles.$primaryColor }]}
            />
          );
        })
@@ -339,14 +342,15 @@ class Form extends Component {
    }
 
   render() {
+    const styles = themeStyles[this.props.theme];
     const { screenIndex } = this.props;
-    const { styles, title } = this.props.navigation.state.params;
+    const { title } = this.props.navigation.state.params;
     const gradients = [
       styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor
     ];
 
     return (
-      <LinearGradient colors={gradients} style={styles.homeContainer}>
+      <LinearGradient colors={gradients} style={styles.container}>
         <Header title={title} styles={styles} />
         <A.View delay={0} duration={1500} animation='slideInLeft'>
           {this.renderContentSwitch(styles, screenIndex)}
@@ -368,8 +372,9 @@ class Form extends Component {
   }
 }
 
-const mapStateToProps = ({ program }) => {
+const mapStateToProps = ({ program, theme }) => {
   return {
+    theme: theme.selected,
     loading: program.loading,
     programInfo: program.info,
     screenIndex: program.screenIndex,

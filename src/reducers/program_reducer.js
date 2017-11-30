@@ -32,7 +32,7 @@ const INITIAL_STATE = {
   // Program
   info: [],
   days: [],
-  exercises: [],
+  allExercises: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -66,7 +66,7 @@ export default (state = INITIAL_STATE, action) => {
         loading: false
       };
     case FETCH_ALL_EXERCISES_SUCCESS:
-      return { ...state, exercises: action.payload, error: '', loading: false };
+      return { ...state, allExercises: action.payload, error: '', loading: false };
 
     // Selected or Primary Program
     case FETCH_PROGRAM:

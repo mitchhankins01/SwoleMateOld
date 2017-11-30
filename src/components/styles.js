@@ -193,16 +193,28 @@ const themeStyles = themes.createStyleSheet({
     backgroundColor: '$secondaryColor',
     borderBottomWidth: 0,
   },
-  popupDropdown: {
-    backgroundColor: '$tertiaryColor',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginVertical: 10,
-    width: DEVICE_WIDTH * 0.7,
-    borderRadius: 5,
+  dropdown: {
     height: 30,
+    borderRadius: 5,
+    marginVertical: 10,
+    alignSelf: 'center',
+    borderBottomWidth: 0,
+    justifyContent: 'center',
+    width: DEVICE_WIDTH * 0.7,
+    backgroundColor: '$tertiaryColor',
   },
-  popupDropdownText: {
+  dropdownList: {
+    height: 250,
+    borderWidth: 0,
+    borderRadius: 0,
+    marginVertical: 10,
+    alignSelf: 'center',
+    borderBottomWidth: 0,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: DEVICE_WIDTH * 0.7,
+  },
+  dropdownText: {
     backgroundColor: 'transparent',
     fontFamily: 'Exo-Medium',
     color: '$primaryColor',
@@ -218,13 +230,13 @@ const themeStyles = themes.createStyleSheet({
     fontSize: 16,
     width: 200,
   },
-  popupInputContainer: {
+  jiroInputContainer: {
     alignSelf: 'center',
     width: DEVICE_WIDTH * 0.7,
     marginBottom: 5,
     borderRadius: 5,
   },
-  popupInput: {
+  jiroInput: {
     color: '$primaryColor',
     fontFamily: 'Exo-Regular',
     fontSize: 16,

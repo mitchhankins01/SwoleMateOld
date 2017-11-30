@@ -92,7 +92,7 @@ export const fetchAllExercises = () => {
     dispatch({ type: FETCH_ALL_EXERCISES });
 
     const exercises = [];
-    
+
     firebase.firestore().collection('exercises')
     .get()
     .then(querySnapshot => {

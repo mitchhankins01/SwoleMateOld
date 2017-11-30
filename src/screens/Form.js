@@ -48,8 +48,17 @@ class Form extends Component {
    }
 
    componentWillMount() {
-     // IMPLEMENT, move to fetch all programs etc?
      this.props.dispatch(fetchAllExercises());
+   }
+
+   componentWillUpdate() {
+     if (!this.props.loading) { this.filterExercises('Show All'); }
+   }
+
+   onClosePressed() {
+     const { dispatch, navigation } = this.props;
+     dispatch(fetchProgram());
+     navigation.goBack(null);
    }
 
    validateForm(screenIndex) {
@@ -102,12 +111,6 @@ class Form extends Component {
        case 5: return this.filterExercises(value);
        default: return;
      }
-   }
-
-   onClosePressed() {
-     const { dispatch, navigation } = this.props;
-     dispatch(fetchProgram());
-     navigation.goBack(null);
    }
 
    renderPopupComponent(component, styles) {
@@ -169,35 +172,29 @@ class Form extends Component {
 
    renderJiro(styles, title, stateRef, width) {
      let style =
-       width ? style = [styles.popupInputContainer, { width }] : style = styles.popupInputContainer;
+       width ? style = [styles.jiroInputContainer, { width }] : style = styles.jiroInputContainer;
      return (
        <Jiro
-         labelStyle={[styles.popupInput, { color: styles.$tertiaryColor }]}
-         onChangeText={value => this.setState({ [stateRef]: value })}
-         borderColor={styles.$tertiaryColor}
          style={style}
-         inputStyle={styles.popupInput}
          label={title}
+         inputStyle={styles.jiroInput}
+         borderColor={styles.$tertiaryColor}
+         onChangeText={value => this.setState({ [stateRef]: value })}
+         labelStyle={[styles.jiroInput, { color: styles.$tertiaryColor }]}
        />
      );
    }
 
-   renderDropdown(styles, componentIndex, title, options, bgColor) {
+   renderDropdown(styles, componentIndex, title, options, backgroundColor) {
      return (
        <ModalDropdown
-         renderSeparator={() => this.renderDropdownSeparator(styles)}
-         style={[styles.popupDropdown, { borderBottomWidth: 0 }]}
-         textStyle={styles.popupDropdownText}
-         dropdownStyle={[styles.popupDropdown, {
-           height: 250,
-           backgroundColor: bgColor,
-           alignItems: 'flex-start',
-           borderRadius: 0,
-           borderWidth: 0
-         }]}
-         dropdownTextStyle={styles.popupDropdownText}
-         defaultValue={title}
          options={options}
+         defaultValue={title}
+         style={styles.dropdown}
+         textStyle={styles.dropdownText}
+         dropdownTextStyle={styles.dropdownText}
+         dropdownStyle={[styles.dropdownList, { backgroundColor }]}
+         renderSeparator={() => this.renderDropdownSeparator(styles)}
          onSelect={(index, value) => this.updateState(componentIndex, index, value)}
        />
      );
@@ -251,11 +248,10 @@ class Form extends Component {
 
    renderAddProgramExercise(styles) {
      const bgColor = Color(styles.$tertiaryColor).alpha(0.7);
-
      return (
        <View>
          <View style={{ marginBottom: 20 }} />
-         {this.renderDropdown(styles, 5, 'Select Body Part...',
+         {this.renderDropdown(styles, 5, 'Show All',
            ['Show All', 'Abs', 'Back', 'Biceps', 'Calves', 'Chest',
            'Fore-arms', 'Glutes', 'Shoulders', 'Triceps', 'Cardio'], bgColor
          )}
@@ -308,7 +304,9 @@ class Form extends Component {
    }
 
    filterExercises(value) {
-     if (value === 'Show All') { return this.setState({ exerciseList: this.props.allExercises }); }
+     if (value === 'Show All') {
+       return this.setState({ exerciseList: this.props.allExercises });
+     }
 
      const filteredExercises = this.props.allExercises.filter(exercise => {
        return exercise.group === value;
@@ -364,9 +362,10 @@ class Form extends Component {
 
 const mapStateToProps = ({ program }) => {
   return {
+    loading: program.loading,
     programInfo: program.info,
-    allExercises: program.exercises,
     screenIndex: program.screenIndex,
+    allExercises: program.allExercises,
   };
 };
 

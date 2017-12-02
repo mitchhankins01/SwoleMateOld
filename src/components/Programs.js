@@ -23,11 +23,6 @@ class Programs extends Component {
     dispatch(fetchAllExercises());
   }
 
-  componentWillUpdate() {
-    const { renderView } = this.refs;
-    if (renderView) { renderView.flipInY(); }
-  }
-
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
     const { dispatch } = this.props;
     dispatch(updateScreenIndex(screenIndex));
@@ -142,7 +137,7 @@ class Programs extends Component {
     }
 
     return (
-      <Animatable.View ref='renderView' animation='flipInY' duration={500}>
+      <Animatable.View>
         {renderType}
       </Animatable.View>
     );

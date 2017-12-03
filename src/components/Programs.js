@@ -105,7 +105,6 @@ class Programs extends Component {
 
   render() {
     const { loading, styles, screenIndex } = this.props;
-
     if (loading) {
       return (
         <View style={styles.loadingContainer}>

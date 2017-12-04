@@ -37,7 +37,7 @@ class Programs extends Component {
   renderWarning(styles, key) {
     if (this.state.warningVisible && key === this.state.selectedDeleteKey) {
       return (
-        <View>
+        <Animatable.View animation={'fadeIn'}>
           <View style={styles.programDivider} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
             <Entypo
@@ -45,9 +45,9 @@ class Programs extends Component {
               name={'cross'}
               style={styles.programIcon}
               underlayColor={'transparent'}
-              onPress={() => this.showPopover}
+              onPress={() => this.setState({ warningVisible: false })}
             />
-            <Text style={styles.programTitle}>
+            <Text style={styles.warningText}>
               Are you sure?
             </Text>
             <Entypo
@@ -58,7 +58,7 @@ class Programs extends Component {
               onPress={() => this.showPopover}
             />
           </View>
-        </View>
+        </Animatable.View>
       );
     }
   }

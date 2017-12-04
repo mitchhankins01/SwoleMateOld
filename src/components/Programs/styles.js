@@ -62,6 +62,12 @@ const themeStyles = themes.createStyleSheet({
   programIcon: {
     color: '#EDF0F1'
   },
+  warningText: {
+    fontSize: 18,
+    color: 'red',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Medium',
+  },
 
   listItem: {
     height: 80,

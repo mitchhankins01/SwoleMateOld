@@ -53,24 +53,13 @@ class Programs extends Component {
     );
   }
 
-  renderIcon(styles, name, size) {
-    switch (this.props.editMode) {
-      case false:
-      case true:
-    }
-
-    return (
-      <Entypo style={styles.listItemIcon} name={name} size={size} />
-    );
-  }
-
   renderProgramDays = (styles, program) => {
     return (
       program.map(day => {
         const subtitle = `${day.primaryGroup} - ${day.secondaryGroup}`;
         return (
           <ListItem
-            //hideChevron
+            hideChevron
             key={day.key}
             title={day.name}
             subtitle={subtitle}
@@ -79,8 +68,7 @@ class Programs extends Component {
             titleStyle={styles.listItemTitle}
             subtitleStyle={styles.listItemSubtitle}
             onPress={() => this.updateScreenIndex('programExercises', day.key)}
-            //rightIcon={this.renderIcon(styles, 'edit', 25)}
-            //leftIcon={this.renderIcon(styles, 'folder', 30)}
+            leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
           />
         );
       })

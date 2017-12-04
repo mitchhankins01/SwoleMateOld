@@ -7,13 +7,14 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import themeStyles from './styles';
 import {
   fetchProgram,
   fetchAllPrograms,
   fetchAllExercises,
   updateScreenIndex,
   updateSelectedDayKey,
-} from '../actions/program_actions';
+} from '../../actions/program_actions';
 
 class Programs extends Component {
   componentWillMount() {
@@ -42,13 +43,24 @@ class Programs extends Component {
             title={program.name}
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
-            titleStyle={styles.listItemProgramsTitle}
-            subtitleStyle={styles.listItemProgramsSubtitle}
+            titleStyle={styles.listItemTitle}
+            subtitleStyle={styles.listItemSubtitle}
             onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
             leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
           />
         );
       })
+    );
+  }
+
+  renderIcon(styles, name, size) {
+    switch (this.props.editMode) {
+      case false:
+      case true:
+    }
+
+    return (
+      <Entypo style={styles.listItemIcon} name={name} size={size} />
     );
   }
 
@@ -58,16 +70,17 @@ class Programs extends Component {
         const subtitle = `${day.primaryGroup} - ${day.secondaryGroup}`;
         return (
           <ListItem
-            hideChevron
+            //hideChevron
             key={day.key}
             title={day.name}
             subtitle={subtitle}
             underlayColor={'transparent'}
             containerStyle={styles.listItem}
-            titleStyle={styles.listItemProgramsTitle}
-            subtitleStyle={styles.listItemProgramsSubtitle}
+            titleStyle={styles.listItemTitle}
+            subtitleStyle={styles.listItemSubtitle}
             onPress={() => this.updateScreenIndex('programExercises', day.key)}
-            leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
+            //rightIcon={this.renderIcon(styles, 'edit', 25)}
+            //leftIcon={this.renderIcon(styles, 'folder', 30)}
           />
         );
       })
@@ -91,8 +104,8 @@ class Programs extends Component {
               subtitle={subtitle}
               underlayColor={'transparent'}
               containerStyle={styles.listItem}
-              titleStyle={styles.listItemProgramsTitle}
-              subtitleStyle={styles.listItemProgramsSubtitle}
+              titleStyle={styles.listItemTitle}
+              subtitleStyle={styles.listItemSubtitle}
               leftIcon={<MaterialIcons style={styles.listItemIcon} name={'dumbbell'} size={30} />}
               onPress={() => {}}
             />
@@ -104,7 +117,9 @@ class Programs extends Component {
   }
 
   render() {
-    const { loading, styles, screenIndex } = this.props;
+    const { loading, screenIndex, theme } = this.props;
+    const styles = themeStyles[theme];
+
     if (loading) {
       return (
         <View style={styles.loadingContainer}>
@@ -143,10 +158,12 @@ class Programs extends Component {
   }
 }
 
-const mapStateToProps = ({ program }) => {
+const mapStateToProps = ({ program, theme }) => {
   return {
     // Various
+    theme: theme.selected,
     loading: program.loading,
+    editMode: program.editMode,
     screenIndex: program.screenIndex,
     selectedDayKey: program.selectedDayKey,
     // All Exercises

@@ -1,6 +1,7 @@
 import firebase from 'react-native-firebase';
 
-// Screen Index
+// Various
+export const TOGGLE_EDIT_MODE = 'TOGGLE_EDIT_MODE';
 export const UPDATE_SCREEN_INDEX = 'UPDATE_SCREEN_INDEX';
 export const UPDATE_SELECTED_DAY_KEY = 'UPDATE_SELECTED_DAY_KEY';
 // Fetch All Programs
@@ -25,7 +26,13 @@ export const ADD_PROGRAM_DAY_FAILURE = 'ADD_PROGRAM_DAY_FAILURE';
 export const ADD_PROGRAM_EXERCISE = 'ADD_PROGRAM_EXERCISE';
 export const ADD_PROGRAM_EXERCISE_FAILURE = 'ADD_PROGRAM_EXERCISE_FAILURE';
 
-// Screen Index && Day Key
+// Various
+export const toggleEditMode = () => {
+  return {
+    type: TOGGLE_EDIT_MODE
+  };
+};
+
 export const updateScreenIndex = index => {
   return {
     payload: index,

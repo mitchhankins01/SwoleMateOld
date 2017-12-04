@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Header from '../components/Header';
-import Programs from '../components/Programs';
+import { Programs } from '../components/Programs';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
 import { ActionBar } from '../components/ActionBar';
@@ -99,6 +99,7 @@ const mapStateToProps = ({ program, theme }) => {
     theme: theme.selected,
     programInfo: program.info,
     programDays: program.days,
+    //editMode: program.editMode,
     programError: program.error,
     screenIndex: program.screenIndex,
     selectedDayKey: program.selectedDayKey,

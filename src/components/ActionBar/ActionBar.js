@@ -7,7 +7,8 @@ import * as Animatable from 'react-native-animatable';
 import themeStyles from './styles';
 import {
   fetchProgram,
-  updateScreenIndex
+  toggleEditMode,
+  updateScreenIndex,
 } from '../../actions/program_actions';
 
 class ActionBar extends Component {
@@ -75,7 +76,9 @@ class ActionBar extends Component {
         {this.renderButton(styles, 'add-to-list', 30, 300,
           () => this.updateScreenIndex('addProgramDay')
         )}
-        {this.renderButton(styles, 'edit', 22, 200)}
+        {this.renderButton(styles, 'edit', 22, 200,
+          () => this.props.dispatch(toggleEditMode())
+        )}
         {this.renderButton(styles, 'help', 22, 100)}
       </View>
     );

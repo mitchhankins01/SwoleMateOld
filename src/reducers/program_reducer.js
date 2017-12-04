@@ -1,6 +1,5 @@
 import {
   // Various
-  TOGGLE_EDIT_MODE,
   UPDATE_SCREEN_INDEX,
   UPDATE_SELECTED_DAY_KEY,
   // Fetch All Programs
@@ -31,7 +30,6 @@ const INITIAL_STATE = {
   programs: [],
   exercises: [],
   loading: false,
-  editMode: false,
   selectedDayKey: '',
   screenIndex: 'primaryProgram',
   // Program
@@ -43,8 +41,6 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // Various
-    case TOGGLE_EDIT_MODE:
-      return { ...state, editMode: !state.editMode };
     case UPDATE_SCREEN_INDEX:
       return { ...state, screenIndex: action.payload };
     case UPDATE_SELECTED_DAY_KEY:

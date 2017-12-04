@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import ProgressBar from 'react-native-progress/Bar';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -31,24 +29,34 @@ class Programs extends Component {
     if (selectedProgram) { dispatch(fetchProgram(selectedProgram)); }
   }
 
+  renderCard(styles, item, subtitle, icon, onPress) {
+    return (
+      <TouchableOpacity key={item.name} style={styles.programContainer} onPress={onPress} >
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <MaterialIcons style={styles.programTitle} name={icon} />
+          <Text style={styles.programTitle}>
+            {item.name}
+          </Text>
+        </View>
+        <View style={styles.programDivider} />
+        <Text style={styles.programSubtitle}>
+          {subtitle}
+        </Text>
+        <View style={styles.programDivider} />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <Entypo style={styles.programIcon} name={'edit'} size={25} />
+          <Entypo style={styles.programIcon} name={'trash'} size={22} />
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
   renderAllPrograms = styles => {
     return (
       this.props.allPrograms.map(program => {
         const subtitle = `${program.frequency} Days - ${program.level} - ${program.type}`;
-        return (
-          <ListItem
-            hideChevron
-            key={program.key}
-            subtitle={subtitle}
-            title={program.name}
-            underlayColor={'transparent'}
-            containerStyle={styles.listItem}
-            titleStyle={styles.listItemTitle}
-            subtitleStyle={styles.listItemSubtitle}
-            onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
-            leftIcon={<Entypo style={styles.listItemIcon} name={'clipboard'} size={30} />}
-          />
-        );
+        return this.renderCard(styles, program, subtitle, 'clipboard',
+          () => this.updateScreenIndex('selectedProgram', null, program.key));
       })
     );
   }
@@ -57,20 +65,8 @@ class Programs extends Component {
     return (
       program.map(day => {
         const subtitle = `${day.primaryGroup} - ${day.secondaryGroup}`;
-        return (
-          <ListItem
-            hideChevron
-            key={day.key}
-            title={day.name}
-            subtitle={subtitle}
-            underlayColor={'transparent'}
-            containerStyle={styles.listItem}
-            titleStyle={styles.listItemTitle}
-            subtitleStyle={styles.listItemSubtitle}
-            onPress={() => this.updateScreenIndex('programExercises', day.key)}
-            leftIcon={<Entypo style={styles.listItemIcon} name={'folder'} size={30} />}
-          />
-        );
+        return this.renderCard(styles, day, subtitle, 'folder',
+          () => this.updateScreenIndex('programExercises', day.key));
       })
     );
   }
@@ -84,20 +80,9 @@ class Programs extends Component {
           });
 
           const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
-          return (
-            <ListItem
-              hideChevron
-              key={exercise.key}
-              title={match.name}
-              subtitle={subtitle}
-              underlayColor={'transparent'}
-              containerStyle={styles.listItem}
-              titleStyle={styles.listItemTitle}
-              subtitleStyle={styles.listItemSubtitle}
-              leftIcon={<MaterialIcons style={styles.listItemIcon} name={'dumbbell'} size={30} />}
-              onPress={() => {}}
-            />
-          );
+
+          return this.renderCard(styles, match, subtitle, 'dumbbell',
+            () => this.updateScreenIndex('programExercises'));
         }
         return null;
       })
@@ -108,15 +93,15 @@ class Programs extends Component {
     const { loading, screenIndex, theme } = this.props;
     const styles = themeStyles[theme];
 
-    if (loading) {
-      return (
-        <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>SwoleMate</Text>
-          <Text style={styles.loadingTextSub}>Loading...</Text>
-          <ProgressBar width={200} indeterminate color={styles.$primaryColor} />
-        </View>
-      );
-    }
+    // if (loading) {
+    //   return (
+    //     <View style={styles.loadingContainer}>
+    //       <Text style={styles.loadingText}>SwoleMate</Text>
+    //       <Text style={styles.loadingTextSub}>Loading...</Text>
+    //       <ProgressBar width={200} indeterminate color={styles.$primaryColor} />
+    //     </View>
+    //   );
+    // }
 
     let renderType;
     switch (screenIndex) {

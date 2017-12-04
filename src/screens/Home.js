@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
-import { List } from 'react-native-elements';
+import { ScrollView, StatusBar } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
@@ -64,20 +63,23 @@ class Home extends Component {
 
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >
-
+        <StatusBar backgroundColor='transparent' barStyle='light-content' />
         <Header title={'Home'} styles={styles} />
 
         <Greeting styles={styles} />
 
-        <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
+        {/* <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
           {this.renderTitle()}
-        </Animatable.Text>
+        </Animatable.Text> */}
 
         <Animatable.View duration={750} ref='programView' animation='zoomIn'>
-          <ScrollView style={{ marginBottom: 250, marginTop: 10 }}>
-            <List containerStyle={styles.list}>
-              <Programs styles={styles} navigation={this.props.navigation} />
-            </List>
+          <ScrollView
+            style={{
+              marginTop: 10,
+              paddingBottom: 150,
+            }}
+          >
+            <Programs styles={styles} navigation={this.props.navigation} />
           </ScrollView>
         </Animatable.View>
 

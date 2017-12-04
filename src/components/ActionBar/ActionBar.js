@@ -7,7 +7,6 @@ import * as Animatable from 'react-native-animatable';
 import themeStyles from './styles';
 import {
   fetchProgram,
-  toggleEditMode,
   updateScreenIndex,
 } from '../../actions/program_actions';
 
@@ -18,7 +17,7 @@ class ActionBar extends Component {
     dispatch(updateScreenIndex(screenIndex));
 
     if (goBack) { this.props.navigation.goBack(null); }
-    if (screenIndex === 'primaryProgram') { dispatch(fetchProgram()); }
+    //if (screenIndex === 'primaryProgram') { dispatch(fetchProgram()); }
 
     switch (screenIndex) {
       default: break;
@@ -46,7 +45,7 @@ class ActionBar extends Component {
           size={size}
           type='entypo'
           onPress={onPress}
-          color={styles.$primaryColor}
+          color={'#EDF0F1'}
           underlayColor={'transparent'}
         />
       </Animatable.View>
@@ -75,9 +74,6 @@ class ActionBar extends Component {
         )}
         {this.renderButton(styles, 'add-to-list', 30, 300,
           () => this.updateScreenIndex('addProgramDay')
-        )}
-        {this.renderButton(styles, 'edit', 22, 200,
-          () => this.props.dispatch(toggleEditMode())
         )}
         {this.renderButton(styles, 'help', 22, 100)}
       </View>

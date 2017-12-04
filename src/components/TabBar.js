@@ -12,8 +12,8 @@ class TabBar extends Component {
     return (
       <TabBarBottom
       {...this.props}
-      activeTintColor={styles.$primaryColor}
-      inactiveTintColor={styles.$primaryColor}
+      activeTintColor={'#EDF0F1'}//{styles.$primaryColor}
+      inactiveTintColor={'#BEC3C7'}//{styles.$primaryColor}
       style={{
         backgroundColor: styles.$secondaryColor,
         height: Platform.OS === 'android' ? 55 : 52

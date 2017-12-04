@@ -38,7 +38,7 @@ class Greeting extends Component {
         delay={0}
         style={[
           styles.header,
-          { fontSize: 22, color: styles.$tertiaryColor, marginTop: 20, marginBottom: 10 }
+          { fontSize: 22, color: '#EDF0F1', marginTop: 20 }
         ]}
       >
         {`${greeting}, ${this.state.name}`}

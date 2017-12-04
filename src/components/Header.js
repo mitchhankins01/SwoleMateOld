@@ -14,7 +14,7 @@ const Header = ({ title, styles, onLeftPress, onRightPress }) => {
       }}*/
       centerComponent={{
         text: title,
-        style: { fontFamily: 'Exo-Medium', color: styles.$primaryColor, fontSize: 20 }
+        style: { fontFamily: 'Exo-Medium', color: '#EDF0F1', fontSize: 20 }
       }}
       /*rightComponent={{
         icon: 'exit-to-app',

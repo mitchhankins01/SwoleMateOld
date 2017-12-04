@@ -1,11 +1,8 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
-import { View, Text, TouchableOpacity } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import themeStyles from './styles';
+import { Card } from '../Card';
 import {
   fetchProgram,
   fetchAllPrograms,
@@ -15,11 +12,6 @@ import {
 } from '../../actions/program_actions';
 
 class Programs extends Component {
-  state = {
-    selectedDeleteKey: '',
-    warningVisible: false
-  }
-
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(fetchProgram());
@@ -34,103 +26,54 @@ class Programs extends Component {
     if (selectedProgram) { dispatch(fetchProgram(selectedProgram)); }
   }
 
-  renderWarning(styles, key) {
-    if (this.state.warningVisible && key === this.state.selectedDeleteKey) {
-      return (
-        <Animatable.View animation={'fadeIn'}>
-          <View style={styles.programDivider} />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Entypo
-              size={30}
-              name={'cross'}
-              style={styles.programIcon}
-              underlayColor={'transparent'}
-              onPress={() => this.setState({ warningVisible: false })}
-            />
-            <Text style={styles.warningText}>
-              Are you sure?
-            </Text>
-            <Entypo
-              size={25}
-              name={'check'}
-              style={styles.programIcon}
-              underlayColor={'transparent'}
-              onPress={() => this.showPopover}
-            />
-          </View>
-        </Animatable.View>
-      );
-    }
-  }
-
-  renderCard(styles, item, subtitle, icon, onPress) {
-    return (
-      <TouchableOpacity key={item.name} style={styles.programContainer} onPress={onPress} >
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <MaterialIcons style={styles.programTitle} name={icon} />
-          <Text style={styles.programTitle}>
-            {item.name}
-          </Text>
-        </View>
-        <View style={styles.programDivider} />
-        <Text style={styles.programSubtitle}>
-          {subtitle}
-        </Text>
-        <View style={styles.programDivider} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <Entypo
-            size={25}
-            name={'edit'}
-            style={styles.programIcon}
-            underlayColor={'transparent'}
-            onPress={() => this.showPopover}
-          />
-          <Entypo
-            ref='deleteButton'
-            size={22}
-            name={'trash'}
-            style={styles.programIcon}
-            underlayColor={'transparent'}
-            onPress={() => this.setState({ warningVisible: true, selectedDeleteKey: item.key })}
-          />
-        </View>
-        {this.renderWarning(styles, item.key)}
-      </TouchableOpacity>
-    );
-  }
-
-  renderAllPrograms = styles => {
+  renderAllPrograms = () => {
     return (
       this.props.allPrograms.map(program => {
-        const subtitle = `${program.frequency} Days - ${program.level} - ${program.type}`;
-        return this.renderCard(styles, program, subtitle, 'clipboard',
-          () => this.updateScreenIndex('selectedProgram', null, program.key));
+        return (
+          <Card
+            item={program}
+            key={program.key}
+            icon={'clipboard'}
+            subtitle={`${program.frequency} Days - ${program.level} - ${program.type}`}
+            onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
+          />
+        );
       })
     );
   }
 
-  renderProgramDays = (styles, program) => {
+  renderProgramDays = program => {
     return (
       program.map(day => {
-        const subtitle = `${day.primaryGroup} - ${day.secondaryGroup}`;
-        return this.renderCard(styles, day, subtitle, 'folder',
-          () => this.updateScreenIndex('programExercises', day.key));
+        return (
+          <Card
+            item={day}
+            key={day.key}
+            icon={'folder'}
+            subtitle={`${day.primaryGroup} - ${day.secondaryGroup}`}
+            onPress={() => this.updateScreenIndex('programExercises', day.key)}
+          />
+        );
       })
     );
   }
 
-  renderProgramExercises = (styles, exercises) => {
+  renderProgramExercises = exercises => {
     return (
       exercises.map(exercise => {
         if (exercise.day === this.props.selectedDayKey) {
           const match = this.props.allExercises.find(eachExercise => {
             return eachExercise.key === exercise.exerciseKey;
           });
-
-          const subtitle = `${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`;
-
-          return this.renderCard(styles, match, subtitle, 'dumbbell',
-            () => this.updateScreenIndex('programExercises'));
+          return (
+            <Card
+              item={match}
+              key={match.key}
+              icon={'folder'}
+              onPress={() => this.updateScreenIndex('programExercises')}
+              subtitle={`${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`}
+            />
+          );
         }
         return null;
       })
@@ -138,8 +81,7 @@ class Programs extends Component {
   }
 
   render() {
-    const { loading, screenIndex, theme } = this.props;
-    const styles = themeStyles[theme];
+    const { loading, screenIndex } = this.props;
 
     // if (loading) {
     //   return (
@@ -156,14 +98,14 @@ class Programs extends Component {
       default:
         return;
       case 'allPrograms':
-        renderType = this.renderAllPrograms(styles);
+        renderType = this.renderAllPrograms();
         break;
       case 'primaryProgram':
       case 'selectedProgram':
-        renderType = this.renderProgramDays(styles, this.props.programDays);
+        renderType = this.renderProgramDays(this.props.programDays);
         break;
       case 'programExercises':
-        renderType = this.renderProgramExercises(styles, this.props.programExercises);
+        renderType = this.renderProgramExercises(this.props.programExercises);
         break;
       case 'addProgram':
       case 'addProgramDay':
@@ -184,7 +126,6 @@ const mapStateToProps = ({ program, theme }) => {
     // Various
     theme: theme.selected,
     loading: program.loading,
-    editMode: program.editMode,
     screenIndex: program.screenIndex,
     selectedDayKey: program.selectedDayKey,
     // All Exercises

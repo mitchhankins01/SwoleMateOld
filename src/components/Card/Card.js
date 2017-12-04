@@ -37,7 +37,7 @@ class Card extends Component {
               name={'check'}
               style={styles.cardIcon}
               underlayColor={'transparent'}
-              onPress={() => this.showPopover}
+              onPress={() => console.log(this.state.selectedDeleteKey)}
             />
           </View>
         </Animatable.View>
@@ -69,43 +69,48 @@ class Card extends Component {
   }
 
   render() {
-    const { theme, screenIndex, empty, title, item, subtitle, icon, onPress } = this.props;
+    const { theme, empty, title, item, subtitle, icon, onPress } = this.props;
     const styles = themeStyles[theme];
 
     if (empty) return this.renderEmptyCard(styles, title);
 
     return (
-      <TouchableOpacity key={item.name} style={styles.cardContainer} onPress={onPress} >
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <MaterialIcons style={styles.cardTitle} name={icon} />
-          <Text style={styles.cardTitle}>
-            {item.name}
+      <Animatable.View duration={750} ref='cardView' animation='zoomIn'>
+        <TouchableOpacity key={item.name} style={styles.cardContainer} onPress={onPress} >
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <MaterialIcons style={styles.cardTitle} name={icon} />
+            <Text style={styles.cardTitle}>
+              {item.name}
+            </Text>
+          </View>
+          <View style={styles.cardDivider} />
+          <Text style={styles.cardSubtitle}>
+            {subtitle}
           </Text>
-        </View>
-        <View style={styles.cardDivider} />
-        <Text style={styles.cardSubtitle}>
-          {subtitle}
-        </Text>
-        <View style={styles.cardDivider} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <Entypo
-            size={25}
-            name={'edit'}
-            style={styles.cardIcon}
-            underlayColor={'transparent'}
-            onPress={() => this.showPopover}
-          />
-          <Entypo
-            ref='deleteButton'
-            size={22}
-            name={'trash'}
-            style={styles.cardIcon}
-            underlayColor={'transparent'}
-            onPress={() => this.setState({ warningVisible: true, selectedDeleteKey: item.key })}
-          />
-        </View>
-        {this.renderWarning(styles, item.key)}
-      </TouchableOpacity>
+          <View style={styles.cardDivider} />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <Entypo
+              size={25}
+              name={'edit'}
+              style={styles.cardIcon}
+              underlayColor={'transparent'}
+              onPress={() => this.showPopover}
+            />
+            <Entypo
+              ref='deleteButton'
+              size={22}
+              name={'trash'}
+              style={styles.cardIcon}
+              underlayColor={'transparent'}
+              onPress={() => this.setState({
+                warningVisible: !this.state.warningVisible,
+                selectedDeleteKey: item.key
+              })}
+            />
+          </View>
+          {this.renderWarning(styles, item.key)}
+        </TouchableOpacity>
+      </Animatable.View>
     );
   }
 }

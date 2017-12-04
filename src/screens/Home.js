@@ -36,9 +36,8 @@ class Home extends Component {
    }
 
    componentWillUpdate() {
-     const { programView, titleView } = this.refs;
+     const { titleView } = this.refs;
      if (titleView) { titleView.zoomIn(); }
-     if (programView) { programView.zoomIn(); }
    }
 
    renderError(error) {
@@ -71,17 +70,15 @@ class Home extends Component {
         {/* <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
           {this.renderTitle()}
         </Animatable.Text> */}
-
-        <Animatable.View duration={750} ref='programView' animation='zoomIn'>
-          <ScrollView
-            style={{
-              marginTop: 10,
-              paddingBottom: 150,
-            }}
-          >
-            <Programs styles={styles} navigation={this.props.navigation} />
-          </ScrollView>
-        </Animatable.View>
+        <ScrollView
+          pagingEnabled={false}
+          style={{
+            marginTop: 10,
+            marginBottom: 100,
+          }}
+        >
+          <Programs styles={styles} navigation={this.props.navigation} />
+        </ScrollView>
 
         <ActionBar styles={styles} navigation={this.props.navigation} />
 

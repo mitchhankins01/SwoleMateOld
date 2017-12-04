@@ -7,9 +7,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Header from '../components/Header';
-import { Programs } from '../components/Programs';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
+import { Programs } from '../components/Programs';
 import { ActionBar } from '../components/ActionBar';
 import { fetchTheme } from '../actions/themeActions';
 

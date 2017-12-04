@@ -6,7 +6,6 @@ import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
 import {
-  fetchProgram,
   updateScreenIndex,
 } from '../../actions/program_actions';
 

@@ -28,6 +28,7 @@ const Header = ({ title, styles, onLeftPress, onRightPress }) => {
         borderBottomWidth: 0,
         elevation: 1,
         shadowOpacity: 1,
+        shadowColor: 'rgba(0,0,0, 1)',
         height: 70, //Platform.OS === 'android' ? 75 : 65
       }}
     />

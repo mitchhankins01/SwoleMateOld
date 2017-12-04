@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
+import { View, Text, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import themeStyles from './styles';
@@ -15,6 +15,11 @@ import {
 } from '../../actions/program_actions';
 
 class Programs extends Component {
+  state = {
+    selectedDeleteKey: '',
+    warningVisible: false
+  }
+
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(fetchProgram());
@@ -27,6 +32,35 @@ class Programs extends Component {
     dispatch(updateScreenIndex(screenIndex));
     if (selectedDayKey) { dispatch(updateSelectedDayKey(selectedDayKey)); }
     if (selectedProgram) { dispatch(fetchProgram(selectedProgram)); }
+  }
+
+  renderWarning(styles, key) {
+    if (this.state.warningVisible && key === this.state.selectedDeleteKey) {
+      return (
+        <View>
+          <View style={styles.programDivider} />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <Entypo
+              size={30}
+              name={'cross'}
+              style={styles.programIcon}
+              underlayColor={'transparent'}
+              onPress={() => this.showPopover}
+            />
+            <Text style={styles.programTitle}>
+              Are you sure?
+            </Text>
+            <Entypo
+              size={25}
+              name={'check'}
+              style={styles.programIcon}
+              underlayColor={'transparent'}
+              onPress={() => this.showPopover}
+            />
+          </View>
+        </View>
+      );
+    }
   }
 
   renderCard(styles, item, subtitle, icon, onPress) {
@@ -44,9 +78,23 @@ class Programs extends Component {
         </Text>
         <View style={styles.programDivider} />
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <Entypo style={styles.programIcon} name={'edit'} size={25} />
-          <Entypo style={styles.programIcon} name={'trash'} size={22} />
+          <Entypo
+            size={25}
+            name={'edit'}
+            style={styles.programIcon}
+            underlayColor={'transparent'}
+            onPress={() => this.showPopover}
+          />
+          <Entypo
+            ref='deleteButton'
+            size={22}
+            name={'trash'}
+            style={styles.programIcon}
+            underlayColor={'transparent'}
+            onPress={() => this.setState({ warningVisible: true, selectedDeleteKey: item.key })}
+          />
         </View>
+        {this.renderWarning(styles, item.key)}
       </TouchableOpacity>
     );
   }

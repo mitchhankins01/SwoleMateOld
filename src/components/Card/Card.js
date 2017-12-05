@@ -75,8 +75,8 @@ class Card extends Component {
     if (empty) return this.renderEmptyCard(styles, title);
 
     return (
-      <Animatable.View duration={750} ref='cardView' animation='zoomIn'>
-        <TouchableOpacity key={item.name} style={styles.cardContainer} onPress={onPress} >
+      <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>
+        <TouchableOpacity key={item.name}onPress={onPress} >
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <MaterialIcons style={styles.cardTitle} name={icon} />
             <Text style={styles.cardTitle}>
@@ -87,29 +87,29 @@ class Card extends Component {
           <Text style={styles.cardSubtitle}>
             {subtitle}
           </Text>
-          <View style={styles.cardDivider} />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Entypo
-              size={25}
-              name={'edit'}
-              style={styles.cardIcon}
-              underlayColor={'transparent'}
-              onPress={() => this.showPopover}
-            />
-            <Entypo
-              ref='deleteButton'
-              size={22}
-              name={'trash'}
-              style={styles.cardIcon}
-              underlayColor={'transparent'}
-              onPress={() => this.setState({
-                warningVisible: !this.state.warningVisible,
-                selectedDeleteKey: item.key
-              })}
-            />
-          </View>
           {this.renderWarning(styles, item.key)}
+          <View style={styles.cardDivider} />
         </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <Entypo
+            size={25}
+            name={'edit'}
+            style={styles.cardIcon}
+            underlayColor={'transparent'}
+            onPress={() => this.showPopover}
+          />
+          <Entypo
+            ref='deleteButton'
+            size={22}
+            name={'trash'}
+            style={styles.cardIcon}
+            underlayColor={'transparent'}
+            onPress={() => this.setState({
+              warningVisible: !this.state.warningVisible,
+              selectedDeleteKey: item.key
+            })}
+          />
+        </View>
       </Animatable.View>
     );
   }

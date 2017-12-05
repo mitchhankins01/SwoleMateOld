@@ -6,8 +6,8 @@ const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const themeStyles = themes.createStyleSheet({
   actionBar: {
-    left: 20,
-    right: 20,
+    left: 30,
+    right: 30,
     bottom: 20,
     height: 50,
     elevation: 1,

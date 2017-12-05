@@ -5,6 +5,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { Card } from '../components/Card';
 import Header from '../components/Header';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
@@ -64,21 +65,14 @@ class Home extends Component {
      }
    }
 
-   // renderActionBar() {
-   //   console.log(this.state.scrollIndex);
-   //   if (this.state.scrollIndex <= 2) {
-   //     return (
-   //       <Animatable.View animation='zoomIn' duration={500}>
-   //         <ActionBar navigation={this.props.navigation} />
-   //       </Animatable.View>
-   //     );
-   //   }
-   //   return (
-   //     <Animatable.View animation='zoomOut' duration={500}>
-   //       <ActionBar navigation={this.props.navigation} />
-   //     </Animatable.View>
-   //   );
-   // }
+  renderAddCard() {
+    switch (this.props.screenIndex) {
+      default: return null;
+      case 'addProgram': return null;
+      case 'addProgramDay': return <Card addCard typeAddCard='addProgramDay' />;
+      case 'addProgramExercise': return null;
+    }
+  }
 
   render() {
     const styles = themeStyles[this.props.theme];
@@ -94,12 +88,12 @@ class Home extends Component {
         {/* <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
           {this.renderTitle()}
         </Animatable.Text> */}
+
+        {this.renderAddCard()}
+
         <ScrollView
+          style={{ marginTop: 10 }}
           onScroll={event => this.setState({ scrollIndex: event.nativeEvent.contentOffset.y })}
-          style={{
-            marginTop: 10,
-            //marginBottom: 100,
-          }}
         >
           <Programs styles={styles} navigation={this.props.navigation} />
         </ScrollView>

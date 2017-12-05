@@ -17,18 +17,6 @@ class ActionBar extends Component {
 
     if (goBack) { this.props.navigation.goBack(null); }
     //if (screenIndex === 'primaryProgram') { dispatch(fetchProgram()); }
-
-    switch (screenIndex) {
-      default: break;
-      case 'addProgram':
-        navigation.navigate('Form', { title: 'Add new Program', styles });
-        break;
-      case 'addProgramDay':
-        navigation.navigate('Form', { title: 'Add new Day', styles });
-        break;
-      case 'addProgramExercise':
-        navigation.navigate('Form', { title: 'Add Exercise', styles });
-    }
   }
 
   renderButton(styles, name, size, delay, onPress) {
@@ -129,7 +117,7 @@ class ActionBar extends Component {
       case 'addProgram':
       case 'addProgramDay':
       case 'addProgramExercise':
-        renderType = this.renderFormActionBar(styles);
+        return null; //renderType = this.renderFormActionBar(styles);
     }
 
 

@@ -14,6 +14,7 @@ import {
 class Programs extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
+
     dispatch(fetchProgram());
     dispatch(fetchAllPrograms());
     dispatch(fetchAllExercises());
@@ -21,9 +22,10 @@ class Programs extends Component {
 
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
     const { dispatch } = this.props;
-    dispatch(updateScreenIndex(screenIndex));
-    if (selectedDayKey) { dispatch(updateSelectedDayKey(selectedDayKey)); }
-    if (selectedProgram) { dispatch(fetchProgram(selectedProgram)); }
+
+    if (screenIndex) dispatch(updateScreenIndex(screenIndex));
+    if (selectedDayKey) dispatch(updateSelectedDayKey(selectedDayKey));
+    if (selectedProgram) dispatch(fetchProgram(selectedProgram));
   }
 
   renderAllPrograms = () => {

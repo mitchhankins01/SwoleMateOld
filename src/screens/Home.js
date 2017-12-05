@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { ScrollView, StatusBar } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -35,6 +34,13 @@ class Home extends Component {
    componentDidMount() {
      /* Check for error from loading FB Programs */
      this.renderError(this.props.programError);
+   }
+
+   componentWillReceiveProps(nextProps) {
+     // Reset scrollIndex due to navigation
+     if (nextProps.screenIndex !== this.props.updateScreenIndex) {
+       this.setState({ scrollIndex: 0 });
+     }
    }
 
    componentWillUpdate() {

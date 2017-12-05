@@ -132,8 +132,16 @@ class ActionBar extends Component {
         renderType = this.renderFormActionBar(styles);
     }
 
+
+    if (this.props.scrollIndex <= 0) {
+      return (
+        <Animatable.View style={styles.actionBar} animation='zoomIn' duration={500}>
+          {renderType}
+        </Animatable.View>
+      );
+    }
     return (
-      <Animatable.View style={styles.actionBar} animation='zoomIn' duration={500}>
+      <Animatable.View style={styles.actionBar} animation='zoomOut' duration={500}>
         {renderType}
       </Animatable.View>
     );

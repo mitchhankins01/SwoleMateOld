@@ -26,6 +26,8 @@ class Home extends Component {
      ),
    };
 
+   state = { scrollIndex: 0 }
+
    componentWillMount() {
      this.props.dispatch(fetchTheme());
    }
@@ -56,6 +58,22 @@ class Home extends Component {
      }
    }
 
+   // renderActionBar() {
+   //   console.log(this.state.scrollIndex);
+   //   if (this.state.scrollIndex <= 2) {
+   //     return (
+   //       <Animatable.View animation='zoomIn' duration={500}>
+   //         <ActionBar navigation={this.props.navigation} />
+   //       </Animatable.View>
+   //     );
+   //   }
+   //   return (
+   //     <Animatable.View animation='zoomOut' duration={500}>
+   //       <ActionBar navigation={this.props.navigation} />
+   //     </Animatable.View>
+   //   );
+   // }
+
   render() {
     const styles = themeStyles[this.props.theme];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
@@ -71,16 +89,16 @@ class Home extends Component {
           {this.renderTitle()}
         </Animatable.Text> */}
         <ScrollView
-          pagingEnabled={false}
+          onScroll={event => this.setState({ scrollIndex: event.nativeEvent.contentOffset.y })}
           style={{
             marginTop: 10,
-            marginBottom: 100,
+            //marginBottom: 100,
           }}
         >
           <Programs styles={styles} navigation={this.props.navigation} />
         </ScrollView>
 
-        <ActionBar styles={styles} navigation={this.props.navigation} />
+        <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} />
 
         <DropdownAlert
           translucent

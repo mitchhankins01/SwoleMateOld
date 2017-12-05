@@ -24,11 +24,11 @@ const Header = ({ title, styles, onLeftPress, onRightPress }) => {
         underlayColor: 'transparent'
       }} */
       outerContainerStyles={{
-        backgroundColor: styles.$secondaryColor,
-        borderBottomWidth: 0,
         elevation: 1,
         shadowOpacity: 1,
+        borderBottomWidth: 0,
         shadowColor: 'rgba(0,0,0, 1)',
+        backgroundColor: styles.$secondaryColor,
         height: 70, //Platform.OS === 'android' ? 75 : 65
       }}
     />

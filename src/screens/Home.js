@@ -68,9 +68,9 @@ class Home extends Component {
   renderAddCard() {
     switch (this.props.screenIndex) {
       default: return null;
-      case 'addProgram': return null;
+      case 'addProgram': return <Card addCard typeAddCard='addProgram' />;
       case 'addProgramDay': return <Card addCard typeAddCard='addProgramDay' />;
-      case 'addProgramExercise': return null;
+      case 'addProgramExercise': return <Card addCard typeAddCard='addProgramExercise' />;
     }
   }
 

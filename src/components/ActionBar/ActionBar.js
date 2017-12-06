@@ -6,17 +6,18 @@ import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
 import {
+  fetchProgram,
   updateScreenIndex,
 } from '../../actions/program_actions';
 
 class ActionBar extends Component {
   updateScreenIndex(screenIndex, goBack) {
-    const { dispatch, navigation, styles } = this.props;
+    const { dispatch, navigation } = this.props;
 
     dispatch(updateScreenIndex(screenIndex));
 
-    if (goBack) { this.props.navigation.goBack(null); }
-    //if (screenIndex === 'primaryProgram') { dispatch(fetchProgram()); }
+    if (goBack) navigation.goBack(null);
+    if (screenIndex === 'primaryProgram') dispatch(fetchProgram());
   }
 
   renderButton(styles, name, size, delay, onPress) {
@@ -123,13 +124,13 @@ class ActionBar extends Component {
 
     if (this.props.scrollIndex <= 0) {
       return (
-        <Animatable.View style={styles.actionBar} animation='zoomIn' duration={500}>
+        <Animatable.View style={styles.actionBar} animation='slideInUp' duration={500}>
           {renderType}
         </Animatable.View>
       );
     }
     return (
-      <Animatable.View style={styles.actionBar} animation='zoomOut' duration={500}>
+      <Animatable.View style={styles.actionBar} animation='slideOutDown' duration={500}>
         {renderType}
       </Animatable.View>
     );

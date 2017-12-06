@@ -1,14 +1,10 @@
-import { Dimensions } from 'react-native';
 import themes from '../theme';
-
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const themeStyles = themes.createStyleSheet({
   actionBar: {
     left: 30,
     right: 30,
-    bottom: 20,
+    bottom: 30,
     height: 50,
     elevation: 1,
     borderWidth: 1,

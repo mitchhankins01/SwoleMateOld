@@ -1,6 +1,3 @@
-import _ from 'lodash';
-import Color from 'color';
-import t from 'tcomb-form-native';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -8,59 +5,8 @@ import * as Animatable from 'react-native-animatable';
 import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { Form } from '../Form';
 import themeStyles from './styles';
-import {
-  //updateScreenIndex,
-} from '../../actions/program_actions';
-
-
-// Tcomb form
-const Form = t.form.Form;
-// Modify form styles
-t.form.Form.stylesheet.controlLabel.normal.color = '#EDF0F1';
-t.form.Form.stylesheet.controlLabel.normal.fontFamily = 'Exo-Regular';
-t.form.Form.stylesheet.textbox.normal.fontFamily = 'Exo-Regular';
-t.form.Form.stylesheet.textbox.normal.color = '#EDF0F1';
-t.form.Form.stylesheet.textbox.normal.borderColor = '#EDF0F1';
-t.form.Form.stylesheet.pickerValue.normal.color = '#EDF0F1';
-t.form.Form.stylesheet.pickerValue.normal.fontFamily = 'Exo-Regular';
-const options = {
-  fields: {
-    primaryGroup: {
-      itemStyle: {
-        color: '#EDF0F1',
-        fontFamily: 'Exo-Regular',
-      },
-    },
-    secondaryGroup: {
-      itemStyle: {
-        color: '#EDF0F1',
-        fontFamily: 'Exo-Regular',
-      },
-    }
-  }
-};
-
-// New Program Day
-const muscleGroups = t.enums({
-  Abs: 'Abs',
-  Back: 'Back',
-  Biceps: 'Biceps',
-  Calves: 'Calves',
-  Chest: 'Chest',
-  Forearms: 'Forearms',
-  Glutes: 'Glutes',
-  Shoulders: 'Shoulders',
-  Triceps: 'Triceps',
-  Cardio: 'Cardio',
-});
-
-const newProgramDay = t.struct({
-  dayName: t.String,
-  dayDescription: t.String,
-  primaryGroup: muscleGroups,
-  secondaryGroup: muscleGroups,
-});
 
 class Card extends Component {
   state = {
@@ -133,9 +79,8 @@ class Card extends Component {
     const getForm = () => {
       switch (typeAddCard) {
         default: break;
-        case 'addProgram': return 'Add Program';
-        case 'addProgramDay':
-          return <Form ref='addProgramDayForm' options={options} type={newProgramDay} />;
+        case 'addProgram': return <Form formType='addProgram' />;
+        case 'addProgramDay': return <Form formType='addProgramDay' />;
         case 'addProgramExercise': return 'Add Exercise';
       }
     };
@@ -151,22 +96,6 @@ class Card extends Component {
           </View>
           <View style={styles.cardDivider} />
           {getForm()}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Entypo
-              size={25}
-              name={'back'}
-              style={styles.cardIcon}
-              underlayColor={'transparent'}
-              onPress={() => dispatch(updateScreenIndex('selectedProgram'))}
-            />
-            <Entypo
-              size={25}
-              name={'check'}
-              style={styles.cardIcon}
-              underlayColor={'transparent'}
-              onPress={() => this.validateInput(screenIndex)}
-            />
-          </View>
         </View>
       </ScrollView>
     );
@@ -190,8 +119,8 @@ class Card extends Component {
     } = this.props;
     const styles = themeStyles[theme];
 
-    if (addCard) return this.renderAddCard(styles, typeAddCard);
     if (empty) return this.renderEmptyCard(styles, title);
+    if (addCard) return this.renderAddCard(styles, typeAddCard);
 
     return (
       <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>

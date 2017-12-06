@@ -22,7 +22,24 @@ t.form.Form.stylesheet.controlLabel.normal.fontFamily = 'Exo-Regular';
 t.form.Form.stylesheet.textbox.normal.fontFamily = 'Exo-Regular';
 t.form.Form.stylesheet.textbox.normal.color = '#EDF0F1';
 t.form.Form.stylesheet.textbox.normal.borderColor = '#EDF0F1';
-t.form.Form.stylesheet.select.normal.color = '#EDF0F1';
+t.form.Form.stylesheet.pickerValue.normal.color = '#EDF0F1';
+t.form.Form.stylesheet.pickerValue.normal.fontFamily = 'Exo-Regular';
+const options = {
+  fields: {
+    primaryGroup: {
+      itemStyle: {
+        color: '#EDF0F1',
+        fontFamily: 'Exo-Regular',
+      },
+    },
+    secondaryGroup: {
+      itemStyle: {
+        color: '#EDF0F1',
+        fontFamily: 'Exo-Regular',
+      },
+    }
+  }
+};
 
 // New Program Day
 const muscleGroups = t.enums({
@@ -118,7 +135,7 @@ class Card extends Component {
         default: break;
         case 'addProgram': return 'Add Program';
         case 'addProgramDay':
-          return <Form ref='addProgramDayForm' type={newProgramDay} />;
+          return <Form ref='addProgramDayForm' options={options} type={newProgramDay} />;
         case 'addProgramExercise': return 'Add Exercise';
       }
     };

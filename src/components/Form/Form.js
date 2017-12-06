@@ -1,10 +1,11 @@
 import t from 'tcomb-form-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import ModalDropdown from 'react-native-modal-dropdown';
-import { View, Text } from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo';
 import { Button } from 'react-native-elements';
+import Entypo from 'react-native-vector-icons/Entypo';
+import * as Animatable from 'react-native-animatable';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 import themeStyles from './styles';
 import {
@@ -22,6 +23,9 @@ class Form extends Component {
   }
 
   onSavePressed() {
+    if (this.state.showExerciseList) return this.setState({ showExerciseList: false });
+    if (!this.state.selectedExerciseKey) this.refs.selectExerciseButton.wobble();
+
     const getValue = () => {
       switch (this.props.formType) {
         default: return;
@@ -98,15 +102,17 @@ class Form extends Component {
 
     const exercisesButton = () => {
       return (
-        <Button
-          raised
-          fontFamily='Exo-Regular'
-          title={selectedExerciseName || 'Select Exercise'}
-          icon={{ name: 'dumbbell', type: 'material-community' }}
-          containerViewStyle={{ backgroundColor: 'transparent' }}
-          buttonStyle={{ marginBottom: 10, backgroundColor: 'transparent' }}
-          onPress={() => this.setState({ showExerciseList: !showExerciseList })}
-        />
+        <Animatable.View ref='selectExerciseButton'>
+          <Button
+            raised
+            fontFamily='Exo-Regular'
+            title={selectedExerciseName || 'Select Exercise'}
+            icon={{ name: 'dumbbell', type: 'material-community' }}
+            containerViewStyle={{ backgroundColor: 'transparent' }}
+            buttonStyle={{ marginBottom: 10, backgroundColor: 'transparent' }}
+            onPress={() => this.setState({ showExerciseList: !showExerciseList })}
+          />
+        </Animatable.View>
       );
     };
 

@@ -81,7 +81,7 @@ class Card extends Component {
         default: break;
         case 'addProgram': return <Form formType='addProgram' />;
         case 'addProgramDay': return <Form formType='addProgramDay' />;
-        case 'addProgramExercise': return 'Add Exercise';
+        case 'addProgramExercise': return <Form formType='addProgramExercise' />;
       }
     };
 

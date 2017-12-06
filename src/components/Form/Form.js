@@ -1,9 +1,12 @@
 import t from 'tcomb-form-native';
-import { View } from 'react-native';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import ModalDropdown from 'react-native-modal-dropdown';
+import { View, Text } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { Button } from 'react-native-elements';
 
+import themeStyles from './styles';
 import {
   updateScreenIndex,
 } from '../../actions/program_actions';
@@ -11,13 +14,20 @@ import {
 const TForm = t.form.Form;
 
 class Form extends Component {
+  state = {
+    selectedFilterGroup: 'Show All Exercises',
+    showExerciseList: false,
+    selectedExerciseKey: '',
+    selectedExerciseName: '',
+  }
+
   onSavePressed() {
     const getValue = () => {
       switch (this.props.formType) {
         default: return;
         case 'addProgram': return this.refs.addProgramForm.getValue();
         case 'addProgramDay': return this.refs.addProgramDayForm.getValue();
-        case 'addProgramExercise': return;
+        case 'addProgramExercise': return this.refs.addProgramExercise.getValue();
       }
     };
 
@@ -26,23 +36,94 @@ class Form extends Component {
     }
   }
 
+  renderExerciseList(styles) {
+    const { selectedFilterGroup } = this.state;
+
+    const exercises = () => {
+      if (selectedFilterGroup === '' || selectedFilterGroup === 'Show All Exercises') {
+        return [...this.props.allExercises];
+      }
+
+      return (
+        this.props.allExercises.filter(exercise => {
+          return exercise.group === this.state.selectedFilterGroup;
+        })
+      );
+    };
+
+    const options = ['Show All Exercises', 'Abs', 'Back', 'Biceps', 'Calves',
+      'Chest', 'Forearms', 'Glutes', 'Shoulders', 'Triceps', 'Cardio'];
+
+    return (
+      <View>
+        <ModalDropdown
+          options={options}
+          style={styles.dropdownContainer}
+          defaultValue={selectedFilterGroup}
+          dropdownStyle={styles.dropdownList}
+          textStyle={styles.dropdownContainerText}
+          dropdownTextStyle={styles.dropdownContainerText}
+          onSelect={(index, value) => this.setState({ selectedFilterGroup: value })}
+        />
+        {exercises().map(exercise => {
+          return (
+            <Button
+              raised
+              key={exercise.key}
+              title={exercise.name}
+              fontFamily='Exo-Regular'
+              buttonStyle={{
+                borderWidth: 1,
+                marginBottom: 20,
+                backgroundColor: 'transparent',
+                borderColor: styles.$primaryColor,
+              }}
+              onPress={() => this.setState({
+                showExerciseList: false,
+                selectedExerciseKey: exercise.key,
+                selectedExerciseName: exercise.name,
+              })}
+            />
+          );
+        })}
+      </View>
+    );
+  }
+
   render() {
-    const { dispatch, formType } = this.props;
+    const { showExerciseList, selectedExerciseName } = this.state;
+    const { dispatch, formType, theme } = this.props;
+    const styles = themeStyles[theme];
+
+    const exercisesButton = () => {
+      return (
+        <Button
+          raised
+          fontFamily='Exo-Regular'
+          title={selectedExerciseName || 'Select Exercise'}
+          icon={{ name: 'dumbbell', type: 'material-community' }}
+          buttonStyle={{ marginBottom: 10, backgroundColor: 'transparent' }}
+          onPress={() => this.setState({ showExerciseList: !showExerciseList })}
+        />
+      );
+    };
 
     const getForm = () => {
       switch (formType) {
         default: return;
         case 'addProgram':
-          return <TForm ref='addProgramForm' options={programOptions} type={newProgram} />;
+          return <TForm ref='addProgramForm' type={newProgram} options={programOptions} />;
         case 'addProgramDay':
-          return <TForm ref='addProgramDayForm' options={dayOptions} type={newProgramDay} />;
-        case 'addProgramExercise': return;
+          return <TForm ref='addProgramDayForm' type={newProgramDay} options={dayOptions} />;
+        case 'addProgramExercise':
+          return <TForm ref='addProgramExercise' type={newProgramExercise} />;
       }
     };
 
     return (
       <View>
-        {getForm()}
+        {formType === 'addProgramExercise' ? exercisesButton() : null}
+        {this.state.showExerciseList ? this.renderExerciseList(styles) : getForm()}
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           <Entypo
             size={25}
@@ -64,9 +145,10 @@ class Form extends Component {
   }
 }
 
-const mapStateToProps = ({ theme }) => {
+const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
+    allExercises: program.allExercises,
   };
 };
 
@@ -162,4 +244,11 @@ const newProgramDay = t.struct({
   description: t.String,
   primaryGroup: muscleGroups,
   secondaryGroup: muscleGroups,
+});
+
+// New Program Exercise
+const newProgramExercise = t.struct({
+  sets: t.Number,
+  reps: t.Number,
+  rest: t.Number,
 });

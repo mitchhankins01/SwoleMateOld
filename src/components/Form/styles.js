@@ -55,6 +55,11 @@ const themeStyles = themes.createStyleSheet({
     justifyContent: 'center',
     backgroundColor: '$secondaryColor',
   },
+  cardDivider: {
+    borderWidth: 0.5,
+    marginVertical: 15,
+    borderColor: '$primaryColor',
+  },
 });
 
 export default themeStyles;

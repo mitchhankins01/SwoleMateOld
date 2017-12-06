@@ -69,14 +69,15 @@ class Form extends Component {
           return (
             <Button
               raised
+              transparent
               key={exercise.key}
               title={exercise.name}
               fontFamily='Exo-Regular'
+              containerViewStyle={{ backgroundColor: 'transparent' }}
               buttonStyle={{
-                borderWidth: 1,
-                marginBottom: 20,
+                height: 35,
+                marginVertical: 3,
                 backgroundColor: 'transparent',
-                borderColor: styles.$primaryColor,
               }}
               onPress={() => this.setState({
                 showExerciseList: false,
@@ -102,6 +103,7 @@ class Form extends Component {
           fontFamily='Exo-Regular'
           title={selectedExerciseName || 'Select Exercise'}
           icon={{ name: 'dumbbell', type: 'material-community' }}
+          containerViewStyle={{ backgroundColor: 'transparent' }}
           buttonStyle={{ marginBottom: 10, backgroundColor: 'transparent' }}
           onPress={() => this.setState({ showExerciseList: !showExerciseList })}
         />
@@ -124,6 +126,7 @@ class Form extends Component {
       <View>
         {formType === 'addProgramExercise' ? exercisesButton() : null}
         {this.state.showExerciseList ? this.renderExerciseList(styles) : getForm()}
+        <View style={[styles.cardDivider, { marginTop: 20 }]} />
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           <Entypo
             size={25}

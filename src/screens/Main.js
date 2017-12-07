@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Text,
-  StatusBar,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
@@ -56,7 +55,6 @@ class Main extends Component {
         colors={gradients}
         style={styles.container}
       >
-        <StatusBar backgroundColor='transparent' barStyle='light-content' />
         <Text style={styles.appName}>SwoleMate</Text>
         <Text style={styles.header}>Welcome</Text>
       </LinearGradient>

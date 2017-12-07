@@ -44,6 +44,7 @@ class Programs extends Component {
   }
 
   renderProgramDays = program => {
+    console.log(program.length);
     return (
       program.map(day => {
         return (

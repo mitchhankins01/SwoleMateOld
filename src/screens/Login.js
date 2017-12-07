@@ -118,7 +118,7 @@ class Login extends Component {
         style={styles.container}
       >
         <KeyboardAvoidingView behavior='padding' onClick={() => Keyboard.dismiss()}>
-          <StatusBar backgroundColor='transparent' barStyle='light-content' />
+          <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
           <Text style={styles.appName}>SwoleMate</Text>
           <Text style={styles.header}>Login</Text>
           {this.renderFormComponent(

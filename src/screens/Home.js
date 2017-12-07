@@ -80,7 +80,7 @@ class Home extends Component {
 
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >
-        <StatusBar backgroundColor='transparent' barStyle='light-content' />
+        <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
         <Header title={'Home'} styles={styles} />
 
         <Greeting styles={styles} />

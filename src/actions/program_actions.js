@@ -24,8 +24,8 @@ export const ADD_PROGRAM_DAY_FAILURE = 'ADD_PROGRAM_DAY_FAILURE';
 // Add New Program Exercise
 export const ADD_PROGRAM_EXERCISE = 'ADD_PROGRAM_EXERCISE';
 export const ADD_PROGRAM_EXERCISE_FAILURE = 'ADD_PROGRAM_EXERCISE_FAILURE';
-// Delete Program
-export const DELETE_PROGRAM = 'DELETE_PROGRAM';
+
+// IMPLEMENT, move all exceptionals to one function to reduce clutter
 
 // Various
 export const updateScreenIndex = index => {
@@ -227,7 +227,7 @@ const fetchProgramSuccess = (dispatch, info, days, exercises) => {
 };
 
 // Add Program
-export const addProgram = (programName, description, type, level, frequency, callback) => {
+export const addProgram = values => {
   return (dispatch) => {
     dispatch({ type: ADD_PROGRAM });
 
@@ -235,15 +235,15 @@ export const addProgram = (programName, description, type, level, frequency, cal
     const ref = firebase.firestore().collection('userPrograms');
 
     ref.add({
-      type,
-      level,
-      frequency,
       author: uid,
-      description,
-      name: programName,
+      type: values.type,
+      name: values.name,
+      level: values.level,
+      frequency: values.frequency,
+      description: values.description,
     })
     .then(() => {
-      callback();
+      dispatch(fetchAllPrograms());
     })
     .catch(error => {
       addProgramFailure(dispatch, error);
@@ -259,27 +259,32 @@ const addProgramFailure = (dispatch, error) => {
 };
 
 // Add Program
-export const addProgramDay =
- (programKey, dayName, dayDescription, primaryGroup, secondaryGroup, callback) => {
+export const addProgramDay = (values, programInfo) => {
   return (dispatch) => {
     dispatch({ type: ADD_PROGRAM_DAY });
 
+    const programKey = programInfo[0].key;
     const uid = firebase.auth().currentUser.uid;
-    const ref = firebase.firestore().collection('userPrograms')
-      .doc(programKey).collection('days').doc();
+
+    const ref = firebase.firestore()
+    .collection('userPrograms')
+    .doc(programKey)
+    .collection('days')
+    .doc();
 
     ref.set({
       author: uid,
       key: ref.id,
-      primaryGroup,
-      name: dayName,
-      secondaryGroup,
-      description: dayDescription,
+      name: values.name,
+      description: values.description,
+      primaryGroup: values.primaryGroup,
+      secondaryGroup: values.secondaryGroup,
     })
     .then(() => {
-      callback();
+      fetchProgram();
     })
     .catch(error => {
+      console.log(error.message);
       addProgramDayFailure(dispatch, error);
     });
   };
@@ -293,26 +298,30 @@ const addProgramDayFailure = (dispatch, error) => {
 };
 
 // Add Program Exercise
-export const addProgramExercise =
- (programKey, dayKey, selectedExercise, sets, reps, rest, callback) => {
+export const addProgramExercise = (values, programInfo, selectedDayKey, selectedExerciseKey) => {
   return (dispatch) => {
     dispatch({ type: ADD_PROGRAM_EXERCISE });
 
+    const programKey = programInfo[0].key;
+
     const uid = firebase.auth().currentUser.uid;
-    const ref = firebase.firestore().collection('userPrograms')
-      .doc(programKey).collection('exercises').doc();
+    const ref = firebase.firestore()
+    .collection('userPrograms')
+    .doc(programKey)
+    .collection('exercises')
+    .doc();
 
     ref.set({
-      sets,
-      reps,
-      rest,
       author: uid,
       key: ref.id,
-      day: dayKey,
-      exerciseKey: selectedExercise,
+      sets: values.sets,
+      reps: values.reps,
+      rest: values.rest,
+      day: selectedDayKey,
+      exerciseKey: selectedExerciseKey,
     })
     .then(() => {
-      callback();
+      fetchProgram();
     })
     .catch(error => {
       addProgramExerciseFailure(dispatch, error);
@@ -374,7 +383,6 @@ export const deleteProgramExercise = (programInfo, deleteKey) => {
       dispatch(fetchProgram());
     })
     .catch(error => {
-      console.log(error.message)
       dispatch(fetchProgram());
     });
   };

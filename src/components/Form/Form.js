@@ -9,6 +9,9 @@ import ModalDropdown from 'react-native-modal-dropdown';
 
 import themeStyles from './styles';
 import {
+  addProgram,
+  addProgramDay,
+  addProgramExercise,
   updateScreenIndex,
 } from '../../actions/program_actions';
 
@@ -23,20 +26,33 @@ class Form extends Component {
   }
 
   onSavePressed() {
-    if (this.state.showExerciseList) return this.setState({ showExerciseList: false });
-    if (!this.state.selectedExerciseKey) this.refs.selectExerciseButton.wobble();
+    const { showExerciseList, selectedExerciseKey } = this.state;
+    const { dispatch, formType, programInfo, selectedDayKey } = this.props;
+    const {
+      selectExerciseButton, addProgramForm, addProgramDayForm, addProgramExerciseForm
+    } = this.refs;
+
+    if (showExerciseList) return this.setState({ showExerciseList: false });
+    if (!selectedExerciseKey && selectExerciseButton) selectExerciseButton.wobble();
 
     const getValue = () => {
-      switch (this.props.formType) {
+      switch (formType) {
         default: return;
-        case 'addProgram': return this.refs.addProgramForm.getValue();
-        case 'addProgramDay': return this.refs.addProgramDayForm.getValue();
-        case 'addProgramExercise': return this.refs.addProgramExercise.getValue();
+        case 'addProgram': return addProgramForm.getValue();
+        case 'addProgramDay': return addProgramDayForm.getValue();
+        case 'addProgramExercise': return addProgramExerciseForm.getValue();
       }
     };
 
     if (getValue()) {
-      console.log(getValue());
+      switch (formType) {
+        default: return;
+        case 'addProgram': return dispatch(addProgram(getValue()));
+        case 'addProgramDay': return dispatch(addProgramDay(getValue(), programInfo));
+        case 'addProgramExercise': return dispatch(addProgramExercise(
+            getValue(), programInfo, selectedDayKey, selectedExerciseKey)
+          );
+      }
     }
   }
 
@@ -120,7 +136,7 @@ class Form extends Component {
         case 'addProgramDay':
           return <TForm ref='addProgramDayForm' type={newProgramDay} options={dayOptions} />;
         case 'addProgramExercise':
-          return <TForm ref='addProgramExercise' type={newProgramExercise} />;
+          return <TForm ref='addProgramExerciseForm' type={newProgramExercise} />;
       }
     };
 
@@ -153,7 +169,9 @@ class Form extends Component {
 const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
+    programInfo: program.info,
     allExercises: program.allExercises,
+    selectedDayKey: program.selectedDayKey,
   };
 };
 

@@ -47,8 +47,8 @@ export const fetchAllPrograms = () => {
   return (dispatch) => {
     dispatch({ type: FETCH_ALL_PROGRAMS });
 
-    const uid = firebase.auth().currentUser.uid;
     const programs = [];
+    const uid = firebase.auth().currentUser.uid;
 
     firebase.firestore().collection('userPrograms').where('author', '==', uid)
     .get()

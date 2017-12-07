@@ -6,7 +6,6 @@ import Login from '../screens/Login';
 import Register from '../screens/Register';
 import Home from '../screens/Home';
 import Settings from '../screens/Settings';
-import { Form } from '../screens/Form';
 import TabBar from '../components/TabBar';
 
 const MainStack = StackNavigator({
@@ -18,9 +17,6 @@ const MainStack = StackNavigator({
   },
   Register: {
     screen: Register,
-  },
-  Form: {
-    screen: Form,
   },
   HomeStack: {
     screen: TabNavigator({

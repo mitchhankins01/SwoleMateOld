@@ -22,7 +22,6 @@ class Programs extends Component {
 
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
     const { dispatch } = this.props;
-
     if (screenIndex) dispatch(updateScreenIndex(screenIndex));
     if (selectedDayKey) dispatch(updateSelectedDayKey(selectedDayKey));
     if (selectedProgram) dispatch(fetchProgram(selectedProgram));
@@ -86,7 +85,6 @@ class Programs extends Component {
 
   render() {
     const { loading, screenIndex } = this.props;
-
     // if (loading) {
     //   return (
     //     <View style={styles.loadingContainer}>

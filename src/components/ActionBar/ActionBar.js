@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
@@ -63,7 +63,9 @@ class ActionBar extends Component {
         {this.renderButton(styles, 'add-to-list', 30, 300,
           () => this.updateScreenIndex('addProgramDay')
         )}
-        {this.renderButton(styles, 'help', 22, 100)}
+        {this.renderButton(styles, 'help', 22, 100,
+          () => console.log(this.props.programDays)
+        )}
       </View>
     );
   }
@@ -141,6 +143,10 @@ const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
     screenIndex: program.screenIndex,
+
+    //Debugging
+    programInfo: program.info,
+    programDays: program.days,
   };
 };
 

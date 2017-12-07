@@ -95,7 +95,7 @@ class Home extends Component {
           style={{ marginTop: 10 }}
           onScroll={event => this.setState({ scrollIndex: event.nativeEvent.contentOffset.y })}
         >
-          <Programs styles={styles} navigation={this.props.navigation} />
+          <Programs navigation={this.props.navigation} />
         </ScrollView>
 
         <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} />

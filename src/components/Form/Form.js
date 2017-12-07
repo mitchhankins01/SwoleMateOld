@@ -16,10 +16,10 @@ const TForm = t.form.Form;
 
 class Form extends Component {
   state = {
-    selectedFilterGroup: 'Show All Exercises',
     showExerciseList: false,
     selectedExerciseKey: '',
     selectedExerciseName: '',
+    selectedFilterGroup: 'Show All Exercises',
   }
 
   onSavePressed() {
@@ -78,11 +78,7 @@ class Form extends Component {
               title={exercise.name}
               fontFamily='Exo-Regular'
               containerViewStyle={{ backgroundColor: 'transparent' }}
-              buttonStyle={{
-                height: 35,
-                marginVertical: 3,
-                backgroundColor: 'transparent',
-              }}
+              buttonStyle={{ height: 35, marginVertical: 3, backgroundColor: 'transparent' }}
               onPress={() => this.setState({
                 showExerciseList: false,
                 selectedExerciseKey: exercise.key,

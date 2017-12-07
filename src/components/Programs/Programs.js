@@ -67,10 +67,12 @@ class Programs extends Component {
           const match = this.props.allExercises.find(eachExercise => {
             return eachExercise.key === exercise.exerciseKey;
           });
+          // Modify match with actual exercise key, to facilitate deleting form program
+          const item = Object.assign({}, match, { key: exercise.key });
           return (
             <Card
-              item={match}
-              key={match.key}
+              item={item}
+              key={item.key}
               icon={'folder'}
               onPress={() => this.updateScreenIndex('programExercises')}
               subtitle={`${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`}

@@ -8,10 +8,31 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Form } from '../Form';
 import themeStyles from './styles';
 
+import {
+  deleteProgram,
+  deleteProgramDay,
+  deleteProgramExercise,
+} from '../../actions/program_actions';
+
 class Card extends Component {
   state = {
     warningVisible: false,
     selectedDeleteKey: '',
+  }
+
+  onPressDelete() {
+    const { selectedDeleteKey } = this.state;
+    const { dispatch, screenIndex, programInfo } = this.props;
+    switch (screenIndex) {
+      default: return;
+      case 'allPrograms':
+        return dispatch(deleteProgram(selectedDeleteKey));
+      case 'primaryProgram':
+      case 'selectedProgram':
+        return dispatch(deleteProgramDay(programInfo, selectedDeleteKey));
+      case 'programExercises':
+        return dispatch(deleteProgramExercise(programInfo, selectedDeleteKey));
+    }
   }
 
   renderWarning(styles, key) {
@@ -35,7 +56,7 @@ class Card extends Component {
               name={'check'}
               style={styles.cardIcon}
               underlayColor={'transparent'}
-              onPress={() => console.log(this.state.selectedDeleteKey)}
+              onPress={() => this.onPressDelete()}
             />
           </View>
         </Animatable.View>
@@ -124,7 +145,7 @@ class Card extends Component {
 
     return (
       <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>
-        <TouchableOpacity key={item.name}onPress={onPress} >
+        <TouchableOpacity key={item.name} onPress={onPress} >
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <MaterialIcons style={styles.cardTitle} name={icon} />
             <Text style={styles.cardTitle}>
@@ -166,6 +187,7 @@ class Card extends Component {
 const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
+    programInfo: program.info,
     screenIndex: program.screenIndex,
   };
 };

@@ -24,6 +24,8 @@ export const ADD_PROGRAM_DAY_FAILURE = 'ADD_PROGRAM_DAY_FAILURE';
 // Add New Program Exercise
 export const ADD_PROGRAM_EXERCISE = 'ADD_PROGRAM_EXERCISE';
 export const ADD_PROGRAM_EXERCISE_FAILURE = 'ADD_PROGRAM_EXERCISE_FAILURE';
+// Delete Program
+export const DELETE_PROGRAM = 'DELETE_PROGRAM';
 
 // Various
 export const updateScreenIndex = index => {
@@ -323,4 +325,57 @@ const addProgramExerciseFailure = (dispatch, error) => {
     payload: error,
     type: ADD_PROGRAM_EXERCISE_FAILURE,
   });
+};
+
+// Delete
+export const deleteProgram = deleteKey => {
+  return (dispatch) => {
+    firebase.firestore().collection('userPrograms').doc(deleteKey)
+    .delete()
+    .then(() => {
+      dispatch(fetchAllPrograms());
+    })
+    .catch(error => {
+      dispatch(fetchAllPrograms());
+    });
+  };
+};
+
+export const deleteProgramDay = (programInfo, deleteKey) => {
+  return (dispatch) => {
+    const programKey = programInfo[0].key;
+
+    firebase.firestore()
+    .collection('userPrograms')
+    .doc(programKey)
+    .collection('days')
+    .doc(deleteKey)
+    .delete()
+    .then(() => {
+      dispatch(fetchProgram());
+    })
+    .catch(error => {
+      dispatch(fetchProgram());
+    });
+  };
+};
+
+export const deleteProgramExercise = (programInfo, deleteKey) => {
+  return (dispatch) => {
+    const programKey = programInfo[0].key;
+
+    firebase.firestore()
+    .collection('userPrograms')
+    .doc(programKey)
+    .collection('exercises')
+    .doc(deleteKey)
+    .delete()
+    .then(() => {
+      dispatch(fetchProgram());
+    })
+    .catch(error => {
+      console.log(error.message)
+      dispatch(fetchProgram());
+    });
+  };
 };

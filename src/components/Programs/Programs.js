@@ -24,6 +24,7 @@ class Programs extends Component {
 
     this.fetchProgram();
     this.fetchAllExercises();
+    this.fetchAllPrograms();
     // dispatch(fetchProgram());
     // dispatch(fetchAllPrograms());
     // dispatch(fetchAllExercises());
@@ -101,6 +102,36 @@ class Programs extends Component {
     });
   }
 
+  fetchAllPrograms() {
+    const allPrograms = [];
+    const uid = firebase.auth().currentUser.uid;
+
+    firebase.firestore().collection('userPrograms').where('author', '==', uid)
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(program => {
+        const {
+          author, frequency, description, level, name, type
+        } = program.data();
+
+        allPrograms.push({
+          type,
+          name,
+          level,
+          author,
+          program,
+          frequency,
+          description,
+          key: program.id,
+        });
+      });
+      this.setState({ allPrograms });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
     const { dispatch } = this.props;
 
@@ -142,7 +173,6 @@ class Programs extends Component {
   }
 
   renderProgramExercises = () => {
-    console.log(this.state.exercises);
     return (
       this.state.exercises.map(exercise => {
         if (exercise.day === this.props.selectedDayKey) {
@@ -177,6 +207,8 @@ class Programs extends Component {
     //     </View>
     //   );
     // }
+
+    if (loading) return null;
 
     let renderType;
     switch (screenIndex) {

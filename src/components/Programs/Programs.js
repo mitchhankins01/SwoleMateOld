@@ -11,27 +11,26 @@ import {
 
 class Programs extends Component {
   state = {
+    // Primary or Selected Program
     info: [],
     days: [],
     exercises: [],
-
+    // Various
+    loading: false,
     allPrograms: [],
     allExercises: [],
   }
 
   componentWillMount() {
-    const { dispatch } = this.props;
-
     this.fetchProgram();
     this.fetchAllExercises();
     this.fetchAllPrograms();
-    // dispatch(fetchProgram());
-    // dispatch(fetchAllPrograms());
-    // dispatch(fetchAllExercises());
   }
 
   // FETCHING FROM FB
   fetchProgram(selectedProgram) {
+    this.setState({ loading: true });
+
     const info = [];
     const days = [];
     const exercises = [];
@@ -78,6 +77,8 @@ class Programs extends Component {
       .catch(error => {
         console.log(error);
       });
+
+      this.setState({ loading: false });
     })
     .catch(error => {
       console.log(error);
@@ -197,7 +198,7 @@ class Programs extends Component {
   }
 
   render() {
-    const { loading, screenIndex } = this.props;
+    const { screenIndex } = this.props;
     // if (loading) {
     //   return (
     //     <View style={styles.loadingContainer}>
@@ -207,8 +208,8 @@ class Programs extends Component {
     //     </View>
     //   );
     // }
-
-    if (loading) return null;
+    console.log(this.state.loading);
+    if (this.state.loading) return null;
 
     let renderType;
     switch (screenIndex) {

@@ -44,7 +44,8 @@ class Programs extends Component {
   }
 
   renderProgramDays = program => {
-    console.log(program.length);
+    console.log('In Program Days Func');
+    console.log(this.props.programDays.length);
     return (
       program.map(day => {
         return (
@@ -95,6 +96,11 @@ class Programs extends Component {
     //     </View>
     //   );
     // }
+
+    if (loading) return null;
+
+    console.log('In Render');
+    console.log(this.props.programDays.length);
 
     let renderType;
     switch (screenIndex) {

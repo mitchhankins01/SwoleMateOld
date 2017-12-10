@@ -48,7 +48,7 @@ class ActionBar extends Component {
         {this.renderButton(styles, 'add-to-list', 30, 200,
           () => this.updateScreenIndex('addProgram')
         )}
-        {this.renderButton(styles, 'trash', 20, 100)}
+        {this.renderButton(styles, 'help', 20, 100)}
       </Animatable.View>
     );
   }
@@ -78,7 +78,6 @@ class ActionBar extends Component {
         {this.renderButton(styles, 'add-to-list', 30, 300,
           () => this.updateScreenIndex('addProgramExercise')
         )}
-        {this.renderButton(styles, 'trash', 20, 200)}
         {this.renderButton(styles, 'rocket', 25, 100)}
       </Animatable.View>
     );

@@ -16,72 +16,62 @@ class Programs extends Component {
     days: [],
     exercises: [],
     // Various
+    error: '',
     loading: false,
     allPrograms: [],
     allExercises: [],
   }
 
   componentWillMount() {
-    this.fetchProgram();
+    firebase.firestore().collection('users')
+    .doc(firebase.auth().currentUser.uid)
+    .onSnapshot(userDoc => {
+      this.fetchProgram(userDoc.data().primaryProgram);
+    });
+
     this.fetchAllExercises();
     this.fetchAllPrograms();
   }
 
   // FETCHING FROM FB
-  fetchProgram(selectedProgram) {
-    this.setState({ loading: true });
+  fetchProgram(program) {
+    const programRef = firebase.firestore().collection('userPrograms').doc(program);
 
+    // Get program info
     const info = [];
+
+    programRef.onSnapshot(thisProgram => {
+      this.setState({ loading: true });
+      info.length = 0;
+      const { author, frequency, description, level, name, type } = thisProgram.data();
+      info.push({ author, frequency, description, level, name, type, key: thisProgram.id });
+      this.setState({ info, loading: false });
+    });
+
+    // Get program days
     const days = [];
+
+    programRef.collection('days').onSnapshot(querySnapshot => {
+      days.length = 0;
+      this.setState({ loading: true });
+      querySnapshot.forEach(day => {
+        const { author, description, key, name, primaryGroup, secondaryGroup } = day.data();
+        days.push({ author, description, key, name, primaryGroup, secondaryGroup });
+      });
+      this.setState({ days, loading: false });
+    });
+
+    // Get program exercises
     const exercises = [];
 
-    // Get primaryProgram key and program details
-    const uid = firebase.auth().currentUser.uid;
-    firebase.firestore().collection('users').doc(uid).get()
-    .then(userDoc => {
-      const program = selectedProgram || userDoc.data().primaryProgram;
-
-      const programRef = firebase.firestore()
-        .collection('userPrograms').doc(program);
-
-      programRef.get()
-      .then(thisProgram => {
-        const { author, frequency, description, level, name, type } = thisProgram.data();
-        info.push({ author, frequency, description, level, name, type, key: thisProgram.id });
-        this.setState({ info });
-      })
-      .catch(error => {
-        console.log(error);
+    programRef.collection('exercises').onSnapshot(querySnapshot => {
+      exercises.length = 0;
+      this.setState({ loading: true });
+      querySnapshot.forEach(exercise => {
+        const { author, day, exerciseKey, key, reps, rest, sets } = exercise.data();
+        exercises.push({ author, day, exerciseKey, key, reps, rest, sets });
       });
-
-      programRef.collection('days').get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(day => {
-          const { author, description, key, name, primaryGroup, secondaryGroup } = day.data();
-          days.push({ author, description, key, name, primaryGroup, secondaryGroup });
-          this.setState({ days });
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-      programRef.collection('exercises').get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(details => {
-          const { author, day, exerciseKey, key, reps, rest, sets } = details.data();
-          exercises.push({ author, day, exerciseKey, key, reps, rest, sets });
-          this.setState({ exercises });
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-      this.setState({ loading: false });
-    })
-    .catch(error => {
-      console.log(error);
+      this.setState({ exercises, loading: false });
     });
   }
 
@@ -105,11 +95,13 @@ class Programs extends Component {
 
   fetchAllPrograms() {
     const allPrograms = [];
-    const uid = firebase.auth().currentUser.uid;
 
-    firebase.firestore().collection('userPrograms').where('author', '==', uid)
-    .get()
-    .then(querySnapshot => {
+    const allProgramsRef = firebase.firestore().collection('userPrograms')
+      .where('author', '==', firebase.auth().currentUser.uid);
+
+    allProgramsRef.onSnapshot(querySnapshot => {
+      allPrograms.length = 0;
+      this.setState({ loading: true });
       querySnapshot.forEach(program => {
         const {
           author, frequency, description, level, name, type
@@ -126,10 +118,7 @@ class Programs extends Component {
           key: program.id,
         });
       });
-      this.setState({ allPrograms });
-    })
-    .catch(error => {
-      console.log(error);
+      this.setState({ allPrograms, loading: false });
     });
   }
 
@@ -165,6 +154,7 @@ class Programs extends Component {
             item={day}
             key={day.key}
             icon={'folder'}
+            info={this.state.info}
             subtitle={`${day.primaryGroup} - ${day.secondaryGroup}`}
             onPress={() => this.updateScreenIndex('programExercises', day.key)}
           />
@@ -187,6 +177,7 @@ class Programs extends Component {
               item={item}
               key={item.key}
               icon={'folder'}
+              info={this.state.info}
               onPress={() => this.updateScreenIndex('programExercises')}
               subtitle={`${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`}
             />
@@ -208,9 +199,9 @@ class Programs extends Component {
     //     </View>
     //   );
     // }
-    console.log(this.state.loading);
-    if (this.state.loading) return null;
 
+    if (this.state.loading) return null;
+    
     let renderType;
     switch (screenIndex) {
       default:
@@ -226,9 +217,20 @@ class Programs extends Component {
         renderType = this.renderProgramExercises(this.props.programExercises);
         break;
       case 'addProgram':
+        renderType = <Card addCard typeAddCard='addProgram' info={this.state.info} />;
+        break;
       case 'addProgramDay':
+        renderType = <Card addCard typeAddCard='addProgramDay' info={this.state.info} />;
+        break;
       case 'addProgramExercise':
-        return null;
+        renderType = (
+          <Card
+            addCard
+            info={this.state.info}
+            typeAddCard='addProgramExercise'
+            allExercises={this.state.allExercises}
+          />
+        );
     }
 
     return (

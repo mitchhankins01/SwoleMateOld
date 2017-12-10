@@ -5,7 +5,6 @@ import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Card } from '../components/Card';
 import Header from '../components/Header';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
@@ -65,15 +64,6 @@ class Home extends Component {
    //   }
    // }
 
-  renderAddCard() {
-    switch (this.props.screenIndex) {
-      default: return null;
-      case 'addProgram': return <Card addCard typeAddCard='addProgram' />;
-      case 'addProgramDay': return <Card addCard typeAddCard='addProgramDay' />;
-      case 'addProgramExercise': return <Card addCard typeAddCard='addProgramExercise' />;
-    }
-  }
-
   render() {
     const styles = themeStyles[this.props.theme];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
@@ -88,8 +78,6 @@ class Home extends Component {
         {/* <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
           {this.renderTitle()}
         </Animatable.Text> */}
-        
-        {this.renderAddCard()}
 
         <ScrollView
           style={{ marginTop: 10 }}

@@ -8,11 +8,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Form } from '../Form';
 import themeStyles from './styles';
 
-// import {
-//   deleteProgram,
-//   deleteProgramDay,
-//   deleteProgramExercise,
-// } from '../../actions/program_actions';
+import {
+  deleteProgram,
+  deleteProgramDay,
+  deleteProgramExercise,
+} from '../../actions/programActions';
 
 class Card extends Component {
   state = {
@@ -22,16 +22,16 @@ class Card extends Component {
 
   onPressDelete() {
     const { selectedDeleteKey } = this.state;
-    const { dispatch, screenIndex, programInfo } = this.props;
+    const { dispatch, screenIndex, info } = this.props;
     switch (screenIndex) {
       default: return;
       case 'allPrograms':
         return dispatch(deleteProgram(selectedDeleteKey));
       case 'primaryProgram':
       case 'selectedProgram':
-        return dispatch(deleteProgramDay(programInfo, selectedDeleteKey));
+        return dispatch(deleteProgramDay(info, selectedDeleteKey));
       case 'programExercises':
-        return dispatch(deleteProgramExercise(programInfo, selectedDeleteKey));
+        return dispatch(deleteProgramExercise(info, selectedDeleteKey));
     }
   }
 
@@ -88,6 +88,8 @@ class Card extends Component {
   }
 
   renderAddCard(styles, typeAddCard) {
+    const { info } = this.props;
+
     const getTitle = () => {
       switch (typeAddCard) {
         default: break;
@@ -98,11 +100,16 @@ class Card extends Component {
     };
 
     const getForm = () => {
+      const { allExercises } = this.props;
+
       switch (typeAddCard) {
         default: break;
-        case 'addProgram': return <Form formType='addProgram' />;
-        case 'addProgramDay': return <Form formType='addProgramDay' />;
-        case 'addProgramExercise': return <Form formType='addProgramExercise' />;
+        case 'addProgram':
+          return <Form info={info} formType='addProgram' />;
+        case 'addProgramDay':
+          return <Form info={info} formType='addProgramDay' />;
+        case 'addProgramExercise':
+          return <Form info={info} formType='addProgramExercise' allExercises={allExercises} />;
       }
     };
 
@@ -165,7 +172,7 @@ class Card extends Component {
             name={'edit'}
             style={styles.cardIcon}
             underlayColor={'transparent'}
-            onPress={() => this.showPopover}
+            onPress={() => console.log(item)}
           />
           <Entypo
             ref='deleteButton'
@@ -187,7 +194,6 @@ class Card extends Component {
 const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
-    programInfo: program.info,
     screenIndex: program.screenIndex,
   };
 };

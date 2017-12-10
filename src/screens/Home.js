@@ -53,17 +53,17 @@ class Home extends Component {
      if (error) { this.dropdown.alertWithType('error', 'Something went wrong', error); }
    }
 
-   renderTitle() {
-     const { programDays, programInfo, screenIndex, selectedDayKey } = this.props;
-
-     if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
-       return programInfo.map(info => info.name);
-     } else if (screenIndex === 'programExercises') {
-       return programDays.filter(day => day.key === selectedDayKey).map(info => info.name);
-     } else if (screenIndex === 'allPrograms') {
-       return 'All Programs';
-     }
-   }
+   // renderTitle() {
+   //   const { programDays, programInfo, screenIndex, selectedDayKey } = this.props;
+   //
+   //   if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
+   //     return programInfo.map(info => info.name);
+   //   } else if (screenIndex === 'programExercises') {
+   //     return programDays.filter(day => day.key === selectedDayKey).map(info => info.name);
+   //   } else if (screenIndex === 'allPrograms') {
+   //     return 'All Programs';
+   //   }
+   // }
 
   renderAddCard() {
     switch (this.props.screenIndex) {
@@ -88,7 +88,7 @@ class Home extends Component {
         {/* <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
           {this.renderTitle()}
         </Animatable.Text> */}
-
+        
         {this.renderAddCard()}
 
         <ScrollView
@@ -114,12 +114,9 @@ class Home extends Component {
 const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
-    programInfo: program.info,
-    programDays: program.days,
-    //editMode: program.editMode,
-    programError: program.error,
+    //programError: program.error,
     screenIndex: program.screenIndex,
-    selectedDayKey: program.selectedDayKey,
+    //selectedDayKey: program.selectedDayKey,
   };
 };
 

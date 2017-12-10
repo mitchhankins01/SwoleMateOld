@@ -8,12 +8,12 @@ import * as Animatable from 'react-native-animatable';
 import ModalDropdown from 'react-native-modal-dropdown';
 
 import themeStyles from './styles';
-import {
-  addProgram,
-  addProgramDay,
-  addProgramExercise,
-  updateScreenIndex,
-} from '../../actions/program_actions';
+// import {
+//   addProgram,
+//   addProgramDay,
+//   addProgramExercise,
+//   updateScreenIndex,
+// } from '../../actions/program_actions';
 
 const TForm = t.form.Form;
 

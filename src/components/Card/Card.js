@@ -8,11 +8,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Form } from '../Form';
 import themeStyles from './styles';
 
-import {
-  deleteProgram,
-  deleteProgramDay,
-  deleteProgramExercise,
-} from '../../actions/program_actions';
+// import {
+//   deleteProgram,
+//   deleteProgramDay,
+//   deleteProgramExercise,
+// } from '../../actions/program_actions';
 
 class Card extends Component {
   state = {

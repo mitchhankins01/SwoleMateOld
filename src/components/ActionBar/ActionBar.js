@@ -6,9 +6,8 @@ import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
 import {
-  fetchProgram,
   updateScreenIndex,
-} from '../../actions/program_actions';
+} from '../../actions/programActions';
 
 class ActionBar extends Component {
   updateScreenIndex(screenIndex, goBack) {
@@ -17,7 +16,7 @@ class ActionBar extends Component {
     dispatch(updateScreenIndex(screenIndex));
 
     if (goBack) navigation.goBack(null);
-    if (screenIndex === 'primaryProgram') dispatch(fetchProgram());
+    //if (screenIndex === 'primaryProgram') dispatch(fetchProgram());
   }
 
   renderButton(styles, name, size, delay, onPress) {
@@ -106,7 +105,7 @@ class ActionBar extends Component {
     let renderType;
     switch (screenIndex) {
       default:
-        return;
+        return null;
       case 'allPrograms':
         renderType = this.renderAllProgramsActionBar(styles);
         break;
@@ -143,10 +142,10 @@ const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
     screenIndex: program.screenIndex,
-
-    //Debugging
-    programInfo: program.info,
-    programDays: program.days,
+    //
+    // //Debugging
+    // programInfo: program.info,
+    // programDays: program.days,
   };
 };
 

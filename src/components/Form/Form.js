@@ -26,7 +26,6 @@ class Form extends Component {
   }
 
   onSavePressed() {
-    console.log('press');
     const { showExerciseList, selectedExerciseKey } = this.state;
     const { dispatch, formType, info, selectedDayKey } = this.props;
     const {

@@ -67,22 +67,14 @@ class Card extends Component {
   renderEmptyCard(styles, title) {
     return (
       <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>
+        <View style={styles.cardDivider} />
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Entypo style={styles.cardTitle} name={'add-to-list'} />
           <Text style={styles.cardTitle}>
-            {`Use the buttons below to add a new ${title}`}
+            {`Use the button below \nto add a new ${title}`}
           </Text>
         </View>
         <View style={styles.cardDivider} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <Entypo
-            size={25}
-            name={'edit'}
-            style={styles.cardIcon}
-            underlayColor={'transparent'}
-            onPress={() => this.showPopover}
-          />
-        </View>
       </Animatable.View>
     );
   }

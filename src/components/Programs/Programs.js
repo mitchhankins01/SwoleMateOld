@@ -131,6 +131,8 @@ class Programs extends Component {
   }
 
   renderAllPrograms = () => {
+    if (this.state.allPrograms.length === 0) return <Card empty title='Program' />;
+
     return (
       this.state.allPrograms.map(program => {
         return (
@@ -147,6 +149,8 @@ class Programs extends Component {
   }
 
   renderProgramDays = () => {
+    if (this.state.days.length === 0) return <Card empty title='Workout' />;
+
     return (
       this.state.days.map(day => {
         return (
@@ -245,17 +249,8 @@ const mapStateToProps = ({ program, theme }) => {
   return {
     // Various
     theme: theme.selected,
-    //loading: program.loading,
     screenIndex: program.screenIndex,
     selectedDayKey: program.selectedDayKey,
-    // // All Exercises
-    // allExercises: program.allExercises,
-    // // All Programs
-    // allPrograms: program.programs,
-    // // Primary or Selected Program
-    // programInfo: program.info,
-    // programDays: program.days,
-    // programExercises: program.exercises,
   };
 };
 

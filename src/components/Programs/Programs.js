@@ -200,16 +200,8 @@ class Programs extends Component {
     //   );
     // }
 
-<<<<<<< HEAD
-    if (loading) return null;
-
-    console.log('In Render');
-    console.log(this.props.programDays.length);
-
-=======
     if (this.state.loading) return null;
 
->>>>>>> remove_program_fetching_from_redux
     let renderType;
     switch (screenIndex) {
       default:

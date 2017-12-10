@@ -5,7 +5,6 @@ import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Card } from '../components/Card';
 import Header from '../components/Header';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
@@ -53,26 +52,17 @@ class Home extends Component {
      if (error) { this.dropdown.alertWithType('error', 'Something went wrong', error); }
    }
 
-   renderTitle() {
-     const { programDays, programInfo, screenIndex, selectedDayKey } = this.props;
-
-     if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
-       return programInfo.map(info => info.name);
-     } else if (screenIndex === 'programExercises') {
-       return programDays.filter(day => day.key === selectedDayKey).map(info => info.name);
-     } else if (screenIndex === 'allPrograms') {
-       return 'All Programs';
-     }
-   }
-
-  renderAddCard() {
-    switch (this.props.screenIndex) {
-      default: return null;
-      case 'addProgram': return <Card addCard typeAddCard='addProgram' />;
-      case 'addProgramDay': return <Card addCard typeAddCard='addProgramDay' />;
-      case 'addProgramExercise': return <Card addCard typeAddCard='addProgramExercise' />;
-    }
-  }
+   // renderTitle() {
+   //   const { programDays, programInfo, screenIndex, selectedDayKey } = this.props;
+   //
+   //   if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
+   //     return programInfo.map(info => info.name);
+   //   } else if (screenIndex === 'programExercises') {
+   //     return programDays.filter(day => day.key === selectedDayKey).map(info => info.name);
+   //   } else if (screenIndex === 'allPrograms') {
+   //     return 'All Programs';
+   //   }
+   // }
 
   render() {
     const styles = themeStyles[this.props.theme];
@@ -88,8 +78,6 @@ class Home extends Component {
         {/* <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
           {this.renderTitle()}
         </Animatable.Text> */}
-
-        {this.renderAddCard()}
 
         <ScrollView
           style={{ marginTop: 10 }}
@@ -114,12 +102,9 @@ class Home extends Component {
 const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
-    programInfo: program.info,
-    programDays: program.days,
-    //editMode: program.editMode,
-    programError: program.error,
+    //programError: program.error,
     screenIndex: program.screenIndex,
-    selectedDayKey: program.selectedDayKey,
+    //selectedDayKey: program.selectedDayKey,
   };
 };
 

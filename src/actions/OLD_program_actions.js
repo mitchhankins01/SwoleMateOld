@@ -146,15 +146,6 @@ export const fetchProgram = selectedProgram => {
     const days = [];
     const exercises = [];
 
-    // Testing using onSnapshot
-    // const uid = firebase.auth().currentUser.uid;
-    // firebase.firestore().collection('users').doc(uid)
-    // .onSnapshot(userDoc => {
-    //   console.log(userDoc.data());
-    // }, (error) => {
-    //   console.log(error);
-    // });
-
     // Get primaryProgram key and program details
     const uid = firebase.auth().currentUser.uid;
     firebase.firestore().collection('users').doc(uid).get()

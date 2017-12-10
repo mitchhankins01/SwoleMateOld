@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
 import theme from './themeReducer';
-import program from './program_reducer';
+import program from './programReducer';
 
 export default combineReducers({
-  theme, program,
+  theme, program
 });

@@ -13,7 +13,7 @@ import {
   addProgramDay,
   addProgramExercise,
   updateScreenIndex,
-} from '../../actions/program_actions';
+} from '../../actions/programActions';
 
 const TForm = t.form.Form;
 
@@ -26,14 +26,15 @@ class Form extends Component {
   }
 
   onSavePressed() {
+    console.log('press');
     const { showExerciseList, selectedExerciseKey } = this.state;
-    const { dispatch, formType, programInfo, selectedDayKey } = this.props;
+    const { dispatch, formType, info, selectedDayKey } = this.props;
     const {
       selectExerciseButton, addProgramForm, addProgramDayForm, addProgramExerciseForm
     } = this.refs;
 
     if (showExerciseList) return this.setState({ showExerciseList: false });
-    if (!selectedExerciseKey && selectExerciseButton) selectExerciseButton.wobble();
+    if (!selectedExerciseKey && selectExerciseButton) return selectExerciseButton.wobble();
 
     const getValue = () => {
       switch (formType) {
@@ -48,9 +49,9 @@ class Form extends Component {
       switch (formType) {
         default: return;
         case 'addProgram': return dispatch(addProgram(getValue()));
-        case 'addProgramDay': return dispatch(addProgramDay(getValue(), programInfo));
+        case 'addProgramDay': return dispatch(addProgramDay(getValue(), info));
         case 'addProgramExercise': return dispatch(addProgramExercise(
-            getValue(), programInfo, selectedDayKey, selectedExerciseKey)
+            getValue(), info, selectedDayKey, selectedExerciseKey)
           );
       }
     }
@@ -169,8 +170,6 @@ class Form extends Component {
 const mapStateToProps = ({ program, theme }) => {
   return {
     theme: theme.selected,
-    programInfo: program.info,
-    allExercises: program.allExercises,
     selectedDayKey: program.selectedDayKey,
   };
 };

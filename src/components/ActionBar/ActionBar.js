@@ -61,8 +61,9 @@ class ActionBar extends Component {
           name={name}
           size={size}
           type='entypo'
-          onPress={onPress}
           color={'#EDF0F1'}
+          onPress={onPress}
+          iconStyle={{ padding: 15 }}
           underlayColor={'transparent'}
         />
       </Animatable.View>

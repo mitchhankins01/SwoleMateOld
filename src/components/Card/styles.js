@@ -36,7 +36,9 @@ const themeStyles = themes.createStyleSheet({
     borderColor: '$primaryColor',
   },
   cardIcon: {
-    color: '#EDF0F1'
+    color: '#EDF0F1',
+    padding: 15,
+    margin: -15,
   },
   warningText: {
     fontSize: 18,

@@ -1,5 +1,6 @@
-import { Text, View } from 'react-native';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import { Text, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -16,8 +17,8 @@ class Workout extends Component {
   }
 
   state = {
-    reps: 0,
-    weight: 0,
+    reps: 10,
+    weight: 10,
   }
 
   onChangeWheel(type, number) {
@@ -33,9 +34,9 @@ class Workout extends Component {
       <Wheel
         holeLine={0}
         items={this.numbers}
-        index={this.numbers[10]}
         maskStyle={{ backgroundColor: 'transparent' }}
         onChange={number => this.onChangeWheel(type, number)}
+        index={type === 'weight' ? this.state.weight : this.state.reps }
         style={{ height: 200, marginTop: 10, backgroundColor: 'transparent' }}
         itemStyle={{ textAlign: 'center', color: '#EDF0F1', fontFamily: 'Exo-Medium' }}
         holeStyle={{ borderColor: styles.$primaryColor, borderTopWidth: 1, borderBottomWidth: 1 }}
@@ -43,8 +44,7 @@ class Workout extends Component {
     );
   }
   render() {
-    //const styles = themeStyles[this.props.theme];
-    const styles = themeStyles.standard;
+    const styles = themeStyles[this.props.theme]
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
     console.log(this.state.reps, this.state.weight);
     return (
@@ -71,4 +71,10 @@ class Workout extends Component {
   }
 }
 
-export default Workout;
+const mapStateToProps = ({ theme }) => {
+  return {
+    theme: theme.selected,
+  };
+};
+
+export default connect(mapStateToProps)(Workout);

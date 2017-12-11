@@ -180,7 +180,7 @@ class Programs extends Component {
             <Card
               item={item}
               key={item.key}
-              icon={'folder'}
+              icon={'dumbbell'}
               info={this.state.info}
               onPress={() => this.updateScreenIndex('programExercises')}
               subtitle={`${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`}

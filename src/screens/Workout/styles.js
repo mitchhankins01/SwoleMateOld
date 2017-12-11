@@ -63,6 +63,16 @@ const themeStyles = themes.createStyleSheet({
     shadowOffset: { height: 0, width: 0 },
     backgroundColor: 'rgba(237, 240, 241, 0.1)',
   },
+  spinnerText: {
+    margin: 5,
+    padding: 3,
+    fontSize: 14,
+    color: '#EDF0F1',
+    textAlign: 'center',
+    borderBottomWidth: 1,
+    fontFamily: 'Exo-Regular',
+    borderColor: '$primaryColor',
+  },
 });
 
 export default themeStyles;

@@ -4,6 +4,8 @@ import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 
+import KeyboardManager from 'react-native-keyboard-manager'
+
 import { Wheel } from 'teaset';
 
 import themeStyles from './styles';
@@ -59,7 +61,7 @@ class Workout extends Component {
     );
   }
   render() {
-    const styles = themeStyles[this.props.theme]
+    const styles = themeStyles[this.props.theme];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
     console.log(this.state.reps, this.state.weight);
     return (

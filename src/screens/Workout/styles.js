@@ -40,8 +40,8 @@ const themeStyles = themes.createStyleSheet({
     fontSize: 20,
     color: '#EDF0F1',
     alignSelf: 'center',
-    fontFamily: 'Exo-Medium',
     marginHorizontal: 10,
+    fontFamily: 'Exo-Medium',
   },
   inputHeader: {
     fontSize: 16,
@@ -71,6 +71,11 @@ const themeStyles = themes.createStyleSheet({
     textAlign: 'center',
     borderBottomWidth: 1,
     fontFamily: 'Exo-Regular',
+    borderColor: '$primaryColor',
+  },
+  divider: {
+    marginTop: 5,
+    borderWidth: 0.5,
     borderColor: '$primaryColor',
   },
 });

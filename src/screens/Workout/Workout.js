@@ -81,6 +81,11 @@ class Workout extends Component {
         </Animatable.View>
         <Animatable.View style={styles.logContainer} duration={750} animation='zoomIn'>
           <Text style={[styles.headerText, { fontSize: 18 }]}>Past Logs</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }} >
+            <Text> </Text>
+            <View style={styles.divider} />
+            <Text> </Text>
+          </View>
         </Animatable.View>
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
           <Animatable.View style={styles.inputContainer} duration={750} animation='zoomIn'>

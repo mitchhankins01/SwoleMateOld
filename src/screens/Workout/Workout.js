@@ -65,7 +65,7 @@ class Workout extends Component {
             {this.renderWheel(styles, 'reps')}
           </Animatable.View>
         </View>
-        <ActionBar workout />
+        <ActionBar workout navigation={this.props.navigation} />
       </LinearGradient>
     );
   }

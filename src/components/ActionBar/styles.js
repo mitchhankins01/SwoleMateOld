@@ -8,7 +8,7 @@ const themeStyles = themes.createStyleSheet({
   actionBar: {
     left: 30,
     right: 30,
-    bottom: 30,
+    bottom: 20,
     height: 50,
     elevation: 1,
     borderWidth: 1,

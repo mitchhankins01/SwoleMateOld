@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import TimerMixin from 'react-timer-mixin';
 import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-
-import KeyboardManager from 'react-native-keyboard-manager'
 
 import { Wheel } from 'teaset';
 
@@ -21,6 +20,17 @@ class Workout extends Component {
   state = {
     reps: 10,
     weight: 10,
+    timePassed: 0,
+  }
+
+  componentDidMount() {
+    this.timePassed = setInterval(() => {
+      this.setState({ timePassed: this.state.timePassed + 1 });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timePassed);
   }
 
   onChangeInput(type, number) {
@@ -63,7 +73,7 @@ class Workout extends Component {
   render() {
     const styles = themeStyles[this.props.theme];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-    console.log(this.state.reps, this.state.weight);
+
     return (
       <LinearGradient colors={gradients} style={styles.container} >
         <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
@@ -84,7 +94,7 @@ class Workout extends Component {
             {this.renderWheel(styles, 'reps')}
           </Animatable.View>
         </View>
-        <ActionBar workout navigation={this.props.navigation} />
+        <ActionBar workout navigation={this.props.navigation} timePassed={this.state.timePassed} />
       </LinearGradient>
     );
   }

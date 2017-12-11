@@ -52,6 +52,7 @@ const themeStyles = themes.createStyleSheet({
     fontFamily: 'exo',
     alignSelf: 'center',
     color: '#EDF0F1',
+    width: 60,
   },
 });
 

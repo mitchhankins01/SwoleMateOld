@@ -134,7 +134,9 @@ class ActionBar extends Component {
         {this.renderButton(styles, 'back', 30, 300,
           () => this.props.navigation.goBack(null)
         )}
-        <Text style={styles.workoutBarText}> 0:00 </Text>
+        <Text style={styles.workoutBarText}>
+          {new Date(this.props.timePassed * 1000).toISOString().substr(12, 7)}
+        </Text>
         {this.renderButton(styles, 'check', 25, 100,
           this.props.onPressSave
         )}

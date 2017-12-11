@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 
 import Main from '../screens/Main';
-import Login from '../screens/Login';
-import Register from '../screens/Register';
 import Home from '../screens/Home';
-import Settings from '../screens/Settings';
+import Login from '../screens/Login';
+import Workout from '../screens/Workout';
 import TabBar from '../components/TabBar';
+import Register from '../screens/Register';
+import Settings from '../screens/Settings';
 
 const MainStack = StackNavigator({
   Main: {
@@ -17,6 +18,9 @@ const MainStack = StackNavigator({
   },
   Register: {
     screen: Register,
+  },
+  Workout: {
+    screen: Workout,
   },
   HomeStack: {
     screen: TabNavigator({

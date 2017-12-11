@@ -1,13 +1,31 @@
- import { View } from 'react-native';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
+ import { Dimensions, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
 import {
   updateScreenIndex,
 } from '../../actions/programActions';
+
+const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
+
+Animatable.initializeRegistryWithDefinitions({
+  myFancyAnimation: {
+    from: {
+      translateX: 0,
+      translateY: 0,
+      scale: 1,
+    },
+    to: {
+      translateX: DEVICE_WIDTH,
+      translateY: -DEVICE_HEIGHT / 0.6,
+      scale: 10,
+    },
+  }
+});
 
 class ActionBar extends Component {
   updateScreenIndex(screenIndex, goBack) {
@@ -19,9 +37,19 @@ class ActionBar extends Component {
     //if (screenIndex === 'primaryProgram') dispatch(fetchProgram());
   }
 
-  renderButton(styles, name, size, delay, onPress) {
+  handleRocket() {
+    if (this.refs.rocketButton) {
+      this.refs.rocketButton.myFancyAnimation(6000);
+    }
+    setTimeout(() => {
+      this.props.navigation.navigate('Workout');
+    }, 2000);
+  }
+
+  renderButton(styles, name, size, delay, onPress, ref) {
     return (
       <Animatable.View
+        ref={ref}
         delay={delay}
         duration={500}
         animation='zoomIn'
@@ -78,7 +106,7 @@ class ActionBar extends Component {
         {this.renderButton(styles, 'add-to-list', 30, 300,
           () => this.updateScreenIndex('addProgramExercise')
         )}
-        {this.renderButton(styles, 'rocket', 25, 100)}
+        {this.renderButton(styles, 'rocket', 25, 100, () => this.handleRocket(), 'rocketButton')}
       </Animatable.View>
     );
   }

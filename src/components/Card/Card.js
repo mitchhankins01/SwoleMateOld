@@ -121,6 +121,14 @@ class Card extends Component {
     );
   }
 
+  renderCard(styles) {
+    return (
+      <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>
+        {this.props.children}
+      </Animatable.View>
+    );
+  }
+
   render() {
     const {
       // Various
@@ -135,12 +143,16 @@ class Card extends Component {
       item,
       subtitle,
       icon,
-      onPress
+      onPress,
+
+      // Reusable testing
+      reusable
     } = this.props;
     const styles = themeStyles[theme];
 
     if (empty) return this.renderEmptyCard(styles, title);
     if (addCard) return this.renderAddCard(styles, typeAddCard);
+    if (reusable) return this.renderCard(styles);
 
     return (
       <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>

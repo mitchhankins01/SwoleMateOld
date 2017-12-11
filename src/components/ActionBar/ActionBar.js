@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
- import { Dimensions, View } from 'react-native';
+ import { Dimensions, View, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
@@ -38,6 +38,8 @@ class ActionBar extends Component {
   }
 
   handleRocket() {
+    return this.props.navigation.navigate('Workout');
+
     if (this.refs.rocketButton) {
       this.refs.rocketButton.myFancyAnimation(6000);
     }
@@ -125,9 +127,25 @@ class ActionBar extends Component {
     );
   }
 
+  renderWorkoutActionBar(styles) {
+    return (
+      <Animatable.View style={styles.actionBarWorkout}>
+        {this.renderButton(styles, 'back', 30, 300,
+          () => this.props.navigation.goBack(null)
+        )}
+        <Text style={styles.workoutBarText}> 0:00 </Text>
+        {this.renderButton(styles, 'check', 25, 100,
+          this.props.onPressSave
+        )}
+      </Animatable.View>
+    );
+  }
+
   render() {
-    const { theme, screenIndex } = this.props;
+    const { theme, screenIndex, workout } = this.props;
     const styles = themeStyles[theme];
+
+    if (workout) return renderType = this.renderWorkoutActionBar(styles);
 
     let renderType;
     switch (screenIndex) {

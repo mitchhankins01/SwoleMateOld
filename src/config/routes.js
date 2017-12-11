@@ -4,10 +4,10 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import Main from '../screens/Main';
 import Home from '../screens/Home';
 import Login from '../screens/Login';
-import Workout from '../screens/Workout';
 import TabBar from '../components/TabBar';
 import Register from '../screens/Register';
 import Settings from '../screens/Settings';
+import { Workout } from '../screens/Workout';
 
 const MainStack = StackNavigator({
   Main: {

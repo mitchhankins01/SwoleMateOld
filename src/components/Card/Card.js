@@ -8,12 +8,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Form } from '../Form';
 import themeStyles from './styles';
 
-import {
-  deleteProgram,
-  deleteProgramDay,
-  deleteProgramExercise,
-} from '../../actions/programActions';
-
 @inject('themeStore', 'programStore') @observer
 class Card extends Component {
   state = {
@@ -23,16 +17,19 @@ class Card extends Component {
 
   onPressDelete() {
     const { selectedDeleteKey } = this.state;
-    const { dispatch, screenIndex, info } = this.props;
+    const { programStore: {
+      screenIndex, info, deleteProgram, deleteProgramDay, deleteProgramExercise 
+    } } = this.props;
+
     switch (screenIndex) {
       default: return;
       case 'allPrograms':
-        return dispatch(deleteProgram(selectedDeleteKey));
+        return deleteProgram(selectedDeleteKey);
       case 'primaryProgram':
       case 'selectedProgram':
-        return dispatch(deleteProgramDay(info, selectedDeleteKey));
+        return deleteProgramDay(info, selectedDeleteKey);
       case 'programExercises':
-        return dispatch(deleteProgramExercise(info, selectedDeleteKey));
+        return deleteProgramExercise(info, selectedDeleteKey);
     }
   }
 

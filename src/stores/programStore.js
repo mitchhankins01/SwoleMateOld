@@ -174,6 +174,40 @@ class ProgramStore {
     });
   }
 
+  @action deleteProgram = deleteKey => {
+    firebase.firestore()
+    .collection('userPrograms')
+    .doc(deleteKey)
+    .delete()
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
+
+  @action deleteProgramDay = (programInfo, deleteKey) => {
+    firebase.firestore()
+    .collection('userPrograms')
+    .doc(programInfo[0].key)
+    .collection('days')
+    .doc(deleteKey)
+    .delete()
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
+
+  @action deleteProgramExercise = (programInfo, deleteKey) => {
+    firebase.firestore()
+    .collection('userPrograms')
+    .doc(programInfo[0].key)
+    .collection('exercises')
+    .doc(deleteKey)
+    .delete()
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
+
 }
 
 const programStore = new ProgramStore();

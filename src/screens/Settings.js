@@ -8,7 +8,6 @@ import { List, ListItem, Avatar } from 'react-native-elements';
 
 import Header from '../components/Header';
 import themeStyles from '../components/styles';
-import { changeTheme } from '../actions/themeActions';
 import { standard, standard2, standard3 } from '../components/theme';
 import {
   main,

@@ -45,15 +45,13 @@
     "react-native-textinput-effects": "^0.4.2",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.19",
-    "react-redux": "^5.0.6",
-    "react-timer-mixin": "^0.13.3",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
     "tcomb-form-native": "^0.6.11",
     "teaset": "^0.4.9"
   },
   "babel": {
-    "presets": ["react-native"],
+    "presets": [
+      "react-native"
+    ],
     "plugins": [
       "transform-decorators-legacy",
       "transform-class-properties"

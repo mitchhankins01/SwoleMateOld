@@ -21,8 +21,8 @@ class Form extends Component {
   }
 
   onSavePressed() {
+    const { formType, programStore } = this.props;
     const { showExerciseList, selectedExerciseKey } = this.state;
-    const { formType, selectedDayKey, programStore } = this.props;
     const {
       selectExerciseButton, addProgramForm, addProgramDayForm, addProgramExerciseForm
     } = this.refs;
@@ -48,7 +48,8 @@ class Form extends Component {
           return programStore.addProgramDay(getValue(), programStore.info);
         case 'addProgramExercise':
           return (
-            programStore.addProgramExercise(getValue(), programStore.info, programStore.selectedDayKey, selectedExerciseKey)
+            programStore.addProgramExercise(getValue(), programStore.info,
+            programStore.selectedDayKey, selectedExerciseKey)
           );
       }
     }

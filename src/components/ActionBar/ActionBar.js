@@ -5,9 +5,6 @@ import * as Animatable from 'react-native-animatable';
  import { Dimensions, View, Text } from 'react-native';
 
 import themeStyles from './styles';
-import {
-  updateScreenIndex,
-} from '../../actions/programActions';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;

@@ -1,22 +1,17 @@
 import t from 'tcomb-form-native';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import { Button } from 'react-native-elements';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import ModalDropdown from 'react-native-modal-dropdown';
 
 import themeStyles from './styles';
-import {
-  addProgram,
-  addProgramDay,
-  addProgramExercise,
-  updateScreenIndex,
-} from '../../actions/programActions';
 
 const TForm = t.form.Form;
 
+@inject('themeStore', 'programStore') @observer
 class Form extends Component {
   state = {
     showExerciseList: false,
@@ -27,7 +22,7 @@ class Form extends Component {
 
   onSavePressed() {
     const { showExerciseList, selectedExerciseKey } = this.state;
-    const { dispatch, formType, info, selectedDayKey } = this.props;
+    const { formType, selectedDayKey, programStore } = this.props;
     const {
       selectExerciseButton, addProgramForm, addProgramDayForm, addProgramExerciseForm
     } = this.refs;
@@ -47,10 +42,13 @@ class Form extends Component {
     if (getValue()) {
       switch (formType) {
         default: return;
-        case 'addProgram': return dispatch(addProgram(getValue()));
-        case 'addProgramDay': return dispatch(addProgramDay(getValue(), info));
-        case 'addProgramExercise': return dispatch(addProgramExercise(
-            getValue(), info, selectedDayKey, selectedExerciseKey)
+        case 'addProgram':
+          return programStore.addProgram(getValue());
+        case 'addProgramDay':
+          return programStore.addProgramDay(getValue(), programStore.info);
+        case 'addProgramExercise':
+          return (
+            programStore.addProgramExercise(getValue(), programStore.info, programStore.selectedDayKey, selectedExerciseKey)
           );
       }
     }
@@ -61,11 +59,11 @@ class Form extends Component {
 
     const exercises = () => {
       if (selectedFilterGroup === '' || selectedFilterGroup === 'Show All Exercises') {
-        return [...this.props.allExercises];
+        return [...this.props.programStore.allExercises];
       }
 
       return (
-        this.props.allExercises.filter(exercise => {
+        this.props.programStore.allExercises.filter(exercise => {
           return exercise.group === this.state.selectedFilterGroup;
         })
       );
@@ -109,8 +107,8 @@ class Form extends Component {
 
   render() {
     const { showExerciseList, selectedExerciseName } = this.state;
-    const { dispatch, formType, theme } = this.props;
-    const styles = themeStyles[this.props.themeStore.selected];
+    const { formType, themeStore, programStore } = this.props;
+    const styles = themeStyles[themeStore.selected];
 
     const exercisesButton = () => {
       return (
@@ -151,7 +149,7 @@ class Form extends Component {
             name={'back'}
             style={{ color: '#EDF0F1' }}
             underlayColor={'transparent'}
-            onPress={() => dispatch(updateScreenIndex('selectedProgram'))}
+            onPress={() => programStore.updateScreenIndex('selectedProgram')}
           />
           <Entypo
             size={25}
@@ -166,14 +164,7 @@ class Form extends Component {
   }
 }
 
-const mapStateToProps = ({ program, theme }) => {
-  return {
-    theme: theme.selected,
-    selectedDayKey: program.selectedDayKey,
-  };
-};
-
-export default connect(mapStateToProps)(Form);
+export default Form;
 
 // New Program
 const programOptions = {

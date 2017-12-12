@@ -90,7 +90,7 @@ class Programs extends Component {
   }
 
   render() {
-    const { screenIndex } = this.props.programStore;
+    const { loading, screenIndex } = this.props.programStore;
     // if (loading) {
     //   return (
     //     <View style={styles.loadingContainer}>
@@ -101,7 +101,7 @@ class Programs extends Component {
     //   );
     // }
 
-    if (this.state.loading) return null;
+    if (loading) return null;
 
     let renderType;
     switch (screenIndex) {

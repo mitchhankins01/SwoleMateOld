@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import { ScrollView, StatusBar } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import { inject, observer } from 'mobx-react';
 
 import Header from '../components/Header';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
 import { Programs } from '../components/Programs';
 import { ActionBar } from '../components/ActionBar';
-import { fetchTheme } from '../actions/themeActions';
 
 @inject('themeStore', 'programStore') @observer
 class Home extends Component {

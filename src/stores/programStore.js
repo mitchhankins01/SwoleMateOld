@@ -109,6 +109,71 @@ class ProgramStore {
     });
     this.loading = false;
   }
+
+  @action addProgram = values => {
+    firebase.firestore().collection('userPrograms').add({
+      type: values.type,
+      name: values.name,
+      level: values.level,
+      frequency: values.frequency,
+      description: values.description,
+      author: firebase.auth().currentUser.uid,
+    })
+    .then(() => {
+      this.updateScreenIndex('allPrograms');
+    })
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
+
+  @action addProgramDay = (values, programInfo) => {
+    const ref = firebase.firestore()
+    .collection('userPrograms')
+    .doc(programInfo[0].key)
+    .collection('days')
+    .doc();
+
+    ref.set({
+      key: ref.id,
+      name: values.name,
+      description: values.description,
+      primaryGroup: values.primaryGroup,
+      secondaryGroup: values.secondaryGroup,
+      author: firebase.auth().currentUser.uid,
+    })
+    .then(() => {
+      this.updateScreenIndex('selectedProgram');
+    })
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
+
+  @action addProgramExercise = (values, programInfo, selectedDayKey, selectedExerciseKey) => {
+    const ref = firebase.firestore()
+    .collection('userPrograms')
+    .doc(programInfo[0].key)
+    .collection('exercises')
+    .doc();
+
+    ref.set({
+      key: ref.id,
+      sets: values.sets,
+      reps: values.reps,
+      rest: values.rest,
+      day: selectedDayKey,
+      exerciseKey: selectedExerciseKey,
+      author: firebase.auth().currentUser.uid,
+    })
+    .then(() => {
+      this.updateScreenIndex('programExercises');
+    })
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
+
 }
 
 const programStore = new ProgramStore();

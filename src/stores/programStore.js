@@ -2,7 +2,6 @@ import { action, observable } from 'mobx';
 import firebase from 'react-native-firebase';
 
 class ProgramStore {
-
   // Various
   @observable loading: false;
   @observable selectedDayKey: '';
@@ -11,6 +10,9 @@ class ProgramStore {
   @observable info = [];
   @observable days = [];
   @observable exercises = [];
+  // All
+  @observable allPrograms = [];
+  @observable allExercises = [];
 
   @action updateScreenIndex = index => {
     this.screenIndex = index;
@@ -66,8 +68,46 @@ class ProgramStore {
     });
   }
 
-  @action setProgram = (program) => {
-    this.program = program;
+  @action fetchAllPrograms = () => {
+    const allProgramsRef = firebase.firestore()
+    .collection('userPrograms')
+    .where('author', '==', firebase.auth().currentUser.uid);
+
+    allProgramsRef.onSnapshot(querySnapshot => {
+      this.loading = true;
+      this.allPrograms.length = 0;
+      querySnapshot.forEach(program => {
+        const {
+          author, frequency, description, level, name, type
+        } = program.data();
+
+        this.allPrograms.push({
+          type,
+          name,
+          level,
+          author,
+          program,
+          frequency,
+          description,
+          key: program.id,
+        });
+      });
+      this.loading = false;
+    });
+  }
+
+  @action fetchAllExercises = () => {
+    this.loading = true;
+
+    firebase.firestore().collection('exercises')
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(exercise => {
+        const { description, group, key, name } = exercise.data();
+        this.allExercises.push({ key, name, group, description });
+      });
+    });
+    this.loading = false;
   }
 }
 

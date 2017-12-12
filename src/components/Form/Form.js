@@ -110,7 +110,7 @@ class Form extends Component {
   render() {
     const { showExerciseList, selectedExerciseName } = this.state;
     const { dispatch, formType, theme } = this.props;
-    const styles = themeStyles[theme];
+    const styles = themeStyles[this.props.themeStore.selected];
 
     const exercisesButton = () => {
       return (

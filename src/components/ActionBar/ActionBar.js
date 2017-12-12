@@ -1,8 +1,8 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
- import { Dimensions, View, Text } from 'react-native';
+import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
+ import { Dimensions, View, Text } from 'react-native';
 
 import themeStyles from './styles';
 import {
@@ -27,11 +27,12 @@ Animatable.initializeRegistryWithDefinitions({
   }
 });
 
+@inject('themeStore', 'programStore') @observer
 class ActionBar extends Component {
   updateScreenIndex(screenIndex, goBack) {
-    const { dispatch, navigation } = this.props;
+    const { programStore, navigation } = this.props;
 
-    dispatch(updateScreenIndex(screenIndex));
+    programStore.updateScreenIndex(screenIndex);
 
     if (goBack) navigation.goBack(null);
     //if (screenIndex === 'primaryProgram') dispatch(fetchProgram());
@@ -145,8 +146,9 @@ class ActionBar extends Component {
   }
 
   render() {
-    const { theme, screenIndex, workout } = this.props;
-    const styles = themeStyles[theme];
+    const { workout } = this.props;
+    const { screenIndex } = this.props.programStore;
+    const styles = themeStyles[this.props.themeStore.selected];
 
     if (workout) return renderType = this.renderWorkoutActionBar(styles);
 
@@ -186,15 +188,4 @@ class ActionBar extends Component {
   }
 }
 
-const mapStateToProps = ({ program, theme }) => {
-  return {
-    theme: theme.selected,
-    screenIndex: program.screenIndex,
-    //
-    // //Debugging
-    // programInfo: program.info,
-    // programDays: program.days,
-  };
-};
-
-export default connect(mapStateToProps)(ActionBar);
+export default ActionBar;

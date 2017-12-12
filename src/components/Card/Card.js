@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
@@ -14,6 +14,7 @@ import {
   deleteProgramExercise,
 } from '../../actions/programActions';
 
+@inject('themeStore', 'programStore') @observer
 class Card extends Component {
   state = {
     warningVisible: false,
@@ -131,8 +132,6 @@ class Card extends Component {
 
   render() {
     const {
-      // Various
-      theme,
       // Empty Card
       empty,
       title,
@@ -148,7 +147,7 @@ class Card extends Component {
       // Reusable testing
       reusable
     } = this.props;
-    const styles = themeStyles[theme];
+    const styles = themeStyles[this.props.themeStore.selected];
 
     if (empty) return this.renderEmptyCard(styles, title);
     if (addCard) return this.renderAddCard(styles, typeAddCard);
@@ -195,11 +194,4 @@ class Card extends Component {
   }
 }
 
-const mapStateToProps = ({ program, theme }) => {
-  return {
-    theme: theme.selected,
-    screenIndex: program.screenIndex,
-  };
-};
-
-export default connect(mapStateToProps)(Card);
+export default Card;

@@ -1,4 +1,3 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { ScrollView, StatusBar } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -31,9 +30,12 @@ class Home extends Component {
    state = { scrollIndex: 0 }
 
    componentWillMount() {
-     //this.props.dispatch(fetchTheme());
-     this.props.themeStore.fetchTheme();
-     this.props.programStore.fetchPrimaryProgram();
+     const { programStore, themeStore } = this.props;
+
+     themeStore.fetchTheme();
+     programStore.fetchAllPrograms();
+     programStore.fetchAllExercises();
+     programStore.fetchPrimaryProgram();
    }
 
    componentDidMount() {
@@ -72,9 +74,9 @@ class Home extends Component {
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-    console.log(this.props.programStore.info);
-    console.log(this.props.programStore.days);
-    console.log(this.props.programStore.exercises);
+    // console.log(this.props.programStore.info);
+    // console.log(this.props.programStore.days);
+    // console.log(this.props.programStore.exercises);
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
@@ -86,14 +88,14 @@ class Home extends Component {
           {this.renderTitle()}
         </Animatable.Text> */}
 
-        {/* <ScrollView
+        <ScrollView
           style={{ marginTop: 10 }}
           onScroll={event => this.setState({ scrollIndex: event.nativeEvent.contentOffset.y })}
         >
           <Programs navigation={this.props.navigation} />
-        </ScrollView> */}
+        </ScrollView>
 
-        {/* <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} /> */}
+        <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} />
 
         <DropdownAlert
           translucent

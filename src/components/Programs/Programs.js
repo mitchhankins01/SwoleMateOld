@@ -1,16 +1,11 @@
-import { connect } from 'react-redux';
-import { observer } from 'mobx-react';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
+import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
 
 import { Card } from '../Card';
-import {
-  updateScreenIndex,
-  updateSelectedDayKey,
-} from '../../actions/programActions';
 
-@observer
+@inject('themeStore', 'programStore') @observer
 class Programs extends Component {
   state = {
     // Primary or Selected Program
@@ -24,121 +19,19 @@ class Programs extends Component {
     allExercises: [],
   }
 
-  componentWillMount() {
-    console.log(this.props);
-    //this.props.screenProps.fetchPrimaryProgram();
-    firebase.firestore().collection('users')
-    .doc(firebase.auth().currentUser.uid)
-    .onSnapshot(userDoc => {
-      this.fetchProgram(userDoc.data().primaryProgram);
-    });
-
-    this.fetchAllExercises();
-    this.fetchAllPrograms();
-  }
-
-  // FETCHING FROM FB
-  fetchProgram(program) {
-    const programRef = firebase.firestore().collection('userPrograms').doc(program);
-
-    // Get program info
-    const info = [];
-
-    programRef.onSnapshot(thisProgram => {
-      this.setState({ loading: true });
-      info.length = 0;
-      const { author, frequency, description, level, name, type } = thisProgram.data();
-      info.push({ author, frequency, description, level, name, type, key: thisProgram.id });
-      this.setState({ info, loading: false });
-    });
-
-    // Get program days
-    const days = [];
-
-    programRef.collection('days').onSnapshot(querySnapshot => {
-      days.length = 0;
-      this.setState({ loading: true });
-      querySnapshot.forEach(day => {
-        const { author, description, key, name, primaryGroup, secondaryGroup } = day.data();
-        days.push({ author, description, key, name, primaryGroup, secondaryGroup });
-      });
-      this.setState({ days, loading: false });
-    });
-
-    // Get program exercises
-    const exercises = [];
-
-    programRef.collection('exercises').onSnapshot(querySnapshot => {
-      exercises.length = 0;
-      this.setState({ loading: true });
-      querySnapshot.forEach(exercise => {
-        const { author, day, exerciseKey, key, reps, rest, sets } = exercise.data();
-        exercises.push({ author, day, exerciseKey, key, reps, rest, sets });
-      });
-      this.setState({ exercises, loading: false });
-    });
-  }
-
-  fetchAllExercises() {
-    const allExercises = [];
-
-    firebase.firestore().collection('exercises')
-    .get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(exercise => {
-        const { description, group, key, name } = exercise.data();
-        allExercises.push({ key, name, group, description });
-      });
-      this.setState({ allExercises });
-    })
-    .catch(error => {
-      // IMPLEMENT, error is not coming through
-      console.log(error);
-    });
-  }
-
-  fetchAllPrograms() {
-    const allPrograms = [];
-
-    const allProgramsRef = firebase.firestore().collection('userPrograms')
-      .where('author', '==', firebase.auth().currentUser.uid);
-
-    allProgramsRef.onSnapshot(querySnapshot => {
-      allPrograms.length = 0;
-      this.setState({ loading: true });
-      querySnapshot.forEach(program => {
-        const {
-          author, frequency, description, level, name, type
-        } = program.data();
-
-        allPrograms.push({
-          type,
-          name,
-          level,
-          author,
-          program,
-          frequency,
-          description,
-          key: program.id,
-        });
-      });
-      this.setState({ allPrograms, loading: false });
-    });
-  }
-
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
-    const { dispatch } = this.props;
+    const { programStore } = this.props;
 
-    if (screenIndex) dispatch(updateScreenIndex(screenIndex));
-    if (selectedDayKey) dispatch(updateSelectedDayKey(selectedDayKey));
-    if (selectedProgram) this.fetchProgram(selectedProgram);
+    if (screenIndex) programStore.updateScreenIndex(screenIndex);
+    if (selectedDayKey) programStore.updateselectedDayKey(selectedDayKey);
+    if (selectedProgram) programStore.fetchProgram(null, selectedProgram);
   }
 
   renderAllPrograms = () => {
-    if (this.state.allPrograms.length === 0) return <Card empty title='Program' />;
+    if (this.props.programStore.length === 0) return <Card empty title='Program' />;
 
     return (
-      this.state.allPrograms.map(program => {
+      this.props.programStore.allPrograms.map(program => {
         return (
           <Card
             item={program}
@@ -153,10 +46,10 @@ class Programs extends Component {
   }
 
   renderProgramDays = () => {
-    if (this.state.days.length === 0) return <Card empty title='Workout' />;
+    if (this.props.programStore.days.length === 0) return <Card empty title='Workout' />;
 
     return (
-      this.state.days.map(day => {
+      this.props.programStore.days.map(day => {
         return (
           <Card
             item={day}
@@ -173,9 +66,9 @@ class Programs extends Component {
 
   renderProgramExercises = () => {
     return (
-      this.state.exercises.map(exercise => {
-        if (exercise.day === this.props.selectedDayKey) {
-          const match = this.state.allExercises.find(eachExercise => {
+      this.props.programStore.exercises.map(exercise => {
+        if (exercise.day === this.props.programStore.selectedDayKey) {
+          const match = this.props.programStore.allExercises.find(eachExercise => {
             return eachExercise.key === exercise.exerciseKey;
           });
           // Modify match with actual exercise key, to facilitate deleting form program
@@ -197,7 +90,7 @@ class Programs extends Component {
   }
 
   render() {
-    const { screenIndex } = this.props;
+    const { screenIndex } = this.props.programStore;
     // if (loading) {
     //   return (
     //     <View style={styles.loadingContainer}>
@@ -249,13 +142,4 @@ class Programs extends Component {
   }
 }
 
-const mapStateToProps = ({ program, theme }) => {
-  return {
-    // Various
-    theme: theme.selected,
-    screenIndex: program.screenIndex,
-    selectedDayKey: program.selectedDayKey,
-  };
-};
-
-export default connect(mapStateToProps)(Programs);
+export default Programs;

@@ -21,6 +21,21 @@ class Workout extends Component {
     weight: 10,
     timePassed: 0,
     exerciseList: [],
+
+    // Current exercise
+    exerciseIndex: 0,
+    exerciseSetIndex: 1,
+    exerciseRest: 60,
+    exerciseName: '',
+    currentExercise: [],
+    workoutLog: {
+      timepassed: 0,
+      completedExercises: [],
+    },
+    exerciseLog: {
+      exerciseKey: '',
+      completedSets: [],
+    }
   }
 
   componentWillMount() {
@@ -28,10 +43,13 @@ class Workout extends Component {
     const exerciseList = exercises.filter(each => {
       return each.day === selectedDayKey;
     });
-    this.setState({ exerciseList });
+    this.setState({ exerciseList },
+      () => this.loadExercise()
+    );
   }
 
   componentDidMount() {
+    //IMPLEMENT, move counter to programStore mobx
     this.timePassed = setInterval(() => {
       this.setState({ timePassed: this.state.timePassed + 1 });
     }, 1000);
@@ -39,6 +57,92 @@ class Workout extends Component {
 
   componentWillUnmount() {
     clearInterval(this.timePassed);
+  }
+
+  saveSet(saveExercise) {
+    const {
+      reps,
+      weight,
+      exerciseSetIndex,
+      exerciseLog: { completedSets },
+    } = this.state;
+
+    // Create a new array and set it equal to the completedSets in state
+    const updatedCompletedSets = completedSets;
+    updatedCompletedSets.push({ set: exerciseSetIndex, reps, weight });
+    this.setState({
+      exerciseSetIndex: exerciseSetIndex + 1,
+      exerciseLog: {
+        completedSets: updatedCompletedSets,
+        exerciseKey: this.state.exerciseLog.exerciseKey,
+      }
+    }, () => {
+      if (saveExercise) saveExercise();
+    });
+  }
+
+  saveExercise() {
+    const {
+      workoutLog: { completedExercises },
+    } = this.state;
+
+    // Create a new array and set it equal to the completedExercises in state
+    // Clear out old exerciseLog for new exercise
+    const updatedCompletedExercises = completedExercises;
+    updatedCompletedExercises.push(this.state.exerciseLog);
+    this.setState({
+      exerciseIndex: this.state.exerciseIndex + 1,
+      exerciseSetIndex: 1,
+      exerciseLog: {
+        exerciseKey: '',
+        completedSets: [],
+      },
+      workoutLog: {
+        timepassed: this.state.timePassed,
+        completedExercises: updatedCompletedExercises,
+      }
+    }, () => {
+      this.loadExercise();
+    });
+  }
+
+  onPressSave() {
+    const {
+      currentExercise: { sets },
+      exerciseLog: { completedSets },
+    } = this.state;
+
+    // If on the last set, else if sets remaining, else no more sets
+    if (completedSets.length === sets - 1) {
+      this.saveSet(() => this.saveExercise());
+    } else {
+      this.saveSet();
+    }
+  }
+
+  loadExercise() {
+    const { exerciseIndex, exerciseList } = this.state;
+    const { programStore: { allExercises } } = this.props;
+
+    if (exerciseIndex >= exerciseList.length) return console.log('end workout');
+
+    // Create an array with all the program exercises
+    const exercises = exerciseList.map(exercise => exercise);
+
+    // Pull meta info off all exercises when compared to the current exercise,
+    // and set the state with the exercise name
+    const exercisesMeta = allExercises.find(query => {
+      return query.key === exercises[exerciseIndex].exerciseKey;
+    });
+
+    // Set state with the current exercise name, rest, and the log with the exercisekey
+    const exerciseKey = exercises[exerciseIndex].exerciseKey;
+    this.setState({
+      exerciseName: exercisesMeta.name,
+      currentExercise: exercises[exerciseIndex],
+      exerciseRest: exercises[exerciseIndex].rest,
+      exerciseLog: { ...this.state.exerciseLog, exerciseKey },
+    });
   }
 
   onChangeInput(type, number) {
@@ -85,7 +189,7 @@ class Workout extends Component {
     return (
       <LinearGradient colors={gradients} style={styles.container} >
         <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
-          <Text style={styles.headerText}>Exercise Name</Text>
+          <Text style={styles.headerText}>{this.state.exerciseName}</Text>
         </Animatable.View>
         <Animatable.View style={styles.logContainer} duration={750} animation='zoomIn'>
           <Text style={[styles.headerText, { fontSize: 18 }]}>Past Logs</Text>
@@ -107,7 +211,12 @@ class Workout extends Component {
             {this.renderWheel(styles, 'reps')}
           </Animatable.View>
         </View>
-        <ActionBar workout navigation={this.props.navigation} timePassed={this.state.timePassed} />
+        <ActionBar
+          workout
+          onPressSave={() => this.onPressSave()}
+          navigation={this.props.navigation}
+          timePassed={this.state.timePassed}
+        />
       </LinearGradient>
     );
   }

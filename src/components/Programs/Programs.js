@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { observer } from 'mobx-react';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import * as Animatable from 'react-native-animatable';
@@ -9,6 +10,7 @@ import {
   updateSelectedDayKey,
 } from '../../actions/programActions';
 
+@observer
 class Programs extends Component {
   state = {
     // Primary or Selected Program
@@ -23,6 +25,8 @@ class Programs extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props);
+    //this.props.screenProps.fetchPrimaryProgram();
     firebase.firestore().collection('users')
     .doc(firebase.auth().currentUser.uid)
     .onSnapshot(userDoc => {

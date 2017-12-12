@@ -1,15 +1,17 @@
+import { Wheel } from 'teaset';
 import { connect } from 'react-redux';
+import { observer } from 'mobx-react';
 import React, { Component } from 'react';
-import TimerMixin from 'react-timer-mixin';
 import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { Wheel } from 'teaset';
+import { Button } from 'react-native-elements';
 
 import themeStyles from './styles';
 import { ActionBar } from '../../components/ActionBar';
 
+@observer
 class Workout extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,7 @@ class Workout extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     this.timePassed = setInterval(() => {
       this.setState({ timePassed: this.state.timePassed + 1 });
     }, 1000);
@@ -71,7 +74,7 @@ class Workout extends Component {
     );
   }
   render() {
-    const styles = themeStyles[this.props.theme];
+    const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
     return (
@@ -87,6 +90,8 @@ class Workout extends Component {
             <Text> </Text>
           </View>
         </Animatable.View>
+        <Button onPress={() => this.props.screenProps.setProgram(['name', 'name2'])} />
+        <Button onPress={() => this.props.screenProps.program.map(detail => console.log(detail))} />
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
           <Animatable.View style={styles.inputContainer} duration={750} animation='zoomIn'>
             <Text style={styles.inputHeader}>Weight</Text>

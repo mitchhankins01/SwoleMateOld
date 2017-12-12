@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
+import { inject, observer } from 'mobx-react';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,6 +19,7 @@ import {
   handleGeneralSelection
 } from '../config/settings';
 
+@inject('themeStore') @observer
 class Settings extends Component {
 
   static navigationOptions = {
@@ -124,7 +125,7 @@ class Settings extends Component {
   }
 
   render() {
-    const styles = themeStyles[this.props.theme];
+    const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [
       styles.$primaryColor,
       styles.$secondaryColor,
@@ -159,10 +160,4 @@ class Settings extends Component {
   }
 }
 
-const mapStateToProps = ({ theme }) => {
-  return {
-    theme: theme.selected,
-  };
-};
-
-export default connect(mapStateToProps)(Settings);
+export default Settings;

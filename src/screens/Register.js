@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import { Text, View, KeyboardAvoidingView, Keyboard } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { Button, FormLabel, FormInput, ButtonGroup } from 'react-native-elements';
 import firebase from 'react-native-firebase';
 import DropdownAlert from 'react-native-dropdownalert';
+import LinearGradient from 'react-native-linear-gradient';
+import { Text, View, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { Button, FormLabel, FormInput, ButtonGroup } from 'react-native-elements';
+
 import themeStyles from '../components/styles';
 
 class Register extends Component {
   constructor() {
     super();
     this.state = {
+      sex: 0,
       name: '',
       email: '',
-      password: '',
       error: '',
+      password: '',
       loading: false,
-      sex: 0,
       imperial: true,
       theme: 'standard'
     };

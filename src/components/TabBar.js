@@ -1,13 +1,14 @@
-import { connect } from 'react-redux';
 import { Platform } from 'react-native';
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import { TabBarBottom } from 'react-navigation';
 
 import themeStyles from './styles';
 
+@inject('themeStore') @observer
 class TabBar extends Component {
   render() {
-    const styles = themeStyles[this.props.theme];
+    const styles = themeStyles[this.props.themeStore.selected];
 
     return (
       <TabBarBottom
@@ -24,10 +25,4 @@ class TabBar extends Component {
   }
 }
 
-const mapStateToProps = ({ theme }) => {
-  return {
-    theme: theme.selected,
-  };
-};
-
-export default connect(mapStateToProps)(TabBar);
+export default TabBar;

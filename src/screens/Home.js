@@ -5,6 +5,8 @@ import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { inject, observer } from 'mobx-react';
+
 import Header from '../components/Header';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
@@ -12,6 +14,7 @@ import { Programs } from '../components/Programs';
 import { ActionBar } from '../components/ActionBar';
 import { fetchTheme } from '../actions/themeActions';
 
+@inject('themeStore', 'programStore') @observer
 class Home extends Component {
 
    static navigationOptions = {
@@ -28,7 +31,9 @@ class Home extends Component {
    state = { scrollIndex: 0 }
 
    componentWillMount() {
-     this.props.dispatch(fetchTheme());
+     //this.props.dispatch(fetchTheme());
+     this.props.themeStore.fetchTheme();
+     this.props.programStore.fetchPrimaryProgram();
    }
 
    componentDidMount() {
@@ -65,9 +70,11 @@ class Home extends Component {
    // }
 
   render() {
-    const styles = themeStyles[this.props.theme];
+    const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-
+    console.log(this.props.programStore.info);
+    console.log(this.props.programStore.days);
+    console.log(this.props.programStore.exercises);
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
@@ -79,14 +86,14 @@ class Home extends Component {
           {this.renderTitle()}
         </Animatable.Text> */}
 
-        <ScrollView
+        {/* <ScrollView
           style={{ marginTop: 10 }}
           onScroll={event => this.setState({ scrollIndex: event.nativeEvent.contentOffset.y })}
         >
           <Programs navigation={this.props.navigation} />
-        </ScrollView>
+        </ScrollView> */}
 
-        <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} />
+        {/* <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} /> */}
 
         <DropdownAlert
           translucent
@@ -108,4 +115,5 @@ const mapStateToProps = ({ program, theme }) => {
   };
 };
 
-export default connect(mapStateToProps)(Home);
+export default Home;
+//export default connect(mapStateToProps)(Home);

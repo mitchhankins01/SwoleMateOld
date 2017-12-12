@@ -28,9 +28,9 @@ class Main extends Component {
   authListener() {
     this.authListener = firebase.auth().onAuthStateChanged((user) => {
       if (user) { // HomeStack
-        this.resetNavigation('HomeStack');
+        this.props.navigation.navigate('HomeStack');
       } else {
-        this.resetNavigation('Login');
+        this.props.navigation.navigate('Login');
       }
     });
   }
@@ -46,7 +46,6 @@ class Main extends Component {
   }
 
   render() {
-    //const styles = themeStyles[this.props.theme];
     const styles = themeStyles.standard;
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 

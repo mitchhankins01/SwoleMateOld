@@ -104,7 +104,6 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state;
-    //const styles = themeStyles[this.props.theme];
     const styles = themeStyles.standard;
     const gradients = [
       styles.$primaryColor,

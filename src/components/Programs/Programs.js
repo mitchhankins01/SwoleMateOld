@@ -23,8 +23,11 @@ class Programs extends Component {
     const { programStore } = this.props;
 
     if (screenIndex) programStore.updateScreenIndex(screenIndex);
-    if (selectedDayKey) programStore.updateselectedDayKey(selectedDayKey);
-    if (selectedProgram) programStore.fetchProgram(null, selectedProgram);
+    if (selectedDayKey) programStore.updateSelectedDayKey(selectedDayKey);
+    if (selectedProgram) {
+      programStore.fetchProgram(null, selectedProgram);
+      programStore.updateSelectedProgramKey(selectedProgram);
+    }
   }
 
   renderAllPrograms = () => {

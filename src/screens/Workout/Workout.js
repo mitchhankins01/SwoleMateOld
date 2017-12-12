@@ -5,8 +5,6 @@ import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { Button } from 'react-native-elements';
-
 import themeStyles from './styles';
 import { ActionBar } from '../../components/ActionBar';
 
@@ -22,13 +20,20 @@ class Workout extends Component {
     reps: 10,
     weight: 10,
     timePassed: 0,
+    exercises: [],
+  }
+
+  componentWillMount() {
+    const exercises = this.props.programStore.exercises.filter(each => {
+      return each.day === this.props.programStore.selectedDayKey;
+    });
+    this.setState({ exercises });
   }
 
   componentDidMount() {
-    console.log(this.props);
-    this.timePassed = setInterval(() => {
-      this.setState({ timePassed: this.state.timePassed + 1 });
-    }, 1000);
+    // this.timePassed = setInterval(() => {
+    //   this.setState({ timePassed: this.state.timePassed + 1 });
+    // }, 1000);
   }
 
   componentWillUnmount() {
@@ -75,7 +80,7 @@ class Workout extends Component {
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-
+    console.log(this.state);
     return (
       <LinearGradient colors={gradients} style={styles.container} >
         <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
@@ -89,8 +94,6 @@ class Workout extends Component {
             <Text> </Text>
           </View>
         </Animatable.View>
-        <Button onPress={() => this.props.screenProps.setProgram(['name', 'name2'])} />
-        <Button onPress={() => this.props.screenProps.program.map(detail => console.log(detail))} />
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
           <Animatable.View style={styles.inputContainer} duration={750} animation='zoomIn'>
             <Text style={styles.inputHeader}>Weight</Text>

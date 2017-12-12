@@ -5,6 +5,7 @@ class ProgramStore {
   // Various
   @observable loading: false;
   @observable selectedDayKey: '';
+  @observable selectedProgramKey: '';
   @observable screenIndex = 'primaryProgram';
   // Get program info
   @observable info = [];
@@ -18,9 +19,14 @@ class ProgramStore {
     this.screenIndex = index;
   }
 
-  @action updateselectedDayKey = key => {
+  @action updateSelectedDayKey = key => {
     this.selectedDayKey = key;
   }
+
+  @action updateSelectedProgramKey = key => {
+    this.selectedProgramKey = key;
+  }
+
 
   @action fetchPrimaryProgram = () => {
     firebase.firestore().collection('users')

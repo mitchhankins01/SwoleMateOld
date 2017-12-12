@@ -1,7 +1,6 @@
 import { Wheel } from 'teaset';
-import { connect } from 'react-redux';
-import { observer } from 'mobx-react';
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,7 +10,7 @@ import { Button } from 'react-native-elements';
 import themeStyles from './styles';
 import { ActionBar } from '../../components/ActionBar';
 
-@observer
+@inject('themeStore', 'programStore') @observer
 class Workout extends Component {
   constructor(props) {
     super(props);
@@ -110,10 +109,4 @@ class Workout extends Component {
   }
 }
 
-const mapStateToProps = ({ theme }) => {
-  return {
-    theme: theme.selected,
-  };
-};
-
-export default connect(mapStateToProps)(Workout);
+export default Workout;

@@ -5,7 +5,6 @@ import { inject, observer } from 'mobx-react';
 import * as Progress from 'react-native-progress';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-import BackgroundTimer from 'react-native-background-timer';
 import { Dimensions, Text, TextInput, View } from 'react-native';
 
 import themeStyles from './styles';
@@ -26,9 +25,7 @@ class Workout extends Component {
     // Input
     reps: 10,
     weight: 10,
-    // Various
-    timePassed: 0,
-    showCountDown: false,
+    // Various]
     workoutComplete: false,
     // Current exercise
     exerciseList: [],
@@ -63,9 +60,8 @@ class Workout extends Component {
   }
 
   componentWillUnmount() {
-    //clearInterval(this.timePassed);
     this.props.workoutStore.clearTimer();
-    BackgroundTimer.clearInterval(this.intervalId);
+    this.props.workoutStore.clearCountDown();
   }
 
   onChangeInput(type, number) {
@@ -98,24 +94,18 @@ class Workout extends Component {
       currentExercise: { rest },
       exerciseLog: { completedSets },
     } = this.state;
-
-    // // Start countDown
-    // if (exerciseSetIndex === 1) this.setState({ exerciseRest: rest });
-    // this.intervalId = BackgroundTimer.setInterval(() => {
-    //   if (this.state.exerciseRest <= 0) {
-    //     //clearInterval(this.countDown);
-    //     BackgroundTimer.clearInterval(this.intervalId);
-    //     this.setState({ showCountDown: false, exerciseRest: rest });
-    //   } else {
-    //     this.setState({ exerciseRest: this.state.exerciseRest - 1 });
-    //   }
-    // }, 1000);
+    const { workoutStore: {
+      setCountDown,
+      startCountDown,
+    } } = this.props;
+    // Set and start countDown
+    setCountDown(rest);
+    startCountDown(true);
 
     // Create a new array and set it equal to the completedSets in state
     const updatedCompletedSets = completedSets;
     updatedCompletedSets.push({ set: exerciseSetIndex, reps, weight });
     this.setState({
-      showCountDown: true,
       exerciseSetIndex: exerciseSetIndex + 1,
       exerciseLog: {
         completedSets: updatedCompletedSets,
@@ -143,7 +133,7 @@ class Workout extends Component {
         completedSets: [],
       },
       workoutLog: {
-        timepassed: this.state.workoutStore.timePassed,
+        timepassed: this.props.workoutStore.timePassed,
         completedExercises: updatedCompletedExercises,
       }
     }, () => {
@@ -171,7 +161,7 @@ class Workout extends Component {
     this.setState({
       exerciseName: exercisesMeta.name,
       currentExercise: exercises[exerciseIndex],
-      //exerciseRest: exercises[exerciseIndex].rest,
+      exerciseRest: exercises[exerciseIndex].rest,
       exerciseLog: { ...this.state.exerciseLog, exerciseKey },
     });
   }
@@ -182,7 +172,7 @@ class Workout extends Component {
     return (
       <View style={[styles.countDownContainer, { backgroundColor: bgColor }]}>
         <Text style={styles.countDownText}>
-          {this.state.exerciseRest}
+          {this.props.workoutStore.countDown}
         </Text>
         <Progress.CircleSnail
           thickness={7}
@@ -240,8 +230,7 @@ class Workout extends Component {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
     const { workoutComplete, exerciseName, exerciseLog: { completedSets } } = this.state;
-    // console.log(this.props.workoutStore);
-    // return null;
+
     if (workoutComplete) console.log(this.state.workoutLog);
 
     return (
@@ -281,7 +270,7 @@ class Workout extends Component {
           navigation={this.props.navigation}
           timePassed={this.props.workoutStore.timePassed}
         />
-        {this.state.showCountDown ? this.renderCountDown(styles) : null}
+        {this.props.workoutStore.showCountDown ? this.renderCountDown(styles) : null}
       </LinearGradient>
     );
   }

@@ -14,7 +14,7 @@ import { ActionBar } from '../../components/ActionBar';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
-@inject('themeStore', 'programStore') @observer
+@inject('themeStore', 'programStore', 'workoutStore') @observer
 class Workout extends Component {
   constructor(props) {
     super(props);
@@ -59,14 +59,12 @@ class Workout extends Component {
   }
 
   componentDidMount() {
-    //IMPLEMENT, move counter to programStore mobx
-    this.timePassed = setInterval(() => {
-      this.setState({ timePassed: this.state.timePassed + 1 });
-    }, 1000);
+    this.props.workoutStore.startTimer();
   }
 
   componentWillUnmount() {
-    clearInterval(this.timePassed);
+    //clearInterval(this.timePassed);
+    this.props.workoutStore.clearTimer();
     BackgroundTimer.clearInterval(this.intervalId);
   }
 
@@ -101,17 +99,17 @@ class Workout extends Component {
       exerciseLog: { completedSets },
     } = this.state;
 
-    // Start countDown
-    if (exerciseSetIndex === 1) this.setState({ exerciseRest: rest });
-    this.intervalId = BackgroundTimer.setInterval(() => {
-      if (this.state.exerciseRest <= 0) {
-        //clearInterval(this.countDown);
-        BackgroundTimer.clearInterval(this.intervalId);
-        this.setState({ showCountDown: false, exerciseRest: rest });
-      } else {
-        this.setState({ exerciseRest: this.state.exerciseRest - 1 });
-      }
-    }, 1000);
+    // // Start countDown
+    // if (exerciseSetIndex === 1) this.setState({ exerciseRest: rest });
+    // this.intervalId = BackgroundTimer.setInterval(() => {
+    //   if (this.state.exerciseRest <= 0) {
+    //     //clearInterval(this.countDown);
+    //     BackgroundTimer.clearInterval(this.intervalId);
+    //     this.setState({ showCountDown: false, exerciseRest: rest });
+    //   } else {
+    //     this.setState({ exerciseRest: this.state.exerciseRest - 1 });
+    //   }
+    // }, 1000);
 
     // Create a new array and set it equal to the completedSets in state
     const updatedCompletedSets = completedSets;
@@ -145,7 +143,7 @@ class Workout extends Component {
         completedSets: [],
       },
       workoutLog: {
-        timepassed: this.state.timePassed,
+        timepassed: this.state.workoutStore.timePassed,
         completedExercises: updatedCompletedExercises,
       }
     }, () => {
@@ -225,19 +223,26 @@ class Workout extends Component {
       />
     );
   }
+
+  renderLog(styles, type, completedSets) {
+    if (type === 'current') {
+      return (
+        completedSets.map(each =>
+          <Text key={each.set} style={styles.logTextSets}>
+            {`${each.set}: ${each.weight}x${each.reps}`}
+          </Text>
+        )
+      );
+    }
+  }
+
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
     const { workoutComplete, exerciseName, exerciseLog: { completedSets } } = this.state;
-
+    // console.log(this.props.workoutStore);
+    // return null;
     if (workoutComplete) console.log(this.state.workoutLog);
-    // if (this.state.showCountDown) {
-    //   return (
-    //     <View>
-    //       {this.renderCountDown()}
-    //     </View>
-    //   );
-    // }
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >
@@ -249,11 +254,7 @@ class Workout extends Component {
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }} >
             <View style={{ flex: 1 }}>
               <Text style={styles.logTextHeader}>Current Log</Text>
-              {completedSets.map(each =>
-                <Text key={each.set} style={styles.logTextSets}>
-                  {`${each.set}: ${each.weight}x${each.reps}`}
-                </Text>
-              )}
+              {this.renderLog(styles, 'current', completedSets)}
             </View>
             <View style={styles.divider} />
             <View style={{ flex: 1 }}>
@@ -278,7 +279,7 @@ class Workout extends Component {
           workout
           onPressSave={() => this.onPressSave()}
           navigation={this.props.navigation}
-          timePassed={this.state.timePassed}
+          timePassed={this.props.workoutStore.timePassed}
         />
         {this.state.showCountDown ? this.renderCountDown(styles) : null}
       </LinearGradient>

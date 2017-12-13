@@ -1,13 +1,21 @@
 import { Wheel } from 'teaset';
 import React, { Component } from 'react';
+import { Dimensions } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import * as Progress from 'react-native-progress';
 import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 
+
+import BackgroundTimer from 'react-native-background-timer';
+import Color from 'color';
+
 import themeStyles from './styles';
 import { ActionBar } from '../../components/ActionBar';
+
+const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 @inject('themeStore', 'programStore') @observer
 class Workout extends Component {
@@ -61,14 +69,8 @@ class Workout extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.timePassed);
-  }
-
-  renderCountDown() {
-    return (
-      <Text>{this.state.exerciseRest}</Text>
-      // <Progress.Pie progress={this.state.exerciseRest} size={100} />
-    );
+    //clearInterval(this.timePassed);
+    BackgroundTimer.clearInterval(this.intervalId);
   }
 
   onChangeInput(type, number) {
@@ -101,12 +103,13 @@ class Workout extends Component {
       currentExercise: { rest },
       exerciseLog: { completedSets },
     } = this.state;
-    
+
     // Start countDown
     if (exerciseSetIndex === 1) this.setState({ exerciseRest: rest });
-    this.countDown = setInterval(() => {
+    this.intervalId = BackgroundTimer.setInterval(() => {
       if (this.state.exerciseRest <= 0) {
-        clearInterval(this.countDown);
+        //clearInterval(this.countDown);
+        BackgroundTimer.clearInterval(this.intervalId);
         this.setState({ showCountDown: false, exerciseRest: rest });
       } else {
         this.setState({ exerciseRest: this.state.exerciseRest - 1 });
@@ -178,6 +181,24 @@ class Workout extends Component {
     });
   }
 
+  renderCountDown(styles) {
+    const bgColor = Color(styles.$tertiaryColor).alpha(0.7);
+
+    return (
+      <View style={[styles.countDownContainer, { backgroundColor: bgColor }]}>
+        <Text style={styles.countDownText}>
+          {this.state.exerciseRest}
+        </Text>
+        <Progress.CircleSnail
+          thickness={7}
+          indeterminate
+          size={DEVICE_WIDTH * 0.7}
+          color={styles.$primaryColor}
+        />
+      </View>
+    );
+  }
+
   renderTextInput(styles, type) {
     const { weight, reps } = this.state;
     return (
@@ -212,13 +233,13 @@ class Workout extends Component {
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
     if (this.state.workoutComplete) console.log(this.state.workoutLog);
-    if (this.state.showCountDown) {
-      return (
-        <View>
-          {this.renderCountDown()}
-        </View>
-      );
-    }
+    // if (this.state.showCountDown) {
+    //   return (
+    //     <View>
+    //       {this.renderCountDown()}
+    //     </View>
+    //   );
+    // }
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >
@@ -251,6 +272,7 @@ class Workout extends Component {
           navigation={this.props.navigation}
           timePassed={this.state.timePassed}
         />
+        {this.state.showCountDown ? this.renderCountDown(styles) : null}
       </LinearGradient>
     );
   }

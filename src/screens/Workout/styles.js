@@ -78,6 +78,22 @@ const themeStyles = themes.createStyleSheet({
     borderWidth: 0.5,
     borderColor: '$primaryColor',
   },
+  countDownContainer: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  countDownText: {
+    fontSize: 50,
+    alignSelf: 'center',
+    position: 'absolute',
+    color: '$primaryColor',
+    fontFamily: 'Exo-Bold',
+  },
 });
 
 export default themeStyles;

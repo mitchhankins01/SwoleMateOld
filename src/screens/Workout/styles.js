@@ -43,6 +43,19 @@ const themeStyles = themes.createStyleSheet({
     marginHorizontal: 10,
     fontFamily: 'Exo-Medium',
   },
+  logTextHeader: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Medium',
+  },
+  logTextSets: {
+    fontSize: 14,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Regular',
+  },
   inputHeader: {
     fontSize: 16,
     fontFamily: 'exo',

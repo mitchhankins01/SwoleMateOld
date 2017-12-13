@@ -38,14 +38,14 @@ class Workout extends Component {
     exerciseSetIndex: 1,
     currentExercise: [],
     // Logs
+    exerciseLog: {
+      exerciseKey: '',
+      completedSets: [],
+    },
     workoutLog: {
       timepassed: 0,
       completedExercises: [],
     },
-    exerciseLog: {
-      exerciseKey: '',
-      completedSets: [],
-    }
   }
 
   componentWillMount() {
@@ -228,8 +228,9 @@ class Workout extends Component {
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
+    const { workoutComplete, exerciseName, exerciseLog: { completedSets } } = this.state;
 
-    if (this.state.workoutComplete) console.log(this.state.workoutLog);
+    if (workoutComplete) console.log(this.state.workoutLog);
     // if (this.state.showCountDown) {
     //   return (
     //     <View>
@@ -241,16 +242,26 @@ class Workout extends Component {
     return (
       <LinearGradient colors={gradients} style={styles.container} >
         <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
-          <Text style={styles.headerText}>{this.state.exerciseName}</Text>
+          <Text style={styles.headerText}>{exerciseName}</Text>
         </Animatable.View>
+
         <Animatable.View style={styles.logContainer} duration={750} animation='zoomIn'>
-          <Text style={[styles.headerText, { fontSize: 18 }]}>Past Logs</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }} >
-            <Text> </Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.logTextHeader}>Current Log</Text>
+              {completedSets.map(each =>
+                <Text key={each.set} style={styles.logTextSets}>
+                  {`${each.set}: ${each.weight}x${each.reps}`}
+                </Text>
+              )}
+            </View>
             <View style={styles.divider} />
-            <Text> </Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.logTextHeader}>Past Log</Text>
+            </View>
           </View>
         </Animatable.View>
+
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
           <Animatable.View style={styles.inputContainer} duration={750} animation='zoomIn'>
             <Text style={styles.inputHeader}>Weight</Text>

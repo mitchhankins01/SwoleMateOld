@@ -1,15 +1,12 @@
+import Color from 'color';
 import { Wheel } from 'teaset';
 import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import * as Progress from 'react-native-progress';
-import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-
-
 import BackgroundTimer from 'react-native-background-timer';
-import Color from 'color';
+import { Dimensions, Text, TextInput, View } from 'react-native';
 
 import themeStyles from './styles';
 import { ActionBar } from '../../components/ActionBar';
@@ -69,7 +66,7 @@ class Workout extends Component {
   }
 
   componentWillUnmount() {
-    //clearInterval(this.timePassed);
+    clearInterval(this.timePassed);
     BackgroundTimer.clearInterval(this.intervalId);
   }
 

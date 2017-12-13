@@ -1,6 +1,7 @@
 import { Wheel } from 'teaset';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import * as Progress from 'react-native-progress';
 import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,17 +18,21 @@ class Workout extends Component {
   }
 
   state = {
+    // Input
     reps: 10,
     weight: 10,
+    // Various
     timePassed: 0,
-    exerciseList: [],
-
+    showCountDown: false,
+    workoutComplete: false,
     // Current exercise
+    exerciseList: [],
     exerciseIndex: 0,
-    exerciseSetIndex: 1,
     exerciseRest: 60,
     exerciseName: '',
+    exerciseSetIndex: 1,
     currentExercise: [],
+    // Logs
     workoutLog: {
       timepassed: 0,
       completedExercises: [],
@@ -59,18 +64,60 @@ class Workout extends Component {
     clearInterval(this.timePassed);
   }
 
+  renderCountDown() {
+    return (
+      <Text>{this.state.exerciseRest}</Text>
+      // <Progress.Pie progress={this.state.exerciseRest} size={100} />
+    );
+  }
+
+  onChangeInput(type, number) {
+    switch (type) {
+      default: return;
+      case 'reps': return this.setState({ reps: number });
+      case 'weight': return this.setState({ weight: number });
+    }
+  }
+
+  onPressSave() {
+    const {
+      currentExercise: { sets },
+      exerciseLog: { completedSets },
+    } = this.state;
+
+    // If on the last set, else sets remaining
+    if (completedSets.length === sets - 1) {
+      this.saveSet(() => this.saveExercise());
+    } else {
+      this.saveSet();
+    }
+  }
+
   saveSet(saveExercise) {
     const {
       reps,
       weight,
       exerciseSetIndex,
+      currentExercise: { rest },
       exerciseLog: { completedSets },
     } = this.state;
+    
+    // Start countDown
+    if (exerciseSetIndex === 1) this.setState({ exerciseRest: rest });
+    this.countDown = setInterval(() => {
+      if (this.state.exerciseRest <= 0) {
+        clearInterval(this.countDown);
+        this.setState({ showCountDown: false, exerciseRest: rest });
+      } else {
+        this.setState({ exerciseRest: this.state.exerciseRest - 1 });
+      }
+    }, 1000);
 
     // Create a new array and set it equal to the completedSets in state
     const updatedCompletedSets = completedSets;
     updatedCompletedSets.push({ set: exerciseSetIndex, reps, weight });
     this.setState({
+      showCountDown: true,
       exerciseSetIndex: exerciseSetIndex + 1,
       exerciseLog: {
         completedSets: updatedCompletedSets,
@@ -106,25 +153,11 @@ class Workout extends Component {
     });
   }
 
-  onPressSave() {
-    const {
-      currentExercise: { sets },
-      exerciseLog: { completedSets },
-    } = this.state;
-
-    // If on the last set, else if sets remaining, else no more sets
-    if (completedSets.length === sets - 1) {
-      this.saveSet(() => this.saveExercise());
-    } else {
-      this.saveSet();
-    }
-  }
-
   loadExercise() {
     const { exerciseIndex, exerciseList } = this.state;
     const { programStore: { allExercises } } = this.props;
 
-    if (exerciseIndex >= exerciseList.length) return console.log('end workout');
+    if (exerciseIndex >= exerciseList.length) return this.setState({ workoutComplete: true });
 
     // Create an array with all the program exercises
     const exercises = exerciseList.map(exercise => exercise);
@@ -140,17 +173,9 @@ class Workout extends Component {
     this.setState({
       exerciseName: exercisesMeta.name,
       currentExercise: exercises[exerciseIndex],
-      exerciseRest: exercises[exerciseIndex].rest,
+      //exerciseRest: exercises[exerciseIndex].rest,
       exerciseLog: { ...this.state.exerciseLog, exerciseKey },
     });
-  }
-
-  onChangeInput(type, number) {
-    switch (type) {
-      default: return;
-      case 'reps': return this.setState({ reps: number });
-      case 'weight': return this.setState({ weight: number });
-    }
   }
 
   renderTextInput(styles, type) {
@@ -185,6 +210,15 @@ class Workout extends Component {
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
+
+    if (this.state.workoutComplete) console.log(this.state.workoutLog);
+    if (this.state.showCountDown) {
+      return (
+        <View>
+          {this.renderCountDown()}
+        </View>
+      );
+    }
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >

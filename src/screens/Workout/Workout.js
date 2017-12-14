@@ -1,28 +1,17 @@
-import Color from 'color';
-import { Wheel } from 'teaset';
 import React, { Component } from 'react';
-import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
-import * as Progress from 'react-native-progress';
+import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-import { WheelPicker } from 'react-native-wheel-picker-android';
-import { Dimensions, Text, TextInput, View, Platform } from 'react-native';
 
 import themeStyles from './styles';
+import { Picker } from '../../components/Picker';
 import { ActionBar } from '../../components/ActionBar';
+import { CountDown } from '../../components/CountDown';
 
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 @inject('themeStore', 'programStore', 'workoutStore') @observer
 class Workout extends Component {
-  constructor(props) {
-    super(props);
-    this.numbers = [];
-    for (let i = 0; i <= 25; ++i) this.numbers.push(i);
-  }
-
   state = {
     // Input
     reps: 10,
@@ -64,16 +53,12 @@ class Workout extends Component {
   }
 
   componentWillUnmount() {
-    this.props.workoutStore.clearTimer();
-    this.props.workoutStore.clearCountDown();
-  }
+    const { workoutStore:
+      { clearTimer, clearCountDown }
+    } = this.props;
 
-  onChangeInput(type, number) {
-    switch (type) {
-      default: return;
-      case 'reps': return this.setState({ reps: number });
-      case 'weight': return this.setState({ weight: number });
-    }
+    clearTimer();
+    clearCountDown();
   }
 
   onPressSave() {
@@ -112,6 +97,8 @@ class Workout extends Component {
     const updatedCompletedSets = completedSets;
     updatedCompletedSets.push({ set: exerciseSetIndex, reps, weight });
     this.setState({
+      reps: 10,
+      weight: 10,
       showLastSetView: false,
       exerciseSetIndex: exerciseSetIndex + 1,
       exerciseLog: {
@@ -177,49 +164,6 @@ class Workout extends Component {
     });
   }
 
-  renderCountDown(styles) {
-    const { workoutStore: { countDown, toggleShowCountDown } } = this.props;
-
-    return (
-      <View style={styles.countDownContainer}>
-        <Animatable.View style={styles.countDownContainerAnimated} animation='zoomIn'>
-          <Text style={styles.countDownText}>
-            {countDown}
-          </Text>
-          <Progress.CircleSnail
-            indeterminate
-            thickness={20}
-            size={DEVICE_WIDTH * 0.7}
-            color={styles.$primaryColor}
-          />
-          <Icon
-            size={50}
-            name='close'
-            iconStyle={styles.countDownIcon}
-            onPress={() => toggleShowCountDown(false)}
-          />
-        </Animatable.View>
-      </View>
-    );
-  }
-
-  renderLastSetView(styles) {
-    const { workoutStore: { countDown, showCountDown } } = this.props;
-
-    if (countDown <= 0 || !showCountDown) return null;
-
-    return (
-      <Animatable.View style={[{ backgroundColor: 'transparent', zIndex: 1 }]} animation='zoomIn'>
-        <Text style={styles.lastSetViewText}>
-          Up Next:
-        </Text>
-        <Text style={styles.lastSetViewText}>
-          {`\n${this.state.upcomingExercise}`}
-        </Text>
-      </Animatable.View>
-    );
-  }
-
   renderTextInput(styles, type) {
     const { weight, reps } = this.state;
     return (
@@ -233,45 +177,6 @@ class Workout extends Component {
       value={type === 'weight' ? weight.toString() : reps.toString()}
     />
     );
-  }
-
-  renderWheel(styles, type) {
-    const wheelPickerData = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-
-    switch (Platform.OS) {
-      case 'android':
-        return (
-          <WheelPicker
-            isCurved
-            renderIndicator
-            itemTextSize={40}
-            data={wheelPickerData}
-            itemTextFontFamily='Exo-Medium'
-            selectedItemTextColor='#EDF0F1'
-            indicatorColor={styles.$primaryColor}
-            style={{ height: 200, marginTop: 10, width: '100%' }}
-            onItemSelected={event => this.onChangeInput(type, event.data)}
-            selectedItemPosition={
-              type === 'weight' ? Number(this.state.weight) - 1 : Number(this.state.reps) - 1
-            }
-          />
-        );
-      default:
-        return (
-          <Wheel
-            holeLine={0}
-            items={this.numbers}
-            maskStyle={{ backgroundColor: 'transparent' }}
-            onChange={number => this.onChangeInput(type, number)}
-            style={{ height: 200, marginTop: 10, backgroundColor: 'transparent' }}
-            index={type === 'weight' ? Number(this.state.weight) : Number(this.state.reps)}
-            itemStyle={{ textAlign: 'center', color: '#EDF0F1', fontFamily: 'Exo-Medium' }}
-            holeStyle={{
-              borderColor: styles.$primaryColor, borderTopWidth: 1, borderBottomWidth: 1
-            }}
-          />
-        );
-    }
   }
 
   renderLog(styles, type, completedSets) {
@@ -304,7 +209,9 @@ class Workout extends Component {
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >
-        {this.state.showLastSetView ? this.renderLastSetView(styles) : null}
+        {this.state.showLastSetView
+          ? <CountDown showLastSetView upcomingExercise={this.state.upcomingExercise} />
+          : null}
         <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
           <Text style={styles.headerText}>{exerciseName}</Text>
         </Animatable.View>
@@ -326,12 +233,20 @@ class Workout extends Component {
           <Animatable.View style={styles.inputContainer} duration={750} animation='zoomIn'>
             <Text style={styles.inputHeader}>Weight</Text>
             {this.renderTextInput(styles, 'weight')}
-            {this.renderWheel(styles, 'weight')}
+            <Picker
+              type='weight'
+              weight={this.state.weight}
+              setWeight={weight => this.setState({ weight })}
+            />
           </Animatable.View>
           <Animatable.View style={styles.inputContainer} duration={750} animation='zoomIn'>
             <Text style={styles.inputHeader}>Reps</Text>
             {this.renderTextInput(styles, 'reps')}
-            {this.renderWheel(styles, 'reps')}
+            <Picker
+              type='reps'
+              reps={this.state.reps}
+              setReps={reps => this.setState({ reps })}
+            />
           </Animatable.View>
         </View>
         <ActionBar
@@ -339,7 +254,7 @@ class Workout extends Component {
           onPressSave={() => this.onPressSave()}
           navigation={this.props.navigation}
         />
-        {this.props.workoutStore.showCountDown ? this.renderCountDown(styles) : null}
+        {this.props.workoutStore.showCountDown ? <CountDown /> : null}
       </LinearGradient>
     );
   }

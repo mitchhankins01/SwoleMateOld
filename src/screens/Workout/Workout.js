@@ -5,7 +5,8 @@ import { inject, observer } from 'mobx-react';
 import * as Progress from 'react-native-progress';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-import { Dimensions, Text, TextInput, View } from 'react-native';
+import { WheelPicker } from 'react-native-wheel-picker-android';
+import { Dimensions, Text, TextInput, View, Platform } from 'react-native';
 
 import themeStyles from './styles';
 import { ActionBar } from '../../components/ActionBar';
@@ -18,7 +19,7 @@ class Workout extends Component {
   constructor(props) {
     super(props);
     this.numbers = [];
-    for (let i = 0; i <= 100; ++i) this.numbers.push(i);
+    for (let i = 0; i <= 25; ++i) this.numbers.push(i);
   }
 
   state = {
@@ -175,8 +176,8 @@ class Workout extends Component {
           {this.props.workoutStore.countDown}
         </Text>
         <Progress.CircleSnail
-          thickness={7}
           indeterminate
+          thickness={20}
           size={DEVICE_WIDTH * 0.7}
           color={styles.$primaryColor}
         />
@@ -200,18 +201,42 @@ class Workout extends Component {
   }
 
   renderWheel(styles, type) {
-    return (
-      <Wheel
-        holeLine={0}
-        items={this.numbers}
-        maskStyle={{ backgroundColor: 'transparent' }}
-        onChange={number => this.onChangeInput(type, number)}
-        style={{ height: 200, marginTop: 10, backgroundColor: 'transparent' }}
-        index={type === 'weight' ? Number(this.state.weight) : Number(this.state.reps)}
-        itemStyle={{ textAlign: 'center', color: '#EDF0F1', fontFamily: 'Exo-Medium' }}
-        holeStyle={{ borderColor: styles.$primaryColor, borderTopWidth: 1, borderBottomWidth: 1 }}
-      />
-    );
+    const wheelPickerData = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+
+    switch (Platform.OS) {
+      case 'android':
+        return (
+          <WheelPicker
+            isCurved
+            renderIndicator
+            itemTextSize={40}
+            data={wheelPickerData}
+            itemTextFontFamily='Exo-Medium'
+            selectedItemTextColor='#EDF0F1'
+            indicatorColor={styles.$primaryColor}
+            style={{ height: 200, marginTop: 10, width: '100%' }}
+            onItemSelected={event => this.onChangeInput(type, event.data)}
+            selectedItemPosition={
+              type === 'weight' ? Number(this.state.weight) - 1 : Number(this.state.reps) - 1
+            }
+          />
+        );
+      default:
+        return (
+          <Wheel
+            holeLine={0}
+            items={this.numbers}
+            maskStyle={{ backgroundColor: 'transparent' }}
+            onChange={number => this.onChangeInput(type, number)}
+            style={{ height: 200, marginTop: 10, backgroundColor: 'transparent' }}
+            index={type === 'weight' ? Number(this.state.weight) : Number(this.state.reps)}
+            itemStyle={{ textAlign: 'center', color: '#EDF0F1', fontFamily: 'Exo-Medium' }}
+            holeStyle={{
+              borderColor: styles.$primaryColor, borderTopWidth: 1, borderBottomWidth: 1
+            }}
+          />
+        );
+    }
   }
 
   renderLog(styles, type, completedSets) {
@@ -219,7 +244,7 @@ class Workout extends Component {
       return (
         completedSets.map(each =>
           <Text key={each.set} style={styles.logTextSets}>
-            {`${each.set}: ${each.weight}x${each.reps}`}
+            {`Set ${each.set}: ${each.weight}x${each.reps}`}
           </Text>
         )
       );
@@ -268,7 +293,6 @@ class Workout extends Component {
           workout
           onPressSave={() => this.onPressSave()}
           navigation={this.props.navigation}
-          timePassed={this.props.workoutStore.timePassed}
         />
         {this.props.workoutStore.showCountDown ? this.renderCountDown(styles) : null}
       </LinearGradient>

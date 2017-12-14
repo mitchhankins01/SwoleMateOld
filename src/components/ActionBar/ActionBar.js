@@ -24,7 +24,7 @@ Animatable.initializeRegistryWithDefinitions({
   }
 });
 
-@inject('themeStore', 'programStore') @observer
+@inject('themeStore', 'programStore', 'workoutStore') @observer
 class ActionBar extends Component {
   updateScreenIndex(screenIndex, goBack) {
     const { programStore, navigation } = this.props;
@@ -133,7 +133,7 @@ class ActionBar extends Component {
           () => this.props.navigation.goBack(null)
         )}
         <Text style={styles.workoutBarText}>
-          {new Date(this.props.timePassed * 1000).toISOString().substr(12, 7)}
+          {new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7)}
         </Text>
         {this.renderButton(styles, 'check', 25, 100,
           this.props.onPressSave

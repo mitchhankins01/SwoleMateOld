@@ -27,6 +27,7 @@ class WorkoutStore {
   }
 
   @action toggleShowCountDown = bool => {
+    if (!bool) this.clearCountDown();
     this.showCountDown = bool;
   }
 

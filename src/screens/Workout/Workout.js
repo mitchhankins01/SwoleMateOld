@@ -1,6 +1,7 @@
 import Color from 'color';
 import { Wheel } from 'teaset';
 import React, { Component } from 'react';
+import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
 import * as Progress from 'react-native-progress';
 import * as Animatable from 'react-native-animatable';
@@ -180,6 +181,12 @@ class Workout extends Component {
           thickness={20}
           size={DEVICE_WIDTH * 0.7}
           color={styles.$primaryColor}
+        />
+        <Icon
+          name='close'
+          iconStyle={{ color: styles.$primaryColor, position: 'absolute', top: 100 }}
+          size={50}
+          onPress={() => this.props.workoutStore.toggleShowCountDown(false)}
         />
       </View>
     );

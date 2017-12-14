@@ -101,7 +101,7 @@ const themeStyles = themes.createStyleSheet({
     justifyContent: 'center',
   },
   countDownText: {
-    fontSize: 60,
+    fontSize: 80,
     alignSelf: 'center',
     position: 'absolute',
     color: '$primaryColor',

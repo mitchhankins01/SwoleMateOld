@@ -101,10 +101,20 @@ const themeStyles = themes.createStyleSheet({
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
+  countDownContainerAnimated: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
   countDownIcon: {
     top: 100,
     position: 'absolute',
-    color: '$primaryColor', 
+    color: '$primaryColor',
   },
   lastSetViewContainer: {
     top: 0,

@@ -178,21 +178,23 @@ class Workout extends Component {
 
     return (
       <View style={styles.countDownContainer}>
-        <Text style={styles.countDownText}>
-          {countDown}
-        </Text>
-        <Progress.CircleSnail
-          indeterminate
-          thickness={20}
-          size={DEVICE_WIDTH * 0.7}
-          color={styles.$primaryColor}
-        />
-        <Icon
-          size={50}
-          name='close'
-          iconStyle={styles.countDownIcon}
-          onPress={() => toggleShowCountDown(false)}
-        />
+        <Animatable.View style={styles.countDownContainerAnimated} animation='zoomIn'>
+          <Text style={styles.countDownText}>
+            {countDown}
+          </Text>
+          <Progress.CircleSnail
+            indeterminate
+            thickness={20}
+            size={DEVICE_WIDTH * 0.7}
+            color={styles.$primaryColor}
+          />
+          <Icon
+            size={50}
+            name='close'
+            iconStyle={styles.countDownIcon}
+            onPress={() => toggleShowCountDown(false)}
+          />
+        </Animatable.View>
       </View>
     );
   }
@@ -203,14 +205,14 @@ class Workout extends Component {
     if (countDown <= 0 || !showCountDown) return null;
 
     return (
-      <View style={[{ backgroundColor: 'transparent', zIndex: 1 }]}>
+      <Animatable.View style={[{ backgroundColor: 'transparent', zIndex: 1 }]} animation='zoomIn'>
         <Text style={styles.lastSetViewText}>
           Up Next:
         </Text>
         <Text style={styles.lastSetViewText}>
           {`\n${this.state.upcomingExercise}`}
         </Text>
-      </View>
+      </Animatable.View>
     );
   }
 

@@ -28,6 +28,7 @@ class Workout extends Component {
     reps: 10,
     weight: 10,
     // Various]
+    upcomingExercise: '',
     workoutComplete: false,
     showLastSetView: false,
     // Current exercise
@@ -111,6 +112,7 @@ class Workout extends Component {
     const updatedCompletedSets = completedSets;
     updatedCompletedSets.push({ set: exerciseSetIndex, reps, weight });
     this.setState({
+      showLastSetView: false,
       exerciseSetIndex: exerciseSetIndex + 1,
       exerciseLog: {
         completedSets: updatedCompletedSets,

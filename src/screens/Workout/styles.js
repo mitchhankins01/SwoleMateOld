@@ -99,6 +99,19 @@ const themeStyles = themes.createStyleSheet({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  countDownIcon: {
+    top: 100,
+    position: 'absolute',
+    color: '$primaryColor', 
+  },
+  lastSetViewContainer: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
   },
   countDownText: {
     fontSize: 80,
@@ -106,6 +119,14 @@ const themeStyles = themes.createStyleSheet({
     position: 'absolute',
     color: '$primaryColor',
     fontFamily: 'Exo-Bold',
+  },
+  lastSetViewText: {
+    paddingTop: 30,
+    fontSize: 40,
+    alignSelf: 'center',
+    position: 'absolute',
+    color: '$primaryColor',
+    fontFamily: 'Exo-Medium',
   },
 });
 

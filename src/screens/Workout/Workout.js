@@ -29,6 +29,7 @@ class Workout extends Component {
     weight: 10,
     // Various]
     workoutComplete: false,
+    showLastSetView: false,
     // Current exercise
     exerciseList: [],
     exerciseIndex: 0,
@@ -96,10 +97,12 @@ class Workout extends Component {
       currentExercise: { rest },
       exerciseLog: { completedSets },
     } = this.state;
+
     const { workoutStore: {
       setCountDown,
       startCountDown,
     } } = this.props;
+
     // Set and start countDown
     setCountDown(rest);
     startCountDown(true);
@@ -128,8 +131,9 @@ class Workout extends Component {
     const updatedCompletedExercises = completedExercises;
     updatedCompletedExercises.push(this.state.exerciseLog);
     this.setState({
-      exerciseIndex: this.state.exerciseIndex + 1,
       exerciseSetIndex: 1,
+      showLastSetView: true,
+      exerciseIndex: this.state.exerciseIndex + 1,
       exerciseLog: {
         exerciseKey: '',
         completedSets: [],
@@ -162,6 +166,7 @@ class Workout extends Component {
     const exerciseKey = exercises[exerciseIndex].exerciseKey;
     this.setState({
       exerciseName: exercisesMeta.name,
+      upcomingExercise: exercisesMeta.name,
       currentExercise: exercises[exerciseIndex],
       exerciseRest: exercises[exerciseIndex].rest,
       exerciseLog: { ...this.state.exerciseLog, exerciseKey },
@@ -169,12 +174,12 @@ class Workout extends Component {
   }
 
   renderCountDown(styles) {
-    const bgColor = Color(styles.$tertiaryColor).alpha(0.7);
+    const { workoutStore: { countDown, toggleShowCountDown } } = this.props;
 
     return (
-      <View style={[styles.countDownContainer, { backgroundColor: bgColor }]}>
+      <View style={styles.countDownContainer}>
         <Text style={styles.countDownText}>
-          {this.props.workoutStore.countDown}
+          {countDown}
         </Text>
         <Progress.CircleSnail
           indeterminate
@@ -183,11 +188,28 @@ class Workout extends Component {
           color={styles.$primaryColor}
         />
         <Icon
-          name='close'
-          iconStyle={{ color: styles.$primaryColor, position: 'absolute', top: 100 }}
           size={50}
-          onPress={() => this.props.workoutStore.toggleShowCountDown(false)}
+          name='close'
+          iconStyle={styles.countDownIcon}
+          onPress={() => toggleShowCountDown(false)}
         />
+      </View>
+    );
+  }
+
+  renderLastSetView(styles) {
+    const { workoutStore: { countDown, showCountDown } } = this.props;
+
+    if (countDown <= 0 || !showCountDown) return null;
+
+    return (
+      <View style={[{ backgroundColor: 'transparent', zIndex: 1 }]}>
+        <Text style={styles.lastSetViewText}>
+          Up Next:
+        </Text>
+        <Text style={styles.lastSetViewText}>
+          {`\n${this.state.upcomingExercise}`}
+        </Text>
       </View>
     );
   }
@@ -267,6 +289,7 @@ class Workout extends Component {
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >
+        {this.state.showLastSetView ? this.renderLastSetView(styles) : null}
         <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
           <Text style={styles.headerText}>{exerciseName}</Text>
         </Animatable.View>

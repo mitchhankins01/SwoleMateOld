@@ -8,6 +8,8 @@ class WorkoutStore {
   // Current exercise rest
   @observable countDown = 60;
   @observable showCountDown = false;
+  // Finished workout log
+  @observable workoutLog = {};
 
   // timePassed
   @action startTimer = () => {
@@ -46,6 +48,15 @@ class WorkoutStore {
   @action clearCountDown = () => {
     this.countDown = 60;
     BackgroundTimer.clearInterval(this.countDownID);
+  }
+
+  // Workout log
+  @action setWorkoutLog = workoutLog => {
+    this.workoutLog = workoutLog;
+  }
+
+  @action clearWorkoutLog = () => {
+    this.workoutLog = {};
   }
 }
 

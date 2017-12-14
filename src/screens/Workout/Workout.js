@@ -153,7 +153,9 @@ class Workout extends Component {
     const { exerciseIndex, exerciseList } = this.state;
     const { programStore: { allExercises } } = this.props;
 
-    if (exerciseIndex >= exerciseList.length) return this.setState({ workoutComplete: true });
+    if (exerciseIndex >= exerciseList.length) {
+      return this.setState({ workoutComplete: true });
+    }
 
     // Create an array with all the program exercises
     const exercises = exerciseList.map(exercise => exercise);
@@ -287,9 +289,18 @@ class Workout extends Component {
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-    const { workoutComplete, exerciseName, exerciseLog: { completedSets } } = this.state;
+    const {
+      workoutLog,
+      exerciseName,
+      workoutComplete,
+      exerciseLog: { completedSets }
+    } = this.state;
 
-    if (workoutComplete) console.log(this.state.workoutLog);
+    if (workoutComplete) {
+      this.props.workoutStore.setWorkoutLog(workoutLog);
+      console.log(this.props.workoutStore.workoutLog);
+      return null;
+    }
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >

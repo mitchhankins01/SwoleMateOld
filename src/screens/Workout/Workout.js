@@ -4,11 +4,11 @@ import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 
+import Somatics from './Somatics';
 import themeStyles from './styles';
 import { Picker } from '../../components/Picker';
 import { ActionBar } from '../../components/ActionBar';
 import { CountDown } from '../../components/CountDown';
-
 
 @inject('themeStore', 'programStore', 'workoutStore') @observer
 class Workout extends Component {
@@ -202,9 +202,15 @@ class Workout extends Component {
     } = this.state;
 
     if (workoutComplete) {
+      this.props.workoutStore.stopTimer();
       this.props.workoutStore.setWorkoutLog(workoutLog);
-      console.log(this.props.workoutStore.workoutLog);
-      return null;
+      return (
+        <Somatics
+          gradients={gradients}
+          themeStore={this.props.themeStore}
+          workoutStore={this.props.workoutStore}
+        />
+      );
     }
 
     return (
@@ -212,6 +218,7 @@ class Workout extends Component {
         {this.state.showLastSetView
           ? <CountDown showLastSetView upcomingExercise={this.state.upcomingExercise} />
           : null}
+
         <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
           <Text style={styles.headerText}>{exerciseName}</Text>
         </Animatable.View>
@@ -249,12 +256,15 @@ class Workout extends Component {
             />
           </Animatable.View>
         </View>
+
         <ActionBar
           workout
           onPressSave={() => this.onPressSave()}
           navigation={this.props.navigation}
         />
+
         {this.props.workoutStore.showCountDown ? <CountDown /> : null}
+
       </LinearGradient>
     );
   }

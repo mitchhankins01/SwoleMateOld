@@ -91,6 +91,42 @@ const themeStyles = themes.createStyleSheet({
     borderWidth: 0.5,
     borderColor: '$primaryColor',
   },
+  // Somatics
+  somaticsHeaderText: {
+    fontSize: 30,
+    marginTop: 30,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Medium',
+    backgroundColor: 'transparent',
+  },
+  somaticsSubHeaderText: {
+    fontSize: 25,
+    marginTop: 5,
+    marginBottom: 20,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Medium',
+    backgroundColor: 'transparent',
+  },
+  saveButton: {
+    left: 40,
+    right: 40,
+    bottom: 20,
+    borderWidth: 2,
+    borderRadius: 5,
+    position: 'absolute',
+    borderColor: '$primaryColor',
+    backgroundColor: 'rgba(237, 240, 241, 0.1)',
+  },
+  saveButtonText: {
+    padding: 10,
+    fontSize: 25,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Medium',
+    backgroundColor: 'transparent',
+  },
 });
 
 export default themeStyles;

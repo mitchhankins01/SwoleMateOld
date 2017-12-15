@@ -18,6 +18,12 @@ t.form.Form.stylesheet.pickerValue.error.fontFamily = 'Exo-Regular';
 t.form.Form.stylesheet.pickerValue.normal.fontFamily = 'Exo-Regular';
 t.form.Form.stylesheet.controlLabel.error.fontFamily = 'Exo-Regular';
 t.form.Form.stylesheet.controlLabel.normal.fontFamily = 'Exo-Regular';
+t.form.Form.stylesheet.pickerContainer.error.backgroundColor = 'transparent';
+t.form.Form.stylesheet.pickerContainer.normal.backgroundColor = 'transparent';
+
+t.form.Form.stylesheet.select.normal.color = '#EDF0F1';
+t.form.Form.stylesheet.select.normal.fontFamily = 'Exo-Regular';
+t.form.Form.stylesheet.select.error.fontFamily = 'Exo-Regular';
 
 const themeStyles = themes.createStyleSheet({
   popup: {

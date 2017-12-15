@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -56,8 +57,8 @@
 		C6876691E3144C748A2127DB /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 414E97B4D3A0400BAF22EDC4 /* Zocial.ttf */; };
 		E75BB8F1D31C4400906881F4 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D36EDC8A6FDF40C8A1BAFD54 /* EvilIcons.ttf */; };
 		EB28EFD643BB4DC8A21E96E9 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B3D8CF368A147CE95A57684 /* Foundation.ttf */; };
-		F7FA741A4BAB45C58FAB1657 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6499C6AF60AF41D1BA13B52E /* libRNVectorIcons.a */; };
 		ED144F936C3E4E6F8A67B456 /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F9ED832DBB4C94B0B5C8C1 /* libRNBackgroundTimer.a */; };
+		F7FA741A4BAB45C58FAB1657 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6499C6AF60AF41D1BA13B52E /* libRNVectorIcons.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +138,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = A51183591EFAC02F0077C68F;
 			remoteInfo = ReactNativeKeyboardManager;
+		};
+		30D290401FE34FE400DFA080 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5A5628F3DF94C529088A953 /* RNBackgroundTimer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNBackgroundTimer;
+		};
+		30D290421FE34FE400DFA080 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5A5628F3DF94C529088A953 /* RNBackgroundTimer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 641926921ECB4257009CF731;
+			remoteInfo = "RNBackgroundTimer-tvOS";
 		};
 		30DF4D7E1FC367C7002606F8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -381,6 +396,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SwoleMate/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1C22BA8EAB464C069C4C39EE /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		22F9ED832DBB4C94B0B5C8C1 /* libRNBackgroundTimer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundTimer.a; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* SwoleMate-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwoleMate-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* SwoleMate-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwoleMate-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		30E357F11FE09B960000DD3F /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
@@ -410,9 +426,8 @@
 		D36EDC8A6FDF40C8A1BAFD54 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		D6E3708E986541D89D4423B1 /* libReactNativeKeyboardManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeKeyboardManager.a; sourceTree = "<group>"; };
 		E883E147EEFA4CD6BC690E8A /* exoMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = exoMedium.ttf; path = ../assets/fonts/exoMedium.ttf; sourceTree = "<group>"; };
+		F5A5628F3DF94C529088A953 /* RNBackgroundTimer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBackgroundTimer.xcodeproj; path = "../node_modules/react-native-background-timer/ios/RNBackgroundTimer.xcodeproj"; sourceTree = "<group>"; };
 		FBC8C743C046423C960F2237 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
-		F5A5628F3DF94C529088A953 /* RNBackgroundTimer.xcodeproj */ = {isa = PBXFileReference; name = "RNBackgroundTimer.xcodeproj"; path = "../node_modules/react-native-background-timer/ios/RNBackgroundTimer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		22F9ED832DBB4C94B0B5C8C1 /* libRNBackgroundTimer.a */ = {isa = PBXFileReference; name = "libRNBackgroundTimer.a"; path = "libRNBackgroundTimer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -596,6 +611,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		30D2903C1FE34FE400DFA080 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				30D290411FE34FE400DFA080 /* libRNBackgroundTimer.a */,
+				30D290431FE34FE400DFA080 /* libRNBackgroundTimer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		30DF4D971FC367C7002606F8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -741,6 +765,7 @@
 				6499C6AF60AF41D1BA13B52E /* libRNVectorIcons.a */,
 				63D02B0C753349D889BC8488 /* libRNSpinkit.a */,
 				D6E3708E986541D89D4423B1 /* libReactNativeKeyboardManager.a */,
+				22F9ED832DBB4C94B0B5C8C1 /* libRNBackgroundTimer.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -859,7 +884,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = BAS5QEU8CE;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = BAS5QEU8CE;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -945,6 +974,10 @@
 					ProjectRef = 592D301AD9274223AB7F2C20 /* ReactNativeKeyboardManager.xcodeproj */;
 				},
 				{
+					ProductGroup = 30D2903C1FE34FE400DFA080 /* Products */;
+					ProjectRef = F5A5628F3DF94C529088A953 /* RNBackgroundTimer.xcodeproj */;
+				},
+				{
 					ProductGroup = 8E7D4B111F8AFD6F00699FE4 /* Products */;
 					ProjectRef = ADF4CB3C3BF44D3EBA8B78C4 /* RNFirebase.xcodeproj */;
 				},
@@ -1025,6 +1058,20 @@
 			fileType = archive.ar;
 			path = libReactNativeKeyboardManager.a;
 			remoteRef = 30BD609E1FDF2D0A00E8E71F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30D290411FE34FE400DFA080 /* libRNBackgroundTimer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBackgroundTimer.a;
+			remoteRef = 30D290401FE34FE400DFA080 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30D290431FE34FE400DFA080 /* libRNBackgroundTimer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBackgroundTimer.a;
+			remoteRef = 30D290421FE34FE400DFA080 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		30DF4D7F1FC367C7002606F8 /* libfishhook.a */ = {
@@ -1438,6 +1485,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = BAS5QEU8CE;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1477,6 +1525,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = BAS5QEU8CE;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1514,6 +1563,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = BAS5QEU8CE;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1541,6 +1591,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BAS5QEU8CE;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",

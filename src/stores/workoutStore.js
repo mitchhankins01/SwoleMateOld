@@ -18,6 +18,10 @@ class WorkoutStore {
     }, 1000);
   }
 
+  @action stopTimer = () => {
+    clearInterval(this.timePassedID);
+  }
+
   @action clearTimer = () => {
     this.timePassed = 0;
     clearInterval(this.timePassedID);

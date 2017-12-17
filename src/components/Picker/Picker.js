@@ -11,7 +11,7 @@ class Picker extends Component {
   constructor(props) {
     super(props);
     this.numbers = [];
-    for (let i = 0; i <= 25; ++i) this.numbers.push(i);
+    for (let i = 0; i <= 100; ++i) this.numbers.push(i);
   }
 
   onChangeInput(type, number) {

@@ -9,7 +9,7 @@ class WorkoutStore {
   @observable countDown = 60;
   @observable showCountDown = false;
   // Finished workout log
-  @observable workoutLog = {};
+  @observable workoutLog = {}; // Workout log must be cleared after submitting
 
   // timePassed
   @action startTimer = () => {

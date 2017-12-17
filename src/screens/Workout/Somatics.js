@@ -22,11 +22,6 @@ function Somatics(props) {
       <Text style={styles.somaticsSubHeaderText}>Somatics</Text>
       <Text style={styles.somaticsSubHeaderText}>{`Duration: ${duration}`}</Text>
       <View style={{ flex: 1, width: DEVICE_WIDTH * 0.9, alignSelf: 'center' }}>
-        <Form
-          ref='form'
-          type={somatic}
-          options={options}
-        />
 
       </View>
       <TouchableOpacity style={styles.saveButton}>
@@ -37,85 +32,3 @@ function Somatics(props) {
 }
 
 export default observer(Somatics);
-
-const options = {
-  auto: 'placeholders',
-  fields: {
-    attitude: {
-      nullOption: { value: '', text: 'Select Attitude' },
-      itemStyle: {
-        color: '#EDF0F1',
-        fontFamily: 'Exo-Regular',
-      },
-    },
-    strength: {
-      nullOption: { value: '', text: 'Select Strength Level' },
-      itemStyle: {
-        color: '#EDF0F1',
-        fontFamily: 'Exo-Regular',
-      },
-    },
-    quality: {
-      nullOption: { value: '', text: 'Select Workout Quality' },
-      itemStyle: {
-        color: '#EDF0F1',
-        fontFamily: 'Exo-Regular',
-      },
-    },
-    primaryGroup: {
-      nullOption: { value: '', text: 'Primary Muscles Worked' },
-      itemStyle: {
-        color: '#EDF0F1',
-        fontFamily: 'Exo-Regular',
-      },
-    },
-    secondaryGroup: {
-      nullOption: { value: '', text: 'Secondary Muscles Worked' },
-      itemStyle: {
-        color: '#EDF0F1',
-        fontFamily: 'Exo-Regular',
-      },
-    }
-  }
-};
-
-const muscleGroups = t.enums({
-  Abs: 'Abs',
-  Back: 'Back',
-  Biceps: 'Biceps',
-  Calves: 'Calves',
-  Chest: 'Chest',
-  Forearms: 'Forearms',
-  Glutes: 'Glutes',
-  Shoulders: 'Shoulders',
-  Triceps: 'Triceps',
-  Cardio: 'Cardio',
-});
-const attitude = t.enums({
-  extremely_motivated: 'Extremely Motivated',
-  mostly_motivated: 'Mostly Motivated',
-  normal: 'Normal',
-  mostly_unmotivated: 'Mostly Unmotivated',
-  extremely_unmotivated: 'Extremely Unmotivated',
-});
-const strength = t.enums({
-  major_increase: 'Major Increase',
-  increase: 'Increase',
-  stable: 'Stable',
-  decrease: 'Decrease',
-  major_decrease: 'Major Decrease',
-});
-const quality = t.enums({
-  excellent: 'Excellent',
-  above_average: 'Above Average',
-  average: 'Average',
-  below_average: 'Below Average',
-  poor: 'Poor',
-});
-const somatic = t.struct({
-  attitude,
-  strength,
-  quality,
-  //primaryGroup: muscleGroups,
-  //secondaryGroup: muscleGroups,
-});

@@ -6,6 +6,7 @@ const themeStyles = themes.createStyleSheet({
     left: 0,
     right: 0,
     bottom: 0,
+    elevation: 1,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',

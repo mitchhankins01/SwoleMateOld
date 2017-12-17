@@ -16,7 +16,7 @@ class Workout extends Component {
     // Input
     reps: 10,
     weight: 10,
-    // Various]
+    // Various
     upcomingExercise: '',
     workoutComplete: false,
     showLastSetView: false,
@@ -54,11 +54,12 @@ class Workout extends Component {
 
   componentWillUnmount() {
     const { workoutStore:
-      { clearTimer, clearCountDown }
+      { clearTimer, clearCountDown, setWorkoutLog },
     } = this.props;
 
     clearTimer();
     clearCountDown();
+    setWorkoutLog({});
   }
 
   onPressSave() {
@@ -204,17 +205,37 @@ class Workout extends Component {
     if (workoutComplete) {
       this.props.workoutStore.stopTimer();
       this.props.workoutStore.setWorkoutLog(workoutLog);
-      return (
-        <Somatics
-          gradients={gradients}
-          themeStore={this.props.themeStore}
-          workoutStore={this.props.workoutStore}
-        />
-      );
+      // return (
+      //   <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      //     <Animatable.View animation='slideInUp' style={{ height: 300, backgroundColor: 'blue' }}>
+      //       <Text>Text</Text>
+      //     </Animatable.View>
+      //   </View>
+      // );
     }
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >
+        {/* {!workoutComplete ?
+          <View
+            style={{
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1,
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            }}
+          >
+            <Animatable.View animation='slideInUp' style={{ height: 300, backgroundColor: 'blue', width: 500, zIndex: 1, }}>
+              <Text>Text</Text>
+            </Animatable.View>
+          </View>
+        : null} */}
+
         {this.state.showLastSetView
           ? <CountDown showLastSetView upcomingExercise={this.state.upcomingExercise} />
           : null}

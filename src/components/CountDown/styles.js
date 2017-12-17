@@ -42,8 +42,8 @@ const themeStyles = themes.createStyleSheet({
     position: 'absolute',
   },
   lastSetViewText: {
-    paddingTop: 30,
     fontSize: 40,
+    paddingTop: 30,
     alignSelf: 'center',
     position: 'absolute',
     color: '$primaryColor',

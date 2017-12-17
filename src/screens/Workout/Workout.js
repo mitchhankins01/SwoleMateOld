@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 
-import Somatics from './Somatics';
 import themeStyles from './styles';
 import { Picker } from '../../components/Picker';
 import { ActionBar } from '../../components/ActionBar';
@@ -17,9 +17,7 @@ class Workout extends Component {
     reps: 10,
     weight: 10,
     // Various
-    upcomingExercise: '',
     workoutComplete: false,
-    showLastSetView: false,
     // Current exercise
     exerciseList: [],
     exerciseIndex: 0,
@@ -62,14 +60,26 @@ class Workout extends Component {
     setWorkoutLog({});
   }
 
+  showLastSetInfo(exerciseIndex) {
+    this.dropdown.alertWithType(
+      'info', 'Last set', `Up Next: ${this.getNextExerciseName(exerciseIndex).name}`
+    );
+  }
+
   onPressSave() {
     const {
+      exerciseIndex,
       currentExercise: { sets },
       exerciseLog: { completedSets },
     } = this.state;
 
-    // If on the last set, else sets remaining
-    if (completedSets.length === sets - 1) {
+    // if on the second last or the exercise has only one set,
+    // else if on the last set
+    // else sets remaining
+    if (completedSets.length === sets - 2 || sets === 1) {
+      this.showLastSetInfo(exerciseIndex);
+      this.saveSet();
+    } else if (completedSets.length === sets - 1) {
       this.saveSet(() => this.saveExercise());
     } else {
       this.saveSet();
@@ -100,7 +110,6 @@ class Workout extends Component {
     this.setState({
       reps: 10,
       weight: 10,
-      showLastSetView: false,
       exerciseSetIndex: exerciseSetIndex + 1,
       exerciseLog: {
         completedSets: updatedCompletedSets,
@@ -122,7 +131,6 @@ class Workout extends Component {
     updatedCompletedExercises.push(this.state.exerciseLog);
     this.setState({
       exerciseSetIndex: 1,
-      showLastSetView: true,
       exerciseIndex: this.state.exerciseIndex + 1,
       exerciseLog: {
         exerciseKey: '',
@@ -135,6 +143,18 @@ class Workout extends Component {
     }, () => {
       this.loadExercise();
     });
+  }
+
+  getNextExerciseName(exerciseIndex) {
+    if (exerciseIndex + 1 === this.state.exerciseList.length) {
+      return { name: 'End of Workout ' };
+    }
+
+    return (
+      this.props.programStore.allExercises.find(query => {
+        return query.key === this.state.exerciseList[exerciseIndex + 1].exerciseKey;
+      })
+    );
   }
 
   loadExercise() {
@@ -150,15 +170,15 @@ class Workout extends Component {
 
     // Pull meta info off all exercises when compared to the current exercise,
     // and set the state with the exercise name
-    const exercisesMeta = allExercises.find(query => {
+    const currentExerciseMeta = allExercises.find(query => {
       return query.key === exercises[exerciseIndex].exerciseKey;
     });
+    console.log(this.getNextExerciseName(exerciseIndex).name);
 
     // Set state with the current exercise name, rest, and the log with the exercisekey
     const exerciseKey = exercises[exerciseIndex].exerciseKey;
     this.setState({
-      exerciseName: exercisesMeta.name,
-      upcomingExercise: exercisesMeta.name,
+      exerciseName: currentExerciseMeta.name,
       currentExercise: exercises[exerciseIndex],
       exerciseRest: exercises[exerciseIndex].rest,
       exerciseLog: { ...this.state.exerciseLog, exerciseKey },
@@ -192,6 +212,13 @@ class Workout extends Component {
     }
   }
 
+  get1RM() {
+    this.state.workoutLog.completedExercises.map(each => {
+      const set = each.completedSets;
+      return set.weight;
+    });
+  }
+
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
@@ -205,6 +232,9 @@ class Workout extends Component {
     if (workoutComplete) {
       this.props.workoutStore.stopTimer();
       this.props.workoutStore.setWorkoutLog(workoutLog);
+
+      console.log(this.get1RM());
+      return null;
       // return (
       //   <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       //     <Animatable.View animation='slideInUp' style={{ height: 300, backgroundColor: 'blue' }}>
@@ -216,29 +246,6 @@ class Workout extends Component {
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >
-        {/* {!workoutComplete ?
-          <View
-            style={{
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              zIndex: 1,
-              position: 'absolute',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            }}
-          >
-            <Animatable.View animation='slideInUp' style={{ height: 300, backgroundColor: 'blue', width: 500, zIndex: 1, }}>
-              <Text>Text</Text>
-            </Animatable.View>
-          </View>
-        : null} */}
-
-        {this.state.showLastSetView
-          ? <CountDown showLastSetView upcomingExercise={this.state.upcomingExercise} />
-          : null}
 
         <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
           <Text style={styles.headerText}>{exerciseName}</Text>
@@ -280,8 +287,19 @@ class Workout extends Component {
 
         <ActionBar
           workout
-          onPressSave={() => this.onPressSave()}
           navigation={this.props.navigation}
+          onPressSave={() => this.onPressSave()}
+        />
+
+        <DropdownAlert
+          zIndex={5}
+          translucent
+          updateStatusBar={false}
+          infoColor={styles.$tertiaryColor}
+          titleStyle={styles.dropdownTitle}
+          ref={ref => (this.dropdown = ref)}
+          messageStyle={styles.dropdownMessage}
+          closeInterval={this.state.currentExercise.rest * 1000}
         />
 
         {this.props.workoutStore.showCountDown ? <CountDown /> : null}

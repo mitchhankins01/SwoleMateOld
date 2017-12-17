@@ -11,7 +11,9 @@ class Picker extends Component {
   constructor(props) {
     super(props);
     this.numbers = [];
+    this.numbersStr = [];
     for (let i = 0; i <= 100; ++i) this.numbers.push(i);
+    for (let i = 0; i <= 100; ++i) this.numbersStr.push(`${i}`);
   }
 
   onChangeInput(type, number) {
@@ -25,7 +27,6 @@ class Picker extends Component {
   render() {
     const { type } = this.props;
     const styles = themeStyles[this.props.themeStore.selected];
-    const wheelPickerData = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
     switch (Platform.OS) {
       case 'android':
@@ -34,14 +35,15 @@ class Picker extends Component {
             isCurved
             renderIndicator
             itemTextSize={40}
-            data={wheelPickerData}
+            data={this.numbersStr}
+            itemTextColor='#EDF0F1'
             itemTextFontFamily='Exo-Medium'
             selectedItemTextColor='#EDF0F1'
             indicatorColor={styles.$primaryColor}
             style={{ height: 200, marginTop: 10, width: '100%' }}
             onItemSelected={event => this.onChangeInput(type, event.data)}
             selectedItemPosition={
-              type === 'weight' ? Number(this.props.weight) - 1 : Number(this.props.reps) - 1
+              type === 'weight' ? Number(this.props.weight) : Number(this.props.reps)
             }
           />
         );

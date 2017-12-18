@@ -2,27 +2,10 @@ import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
- import { Dimensions, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 
 import themeStyles from './styles';
 
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const DEVICE_HEIGHT = Dimensions.get('window').height;
-
-Animatable.initializeRegistryWithDefinitions({
-  myFancyAnimation: {
-    from: {
-      translateX: 0,
-      translateY: 0,
-      scale: 1,
-    },
-    to: {
-      translateX: DEVICE_WIDTH,
-      translateY: -DEVICE_HEIGHT / 0.6,
-      scale: 10,
-    },
-  }
-});
 
 @inject('themeStore', 'programStore', 'workoutStore') @observer
 class ActionBar extends Component {

@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { CalendarList } from 'react-native-calendars';
+import { Calendar as Cal } from 'react-native-calendars';
 
 import themeStyles from './styles';
 
 @inject('themeStore', 'logStore') @observer
 class Calendar extends Component {
   render() {
-    const { markedDate, updateMarkedDate, updateSelectedDate, toggleCalendar } = this.props.logStore;
+    const {
+      markedDate, updateMarkedDate, updateSelectedDate, toggleCalendar
+    } = this.props.logStore;
     const styles = themeStyles[this.props.themeStore.selected];
 
     return (
-      <CalendarList
+      <Cal
         markedDates={markedDate}
         onDayPress={({ dateString }) => {
           toggleCalendar();
           updateSelectedDate(dateString);
           updateMarkedDate({ [dateString]: { selected: true } });
         }}
+        style={styles.calendarContainer}
         theme={{
           textDayFontSize: 16,
+          arrowColor: '#EDF0F1',
           textMonthFontSize: 18,
           // dotColor: '#00adf5',
           dayTextColor: '#EDF0F1',

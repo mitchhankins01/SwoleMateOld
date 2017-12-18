@@ -19,10 +19,7 @@ const themeStyles = themes.createStyleSheet({
     backgroundColor: 'transparent',
   },
   calendarButtonContainer: {
-    left: 20,
-    right: 20,
-    bottom: 20,
-    position: 'absolute',
+    marginBottom: 20,
     backgroundColor: 'transparent',
   },
   calendarButton: {

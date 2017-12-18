@@ -2,11 +2,13 @@ import { View, Text } from 'react-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Button } from 'react-native-elements';
+import * as Animatable from 'react-native-animatable';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 
 import themeStyles from './styles';
 import Header from '../../components/Header';
+import { Card } from '../../components/Card';
 import { Calendar } from '../../components/Calendar';
 
 @inject('themeStore', 'logStore') @observer
@@ -22,8 +24,10 @@ class Logs extends Component {
     ),
   };
 
-  renderLogs() {
-    return null;
+  componentWillUpdate() {
+    if (this.refs.mainView) {
+      this.refs.mainView.awesomeIn(500);
+    }
   }
 
   render() {
@@ -34,10 +38,9 @@ class Logs extends Component {
     return (
       <LinearGradient colors={gradients} style={styles.container} >
         <Header title={'Logs'} styles={styles} />
-        <Text style={styles.dateText}>{selectedDate}</Text>
-        <View style={{ height: 400 }}>
-          {showCalendar ? <Calendar /> : this.renderLogs()}
-        </View>
+        <Animatable.View style={{ flex: 1 }} ref='mainView'>
+          {showCalendar ? <Calendar /> : <Card logCard />}
+        </Animatable.View>
         <Button
           raised
           onPress={() => toggleCalendar()}

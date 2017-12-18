@@ -8,7 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Form } from '../Form';
 import themeStyles from './styles';
 
-@inject('themeStore', 'programStore') @observer
+@inject('themeStore', 'programStore', 'logStore') @observer
 class Card extends Component {
   state = {
     warningVisible: false,
@@ -18,7 +18,7 @@ class Card extends Component {
   onPressDelete() {
     const { selectedDeleteKey } = this.state;
     const { programStore: {
-      screenIndex, info, deleteProgram, deleteProgramDay, deleteProgramExercise 
+      screenIndex, info, deleteProgram, deleteProgramDay, deleteProgramExercise
     } } = this.props;
 
     switch (screenIndex) {
@@ -119,11 +119,15 @@ class Card extends Component {
     );
   }
 
-  renderCard(styles) {
+  renderLogCard(styles) {
     return (
-      <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>
-        {this.props.children}
-      </Animatable.View>
+      <View style={[styles.cardContainer, { flex: 1 }]}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <MaterialIcons style={styles.cardTitle} name='calendar' />
+          <Text style={styles.cardTitle}>{this.props.logStore.selectedDate}</Text>
+        </View>
+        <View style={styles.cardDivider} />
+      </View>
     );
   }
 
@@ -140,15 +144,14 @@ class Card extends Component {
       subtitle,
       icon,
       onPress,
-
-      // Reusable testing
-      reusable
+      // Log
+      logCard,
     } = this.props;
     const styles = themeStyles[this.props.themeStore.selected];
 
     if (empty) return this.renderEmptyCard(styles, title);
     if (addCard) return this.renderAddCard(styles, typeAddCard);
-    if (reusable) return this.renderCard(styles);
+    if (logCard) return this.renderLogCard(styles);
 
     return (
       <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>

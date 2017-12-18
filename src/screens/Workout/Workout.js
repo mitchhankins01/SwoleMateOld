@@ -5,6 +5,7 @@ import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 
+import { Overview } from './';
 import themeStyles from './styles';
 import { Picker } from '../../components/Picker';
 import { ActionBar } from '../../components/ActionBar';
@@ -31,7 +32,7 @@ class Workout extends Component {
       completedSets: [],
     },
     workoutLog: {
-      timepassed: 0,
+      timePassed: 0,
       completedExercises: [],
     },
   }
@@ -137,7 +138,7 @@ class Workout extends Component {
         completedSets: [],
       },
       workoutLog: {
-        timepassed: this.props.workoutStore.timePassed,
+        timePassed: this.props.workoutStore.timePassed,
         completedExercises: updatedCompletedExercises,
       }
     }, () => {
@@ -173,7 +174,6 @@ class Workout extends Component {
     const currentExerciseMeta = allExercises.find(query => {
       return query.key === exercises[exerciseIndex].exerciseKey;
     });
-    console.log(this.getNextExerciseName(exerciseIndex).name);
 
     // Set state with the current exercise name, rest, and the log with the exercisekey
     const exerciseKey = exercises[exerciseIndex].exerciseKey;
@@ -212,13 +212,6 @@ class Workout extends Component {
     }
   }
 
-  get1RM() {
-    this.state.workoutLog.completedExercises.map(each => {
-      const set = each.completedSets;
-      return set.weight;
-    });
-  }
-
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
@@ -232,16 +225,8 @@ class Workout extends Component {
     if (workoutComplete) {
       this.props.workoutStore.stopTimer();
       this.props.workoutStore.setWorkoutLog(workoutLog);
-
-      console.log(this.get1RM());
-      return null;
-      // return (
-      //   <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      //     <Animatable.View animation='slideInUp' style={{ height: 300, backgroundColor: 'blue' }}>
-      //       <Text>Text</Text>
-      //     </Animatable.View>
-      //   </View>
-      // );
+      this.props.workoutStore.addWorkoutLog(workoutLog);
+      return <Overview gradients={gradients} navigation={this.props.navigation} />;
     }
 
     return (

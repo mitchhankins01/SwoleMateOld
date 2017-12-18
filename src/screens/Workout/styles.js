@@ -91,42 +91,57 @@ const themeStyles = themes.createStyleSheet({
     borderWidth: 0.5,
     borderColor: '$primaryColor',
   },
-  // Somatics
-  somaticsHeaderText: {
+  // Overview
+  overviewHeaderText: {
     fontSize: 30,
     marginTop: 30,
     color: '#EDF0F1',
     alignSelf: 'center',
-    fontFamily: 'Exo-Medium',
+    fontFamily: 'Exo-Bold',
     backgroundColor: 'transparent',
   },
-  somaticsSubHeaderText: {
+  overviewSubHeaderText: {
     fontSize: 25,
-    marginTop: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     color: '#EDF0F1',
     alignSelf: 'center',
     fontFamily: 'Exo-Medium',
     backgroundColor: 'transparent',
   },
-  saveButton: {
-    left: 40,
-    right: 40,
-    bottom: 20,
-    borderWidth: 2,
-    borderRadius: 5,
-    position: 'absolute',
-    borderColor: '$primaryColor',
-    backgroundColor: 'rgba(237, 240, 241, 0.1)',
+  overviewInfo: {
+    marginTop: 20,
+    fontSize: 25,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Bold',
+    backgroundColor: 'transparent',
   },
-  saveButtonText: {
-    padding: 10,
+  overviewDetail: {
     fontSize: 25,
     color: '#EDF0F1',
     alignSelf: 'center',
     fontFamily: 'Exo-Medium',
     backgroundColor: 'transparent',
   },
+  // saveButton: {
+  //   left: 40,
+  //   right: 40,
+  //   bottom: 20,
+  //   borderWidth: 2,
+  //   borderRadius: 5,
+  //   position: 'absolute',
+  //   borderColor: '$primaryColor',
+  //   backgroundColor: 'rgba(237, 240, 241, 0.1)',
+  // },
+  // saveButtonText: {
+  //   padding: 10,
+  //   fontSize: 25,
+  //   color: '#EDF0F1',
+  //   alignSelf: 'center',
+  //   fontFamily: 'Exo-Medium',
+  //   backgroundColor: 'transparent',
+  // },
+  // Dropdown
   dropdownTitle: {
     fontSize: 20,
     marginBottom: 5,

@@ -62,6 +62,29 @@ class WorkoutStore {
   @action clearWorkoutLog = () => {
     this.workoutLog = {};
   }
+
+  @action addWorkoutLog = workoutLog => {
+    const userLogsRef = firebase.firestore().collection('userLogs').doc();
+
+    userLogsRef.set({
+      timePassed: workoutLog.timePassed,
+      author: firebase.auth().currentUser.uid,
+      completed: new Date(),
+    });
+
+    workoutLog.completedExercises.forEach(each => {
+      userLogsRef.collection('exercises').add(each);
+    });
+
+    // firebase.firestore().collection('userLogs').add({
+    //   timePassed: workoutLog.timePassed,
+    //   author: firebase.auth().currentUser.uid,
+    //   exercises: workoutLog.completedExercises.map(each => each),
+    // }) // Implement error
+    // .catch(error => {
+    //   this.error = error.message;
+    // });
+  }
 }
 
 const workoutStore = new WorkoutStore();

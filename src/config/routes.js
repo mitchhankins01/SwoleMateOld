@@ -4,6 +4,7 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import Main from '../screens/Main';
 import Home from '../screens/Home';
 import Login from '../screens/Login';
+import { Logs } from '../screens/Logs';
 import TabBar from '../components/TabBar';
 import Register from '../screens/Register';
 import Settings from '../screens/Settings';
@@ -25,6 +26,7 @@ const MainStack = StackNavigator({
   HomeStack: {
     screen: TabNavigator({
       Home: { screen: Home },
+      Logs: { screen: Logs },
       Settings: { screen: Settings },
     }, {
       tabBarComponent: TabBar,

@@ -81,7 +81,6 @@ class Workout extends Component {
     if (completedSets.length === sets - 1) {
       this.saveSet(() => this.saveExercise());
     } else if (completedSets.length === sets - 2 || sets === 1) {
-      console.log('here');
       this.showLastSetInfo(exerciseIndex);
       this.saveSet();
     } else {

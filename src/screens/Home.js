@@ -106,14 +106,4 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = ({ program, theme }) => {
-  return {
-    theme: theme.selected,
-    //programError: program.error,
-    screenIndex: program.screenIndex,
-    //selectedDayKey: program.selectedDayKey,
-  };
-};
-
 export default Home;
-//export default connect(mapStateToProps)(Home);

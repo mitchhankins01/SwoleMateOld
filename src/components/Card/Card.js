@@ -169,7 +169,18 @@ class Card extends Component {
               );
             })}
           </ScrollView>
-
+          <Icon
+            name='back'
+            type='entypo'
+            iconStyle={{
+              paddingTop: 5,
+              //marginBottom: -10,
+              color: '#EDF0F1',
+              paddingHorizontal: 30,
+            }}
+            underlayColor='transparent'
+            onPress={() => updateScreenIndex('logOverview')}
+          />
         </View>
       );
     }

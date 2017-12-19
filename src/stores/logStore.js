@@ -86,7 +86,7 @@ class LogStore {
   @action isWorkout = type => {
     if (this.workoutLogs.length === 0) {
       if (type === 'bg') return 1;
-      return '#93A5A6';
+      return '#BCC3C7';
     }
     if (type === 'bg') return 0.2;
     return '#EDF0F1';
@@ -95,7 +95,7 @@ class LogStore {
   @action isBodyStats = type => {
     if (this.bodyStatsLogs.length === 0) {
       if (type === 'bg') return 1;
-      return '#93A5A6';
+      return '#BCC3C7';
     }
     if (type === 'bg') return 0.2;
     return '#EDF0F1';
@@ -104,7 +104,7 @@ class LogStore {
   @action isNutrition = type => {
     if (this.nutritionLogs.length === 0) {
       if (type === 'bg') return 1;
-      return '#93A5A6';
+      return '#BCC3C7';
     }
     if (type === 'bg') return 0.2;
     return '#EDF0F1';

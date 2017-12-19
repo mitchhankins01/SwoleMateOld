@@ -1,9 +1,12 @@
+import { toJS } from 'mobx';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { Icon } from 'react-native-elements';
 
 import { Form } from '../Form';
 import themeStyles from './styles';
@@ -120,13 +123,78 @@ class Card extends Component {
   }
 
   renderLogCard(styles) {
+    const {
+      isWorkout, isBodyStats, isNutrition, updateScreenIndex, workoutLogs, workoutLogsExercises
+    } = this.props.logStore;
+
+    if (this.props.workout) {
+      const workoutLogsExercisesToJS = toJS(workoutLogsExercises);
+      const timePassed = new Date(workoutLogs[0].timePassed * 1000).toISOString().substr(12, 7);
+
+      const match = key => {
+        return this.props.programStore.allExercises.find(each => {
+          return each.key === key;
+        });
+      };
+
+      return (
+        <View style={styles.logCardContainer}>
+          <Text style={styles.logTitle}>
+            <MaterialIcons name='calendar' color='#EDF0F1' size={20} />
+            {`  ${this.props.logStore.selectedDate}`}
+          </Text>
+          <View style={styles.cardDivider} />
+
+          <Text style={styles.logTitle}>
+            <MaterialIcons name='clock' color='#EDF0F1' size={20} />
+            {'  Workout Duration'}
+          </Text>
+          <Text style={styles.logDetail}>{timePassed}</Text>
+          <View style={styles.cardDivider} />
+
+          <ScrollView>
+            {workoutLogsExercisesToJS.map(each => {
+              return (
+                <View key={each.exerciseKey} style={{ justifyContent: 'flex-start', margin: 5 }}>
+                  <Text style={styles.logTitle}>
+                    <MaterialIcons name='dumbbell' color='#EDF0F1' size={20} />
+                    {`  ${match(each.exerciseKey).name}`}
+                  </Text>
+                  {each.completedSets.map((set, index) => {
+                    return (<Text key={index} style={styles.logDetail}>
+                      {`Set: ${set.set} ${set.reps}x${set.weight} `}
+                    </Text>);
+                  })}
+                </View>
+              );
+            })}
+          </ScrollView>
+
+        </View>
+      );
+    }
+
     return (
-      <View style={[styles.cardContainer, { flex: 1 }]}>
+      <View style={styles.logCardContainer}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <MaterialIcons style={styles.cardTitle} name='calendar' />
           <Text style={styles.cardTitle}>{this.props.logStore.selectedDate}</Text>
         </View>
         <View style={styles.cardDivider} />
+        <TouchableOpacity onPress={() => updateScreenIndex('bodyStats')} activeOpacity={isBodyStats('bg')}>
+          <Icon name='man' type='entypo' color={isBodyStats()} size={60} />
+          <Text style={[styles.cardTitle, { color: isBodyStats() }]}>Body Stats</Text>
+        </TouchableOpacity>
+        <View style={styles.cardDivider} />
+        <TouchableOpacity onPress={() => updateScreenIndex('workout')} activeOpacity={isWorkout('bg')}>
+          <Icon name='dumbbell' type='material-community' color={isWorkout()} size={60} />
+          <Text style={[styles.cardTitle, { color: isWorkout() }]}>Workout Log</Text>
+        </TouchableOpacity>
+        <View style={styles.cardDivider} />
+        <TouchableOpacity onPress={() => updateScreenIndex('nutrition')} activeOpacity={isNutrition('bg')}>
+          <Icon name='nutrition' type='material-community' color={isNutrition()} size={60} />
+          <Text style={[styles.cardTitle, { color: isNutrition() }]}>Nutrition Log</Text>
+        </TouchableOpacity>
       </View>
     );
   }

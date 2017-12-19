@@ -24,9 +24,24 @@ class Logs extends Component {
     ),
   };
 
+  componentWillMount() {
+    this.props.logStore.fetchLogs();
+  }
+
   componentWillUpdate() {
     if (this.refs.mainView) {
       this.refs.mainView.awesomeIn(500);
+    }
+  }
+
+  renderContent() {
+    const { screenIndex, showCalendar } = this.props.logStore;
+    switch (screenIndex) {
+      default: return;
+      case 'logOverview': return showCalendar ? <Calendar /> : <Card logCard />;
+      case 'workout': return showCalendar ? <Calendar /> : <Card logCard workout />;
+      case 'bodyStats': return null;
+      case 'nutrition': return null;
     }
   }
 
@@ -39,7 +54,7 @@ class Logs extends Component {
       <LinearGradient colors={gradients} style={styles.container} >
         <Header title={'Logs'} styles={styles} />
         <Animatable.View style={{ flex: 1 }} ref='mainView'>
-          {showCalendar ? <Calendar /> : <Card logCard />}
+          {this.renderContent(styles)}
         </Animatable.View>
         <Button
           raised

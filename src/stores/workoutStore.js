@@ -67,9 +67,10 @@ class WorkoutStore {
     const userLogsRef = firebase.firestore().collection('userLogs').doc();
 
     userLogsRef.set({
+      type: 'workout',
       timePassed: workoutLog.timePassed,
       author: firebase.auth().currentUser.uid,
-      completed: new Date(),
+      completed: new Date().toISOString().substr(0, 10),
     });
 
     workoutLog.completedExercises.forEach(each => {

@@ -1,4 +1,7 @@
+import { toJS } from 'mobx';
+import { View } from 'react-native';
 import React, { Component } from 'react';
+import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
 import { Calendar as Cal } from 'react-native-calendars';
 
@@ -8,39 +11,43 @@ import themeStyles from './styles';
 class Calendar extends Component {
   render() {
     const {
-      markedDate, updateMarkedDate, updateSelectedDate, toggleCalendar
+      markedDate, updateSelectedDate, toggleCalendar, fetchLogs
     } = this.props.logStore;
     const styles = themeStyles[this.props.themeStore.selected];
-
+    // console.log(this.props.logStore.markedDate);
+    const markedDateToJS = toJS(markedDate);
     return (
-      <Cal
-        markedDates={markedDate}
-        onDayPress={({ dateString }) => {
-          toggleCalendar();
-          updateSelectedDate(dateString);
-          updateMarkedDate({ [dateString]: { selected: true } });
-        }}
-        style={styles.calendarContainer}
-        theme={{
-          textDayFontSize: 16,
-          arrowColor: '#EDF0F1',
-          textMonthFontSize: 18,
-          // dotColor: '#00adf5',
-          dayTextColor: '#EDF0F1',
-          textDayHeaderFontSize: 12,
-          monthTextColor: '#EDF0F1',
-          // selectedDotColor: '#ffffff',
-          selectedDayTextColor: '#EDF0F1',
-          textMonthFontFamily: 'Exo-Bold',
-          textDayFontFamily: 'Exo-Medium',
-          textSectionTitleColor: '#EDF0F1',
-          todayTextColor: styles.$primaryColor,
-          textDayHeaderFontFamily: 'Exo-Regular',
-          backgroundColor: 'transparent', // 'rgba(237, 240, 241, 0.1)',
-          calendarBackground: 'transparent', // 'rgba(237, 240, 241, 0.1)',
-          selectedDayBackgroundColor: styles.$tertiaryColor,
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <Cal
+          markingType={'multi-dot'}
+          markedDates={markedDateToJS}
+          onDayPress={({ dateString }) => {
+            fetchLogs();
+            toggleCalendar();
+            updateSelectedDate(dateString);
+          }}
+          style={styles.calendarContainer}
+          theme={{
+            textDayFontSize: 16,
+            arrowColor: '#EDF0F1',
+            textMonthFontSize: 18,
+            // dotColor: '#00adf5',
+            dayTextColor: '#EDF0F1',
+            textDayHeaderFontSize: 12,
+            monthTextColor: '#EDF0F1',
+            // selectedDotColor: '#ffffff',
+            selectedDayTextColor: '#EDF0F1',
+            textMonthFontFamily: 'Exo-Bold',
+            textDayFontFamily: 'Exo-Medium',
+            textSectionTitleColor: '#EDF0F1',
+            todayTextColor: styles.$primaryColor,
+            textDayHeaderFontFamily: 'Exo-Regular',
+            backgroundColor: 'transparent', // 'rgba(237, 240, 241, 0.1)',
+            calendarBackground: 'transparent', // 'rgba(237, 240, 241, 0.1)',
+            selectedDayBackgroundColor: styles.$tertiaryColor,
+          }}
+        />
+      </View>
     );
   }
 }

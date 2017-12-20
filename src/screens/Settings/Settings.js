@@ -6,17 +6,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { List, ListItem, Avatar } from 'react-native-elements';
 
-import Header from '../components/Header';
-import themeStyles from '../components/styles';
-import { standard, standard2, standard3 } from '../components/theme';
+import Header from '../../components/Header';
+import themeStyles from '../../components/styles';
+import { standard, standard2, standard3 } from '../../components/theme';
 import {
   main,
-  generalOptions,
   themes,
+  generalOptions,
   profileOptions,
   handleProfileSelection,
-  handleGeneralSelection
-} from '../config/settings';
+  handleGeneralSelection,
+} from '../../config/settings';
 
 @inject('themeStore') @observer
 class Settings extends Component {

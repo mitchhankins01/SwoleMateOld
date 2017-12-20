@@ -7,8 +7,8 @@ import Login from '../screens/Login';
 import { Logs } from '../screens/Logs';
 import TabBar from '../components/TabBar';
 import Register from '../screens/Register';
-import Settings from '../screens/Settings';
 import { Workout } from '../screens/Workout';
+import { Settings } from '../screens/Settings';
 
 const MainStack = StackNavigator({
   Main: {

@@ -275,6 +275,23 @@ const themeStyles = themes.createStyleSheet({
     fontFamily: 'Exo-Medium',
     backgroundColor: 'transparent',
   },
+
+  // New
+  dropdownTitle: {
+    fontSize: 18,
+    marginBottom: 5,
+    marginLeft: -36,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Bold',
+  },
+  dropdownMessage: {
+    fontSize: 14,
+    marginLeft: -36,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Medium',
+  },
 });
 
 export default themeStyles;

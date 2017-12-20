@@ -2,6 +2,8 @@ import { View } from 'react-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
+import DropdownAlert from 'react-native-dropdownalert';
+
 import { Card } from '../Card';
 
 @inject('themeStore', 'programStore') @observer
@@ -133,6 +135,12 @@ class Programs extends Component {
     return (
       <View>
         {renderType}
+        <DropdownAlert
+          translucent
+          closeInterval={2000}
+          updateStatusBar={false}
+          ref={ref => (this.dropdown = ref)}
+        />
       </View>
     );
   }

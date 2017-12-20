@@ -73,6 +73,11 @@ class Home extends Component {
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
+
+    if (this.props.programStore.loading) {
+      this.dropdown.alertWithType('info', "I'll be back", "We're Loading");
+    }
+
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
@@ -91,9 +96,12 @@ class Home extends Component {
 
         <DropdownAlert
           translucent
-          closeInterval={2000}
+          closeInterval={1000}
           updateStatusBar={false}
+          infoColor={styles.$tertiaryColor}
+          titleStyle={styles.dropdownTitle}
           ref={ref => (this.dropdown = ref)}
+          messageStyle={styles.dropdownMessage}
         />
       </LinearGradient>
     );

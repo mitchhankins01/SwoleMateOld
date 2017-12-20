@@ -77,15 +77,6 @@ class WorkoutStore {
     workoutLog.completedExercises.forEach(each => {
       userLogsRef.collection('exercises').add(each);
     });
-
-    // firebase.firestore().collection('userLogs').add({
-    //   timePassed: workoutLog.timePassed,
-    //   author: firebase.auth().currentUser.uid,
-    //   exercises: workoutLog.completedExercises.map(each => each),
-    // }) // Implement error
-    // .catch(error => {
-    //   this.error = error.message;
-    // });
   }
 }
 

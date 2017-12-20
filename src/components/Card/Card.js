@@ -192,17 +192,17 @@ class Card extends Component {
           <Text style={styles.cardTitle}>{this.props.logStore.selectedDate}</Text>
         </View>
         <View style={styles.cardDivider} />
-        <TouchableOpacity onPress={() => updateScreenIndex('bodyStats')} activeOpacity={isBodyStats('bg')}>
+        <TouchableOpacity onPress={() => isBodyStats('bttn')} activeOpacity={isBodyStats('bg')}>
           <Icon name='man' type='entypo' color={isBodyStats()} size={60} />
           <Text style={[styles.cardTitle, { color: isBodyStats() }]}>Body Stats</Text>
         </TouchableOpacity>
         <View style={styles.cardDivider} />
-        <TouchableOpacity onPress={() => updateScreenIndex('workout')} activeOpacity={isWorkout('bg')}>
+        <TouchableOpacity onPress={() => isWorkout('bttn')} activeOpacity={isWorkout('bg')}>
           <Icon name='dumbbell' type='material-community' color={isWorkout()} size={60} />
           <Text style={[styles.cardTitle, { color: isWorkout() }]}>Workout Log</Text>
         </TouchableOpacity>
         <View style={styles.cardDivider} />
-        <TouchableOpacity onPress={() => updateScreenIndex('nutrition')} activeOpacity={isNutrition('bg')}>
+        <TouchableOpacity onPress={() => isNutrition('bttn')} activeOpacity={isNutrition('bg')}>
           <Icon name='nutrition' type='material-community' color={isNutrition()} size={60} />
           <Text style={[styles.cardTitle, { color: isNutrition() }]}>Nutrition Log</Text>
         </TouchableOpacity>

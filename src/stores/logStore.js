@@ -4,7 +4,9 @@ import firebase from 'react-native-firebase';
 class LogStore {
   // Logs
   @observable logs = [];
+  @observable error = '';
   @observable loading = false;
+  @observable showError = false;
   @observable screenIndex = 'logOverview';
   // Individual Logs
   @observable workoutLogs = [];
@@ -86,29 +88,49 @@ class LogStore {
   @action isWorkout = type => {
     if (this.workoutLogs.length === 0) {
       if (type === 'bg') return 1;
+      if (type === 'bttn') {
+        this.error = 'No workout was found! Unlike your gainz';
+        this.showError = true;
+      }
       return '#BCC3C7';
     }
     if (type === 'bg') return 0.2;
+    if (type === 'bttn') return this.updateScreenIndex('workout');
     return '#EDF0F1';
   };
 
   @action isBodyStats = type => {
     if (this.bodyStatsLogs.length === 0) {
       if (type === 'bg') return 1;
+      if (type === 'bttn') {
+        this.error = 'No Body Stats were found!';
+        this.showError = true;
+      }
       return '#BCC3C7';
     }
     if (type === 'bg') return 0.2;
+    if (type === 'bttn') return this.updateScreenIndex('bodyStats');
     return '#EDF0F1';
   };
 
   @action isNutrition = type => {
     if (this.nutritionLogs.length === 0) {
       if (type === 'bg') return 1;
+      if (type === 'bttn') {
+        this.error = 'No Nutrion logs were found!';
+        this.showError = true;
+      }
       return '#BCC3C7';
     }
     if (type === 'bg') return 0.2;
+    if (type === 'bttn') return this.updateScreenIndex('nutrition');
     return '#EDF0F1';
   };
+
+  @action toggleError = bool => {
+    this.showError = bool;
+    if (!bool) this.error = '';
+  }
 
 }
 

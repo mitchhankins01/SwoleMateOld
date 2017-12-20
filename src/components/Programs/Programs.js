@@ -1,7 +1,6 @@
+import { View } from 'react-native';
 import React, { Component } from 'react';
-import firebase from 'react-native-firebase';
 import { inject, observer } from 'mobx-react';
-import * as Animatable from 'react-native-animatable';
 
 import { Card } from '../Card';
 
@@ -37,9 +36,10 @@ class Programs extends Component {
       this.props.programStore.allPrograms.map(program => {
         return (
           <Card
+            type='entypo'
             item={program}
+            icon='clipboard'
             key={program.key}
-            icon={'clipboard'}
             subtitle={`${program.frequency} Days - ${program.level} - ${program.type}`}
             onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
           />
@@ -57,7 +57,8 @@ class Programs extends Component {
           <Card
             item={day}
             key={day.key}
-            icon={'folder'}
+            type='entypo'
+            icon='folder'
             info={this.state.info}
             subtitle={`${day.primaryGroup} - ${day.secondaryGroup}`}
             onPress={() => this.updateScreenIndex('programExercises', day.key)}
@@ -80,8 +81,9 @@ class Programs extends Component {
             <Card
               item={item}
               key={item.key}
-              icon={'dumbbell'}
+              icon='dumbbell'
               info={this.state.info}
+              type='material-community'
               onPress={() => this.updateScreenIndex('programExercises')}
               subtitle={`${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`}
             />
@@ -94,16 +96,7 @@ class Programs extends Component {
 
   render() {
     const { loading, screenIndex } = this.props.programStore;
-    // if (loading) {
-    //   return (
-    //     <View style={styles.loadingContainer}>
-    //       <Text style={styles.loadingText}>SwoleMate</Text>
-    //       <Text style={styles.loadingTextSub}>Loading...</Text>
-    //       <ProgressBar width={200} indeterminate color={styles.$primaryColor} />
-    //     </View>
-    //   );
-    // }
-
+    // IMPLEMENT if loading, dropdown
     if (loading) return null;
 
     let renderType;
@@ -138,9 +131,9 @@ class Programs extends Component {
     }
 
     return (
-      <Animatable.View>
+      <View>
         {renderType}
-      </Animatable.View>
+      </View>
     );
   }
 }

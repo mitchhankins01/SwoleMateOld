@@ -58,34 +58,27 @@ class Home extends Component {
      if (error) { this.dropdown.alertWithType('error', 'Something went wrong', error); }
    }
 
-   // renderTitle() {
-   //   const { programDays, programInfo, screenIndex, selectedDayKey } = this.props;
-   //
-   //   if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
-   //     return programInfo.map(info => info.name);
-   //   } else if (screenIndex === 'programExercises') {
-   //     return programDays.filter(day => day.key === selectedDayKey).map(info => info.name);
-   //   } else if (screenIndex === 'allPrograms') {
-   //     return 'All Programs';
-   //   }
-   // }
+   renderTitle() {
+     const { days, info, screenIndex, selectedDayKey } = this.props.programStore;
+
+     if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
+       return info.map(detail => detail.name);
+     } else if (screenIndex === 'programExercises') {
+       return days.filter(day => day.key === selectedDayKey).map(detail => detail.name);
+     } else if (screenIndex === 'allPrograms') {
+       return 'All Programs';
+     }
+   }
 
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-    // console.log(this.props.programStore.info);
-    // console.log(this.props.programStore.days);
-    // console.log(this.props.programStore.exercises);
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
-        <Header title={'Home'} styles={styles} />
+        <Header title={this.renderTitle().toString().substring(0, 30)} styles={styles} />
 
         <Greeting styles={styles} />
-
-        {/* <Animatable.Text style={styles.title} ref='titleView' animation='zoomIn' >
-          {this.renderTitle()}
-        </Animatable.Text> */}
 
         <ScrollView
           style={{ marginTop: 10 }}

@@ -233,11 +233,11 @@ class Workout extends Component {
     return (
       <LinearGradient colors={gradients} style={styles.container} >
 
-        <Animatable.View style={styles.headerContainer} duration={750} animation='zoomIn'>
+        <Animatable.View style={styles.headerContainer} animation='mySlideInDown'>
           <Text style={styles.headerText}>{exerciseName}</Text>
         </Animatable.View>
 
-        <Animatable.View style={styles.logContainer} duration={750} animation='zoomIn'>
+        <Animatable.View style={styles.logContainer} animation='mySlideInDown'>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }} >
             <View style={{ flex: 1 }}>
               <Text style={styles.logTextHeader}>Current Log</Text>
@@ -251,7 +251,7 @@ class Workout extends Component {
         </Animatable.View>
 
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
-          <Animatable.View style={styles.inputContainer} duration={750} animation='zoomIn'>
+          <Animatable.View style={styles.inputContainer} animation='mySlideInLeft' delay={750}>
             <Text style={styles.inputHeader}>Weight</Text>
             {this.renderTextInput(styles, 'weight')}
             <Picker
@@ -260,7 +260,7 @@ class Workout extends Component {
               setWeight={weight => this.setState({ weight })}
             />
           </Animatable.View>
-          <Animatable.View style={styles.inputContainer} duration={750} animation='zoomIn'>
+          <Animatable.View style={styles.inputContainer} animation='mySlideInRight' delay={1000}>
             <Text style={styles.inputHeader}>Reps</Text>
             {this.renderTextInput(styles, 'reps')}
             <Picker
@@ -271,11 +271,14 @@ class Workout extends Component {
           </Animatable.View>
         </View>
 
-        <ActionBar
-          workout
-          navigation={this.props.navigation}
-          onPressSave={() => this.onPressSave()}
-        />
+        <Animatable.View animation='mySlideInUp' delay={1250}>
+          <ActionBar
+            workout
+            navigation={this.props.navigation}
+            onPressSave={() => this.onPressSave()}
+          />
+        </Animatable.View>
+
 
         <DropdownAlert
           zIndex={5}

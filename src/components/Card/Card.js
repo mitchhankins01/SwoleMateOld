@@ -14,6 +14,7 @@ import themeStyles from './styles';
 @inject('themeStore', 'programStore', 'logStore') @observer
 class Card extends Component {
   state = {
+    onAnimationEnd: false,
     warningVisible: false,
     selectedDeleteKey: '',
   }
@@ -210,6 +211,12 @@ class Card extends Component {
     );
   }
 
+  showAnimation() {
+    if (this.refs.programCard) {
+      this.refs.programCard.mySlideInUp();
+    }
+  }
+
   render() {
     const {
       // Empty Card
@@ -220,9 +227,10 @@ class Card extends Component {
       typeAddCard,
       // Existing Program Card
       item,
-      subtitle,
       icon,
+      type,
       onPress,
+      subtitle,
       // Log
       logCard,
     } = this.props;
@@ -233,10 +241,16 @@ class Card extends Component {
     if (logCard) return this.renderLogCard(styles);
 
     return (
-      <Animatable.View style={styles.cardContainer} duration={750} animation='zoomIn'>
+      <Animatable.View
+        duration={500}
+        ref='programCard'
+        animation='mySlideOutUp'
+        style={styles.cardContainer}
+        onAnimationEnd={() => this.showAnimation()}
+      >
         <TouchableOpacity key={item.name} onPress={onPress} >
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <MaterialIcons style={styles.cardTitle} name={icon} />
+            <Icon name={icon} type={type} color='#EDF0F1' />
             <Text style={styles.cardTitle}>
               {item.name}
             </Text>

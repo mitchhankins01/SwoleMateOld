@@ -24,7 +24,6 @@ const themeStyles = themes.createStyleSheet({
   },
   countDownIcon: {
     top: 100,
-    position: 'absolute',
     color: '$primaryColor',
   },
   countDownText: {

@@ -51,6 +51,7 @@ class WorkoutStore {
 
   @action clearCountDown = () => {
     this.countDown = 60;
+    this.showCountDown = false;
     BackgroundTimer.clearInterval(this.countDownID);
   }
 

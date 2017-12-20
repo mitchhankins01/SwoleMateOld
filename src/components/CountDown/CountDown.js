@@ -10,28 +10,9 @@ const DEVICE_WIDTH = Dimensions.get('window').width;
 
 @inject('workoutStore', 'themeStore') @observer
 class CountDown extends Component {
-  renderLastSetView(styles) {
-    const { workoutStore: { countDown, showCountDown } } = this.props;
-
-    if (countDown <= 0 || !showCountDown) return null;
-
-    return (
-      <Animatable.View style={[{ backgroundColor: 'transparent', zIndex: 1 }]} animation='zoomIn'>
-        <Text style={styles.lastSetViewText}>
-          Up Next:
-        </Text>
-        <Text style={styles.lastSetViewText}>
-          {`\n${this.props.upcomingExercise}`}
-        </Text>
-      </Animatable.View>
-    );
-  }
-
   render() {
     const styles = themeStyles[this.props.themeStore.selected];
     const { workoutStore: { countDown, toggleShowCountDown } } = this.props;
-
-    if (this.props.showLastSetView) return this.renderLastSetView(styles);
 
     return (
       <View style={styles.countDownContainer}>
@@ -39,16 +20,18 @@ class CountDown extends Component {
           <Text style={styles.countDownText}>
             {countDown}
           </Text>
-          <Progress.CircleSnail
-            indeterminate
-            thickness={20}
-            size={DEVICE_WIDTH * 0.7}
-            color={styles.$primaryColor}
-          />
+          <View style={{ marginTop: 125 }}>
+            <Progress.CircleSnail
+              indeterminate
+              thickness={20}
+              size={DEVICE_WIDTH * 0.7}
+              color={styles.$primaryColor}
+            />
+          </View>
           <Icon
             size={50}
             name='close'
-            iconStyle={styles.countDownIcon}
+            iconStyle={{ color: styles.$primaryColor, marginTop: 75 }}
             onPress={() => toggleShowCountDown(false)}
           />
         </Animatable.View>

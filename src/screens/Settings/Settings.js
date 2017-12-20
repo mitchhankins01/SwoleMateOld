@@ -6,8 +6,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { List, ListItem, Avatar } from 'react-native-elements';
 
+import themeStyles from './styles';
 import Header from '../../components/Header';
-import themeStyles from '../../components/styles';
 import { standard, standard2, standard3 } from '../../components/theme';
 import {
   main,
@@ -41,6 +41,13 @@ class Settings extends Component {
     this.dropdown.alertWithType(type, title, message);
   }
 
+  handleThemeSelection(index, theme) {
+    if (index === themes.length - 1) {
+      return this.setState({ screenIndex: -1 });
+    }
+    this.props.themeStore.updateTheme(theme);
+  }
+
   renderContent(styles) {
     const themeOptions = [
       standard.$primaryColor,
@@ -56,11 +63,11 @@ class Settings extends Component {
             <ListItem
               key={i}
               title={item.title}
+              chevronColor='#EDF0F1'
               underlayColor={'transparent'}
-              chevronColor={styles.$primaryColor}
-              titleStyle={styles.listItemSettingsTitle}
+              titleStyle={styles.listItemTitle}
               hideChevron={i === profileOptions.length - 1}
-              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
+              leftIcon={{ name: item.icon, color: '#EDF0F1' }}
               containerStyle={{ borderBottomColor: styles.$primaryColor }}
               onPress={() => handleProfileSelection(i, () => this.setState({ screenIndex: -1 }))}
             />
@@ -72,11 +79,11 @@ class Settings extends Component {
             <ListItem
               key={i}
               title={item.title}
+              chevronColor='#EDF0F1'
               underlayColor={'transparent'}
-              chevronColor={styles.$primaryColor}
-              titleStyle={styles.listItemSettingsTitle}
+              titleStyle={styles.listItemTitle}
               hideChevron={i === generalOptions.length - 1}
-              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
+              leftIcon={{ name: item.icon, color: '#EDF0F1' }}
               containerStyle={{ borderBottomColor: styles.$primaryColor }}
               onPress={() => handleGeneralSelection(i, () => this.setState({ screenIndex: -1 }))}
             />
@@ -91,12 +98,10 @@ class Settings extends Component {
               underlayColor={'transparent'}
               chevronColor={themeOptions[i]}
               hideChevron={i === themes.length - 1}
+              onPress={() => this.handleThemeSelection(i, theme.name)}
               leftIcon={{ name: theme.icon, color: themeOptions[i] }}
               containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              titleStyle={[styles.listItemSettingsTitle, { color: themeOptions[i] }]}
-              onPress={() => this.props.dispatch(
-                changeTheme(themes, i, theme.name, () => this.setState({ screenIndex: -1 }))
-              )}
+              titleStyle={[styles.listItemTitle, { color: themeOptions[i] }]}
             />
           ))
         );
@@ -106,11 +111,11 @@ class Settings extends Component {
             <ListItem
               key={i}
               title={item.title}
+              chevronColor='#EDF0F1'
               underlayColor={'transparent'}
+              titleStyle={styles.listItemTitle}
               hideChevron={i === main.length - 1}
-              chevronColor={styles.$primaryColor}
-              titleStyle={styles.listItemSettingsTitle}
-              leftIcon={{ name: item.icon, color: styles.$primaryColor }}
+              leftIcon={{ name: item.icon, color: '#EDF0F1' }}
               containerStyle={{ borderBottomColor: styles.$primaryColor }}
               onPress={
                 i === main.length - 1
@@ -134,7 +139,7 @@ class Settings extends Component {
     return (
       <LinearGradient
         colors={gradients}
-        style={[styles.container, { justifyContent: 'flex-start' }]}
+        style={styles.container}
       >
       <Header title={'Settings'} styles={styles} />
         <Avatar

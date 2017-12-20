@@ -16,6 +16,13 @@ class ThemeStore {
       this.error = error.message;
     });
   }
+
+  @action updateTheme = theme => {
+    firebase.firestore()
+    .collection('users')
+    .doc(firebase.auth().currentUser.uid)
+    .update({ theme });
+  }
 }
 
 const themeStore = new ThemeStore();

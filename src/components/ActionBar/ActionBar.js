@@ -152,8 +152,7 @@ class ActionBar extends Component {
         return null; //renderType = this.renderFormActionBar(styles);
     }
 
-
-    if (this.props.scrollIndex <= 0) {
+    if (this.props.scrollIndex <= 0 && !this.props.programStore.showUpdateForm) {
       return (
         <Animatable.View style={styles.actionBar} animation='slideInUp' duration={500}>
           {renderType}

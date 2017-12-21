@@ -87,7 +87,11 @@ class Home extends Component {
 
         <ScrollView
           style={{ marginTop: 10 }}
-          onScroll={event => this.setState({ scrollIndex: event.nativeEvent.contentOffset.y })}
+          onScroll={event => {
+            if (!this.props.programStore.showUpdateForm) {
+              this.setState({ scrollIndex: event.nativeEvent.contentOffset.y });
+            }
+          }}
         >
           <Programs navigation={this.props.navigation} />
         </ScrollView>

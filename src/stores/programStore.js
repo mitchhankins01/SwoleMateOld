@@ -268,7 +268,27 @@ class ProgramStore {
     });
   }
 
+
+  @action addExercises = () => {
+    exercises.map(each => {
+      const ref = firebase.firestore().collection('exercises').doc();
+      return (
+        ref.set({
+          description: each.description,
+          group: each.group,
+          name: each.name,
+          key: ref.id,
+        })
+      );
+    });
+  }
 }
+
+const exercises = [
+  { description: 'something', group: 'msuc', name: 'None' },
+  { description: 'something1', group: 'msuc1', name: 'None1' },
+  { description: 'something2', group: 'msuc2', name: 'None2' }
+];
 
 const programStore = new ProgramStore();
 

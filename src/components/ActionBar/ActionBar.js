@@ -127,7 +127,7 @@ class ActionBar extends Component {
 
   render() {
     const { workout } = this.props;
-    const { screenIndex } = this.props.programStore;
+    const { screenIndex, scrollIndex, showUpdateForm } = this.props.programStore;
     const styles = themeStyles[this.props.userStore.selected];
 
     if (workout) return renderType = this.renderWorkoutActionBar(styles);
@@ -152,7 +152,7 @@ class ActionBar extends Component {
         return null; //renderType = this.renderFormActionBar(styles);
     }
 
-    if (this.props.programStore.scrollIndex <= 0 && !this.props.programStore.showUpdateForm) {
+    if (scrollIndex <= 0 && !showUpdateForm) {
       return (
         <Animatable.View style={styles.actionBar} animation='slideInUp' duration={500}>
           {renderType}

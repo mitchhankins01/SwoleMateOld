@@ -35,6 +35,7 @@ class Home extends Component {
      programStore.fetchAllPrograms();
      programStore.fetchAllExercises();
      programStore.fetchPrimaryProgram();
+     programStore.addExercises();
    }
 
    componentDidMount() {

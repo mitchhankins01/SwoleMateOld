@@ -143,6 +143,7 @@ class ProgramStore {
   }
 
   @action addProgramDay = (values, programInfo) => {
+    // IMPLEMENT does nto need programinfo, use this.into instead like in update
     const ref = firebase.firestore()
     .collection('userPrograms')
     .doc(programInfo[0].key)
@@ -218,6 +219,48 @@ class ProgramStore {
     .collection('exercises')
     .doc(deleteKey)
     .delete()
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
+
+  @action updateProgram = values => {
+    firebase.firestore()
+    .collection('userPrograms')
+    .doc(this.updateFormItem.key)
+    .update({
+      type: values.type,
+      name: values.name,
+      level: values.level,
+      frequency: values.frequency,
+      description: values.description,
+      author: firebase.auth().currentUser.uid,
+    })
+    .then(() => {
+      this.toggleShowUpdateForm(false);
+    })
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
+
+  @action updateProgramDay = values => {
+    const ref = firebase.firestore()
+    .collection('userPrograms')
+    .doc(this.info[0].key)
+    .collection('days')
+    .doc(this.updateFormItem.key);
+
+    ref.update({
+      name: values.name,
+      description: values.description,
+      primaryGroup: values.primaryGroup,
+      secondaryGroup: values.secondaryGroup,
+      author: firebase.auth().currentUser.uid,
+    })
+    .then(() => {
+      this.toggleShowUpdateForm(false);
+    })
     .catch(error => {
       this.error = error.message;
     });

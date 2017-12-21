@@ -309,15 +309,16 @@ class Card extends Component {
       logCard,
       // Settings
       settingsCard,
+      // Update
+      updateCard
     } = this.props;
     const styles = themeStyles[this.props.userStore.selected];
 
     if (logCard) return this.renderLogCard(styles);
+    if (updateCard) return this.renderUpdateCard(styles);
     if (empty) return this.renderEmptyCard(styles, title);
     if (settingsCard) return this.renderSettingsCard(styles);
     if (addCard) return this.renderAddCard(styles, typeAddCard);
-
-    if (this.props.programStore.showUpdateForm) return this.renderUpdateCard(styles);
 
     return (
       <Animatable.View

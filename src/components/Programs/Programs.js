@@ -97,39 +97,43 @@ class Programs extends Component {
   }
 
   render() {
-    const { loading, screenIndex } = this.props.programStore;
-    
+    const { loading, screenIndex, showUpdateForm } = this.props.programStore;
+
     if (loading) return null;
 
     let renderType;
-    switch (screenIndex) {
-      default:
-        return null;
-      case 'allPrograms':
-        renderType = this.renderAllPrograms();
-        break;
-      case 'primaryProgram':
-      case 'selectedProgram':
-        renderType = this.renderProgramDays();
-        break;
-      case 'programExercises':
-        renderType = this.renderProgramExercises(this.props.programExercises);
-        break;
-      case 'addProgram':
-        renderType = <Card addCard typeAddCard='addProgram' info={this.state.info} />;
-        break;
-      case 'addProgramDay':
-        renderType = <Card addCard typeAddCard='addProgramDay' info={this.state.info} />;
-        break;
-      case 'addProgramExercise':
-        renderType = (
-          <Card
-            addCard
-            info={this.state.info}
-            typeAddCard='addProgramExercise'
-            allExercises={this.state.allExercises}
-          />
-        );
+    if (showUpdateForm) {
+       renderType = <Card updateCard />;
+    } else {
+      switch (screenIndex) {
+        default:
+          return null;
+        case 'allPrograms':
+          renderType = this.renderAllPrograms();
+          break;
+        case 'primaryProgram':
+        case 'selectedProgram':
+          renderType = this.renderProgramDays();
+          break;
+        case 'programExercises':
+          renderType = this.renderProgramExercises(this.props.programExercises);
+          break;
+        case 'addProgram':
+          renderType = <Card addCard typeAddCard='addProgram' info={this.state.info} />;
+          break;
+        case 'addProgramDay':
+          renderType = <Card addCard typeAddCard='addProgramDay' info={this.state.info} />;
+          break;
+        case 'addProgramExercise':
+          renderType = (
+            <Card
+              addCard
+              info={this.state.info}
+              typeAddCard='addProgramExercise'
+              allExercises={this.state.allExercises}
+            />
+          );
+      }
     }
 
     return (

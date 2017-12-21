@@ -28,14 +28,24 @@ class UserStore {
     firebase.firestore()
     .collection('users')
     .doc(firebase.auth().currentUser.uid)
-    .update({ theme });
+    .update({ theme })
+    .then(() => this.switchSuccess())
+    .catch(error => {
+      this.error = error;
+      this.showError = true;
+    });
   }
 
   @action toggleImperial = () => {
     firebase.firestore()
     .collection('users')
     .doc(firebase.auth().currentUser.uid)
-    .update({ imperial: !this.imperial });
+    .update({ imperial: !this.imperial })
+    .then(() => this.switchSuccess())
+    .catch(error => {
+      this.error = error;
+      this.showError = true;
+    });
   }
 
   @action updateName = name => {
@@ -64,6 +74,30 @@ class UserStore {
     }
 
     firebase.auth().currentUser.updateEmail(email)
+    .then(() => this.switchSuccess())
+    .catch(error => {
+      this.error = error;
+      this.showError = true;
+    });
+  }
+
+  @action updatePassword = email => {
+    if (email.length === 0) {
+      this.showError = true;
+      this.error = 'Invalid Email';
+      return;
+    }
+
+    firebase.auth().sendPasswordResetEmail(email)
+    .then(() => this.switchSuccess())
+    .catch(error => {
+      this.error = error;
+      this.showError = true;
+    });
+  }
+
+  @action deleteUser = () => {
+    firebase.auth().currentUser.delete()
     .then(() => this.switchSuccess())
     .catch(error => {
       this.error = error;

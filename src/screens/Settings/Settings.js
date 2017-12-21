@@ -1,6 +1,5 @@
 import Color from 'color';
 import { toJS } from 'mobx';
-import { View, TextInput } from 'react-native';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { inject, observer } from 'mobx-react';
@@ -8,6 +7,7 @@ import { Avatar, Icon } from 'react-native-elements';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 
 import themeStyles from './styles';
 import { Card } from '../../components/Card';
@@ -32,6 +32,7 @@ class Settings extends Component {
     screenIndex: 'Main',
     name: this.props.userStore.name,
     email: firebase.auth().currentUser.email,
+    password: firebase.auth().currentUser.email,
   };
 
   // showDropdown(type, title, message) {
@@ -92,11 +93,13 @@ class Settings extends Component {
             },
             {
               title: 'Password',
-              icon: 'lock'
+              icon: 'lock',
+              onPress: () => this.setState({ showInput: true, updateValue: 'password' })
             },
             {
               title: 'Delete Account',
-              icon: 'trash'
+              icon: 'trash',
+              onPress: () => this.setState({ showInput: true, updateValue: 'delete' })
             },
           ]
         };
@@ -139,21 +142,68 @@ class Settings extends Component {
   }
 
   renderInput(styles) {
-    const { updateName, updateEmail } = this.props.userStore;
     const { showInput, updateValue } = this.state;
+    const { updateName, updateEmail, updatePassword, deleteUser } = this.props.userStore;
 
     const getInput = () => {
       switch (updateValue) {
         default: return null;
         case 'name':
         case 'email':
+        case 'password':
           return (
             <View>
               <TextInput
+                value={this.state[updateValue]}
                 style={this.getStyles().textInput}
                 onChangeText={text => this.setState({ [updateValue]: text })}
-                value={updateValue === 'name' ? this.state.name : this.state.email}
               />
+              {updateValue === 'password' ?
+                <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                    this.setState({ showInput: false, updateValue: '' });
+                  }}
+                  >
+                    <Text style={this.getStyles().passwordText}>Cancel</Text>
+                  </TouchableOpacity>
+                  <View style={{ marginVertical: 30 }} />
+                  <TouchableOpacity
+                    onPress={() => {
+                    this.setState({ showInput: false, updateValue: '' });
+                    updatePassword(this.state.password);
+                  }}
+                  >
+                    <Text style={this.getStyles().passwordText}>Send Reset Password Email</Text>
+                  </TouchableOpacity>
+                </View>
+              :
+                <View style={this.getStyles().buttonView}>
+                  <Icon
+                    size={80}
+                    name='cross'
+                    type='entypo'
+                    color={styles.$primaryColor}
+                    onPress={() => this.setState({ showInput: false, updateValue: '' })}
+                  />
+                  <Icon
+                    size={75}
+                    name='check'
+                    type='entypo'
+                    color={styles.$primaryColor}
+                    onPress={() => {
+                      this.setState({ showInput: false, updateValue: '' });
+                      if (updateValue === 'name') return updateName(this.state.name);
+                      if (updateValue === 'email') return updateEmail(this.state.email);
+                    }}
+                  />
+                </View>}
+            </View>
+          );
+        case 'delete':
+          return (
+            <View>
+              <Text style={this.getStyles().deleteText}>Are you sure? All your data will be deleted :(</Text>
               <View style={this.getStyles().buttonView}>
                 <Icon
                   size={80}
@@ -169,8 +219,7 @@ class Settings extends Component {
                   color={styles.$primaryColor}
                   onPress={() => {
                     this.setState({ showInput: false, updateValue: '' });
-                    if (updateValue === 'name') return updateName(this.state.name);
-                    if (updateValue === 'email') return updateEmail(this.state.email);
+                    if (updateValue === 'delete') return deleteUser();
                   }}
                 />
               </View>
@@ -289,6 +338,20 @@ class Settings extends Component {
         color: '#EDF0F1',
         alignSelf: 'center',
         fontFamily: 'Exo-Medium',
+      },
+      passwordText: {
+        fontSize: 20,
+        marginTop: 20,
+        color: '#EDF0F1',
+        marginBottom: -150,
+        alignSelf: 'center',
+        fontFamily: 'Exo-Bold',
+      },
+      deleteText: {
+        fontSize: 20,
+        color: 'red',
+        alignSelf: 'center',
+        fontFamily: 'Exo-Bold',
       },
     };
   }

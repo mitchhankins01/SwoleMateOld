@@ -160,21 +160,21 @@ class Register extends Component {
         >{label}</FormLabel>
         <ButtonGroup
           onPress={onPress}
-          selectedIndex={selectedIndex}
           buttons={buttons}
-          selectedBackgroundColor='rgba(237, 240, 241, 0.5)'
+          selectedIndex={selectedIndex}
           textStyle={styles.buttonGroupText}
-          selectedTextStyle={styles.buttonGroupText}
           containerStyle={styles.buttonGroup}
+          selectedTextStyle={styles.buttonGroupText}
+          selectedBackgroundColor='rgba(237, 240, 241, 0.5)'
         />
       </View>
     );
   }
 
   render() {
-    const { sex, email, password, imperial, theme } = this.state;
-    const styles = themeStyles[this.props.userStore.selected];
+    const styles = themeStyles.standard;
     const sexBG = ['Male', 'Female', 'Other'];
+    const { sex, email, password, imperial } = this.state;
     const imperialBG = ['Imperial (lbs)', 'Metric (kgs)'];
     const gradients = [
       styles.$primaryColor,

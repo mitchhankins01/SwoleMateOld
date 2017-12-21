@@ -156,16 +156,17 @@ class Settings extends Component {
               <TextInput
                 value={this.state[updateValue]}
                 style={this.getStyles().textInput}
+                underlineColorAndroid='transparent'
                 onChangeText={text => this.setState({ [updateValue]: text })}
               />
               {updateValue === 'password' ?
-                <View>
+                <View style={{ marginBottom: -150 }}>
                   <TouchableOpacity
                     onPress={() => {
                     this.setState({ showInput: false, updateValue: '' });
                   }}
                   >
-                    <Text style={this.getStyles().passwordText}>Cancel</Text>
+                    <Text style={[this.getStyles().passwordText, { marginTop: 30 }]}>Cancel</Text>
                   </TouchableOpacity>
                   <View style={{ marginVertical: 30 }} />
                   <TouchableOpacity
@@ -301,6 +302,7 @@ class Settings extends Component {
         left: 0,
         right: 0,
         bottom: 0,
+        elevation: 1,
         backgroundColor,
         position: 'absolute',
         alignItems: 'center',
@@ -341,9 +343,8 @@ class Settings extends Component {
       },
       passwordText: {
         fontSize: 20,
-        marginTop: 20,
         color: '#EDF0F1',
-        marginBottom: -150,
+        // marginBottom: -150,
         alignSelf: 'center',
         fontFamily: 'Exo-Bold',
       },
@@ -351,6 +352,7 @@ class Settings extends Component {
         fontSize: 20,
         color: 'red',
         alignSelf: 'center',
+        marginHorizontal: 20,
         fontFamily: 'Exo-Bold',
       },
     };

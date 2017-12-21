@@ -3,6 +3,7 @@ import firebase from 'react-native-firebase';
 
 class UserStore {
 
+  @observable name = '';
   @observable error = '';
   @observable imperial = true;
   @observable selected = 'standard';
@@ -13,6 +14,7 @@ class UserStore {
     .collection('users')
     .doc(firebase.auth().currentUser.uid)
     .onSnapshot(userDoc => {
+      this.name = userDoc.data().name;
       this.selected = userDoc.data().theme;
       this.imperial = userDoc.data().imperial;
     }, error => {
@@ -32,6 +34,14 @@ class UserStore {
     .collection('users')
     .doc(firebase.auth().currentUser.uid)
     .update({ imperial: !this.imperial });
+  }
+
+  @action updateName = name => {
+    if (name.length === 0) return;
+    firebase.firestore()
+    .collection('users')
+    .doc(firebase.auth().currentUser.uid)
+    .update({ name });
   }
 }
 

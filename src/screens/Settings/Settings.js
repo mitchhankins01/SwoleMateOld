@@ -1,9 +1,9 @@
 import Color from 'color';
-import { View } from 'react-native';
+import { View, TextInput } from 'react-native';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { inject, observer } from 'mobx-react';
-import { Avatar } from 'react-native-elements';
+import { Avatar, Icon } from 'react-native-elements';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,7 +25,12 @@ class Settings extends Component {
     ),
   };
 
-  state = { screenIndex: 'Main', showInput: false, updateValue: '' };
+  state = {
+    updateValue: '',
+    showInput: false,
+    screenIndex: 'Main',
+    name: this.props.userStore.name,
+  };
 
   // showDropdown(type, title, message) {
   //   this.dropdown.alertWithType(type, title, message);
@@ -135,22 +140,47 @@ class Settings extends Component {
   }
 
   renderInput(styles) {
+    const { updateName } = this.props.userStore;
     const { showInput, updateValue } = this.state;
-    const backgroundColor = Color(styles.$tertiaryColor).alpha(0.7);
 
     const getInput = () => {
       switch (updateValue) {
         default: return null;
         case 'Name':
           return (
-            null
+            <View>
+              <TextInput
+                value={this.state.name}
+                style={this.getStyles().textInput}
+                onChangeText={text => this.setState({ name: text })}
+              />
+              <View style={this.getStyles().buttonView}>
+                <Icon
+                  size={80}
+                  name='cross'
+                  type='entypo'
+                  color={styles.$primaryColor}
+                  onPress={() => this.setState({ showInput: false, updateValue: '' })}
+                />
+                <Icon
+                  size={75}
+                  name='check'
+                  type='entypo'
+                  color={styles.$primaryColor}
+                  onPress={() => {
+                    this.setState({ showInput: false, updateValue: '' });
+                    updateName(this.state.name);
+                  }}
+                />
+              </View>
+            </View>
           );
       }
     };
 
     if (!showInput) return null;
     return (
-      <View style={[thisStyles.inputContainer, { backgroundColor }]}>
+      <View style={this.getStyles().inputContainer}>
         {getInput()}
       </View>
     );
@@ -182,17 +212,42 @@ class Settings extends Component {
       </LinearGradient>
     );
   }
+
+  getStyles() {
+    const styles = themeStyles[this.props.userStore.selected];
+    const backgroundColor = Color(styles.$tertiaryColor).alpha(0.7);
+
+    return {
+      inputContainer: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      textInput: {
+        height: 40,
+        width: 300,
+        padding: 10,
+        borderWidth: 1,
+        borderRadius: 5,
+        color: '#EDF0F1',
+        fontFamily: 'Exo-Regular',
+        borderColor: styles.$primaryColor,
+        backgroundColor: styles.$tertiaryColor,
+      },
+      buttonView: {
+        paddingTop: 50,
+        marginBottom: -150,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+      }
+    };
+  }
 }
 
 export default Settings;
-
-const thisStyles = {
-  inputContainer: {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    position: 'absolute',
-    backgroundColor: 'red',
-  },
-};

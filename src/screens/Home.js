@@ -67,7 +67,7 @@ class Home extends Component {
        return days.filter(day => day.key === selectedDayKey).map(detail => detail.name);
      } else if (screenIndex === 'allPrograms') {
        return 'All Programs';
-     }
+     } return 'Update';
    }
 
   render() {

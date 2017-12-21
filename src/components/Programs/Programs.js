@@ -98,7 +98,7 @@ class Programs extends Component {
 
   render() {
     const { loading, screenIndex } = this.props.programStore;
-    // IMPLEMENT if loading, dropdown
+    
     if (loading) return null;
 
     let renderType;

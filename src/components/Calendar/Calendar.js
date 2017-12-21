@@ -7,13 +7,13 @@ import { Calendar as Cal } from 'react-native-calendars';
 
 import themeStyles from './styles';
 
-@inject('themeStore', 'logStore') @observer
+@inject('userStore', 'logStore') @observer
 class Calendar extends Component {
   render() {
     const {
       markedDate, updateSelectedDate, toggleCalendar, fetchLogs
     } = this.props.logStore;
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
     // console.log(this.props.logStore.markedDate);
     const markedDateToJS = toJS(markedDate);
     return (

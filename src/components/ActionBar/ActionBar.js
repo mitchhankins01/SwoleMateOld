@@ -7,7 +7,7 @@ import { View, Text } from 'react-native';
 import themeStyles from './styles';
 
 
-@inject('themeStore', 'programStore', 'workoutStore') @observer
+@inject('userStore', 'programStore', 'workoutStore') @observer
 class ActionBar extends Component {
   updateScreenIndex(screenIndex, goBack) {
     const { programStore, navigation } = this.props;
@@ -128,7 +128,7 @@ class ActionBar extends Component {
   render() {
     const { workout } = this.props;
     const { screenIndex } = this.props.programStore;
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
 
     if (workout) return renderType = this.renderWorkoutActionBar(styles);
 

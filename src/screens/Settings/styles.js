@@ -29,7 +29,6 @@ const themeStyles = themes.createStyleSheet({
     fontFamily: 'Exo-Medium',
   },
   avatar: {
-    marginTop: 20,
     alignSelf: 'center',
   },
 });

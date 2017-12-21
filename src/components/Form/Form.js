@@ -11,7 +11,7 @@ import themeStyles from './styles';
 
 const TForm = t.form.Form;
 
-@inject('themeStore', 'programStore') @observer
+@inject('userStore', 'programStore') @observer
 class Form extends Component {
   state = {
     showExerciseList: false,
@@ -108,8 +108,8 @@ class Form extends Component {
 
   render() {
     const { showExerciseList, selectedExerciseName } = this.state;
-    const { formType, themeStore, programStore } = this.props;
-    const styles = themeStyles[themeStore.selected];
+    const { formType, userStore, programStore } = this.props;
+    const styles = themeStyles[userStore.selected];
 
     const exercisesButton = () => {
       return (

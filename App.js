@@ -3,7 +3,7 @@ import { Provider } from 'mobx-react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 import Navigator from './src/config/routes';
-import { themeStore, programStore, workoutStore, logStore } from './src/stores';
+import { userStore, programStore, workoutStore, logStore } from './src/stores';
 
 export default class App extends React.Component {
   constructor() {
@@ -16,7 +16,7 @@ export default class App extends React.Component {
     return (
       <Provider
         logStore={logStore}
-        themeStore={themeStore}
+        userStore={userStore}
         workoutStore={workoutStore}
         programStore={programStore}
       >

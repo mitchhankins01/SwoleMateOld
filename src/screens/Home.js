@@ -12,7 +12,7 @@ import themeStyles from '../components/styles';
 import { Programs } from '../components/Programs';
 import { ActionBar } from '../components/ActionBar';
 
-@inject('themeStore', 'programStore') @observer
+@inject('userStore', 'programStore') @observer
 class Home extends Component {
 
    static navigationOptions = {
@@ -29,9 +29,9 @@ class Home extends Component {
    state = { scrollIndex: 0 }
 
    componentWillMount() {
-     const { programStore, themeStore } = this.props;
+     const { programStore, userStore } = this.props;
 
-     themeStore.fetchTheme();
+     userStore.fetchTheme();
      programStore.fetchAllPrograms();
      programStore.fetchAllExercises();
      programStore.fetchPrimaryProgram();
@@ -71,7 +71,7 @@ class Home extends Component {
    }
 
   render() {
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
     if (this.props.programStore.loading) {

@@ -5,10 +5,10 @@ import { TabBarBottom } from 'react-navigation';
 
 import themeStyles from './styles';
 
-@inject('themeStore') @observer
+@inject('userStore') @observer
 class TabBar extends Component {
   render() {
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
 
     return (
       <TabBarBottom

@@ -73,6 +73,30 @@ const themeStyles = themes.createStyleSheet({
     alignSelf: 'center',
     fontFamily: 'Exo-Medium',
   },
+  // Settings
+  settingsHeader: {
+    fontSize: 18,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: 'Exo-Medium',
+    marginHorizontal: 10,
+    marginBottom: 10,
+  },
+  settingsOption: {
+    fontSize: 18,
+    color: '#EDF0F1',
+    marginLeft: 10,
+    fontFamily: 'Exo-Medium',
+  },
+  optionButton: {
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    flexDirection: 'row',
+    borderColor: '$primaryColor',
+    justifyContent: 'flex-start',
+  },
 });
 
 export default themeStyles;

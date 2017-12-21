@@ -11,7 +11,7 @@ import { Picker } from '../../components/Picker';
 import { ActionBar } from '../../components/ActionBar';
 import { CountDown } from '../../components/CountDown';
 
-@inject('themeStore', 'programStore', 'workoutStore') @observer
+@inject('userStore', 'programStore', 'workoutStore') @observer
 class Workout extends Component {
   state = {
     // Input
@@ -214,7 +214,7 @@ class Workout extends Component {
   }
 
   render() {
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
     const {
       workoutLog,

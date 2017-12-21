@@ -6,7 +6,7 @@ import { WheelPicker } from 'react-native-wheel-picker-android';
 
 import themeStyles from './styles';
 
-@inject('workoutStore', 'themeStore') @observer
+@inject('workoutStore', 'userStore') @observer
 class Picker extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +26,7 @@ class Picker extends Component {
 
   render() {
     const { type } = this.props;
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
 
     switch (Platform.OS) {
       case 'android':

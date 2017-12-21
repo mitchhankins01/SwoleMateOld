@@ -12,7 +12,7 @@ import Header from '../../components/Header';
 import { Card } from '../../components/Card';
 import { Calendar } from '../../components/Calendar';
 
-@inject('themeStore', 'logStore') @observer
+@inject('userStore', 'logStore') @observer
 class Logs extends Component {
   static navigationOptions = {
     tabBarLabel: 'Logs',
@@ -55,7 +55,7 @@ class Logs extends Component {
   }
 
   render() {
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
     const { showCalendar, toggleCalendar } = this.props.logStore;
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 

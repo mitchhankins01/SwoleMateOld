@@ -8,10 +8,10 @@ import themeStyles from './styles';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
-@inject('workoutStore', 'themeStore') @observer
+@inject('workoutStore', 'userStore') @observer
 class CountDown extends Component {
   render() {
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
     const { workoutStore: { countDown, toggleShowCountDown } } = this.props;
 
     return (

@@ -1,6 +1,6 @@
 import { logStore } from './logStore';
-import { themeStore } from './themeStore';
+import { userStore } from './userStore';
 import { programStore } from './programStore';
 import { workoutStore } from './workoutStore';
 
-export { themeStore, programStore, workoutStore, logStore };
+export { userStore, programStore, workoutStore, logStore };

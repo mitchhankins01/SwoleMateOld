@@ -6,7 +6,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 
 import { Card } from '../Card';
 
-@inject('themeStore', 'programStore') @observer
+@inject('userStore', 'programStore') @observer
 class Programs extends Component {
   state = {
     // Primary or Selected Program

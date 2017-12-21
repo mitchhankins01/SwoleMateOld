@@ -173,7 +173,7 @@ class Register extends Component {
 
   render() {
     const { sex, email, password, imperial, theme } = this.state;
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
     const sexBG = ['Male', 'Female', 'Other'];
     const imperialBG = ['Imperial (lbs)', 'Metric (kgs)'];
     const gradients = [

@@ -11,10 +11,9 @@ import { Icon } from 'react-native-elements';
 import { Form } from '../Form';
 import themeStyles from './styles';
 
-@inject('themeStore', 'programStore', 'logStore') @observer
+@inject('userStore', 'programStore', 'logStore') @observer
 class Card extends Component {
   state = {
-    onAnimationEnd: false,
     warningVisible: false,
     selectedDeleteKey: '',
   }
@@ -123,6 +122,12 @@ class Card extends Component {
     );
   }
 
+  showAnimation() {
+    if (this.refs.programCard) {
+      this.refs.programCard.mySlideInUp();
+    }
+  }
+
   renderLogCard(styles) {
     const {
       isWorkout, isBodyStats, isNutrition, updateScreenIndex, workoutLogs, workoutLogsExercises
@@ -211,10 +216,35 @@ class Card extends Component {
     );
   }
 
-  showAnimation() {
-    if (this.refs.programCard) {
-      this.refs.programCard.mySlideInUp();
-    }
+  renderSettingsCard(styles) {
+    const { children, onPressOption, gotoMain, content: { options, title } } = this.props;
+
+    return (
+      <View style={styles.logCardContainer}>
+        {children}
+        <View style={styles.cardDivider} />
+        <ScrollView>
+          {options.map(option => {
+            return (
+              <TouchableOpacity onPress={() => onPressOption(option.onPress)} key={option.title}>
+                <View style={styles.optionButton}>
+                  <Icon type='entypo' color='#EDF0F1' name={option.icon} />
+                  <Text style={styles.settingsOption}>{option.title}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+          {title !== 'Main' ?
+            <TouchableOpacity onPress={() => gotoMain()}>
+              <View style={styles.optionButton}>
+                <Icon type='entypo' color='#EDF0F1' name='back' />
+                <Text style={styles.settingsOption}>Back</Text>
+              </View>
+            </TouchableOpacity>
+          : null}
+        </ScrollView>
+      </View>
+    );
   }
 
   render() {
@@ -233,12 +263,15 @@ class Card extends Component {
       subtitle,
       // Log
       logCard,
+      // Settings
+      settingsCard,
     } = this.props;
-    const styles = themeStyles[this.props.themeStore.selected];
+    const styles = themeStyles[this.props.userStore.selected];
 
-    if (empty) return this.renderEmptyCard(styles, title);
-    if (addCard) return this.renderAddCard(styles, typeAddCard);
     if (logCard) return this.renderLogCard(styles);
+    if (empty) return this.renderEmptyCard(styles, title);
+    if (settingsCard) return this.renderSettingsCard(styles);
+    if (addCard) return this.renderAddCard(styles, typeAddCard);
 
     return (
       <Animatable.View

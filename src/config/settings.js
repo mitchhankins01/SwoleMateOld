@@ -1,5 +1,6 @@
 //import { changeTheme } from '../actions/theme';
 //import { changeSettingsScreen } from '../actions/settings';
+import { observer } from 'mobx-react';
 
 export const main = [
   {
@@ -47,9 +48,14 @@ export const profileOptions = [
   },
 ];
 
+const fetchImperial = observer(({ userStore }) => {
+  if (userStore.imperial) return 'Switch to Metric System';
+  return 'Switch to Metric System';
+});
+
 export const generalOptions = [
   {
-    title: 'Measurements (lbs/kgs)',
+    title: 'fuck',//fetchImperial(),
     icon: 'language'
   },
   {

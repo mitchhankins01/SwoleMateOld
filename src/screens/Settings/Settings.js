@@ -1,167 +1,198 @@
+import Color from 'color';
+import { View } from 'react-native';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { inject, observer } from 'mobx-react';
+import { Avatar } from 'react-native-elements';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { List, ListItem, Avatar } from 'react-native-elements';
 
 import themeStyles from './styles';
+import { Card } from '../../components/Card';
 import Header from '../../components/Header';
-import { standard, standard2, standard3 } from '../../components/theme';
-import {
-  main,
-  themes,
-  generalOptions,
-  profileOptions,
-  handleProfileSelection,
-  handleGeneralSelection,
-} from '../../config/settings';
 
-@inject('themeStore') @observer
+@inject('userStore') @observer
 class Settings extends Component {
-
   static navigationOptions = {
     tabBarLabel: 'Settings',
     tabBarIcon: ({ tintColor, focused }) => (
       <Ionicons
-        name={focused ? 'ios-settings' : 'ios-settings-outline'}
         size={26}
         style={{ color: tintColor }}
+        name={focused ? 'ios-settings' : 'ios-settings-outline'}
       />
     ),
   };
 
-  constructor() {
-    super();
-    this.state = { screenIndex: -1 };
-  }
+  state = { screenIndex: 'Main', showInput: false, updateValue: '' };
 
-  showDropdown(type, title, message) {
-    this.dropdown.alertWithType(type, title, message);
-  }
+  // showDropdown(type, title, message) {
+  //   this.dropdown.alertWithType(type, title, message);
+  // }
+  //
+  // handleThemeSelection(index, theme) {
+  //   if (index === themes.length - 1) {
+  //     return this.setState({ screenIndex: -1 });
+  //   }
+  //   this.props.userStore.updateTheme(theme);
+  // }
 
-  handleThemeSelection(index, theme) {
-    if (index === themes.length - 1) {
-      return this.setState({ screenIndex: -1 });
-    }
-    this.props.themeStore.updateTheme(theme);
-  }
-
-  renderContent(styles) {
-    const themeOptions = [
-      standard.$primaryColor,
-      standard2.$primaryColor,
-      standard3.$primaryColor,
-      styles.$primaryColor
-    ];
+  renderContent() {
+    const { imperial, toggleImperial, updateTheme } = this.props.userStore;
 
     switch (this.state.screenIndex) {
-      case 0:
-        return (
-          profileOptions.map((item, i) => (
-            <ListItem
-              key={i}
-              title={item.title}
-              chevronColor='#EDF0F1'
-              underlayColor={'transparent'}
-              titleStyle={styles.listItemTitle}
-              hideChevron={i === profileOptions.length - 1}
-              leftIcon={{ name: item.icon, color: '#EDF0F1' }}
-              containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              onPress={() => handleProfileSelection(i, () => this.setState({ screenIndex: -1 }))}
-            />
-          ))
-        );
-      case 1:
-        return (
-          generalOptions.map((item, i) => (
-            <ListItem
-              key={i}
-              title={item.title}
-              chevronColor='#EDF0F1'
-              underlayColor={'transparent'}
-              titleStyle={styles.listItemTitle}
-              hideChevron={i === generalOptions.length - 1}
-              leftIcon={{ name: item.icon, color: '#EDF0F1' }}
-              containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              onPress={() => handleGeneralSelection(i, () => this.setState({ screenIndex: -1 }))}
-            />
-          ))
-        );
-      case 2:
-        return (
-          themes.map((theme, i) => (
-            <ListItem
-              key={i}
-              title={theme.title}
-              underlayColor={'transparent'}
-              chevronColor={themeOptions[i]}
-              hideChevron={i === themes.length - 1}
-              onPress={() => this.handleThemeSelection(i, theme.name)}
-              leftIcon={{ name: theme.icon, color: themeOptions[i] }}
-              containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              titleStyle={[styles.listItemTitle, { color: themeOptions[i] }]}
-            />
-          ))
-        );
-      default:
-        return (
-          main.map((item, i) => (
-            <ListItem
-              key={i}
-              title={item.title}
-              chevronColor='#EDF0F1'
-              underlayColor={'transparent'}
-              titleStyle={styles.listItemTitle}
-              hideChevron={i === main.length - 1}
-              leftIcon={{ name: item.icon, color: '#EDF0F1' }}
-              containerStyle={{ borderBottomColor: styles.$primaryColor }}
-              onPress={
-                i === main.length - 1
-                ? () => firebase.auth().signOut()
-                : () => this.setState({ screenIndex: i })
-              }
-            />
-          ))
-        );
+      default: return { title: 'Error', options: [{ title: 'Error' }] };
+      case 'Main':
+        return {
+          title: 'Main',
+          options: [
+            {
+              title: 'Profile',
+              icon: 'user',
+              onPress: () => this.setState({ screenIndex: 'Profile' })
+            },
+            {
+              title: 'General',
+              icon: 'list',
+              onPress: () => this.setState({ screenIndex: 'General' })
+            },
+            {
+              title: 'Theme',
+              icon: 'palette',
+              onPress: () => this.setState({ screenIndex: 'Theme' })
+            },
+            {
+              title: 'Logout',
+              icon: 'power-plug',
+              onPress: () => firebase.auth().signOut()
+            },
+          ]
+        };
+      case 'Profile':
+        return {
+          title: 'Profile',
+          options: [
+            {
+              title: 'Name',
+              icon: 'message',
+              onPress: () => this.setState({ showInput: true, updateValue: 'Name' })
+            },
+            {
+              title: 'Gender',
+              icon: 'man'
+            },
+            {
+              title: 'Email',
+              icon: 'email'
+            },
+            {
+              title: 'Password',
+              icon: 'lock'
+            },
+            {
+              title: 'Delete Account',
+              icon: 'trash'
+            },
+          ]
+        };
+      case 'General':
+        return {
+          title: 'General',
+          options: [
+            {
+              title: imperial ? 'Use Metric System (Kg)' : 'Use Imperial System (Lb)',
+              icon: 'suitcase',
+              onPress: () => toggleImperial()
+            }
+          ]
+        };
+      case 'Theme':
+        return {
+          title: 'Theme',
+          options: [
+            {
+              title: 'Male',
+              icon: 'palette',
+              name: 'standard',
+              onPress: () => updateTheme('standard')
+            },
+            {
+              title: 'Female',
+              icon: 'palette',
+              name: 'standard2',
+              onPress: () => updateTheme('standard2')
+            },
+            {
+              title: 'Other',
+              icon: 'palette',
+              name: 'standard3',
+              onPress: () => updateTheme('standard3')
+            },
+          ]
+        };
     }
+  }
+
+  renderInput(styles) {
+    const { showInput, updateValue } = this.state;
+    const backgroundColor = Color(styles.$tertiaryColor).alpha(0.7);
+
+    const getInput = () => {
+      switch (updateValue) {
+        default: return null;
+        case 'Name':
+          return (
+            null
+          );
+      }
+    };
+
+    if (!showInput) return null;
+    return (
+      <View style={[thisStyles.inputContainer, { backgroundColor }]}>
+        {getInput()}
+      </View>
+    );
   }
 
   render() {
-    const styles = themeStyles[this.props.themeStore.selected];
-    const gradients = [
-      styles.$primaryColor,
-      styles.$secondaryColor,
-      styles.$tertiaryColor
-    ];
+    const styles = themeStyles[this.props.userStore.selected];
+    const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
     return (
-      <LinearGradient
-        colors={gradients}
-        style={styles.container}
-      >
-      <Header title={'Settings'} styles={styles} />
-        <Avatar
-          xlarge
-          rounded
-          source={{ uri: 'https://avatars0.githubusercontent.com/u/25047564?s=400&u=448846745e78cadb366ef01444365e0c6f12a73f&v=4' }}
-          onPress={() => console.log('Works!')}
-          activeOpacity={0.7}
-          containerStyle={styles.avatar}
-        />
-        <List containerStyle={styles.list}>
-          {this.renderContent(styles)}
-        </List>
-        <DropdownAlert
-          ref={ref => (this.dropdown = ref)}
-          updateStatusBar={false}
-          closeInterval={700}
-          translucent
-        />
+      <LinearGradient colors={gradients} style={styles.container}>
+        <Header title={'Settings'} styles={styles} />
+        <Card
+          settingsCard
+          content={this.renderContent()}
+          onPressOption={onPress => onPress()}
+          gotoMain={() => this.setState({ screenIndex: 'Main' })}
+        >
+          <Avatar
+            xlarge
+            rounded
+            activeOpacity={0.7}
+            containerStyle={styles.avatar}
+            onPress={() => console.log('Works!')}
+            source={{ uri: 'https://avatars0.githubusercontent.com/u/25047564?s=400&u=448846745e78cadb366ef01444365e0c6f12a73f&v=4' }}
+          />
+        </Card>
+        {this.renderInput(styles)}
       </LinearGradient>
     );
   }
 }
 
 export default Settings;
+
+const thisStyles = {
+  inputContainer: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
+    backgroundColor: 'red',
+  },
+};

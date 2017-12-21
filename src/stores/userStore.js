@@ -6,6 +6,8 @@ class UserStore {
   @observable name = '';
   @observable error = '';
   @observable imperial = true;
+  @observable showError = false;
+  @observable showSuccess = false;
   @observable selected = 'standard';
 
   // Theme
@@ -37,11 +39,48 @@ class UserStore {
   }
 
   @action updateName = name => {
-    if (name.length === 0) return;
+    if (name.length === 0) {
+      this.showError = true;
+      this.error = 'Invalid Name';
+      return;
+    }
+
     firebase.firestore()
     .collection('users')
     .doc(firebase.auth().currentUser.uid)
-    .update({ name });
+    .update({ name })
+    .then(() => this.switchSuccess())
+    .catch(error => {
+      this.error = error;
+      this.showError = true;
+    });
+  }
+
+  @action updateEmail = email => {
+    if (email.length === 0) {
+      this.showError = true;
+      this.error = 'Invalid Email';
+      return;
+    }
+
+    firebase.auth().currentUser.updateEmail(email)
+    .then(() => this.switchSuccess())
+    .catch(error => {
+      this.error = error;
+      this.showError = true;
+    });
+  }
+
+  @action toggleError = bool => {
+    this.error = '';
+    this.showError = bool;
+  }
+
+  @action switchSuccess = () => {
+    this.showSuccess = true;
+    setTimeout(() => {
+      this.showSuccess = false;
+    }, 2000);
   }
 }
 

@@ -1,4 +1,5 @@
 import Color from 'color';
+import { toJS } from 'mobx';
 import { View, TextInput } from 'react-native';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
@@ -30,6 +31,7 @@ class Settings extends Component {
     showInput: false,
     screenIndex: 'Main',
     name: this.props.userStore.name,
+    email: firebase.auth().currentUser.email,
   };
 
   // showDropdown(type, title, message) {
@@ -81,15 +83,12 @@ class Settings extends Component {
             {
               title: 'Name',
               icon: 'message',
-              onPress: () => this.setState({ showInput: true, updateValue: 'Name' })
-            },
-            {
-              title: 'Gender',
-              icon: 'man'
+              onPress: () => this.setState({ showInput: true, updateValue: 'name' })
             },
             {
               title: 'Email',
-              icon: 'email'
+              icon: 'email',
+              onPress: () => this.setState({ showInput: true, updateValue: 'email' })
             },
             {
               title: 'Password',
@@ -140,19 +139,20 @@ class Settings extends Component {
   }
 
   renderInput(styles) {
-    const { updateName } = this.props.userStore;
+    const { updateName, updateEmail } = this.props.userStore;
     const { showInput, updateValue } = this.state;
 
     const getInput = () => {
       switch (updateValue) {
         default: return null;
-        case 'Name':
+        case 'name':
+        case 'email':
           return (
             <View>
               <TextInput
-                value={this.state.name}
                 style={this.getStyles().textInput}
-                onChangeText={text => this.setState({ name: text })}
+                onChangeText={text => this.setState({ [updateValue]: text })}
+                value={updateValue === 'name' ? this.state.name : this.state.email}
               />
               <View style={this.getStyles().buttonView}>
                 <Icon
@@ -169,7 +169,8 @@ class Settings extends Component {
                   color={styles.$primaryColor}
                   onPress={() => {
                     this.setState({ showInput: false, updateValue: '' });
-                    updateName(this.state.name);
+                    if (updateValue === 'name') return updateName(this.state.name);
+                    if (updateValue === 'email') return updateEmail(this.state.email);
                   }}
                 />
               </View>
@@ -184,6 +185,22 @@ class Settings extends Component {
         {getInput()}
       </View>
     );
+  }
+
+  renderError() {
+    const { error, showError } = this.props.userStore;
+
+    if (showError) {
+     this.dropdown.alertWithType('error', 'Whoops', error.message || 'Something went wrong!');
+    }
+  }
+
+  renderSuccess() {
+    const { showSuccess } = this.props.userStore;
+
+    if (showSuccess) {
+       this.dropdown.alertWithType('success', 'Bam!', 'Changes Saved');
+    }
   }
 
   render() {
@@ -209,6 +226,18 @@ class Settings extends Component {
           />
         </Card>
         {this.renderInput(styles)}
+        {this.renderError()}
+        {this.renderSuccess()}
+        <DropdownAlert
+          translucent
+          closeInterval={2000}
+          updateStatusBar={false}
+          ref={ref => (this.dropdown = ref)}
+          successColor={styles.$tertiaryColor}
+          titleStyle={this.getStyles().dropdownTitle}
+          messageStyle={this.getStyles().dropdownMessage}
+          onClose={() => this.props.userStore.toggleError(false)}
+        />
       </LinearGradient>
     );
   }
@@ -245,7 +274,22 @@ class Settings extends Component {
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-around',
-      }
+      },
+      dropdownTitle: {
+        fontSize: 20,
+        marginBottom: 5,
+        marginLeft: -36,
+        color: '#EDF0F1',
+        alignSelf: 'center',
+        fontFamily: 'Exo-Bold',
+      },
+      dropdownMessage: {
+        fontSize: 16,
+        marginLeft: -36,
+        color: '#EDF0F1',
+        alignSelf: 'center',
+        fontFamily: 'Exo-Medium',
+      },
     };
   }
 }

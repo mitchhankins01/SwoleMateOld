@@ -108,7 +108,7 @@ class Form extends Component {
 
   render() {
     const { showExerciseList, selectedExerciseName } = this.state;
-    const { formType, userStore, programStore } = this.props;
+    const { formType, userStore, programStore, selectedUpdate } = this.props;
     const styles = themeStyles[userStore.selected];
 
     const exercisesButton = () => {
@@ -136,9 +136,27 @@ class Form extends Component {
           return <TForm ref='addProgramDayForm' type={newProgramDay} options={dayOptions} />;
         case 'addProgramExercise':
           return <TForm ref='addProgramExerciseForm' type={newProgramExercise} />;
+        case 'updateProgram':
+          return (
+            <TForm
+              type={newProgram}
+              options={programOptions}
+              ref='updateProgramDayForm'
+              value={this.props.programStore.updateFormItem}
+            />
+          );
+        case 'updateProgramDay':
+          return (
+            <TForm
+              type={newProgramDay}
+              options={dayOptions}
+              ref='updateProgramDayForm'
+              value={this.props.programStore.updateFormItem}
+            />
+          );
       }
     };
-
+console.log(this.props.programStore.updateFormItem);
     return (
       <View>
         {formType === 'addProgramExercise' ? exercisesButton() : null}
@@ -150,7 +168,10 @@ class Form extends Component {
             name={'back'}
             style={{ color: '#EDF0F1' }}
             underlayColor={'transparent'}
-            onPress={() => programStore.updateScreenIndex('selectedProgram')}
+            onPress={() => {
+              programStore.toggleShowUpdateForm(false);
+              programStore.updateScreenIndex('selectedProgram');
+            }}
           />
           <Entypo
             size={25}

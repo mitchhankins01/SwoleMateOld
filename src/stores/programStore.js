@@ -3,9 +3,11 @@ import firebase from 'react-native-firebase';
 
 class ProgramStore {
   // Various
-  @observable loading: false;
-  @observable selectedDayKey: '';
-  @observable selectedProgramKey: '';
+  @observable loading = false;
+  @observable selectedDayKey = '';
+  @observable showUpdateForm = false;
+  @observable updateFormItem = {};
+  @observable selectedProgramKey = '';
   @observable screenIndex = 'primaryProgram';
   // Get program info
   @observable info = [];
@@ -27,6 +29,13 @@ class ProgramStore {
     this.selectedProgramKey = key;
   }
 
+  @action toggleShowUpdateForm = bool => {
+    this.showUpdateForm = bool;
+  }
+
+  @action setUpdateFormItem = item => {
+    this.updateFormItem = item;
+  }
 
   @action fetchPrimaryProgram = () => {
     firebase.firestore().collection('users')

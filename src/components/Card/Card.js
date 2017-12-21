@@ -15,6 +15,8 @@ class Card extends Component {
   state = {
     warningVisible: false,
     selectedDeleteKey: '',
+    updateVisible: false,
+    selectedUpdate: {},
   }
 
   onPressDelete() {
@@ -102,6 +104,43 @@ class Card extends Component {
           return <Form info={info} formType='addProgramDay' />;
         case 'addProgramExercise':
           return <Form info={info} formType='addProgramExercise' allExercises={allExercises} />;
+      }
+    };
+
+    return (
+      <ScrollView>
+        <View style={styles.cardContainer} >
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <Entypo style={styles.cardTitle} name={'add-to-list'} />
+            <Text style={styles.cardTitle}>
+              {getTitle()}
+            </Text>
+          </View>
+          <View style={styles.cardDivider} />
+          {getForm()}
+        </View>
+      </ScrollView>
+    );
+  }
+
+  renderUpdateCard(styles) {
+    const getTitle = () => {
+      switch (this.props.programStore.screenIndex) {
+        default: return '';
+        case 'allPrograms': return 'Edit Program';
+        case 'primaryProgram':
+        case 'selectedProgram': return 'Edit Workout';
+      }
+    };
+
+    const getForm = () => {
+      switch (this.props.programStore.screenIndex) {
+        default: break;
+        case 'allPrograms':
+          return <Form formType='updateProgram' />;
+        case 'primaryProgram':
+        case 'selectedProgram':
+          return <Form formType='updateProgramDay' />;
       }
     };
 
@@ -278,6 +317,8 @@ class Card extends Component {
     if (settingsCard) return this.renderSettingsCard(styles);
     if (addCard) return this.renderAddCard(styles, typeAddCard);
 
+    if (this.props.programStore.showUpdateForm) return this.renderUpdateCard(styles);
+
     return (
       <Animatable.View
         duration={500}
@@ -306,7 +347,10 @@ class Card extends Component {
             name={'edit'}
             style={styles.cardIcon}
             underlayColor={'transparent'}
-            onPress={() => console.log(item)}
+            onPress={() => {
+              this.props.programStore.setUpdateFormItem(item);
+              this.props.programStore.toggleShowUpdateForm(true);
+            }}
           />
           <Entypo
             ref='deleteButton'
@@ -315,8 +359,8 @@ class Card extends Component {
             style={styles.cardIcon}
             underlayColor={'transparent'}
             onPress={() => this.setState({
+              selectedDeleteKey: item.key,
               warningVisible: !this.state.warningVisible,
-              selectedDeleteKey: item.key
             })}
           />
         </View>

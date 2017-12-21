@@ -4,9 +4,10 @@ import firebase from 'react-native-firebase';
 class ProgramStore {
   // Various
   @observable loading = false;
+  @observable scrollIndex = 0;
   @observable selectedDayKey = '';
-  @observable showUpdateForm = false;
   @observable updateFormItem = {};
+  @observable showUpdateForm = false;
   @observable selectedProgramKey = '';
   @observable screenIndex = 'primaryProgram';
   // Get program info
@@ -18,6 +19,7 @@ class ProgramStore {
   @observable allExercises = [];
 
   @action updateScreenIndex = index => {
+    this.scrollIndex = 0;
     this.screenIndex = index;
   }
 

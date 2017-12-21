@@ -89,7 +89,7 @@ class Home extends Component {
           style={{ marginTop: 10 }}
           onScroll={event => {
             if (!this.props.programStore.showUpdateForm) {
-              this.setState({ scrollIndex: event.nativeEvent.contentOffset.y });
+              this.props.programStore.scrollIndex = event.nativeEvent.contentOffset.y;
             }
           }}
         >

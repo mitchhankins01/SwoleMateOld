@@ -1,9 +1,9 @@
 import Color from 'color';
-import { toJS } from 'mobx';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { inject, observer } from 'mobx-react';
 import { Avatar, Icon } from 'react-native-elements';
+import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -29,27 +29,17 @@ class Settings extends Component {
   state = {
     updateValue: '',
     showInput: false,
-    screenIndex: 'Main',
     name: this.props.userStore.name,
     email: firebase.auth().currentUser.email,
     password: firebase.auth().currentUser.email,
   };
 
-  // showDropdown(type, title, message) {
-  //   this.dropdown.alertWithType(type, title, message);
-  // }
-  //
-  // handleThemeSelection(index, theme) {
-  //   if (index === themes.length - 1) {
-  //     return this.setState({ screenIndex: -1 });
-  //   }
-  //   this.props.userStore.updateTheme(theme);
-  // }
-
   renderContent() {
-    const { imperial, toggleImperial, updateTheme } = this.props.userStore;
+    const {
+      imperial, toggleImperial, updateTheme, screenIndex, updateScreenIndex
+    } = this.props.userStore;
 
-    switch (this.state.screenIndex) {
+    switch (screenIndex) {
       default: return { title: 'Error', options: [{ title: 'Error' }] };
       case 'Main':
         return {
@@ -58,17 +48,17 @@ class Settings extends Component {
             {
               title: 'Profile',
               icon: 'user',
-              onPress: () => this.setState({ screenIndex: 'Profile' })
+              onPress: () => updateScreenIndex('Profile')
             },
             {
               title: 'General',
               icon: 'list',
-              onPress: () => this.setState({ screenIndex: 'General' })
+              onPress: () => updateScreenIndex('General')
             },
             {
               title: 'Theme',
               icon: 'palette',
-              onPress: () => this.setState({ screenIndex: 'Theme' })
+              onPress: () => updateScreenIndex('Theme')
             },
             {
               title: 'Logout',
@@ -260,21 +250,23 @@ class Settings extends Component {
     return (
       <LinearGradient colors={gradients} style={styles.container}>
         <Header title={'Settings'} styles={styles} />
-        <Card
-          settingsCard
-          content={this.renderContent()}
-          onPressOption={onPress => onPress()}
-          gotoMain={() => this.setState({ screenIndex: 'Main' })}
-        >
-          <Avatar
-            xlarge
-            rounded
-            activeOpacity={0.7}
-            containerStyle={styles.avatar}
-            onPress={() => console.log('Works!')}
-            source={{ uri: 'https://avatars0.githubusercontent.com/u/25047564?s=400&u=448846745e78cadb366ef01444365e0c6f12a73f&v=4' }}
-          />
-        </Card>
+        <Animatable.View style={{ flex: 1 }} animation='zoomIn'>
+          <Card
+            settingsCard
+            content={this.renderContent()}
+            onPressOption={onPress => onPress()}
+            gotoMain={() => this.props.userStore.updateScreenIndex('Main')}
+          >
+            <Avatar
+              xlarge
+              rounded
+              activeOpacity={0.7}
+              containerStyle={styles.avatar}
+              onPress={() => console.log('Works!')}
+              source={{ uri: 'https://avatars0.githubusercontent.com/u/25047564?s=400&u=448846745e78cadb366ef01444365e0c6f12a73f&v=4' }}
+            />
+          </Card>
+        </Animatable.View>
         {this.renderInput(styles)}
         {this.renderError()}
         {this.renderSuccess()}

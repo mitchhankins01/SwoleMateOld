@@ -9,6 +9,12 @@ class UserStore {
   @observable showError = false;
   @observable showSuccess = false;
   @observable selected = 'standard';
+  @observable screenIndex = 'Main';
+
+  // For Settings
+  @action updateScreenIndex = index => {
+    this.screenIndex = index;
+  }
 
   // Theme
   @action fetchTheme = () => {
@@ -111,6 +117,7 @@ class UserStore {
   }
 
   @action switchSuccess = () => {
+    this.screenIndex = 'Main';
     this.showSuccess = true;
     setTimeout(() => {
       this.showSuccess = false;

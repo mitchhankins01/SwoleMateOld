@@ -217,6 +217,7 @@ class Card extends Component {
   }
 
   renderSettingsCard(styles) {
+    let delay = 0;
     const { children, onPressOption, gotoMain, content: { options, title } } = this.props;
 
     return (
@@ -224,23 +225,28 @@ class Card extends Component {
         {children}
         <View style={styles.cardDivider} />
         <ScrollView>
-          {options.map(option => {
+          {options.map((option, i) => {
+            delay = i === 0 ? 0 : delay += 250;
             return (
-              <TouchableOpacity onPress={() => onPressOption(option.onPress)} key={option.title}>
-                <View style={styles.optionButton}>
-                  <Icon type='entypo' color='#EDF0F1' name={option.icon} />
-                  <Text style={styles.settingsOption}>{option.title}</Text>
-                </View>
-              </TouchableOpacity>
+              <Animatable.View delay={delay} animation='mySlideInUp' duration={750} key={option.title}>
+                <TouchableOpacity onPress={() => onPressOption(option.onPress)}>
+                  <View style={styles.optionButton}>
+                    <Icon type='entypo' color='#EDF0F1' name={option.icon} />
+                    <Text style={styles.settingsOption}>{option.title}</Text>
+                  </View>
+                </TouchableOpacity>
+              </Animatable.View>
             );
           })}
           {title !== 'Main' ?
+          <Animatable.View animation='mySlideInUp' delay={delay + 250} duration={750}>
             <TouchableOpacity onPress={() => gotoMain()}>
               <View style={styles.optionButton}>
                 <Icon type='entypo' color='#EDF0F1' name='back' />
                 <Text style={styles.settingsOption}>Back</Text>
               </View>
             </TouchableOpacity>
+          </Animatable.View>
           : null}
         </ScrollView>
       </View>

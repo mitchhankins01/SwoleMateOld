@@ -62,15 +62,12 @@ const themeStyles = themes.createStyleSheet({
   },
   logTitle: {
     fontSize: 20,
-    marginLeft: -5,
     color: '#EDF0F1',
-    alignSelf: 'center',
     fontFamily: 'Exo-Bold',
   },
   logDetail: {
     fontSize: 20,
     color: '#EDF0F1',
-    alignSelf: 'center',
     fontFamily: 'Exo-Medium',
   },
   // Settings

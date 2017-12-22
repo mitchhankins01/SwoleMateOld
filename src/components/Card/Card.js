@@ -183,23 +183,22 @@ class Card extends Component {
 
       return (
         <View style={styles.logCardContainer}>
-          <Text style={styles.logTitle}>
+          <Text style={[styles.logTitle, { alignSelf: 'center' }]}>
             <MaterialIcons name='calendar' color='#EDF0F1' size={20} />
             {`  ${this.props.logStore.selectedDate}`}
           </Text>
           <View style={styles.cardDivider} />
 
-          <Text style={styles.logTitle}>
+          <Text style={[styles.logTitle, { alignSelf: 'center', marginTop: -10 }]}>
             <MaterialIcons name='clock' color='#EDF0F1' size={20} />
             {'  Workout Duration'}
           </Text>
-          <Text style={styles.logDetail}>{timePassed}</Text>
-          <View style={styles.cardDivider} />
+          <Text style={[styles.logDetail, { alignSelf: 'center' }]}>{timePassed}</Text>
 
           <ScrollView>
             {workoutLogsExercisesToJS.map(each => {
               return (
-                <View key={each.exerciseKey} style={{ justifyContent: 'flex-start', margin: 5 }}>
+                <View key={each.exerciseKey} style={{ alignSelf: 'flex-start', margin: 5 }}>
                   <Text style={styles.logTitle}>
                     <MaterialIcons name='dumbbell' color='#EDF0F1' size={20} />
                     {`  ${match(each.exerciseKey).name}`}
@@ -305,6 +304,7 @@ class Card extends Component {
       type,
       onPress,
       subtitle,
+      activeOpacity,
       // Log
       logCard,
       // Settings
@@ -328,7 +328,7 @@ class Card extends Component {
         style={styles.cardContainer}
         onAnimationEnd={() => this.showAnimation()}
       >
-        <TouchableOpacity key={item.name} onPress={onPress} >
+        <TouchableOpacity key={item.name} onPress={onPress} activeOpacity={activeOpacity}>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Icon name={icon} type={type} color='#EDF0F1' />
             <Text style={styles.cardTitle}>

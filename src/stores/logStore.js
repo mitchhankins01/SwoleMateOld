@@ -10,9 +10,9 @@ class LogStore {
   @observable screenIndex = 'logOverview';
   // Individual Logs
   @observable workoutLogs = [];
-  @observable workoutLogsExercises = [];
   @observable bodyStatsLogs = [];
   @observable nutritionLogs = [];
+  @observable workoutLogsExercises = [];
 
   // Date
   @observable markedDate = {};
@@ -29,7 +29,7 @@ class LogStore {
   }
   // Logs
   @action fetchLogs = () => {
-    const workout = { key: 'workout', color: 'green' };
+    const workout = { key: 'workout', color: '#EDF0F1' };
 
     // Used to store exercises in, so it canbe appended to workoutLogs
 

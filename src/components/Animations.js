@@ -41,10 +41,7 @@ Animatable.initializeRegistryWithDefinitions({
   awesomeIn: {
     from: {
       opacity: 0,
-      scale: 3,
-    },
-    0.5: {
-      opacity: 1,
+      scale: 5,
     },
     to: {
       opacity: 1,

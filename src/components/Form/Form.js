@@ -1,8 +1,8 @@
 import t from 'tcomb-form-native';
-import { View } from 'react-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Button } from 'react-native-elements';
+import { View, ScrollView } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -95,24 +95,26 @@ class Form extends Component {
           dropdownTextStyle={styles.dropdownContainerText}
           onSelect={(index, value) => this.setState({ selectedFilterGroup: value })}
         />
-        {exercises().map(exercise => {
-          return (
-            <Button
-              raised
-              transparent
-              key={exercise.key}
-              title={exercise.name}
-              fontFamily='Exo-Regular'
-              buttonStyle={{ height: 45, marginVertical: 3, backgroundColor: 'transparent' }}
-              containerViewStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start' }}
-              onPress={() => this.setState({
-                showExerciseList: false,
-                selectedExerciseKey: exercise.key,
-                selectedExerciseName: exercise.name,
-              })}
-            />
-          );
-        })}
+        <ScrollView style={{ height: 300 }}>
+          {exercises().map(exercise => {
+            return (
+              <Button
+                raised
+                transparent
+                key={exercise.key}
+                title={exercise.name}
+                fontFamily='Exo-Regular'
+                buttonStyle={{ height: 45, marginVertical: 3, backgroundColor: 'transparent' }}
+                containerViewStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start' }}
+                onPress={() => this.setState({
+                  showExerciseList: false,
+                  selectedExerciseKey: exercise.key,
+                  selectedExerciseName: exercise.name,
+                })}
+              />
+            );
+          })}
+        </ScrollView>
       </View>
     );
   }

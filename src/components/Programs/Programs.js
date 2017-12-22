@@ -42,6 +42,7 @@ class Programs extends Component {
             item={program}
             icon='clipboard'
             key={program.key}
+            activeOpacity={0.2}
             subtitle={`${program.frequency} Days - ${program.level} - ${program.type}`}
             onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
           />
@@ -61,6 +62,7 @@ class Programs extends Component {
             key={day.key}
             type='entypo'
             icon='folder'
+            activeOpacity={0.2}
             info={this.state.info}
             subtitle={`${day.primaryGroup} - ${day.secondaryGroup}`}
             onPress={() => this.updateScreenIndex('programExercises', day.key)}
@@ -84,9 +86,9 @@ class Programs extends Component {
               item={item}
               key={item.key}
               icon='dumbbell'
+              activeOpacity={1}
               info={this.state.info}
               type='material-community'
-              onPress={() => this.updateScreenIndex('programExercises')}
               subtitle={`${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`}
             />
           );

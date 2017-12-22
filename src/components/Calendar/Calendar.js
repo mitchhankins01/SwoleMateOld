@@ -45,6 +45,17 @@ class Calendar extends Component {
             backgroundColor: 'transparent', // 'rgba(237, 240, 241, 0.1)',
             calendarBackground: 'transparent', // 'rgba(237, 240, 241, 0.1)',
             selectedDayBackgroundColor: styles.$tertiaryColor,
+            'stylesheet.day.basic': {
+              dot: {
+                width: 10,
+                height: 10,
+                marginTop: 1,
+                marginLeft: 1,
+                marginRight: 1,
+                borderRadius: 2,
+                opacity: 0
+              },
+            }
           }}
         />
       </View>

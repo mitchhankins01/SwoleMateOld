@@ -35,7 +35,7 @@ class Home extends Component {
      programStore.fetchAllPrograms();
      programStore.fetchAllExercises();
      programStore.fetchPrimaryProgram();
-     programStore.addExercises();
+     // programStore.addExercises();
    }
 
    componentDidMount() {
@@ -88,6 +88,7 @@ class Home extends Component {
 
         <ScrollView
           style={{ marginTop: 10 }}
+          contentContainerStyle={{ flex: 1 }}
           onScroll={event => {
             if (!this.props.programStore.showUpdateForm) {
               this.props.programStore.scrollIndex = event.nativeEvent.contentOffset.y;

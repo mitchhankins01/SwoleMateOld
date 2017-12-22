@@ -103,8 +103,8 @@ class Form extends Component {
               key={exercise.key}
               title={exercise.name}
               fontFamily='Exo-Regular'
-              containerViewStyle={{ backgroundColor: 'transparent' }}
-              buttonStyle={{ height: 35, marginVertical: 3, backgroundColor: 'transparent' }}
+              buttonStyle={{ height: 45, marginVertical: 3, backgroundColor: 'transparent' }}
+              containerViewStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start' }}
               onPress={() => this.setState({
                 showExerciseList: false,
                 selectedExerciseKey: exercise.key,
@@ -167,7 +167,7 @@ class Form extends Component {
           );
       }
     };
-    
+
     return (
       <View>
         {formType === 'addProgramExercise' ? exercisesButton() : null}

@@ -262,7 +262,7 @@ class Card extends Component {
       <View style={styles.logCardContainer}>
         {children}
         <View style={styles.cardDivider} />
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ flex: 1 }}>
           {options.map((option, i) => {
             delay = i === 0 ? 0 : delay += 250;
             return (

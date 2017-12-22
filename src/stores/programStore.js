@@ -116,7 +116,7 @@ class ProgramStore {
   @action fetchAllExercises = () => {
     this.loading = true;
 
-    firebase.firestore().collection('exercises')
+    firebase.firestore().collection('exercises').orderBy('name')
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(exercise => {
@@ -285,9 +285,44 @@ class ProgramStore {
 }
 
 const exercises = [
-  { description: 'something', group: 'msuc', name: 'None' },
-  { description: 'something1', group: 'msuc1', name: 'None1' },
-  { description: 'something2', group: 'msuc2', name: 'None2' }
+  { description: '', group: 'Chest', name: 'Single Leg Pushups' },
+  { description: '', group: 'Chest', name: 'Bands Bench Press' },
+  { description: '', group: 'Chest', name: 'Bands Cross Over' },
+  { description: '', group: 'Chest', name: 'Barbell Bench Press' },
+  { description: '', group: 'Chest', name: 'Barbell Decline Bench Press' },
+  { description: '', group: 'Chest', name: 'Barbell Decline Pullovers' },
+  { description: '', group: 'Chest', name: 'Barbell Incline Bench Press' },
+  { description: '', group: 'Chest', name: 'Barbell Neck Press' },
+  { description: '', group: 'Chest', name: 'Barbell Pullovers' },
+  { description: '', group: 'Chest', name: 'Barbell Reverse Grip Incline Bench Press' },
+  { description: '', group: 'Chest', name: 'Wide Grip Bench Press' },
+  { description: '', group: 'Chest', name: 'Wide Grip Decline Bench Press' },
+  { description: '', group: 'Chest', name: 'Wide Grip Incline Bench Press' },
+  { description: '', group: 'Chest', name: 'Bench Press Machine' },
+  { description: '', group: 'Chest', name: 'Incline Bench Press Machine' },
+  { description: '', group: 'Chest', name: 'Decline Bench Press Machine' },
+  { description: '', group: 'Chest', name: 'Bench Pushups' },
+  { description: '', group: 'Chest', name: 'Butterfly Machine' },
+  { description: '', group: 'Chest', name: 'Cable Cross Overs' },
+  { description: '', group: 'Chest', name: 'Cable Decline Chest Flyes' },
+  { description: '', group: 'Chest', name: 'Cable Decline Press' },
+  { description: '', group: 'Chest', name: 'Cable Incline Press' },
+  { description: '', group: 'Chest', name: 'Cable Incline Flyes' },
+  { description: '', group: 'Chest', name: 'Cable Decline Flyes' },
+  { description: '', group: 'Chest', name: 'Butterfly Machine' },
+  { description: '', group: 'Chest', name: 'Clap Pushups' },
+  { description: '', group: 'Chest', name: 'Narrow Pushups' },
+  { description: '', group: 'Chest', name: 'Wide Pushups' },
+  { description: '', group: 'Chest', name: 'Drop Pushups' },
+  { description: '', group: 'Chest', name: 'Dumbbell Bench Press' },
+  { description: '', group: 'Chest', name: 'Dumbbell Incline Bench Press' },
+  { description: '', group: 'Chest', name: 'Dumbbell Decline Bench Press' },
+  { description: '', group: 'Chest', name: 'Dumbbell Flyes' },
+  { description: '', group: 'Chest', name: 'Dumbbell Decline Flyes' },
+  { description: '', group: 'Chest', name: 'Dumbbell Incline Flyes' },
+  { description: '', group: 'Chest', name: 'Smith Machine Bench Press' },
+  { description: '', group: 'Chest', name: 'Smith Machine Incline Bench Press' },
+  { description: '', group: 'Chest', name: 'Smith Machine Decline Bench Press' },
 ];
 
 const programStore = new ProgramStore();

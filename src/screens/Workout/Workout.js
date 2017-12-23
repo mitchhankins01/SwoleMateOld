@@ -68,24 +68,6 @@ class Workout extends Component {
     this.dropdownExit.alertWithType('info', 'Exit', 'Tap this close button to exit');
   }
 
-  showLastSetInfo(exerciseIndex) {
-    this.dropdown.alertWithType(
-      'info', 'Last set', `Up Next: ${this.getNextExerciseName(exerciseIndex).name}`
-    );
-  }
-
-  getNextExerciseName(exerciseIndex) {
-    if (exerciseIndex + 1 === this.state.exerciseList.length) {
-      return { name: 'End of Workout ' };
-    }
-
-    return (
-      this.props.programStore.allExercises.find(query => {
-        return query.key === this.state.exerciseList[exerciseIndex + 1].exerciseKey;
-      })
-    );
-  }
-
   renderTextInput(styles, type) {
     const { reps, weight, setReps, setWeight } = this.props.workoutStore;
 
@@ -204,7 +186,11 @@ class Workout extends Component {
           />
         </Animatable.View>
 
-
+        {this.props.workoutStore.showLastSetInfo ?
+          this.dropdown.alertWithType(
+            'info', 'Last set', `Up Next: ${this.props.workoutStore.nextExerciseName.name}`
+          )
+        : null}
         <DropdownAlert
           zIndex={5}
           translucent
@@ -213,7 +199,8 @@ class Workout extends Component {
           titleStyle={styles.dropdownTitle}
           ref={ref => (this.dropdown = ref)}
           messageStyle={styles.dropdownMessage}
-          closeInterval={this.state.currentExercise.rest * 1000}
+          onClose={() => this.props.workoutStore.toggleLastSetInfo(false)}
+          closeInterval={this.props.workoutStore.currentExercise.rest * 1000}
         />
         <DropdownAlert
           showCancel

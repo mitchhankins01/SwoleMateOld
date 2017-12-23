@@ -13,7 +13,9 @@ class WorkoutStore {
   @observable allExercises = [];
   @observable currentExercise = [];
   @observable exerciseSetIndex = 1;
+  @observable nextExerciseName = '';
   @observable workoutComplete = false;
+  @observable showLastSetInfo = false;
   @observable exerciseLog = {
     exerciseKey: '',
     completedSets: [],
@@ -59,7 +61,9 @@ class WorkoutStore {
     this.exerciseName = '';
     this.currentExercise = [];
     this.exerciseSetIndex = 1;
+    this.nextExerciseName = '';
     this.showCountDown = false;
+    this.showLastSetInfo = false;
     this.workoutComplete = false;
     this.exerciseLog = {
       exerciseKey: '',
@@ -79,6 +83,11 @@ class WorkoutStore {
       this.setWorkoutLog(toJS(this.workoutLog));
       this.syncWorkoutLog(toJS(this.workoutLog));
     }
+  }
+
+  @action toggleLastSetInfo = bool => {
+    console.log('toggle');
+    this.showLastSetInfo = bool;
   }
 
   @action setWeight = weight => {
@@ -125,11 +134,18 @@ class WorkoutStore {
       this.saveSet();
       this.saveExercise();
     } else if (completedSets.length === sets - 2 || sets === 1) {
-      // showlastsetinfo(exerciseIndex)
-
+      this.toggleLastSetInfo(true);
       this.saveSet();
     } else {
       this.saveSet();
+    }
+
+    if (this.exerciseIndex + 1 === this.exerciseList.length) {
+      this.nextExerciseName = { name: 'End of Workout ' };
+    } else {
+      this.nextExerciseName = this.allExercises.find(query => {
+        return query.key === this.exerciseList[this.exerciseIndex + 1].exerciseKey;
+      });
     }
   }
 
@@ -226,7 +242,6 @@ class WorkoutStore {
   }
 
   @action syncWorkoutLog = workoutLog => {
-    console.log('called');
     const userLogsRef = firebase.firestore().collection('userLogs').doc();
 
     userLogsRef.set({
@@ -248,7 +263,6 @@ class WorkoutStore {
   }
 
   @action fetchExerciseLog = currentExercise => {
-    console.log('called');
     if (!currentExercise) return;
 
     const currentExerciseKey = currentExercise.exerciseKey;

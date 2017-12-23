@@ -12,7 +12,7 @@ const DEVICE_WIDTH = Dimensions.get('window').width;
 class CountDown extends Component {
   render() {
     const styles = themeStyles[this.props.userStore.selected];
-    const { workoutStore: { countDown, toggleShowCountDown } } = this.props;
+    const { workoutStore: { countDown, toggleShowCountDown, toggleLastSetInfo } } = this.props;
 
     return (
       <View style={styles.countDownContainer}>
@@ -32,7 +32,10 @@ class CountDown extends Component {
             size={50}
             name='close'
             iconStyle={{ color: styles.$primaryColor, marginTop: 75 }}
-            onPress={() => toggleShowCountDown(false)}
+            onPress={() => {
+              toggleLastSetInfo(false);
+              toggleShowCountDown(false);
+            }}
           />
         </Animatable.View>
       </View>

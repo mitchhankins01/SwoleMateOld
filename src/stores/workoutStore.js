@@ -13,6 +13,7 @@ class WorkoutStore {
   @observable allExercises = [];
   @observable currentExercise = [];
   @observable exerciseSetIndex = 1;
+  @observable workoutComplete = false;
   @observable exerciseLog = {
     exerciseKey: '',
     completedSets: [],
@@ -45,14 +46,35 @@ class WorkoutStore {
   @action terminateWorkout = () => {
     this.clearTimer();
     this.clearCountDown();
-    this.setWorkoutLog({});
+    // Reset
+    this.reps = 10;
+    this.weight = 10;
+    this.timePassed = 0;
+    this.countDown = 60;
+    this.fetchedLog = [];
+    this.exerciseRest = 60;
+    this.allExercises = [];
+    this.exerciseIndex = 0;
+    this.exerciseList = [];
+    this.exerciseName = '';
+    this.currentExercise = [];
+    this.exerciseSetIndex = 1;
+    this.showCountDown = false;
+    this.workoutComplete = false;
+    this.exerciseLog = {
+      exerciseKey: '',
+      completedSets: [],
+    };
+    this.workoutLog = {
+      timePassed: 0,
+      completedExercises: [],
+    };
   }
 
   @action toggleWorkoutComplete = bool => {
     this.workoutComplete = bool;
 
     if (bool) {
-      return console.log(toJS(this.workoutLog));
       this.stopTimer();
       this.setWorkoutLog(toJS(this.workoutLog));
       this.syncWorkoutLog(toJS(this.workoutLog));
@@ -219,13 +241,14 @@ class WorkoutStore {
       userLogsRef.collection('exercises').add({
         logKey: userLogsRef.id,
         exerciseKey: each.exerciseKey,
-        completedSets: [each.completedSets],
+        completedSets: each.completedSets,
         completed: new Date().toISOString().substr(0, 10),
       });
     });
   }
 
   @action fetchExerciseLog = currentExercise => {
+    console.log('called');
     if (!currentExercise) return;
 
     const currentExerciseKey = currentExercise.exerciseKey;

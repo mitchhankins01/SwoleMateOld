@@ -108,7 +108,6 @@ class Workout extends Component {
   renderLog(styles, type) {
     const { completedSets } = this.props.workoutStore.exerciseLog;
     const fetchedLog = toJS(this.props.workoutStore.fetchedLog);
- return //console.log(typeof fetchedLog.completedSets)
     if (type === 'current') {
       if (completedSets.length === 0) {
         return (

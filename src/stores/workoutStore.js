@@ -134,18 +134,18 @@ class WorkoutStore {
       this.saveSet();
       this.saveExercise();
     } else if (completedSets.length === sets - 2 || sets === 1) {
+      if (this.exerciseIndex + 1 === this.exerciseList.length) {
+        this.nextExerciseName = { name: 'End of Workout ' };
+      } else {
+        this.nextExerciseName = this.allExercises.find(query => {
+          return query.key === this.exerciseList[this.exerciseIndex + 1].exerciseKey;
+        });
+      }
+
       this.toggleLastSetInfo(true);
       this.saveSet();
     } else {
       this.saveSet();
-    }
-
-    if (this.exerciseIndex + 1 === this.exerciseList.length) {
-      this.nextExerciseName = { name: 'End of Workout ' };
-    } else {
-      this.nextExerciseName = this.allExercises.find(query => {
-        return query.key === this.exerciseList[this.exerciseIndex + 1].exerciseKey;
-      });
     }
   }
 

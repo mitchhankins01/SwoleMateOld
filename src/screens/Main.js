@@ -28,9 +28,9 @@ class Main extends Component {
   authListener() {
     this.authListener = firebase.auth().onAuthStateChanged((user) => {
       if (user) { // HomeStack
-        this.props.navigation.navigate('HomeStack');
+        this.resetNavigation('HomeStack');
       } else {
-        this.props.navigation.navigate('Login');
+        this.resetNavigation('Login');
       }
     });
   }

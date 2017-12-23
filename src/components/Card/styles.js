@@ -25,7 +25,7 @@ const themeStyles = themes.createStyleSheet({
     borderWidth: 2,
     borderRadius: 5,
     shadowOpacity: 0.3,
-    justifyContent: 'center',
+    //justifyContent: 'center',
     borderColor: '$primaryColor',
     shadowColor: 'rgba(0,0,0, 1)',
     shadowOffset: { height: 0, width: 0 },

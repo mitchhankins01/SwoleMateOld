@@ -113,7 +113,7 @@ class ActionBar extends Component {
     return (
       <Animatable.View style={styles.actionBarWorkout}>
         {this.renderButton(styles, 'back', 30, 300,
-          () => this.props.navigation.goBack(null)
+          () => this.props.onPressClose()
         )}
         <Text style={styles.workoutBarText}>
           {new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7)}

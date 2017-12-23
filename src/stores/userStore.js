@@ -3,6 +3,26 @@ import firebase from 'react-native-firebase';
 
 class UserStore {
 
+  componentWillMount() {
+    this.authListener = this.authListener.bind(this);
+    this.authListener();
+  }
+
+  componentWillUnmount() {
+    this.authListener = undefined;
+  }
+
+  authListener() {
+    this.authListener = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.user = user;
+      } else {
+        this.user = {};
+      }
+    });
+  }
+
+  @observable user = '';
   @observable name = '';
   @observable error = '';
   @observable imperial = true;

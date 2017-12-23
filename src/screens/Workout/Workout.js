@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Text, TextInput, View } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
+import { BackHandler, Text, TextInput, View } from 'react-native';
 
 import { Overview } from './';
 import themeStyles from './styles';
@@ -49,6 +50,14 @@ class Workout extends Component {
 
   componentDidMount() {
     this.props.workoutStore.startTimer();
+
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (this.props.navigation.state.routeName === 'Workout') {
+        this.renderCloseAlert();
+        return true;
+      }
+      return false;
+    });
   }
 
   componentWillUnmount() {
@@ -59,6 +68,12 @@ class Workout extends Component {
     clearTimer();
     clearCountDown();
     setWorkoutLog({});
+
+    this.backHandler.remove();
+  }
+
+  renderCloseAlert() {
+    this.dropdownExit.alertWithType('info', 'Exit', 'Tap this close button to exit');
   }
 
   showLastSetInfo(exerciseIndex) {
@@ -276,6 +291,7 @@ class Workout extends Component {
             workout
             navigation={this.props.navigation}
             onPressSave={() => this.onPressSave()}
+            onPressClose={() => this.renderCloseAlert()}
           />
         </Animatable.View>
 
@@ -289,6 +305,16 @@ class Workout extends Component {
           ref={ref => (this.dropdown = ref)}
           messageStyle={styles.dropdownMessage}
           closeInterval={this.state.currentExercise.rest * 1000}
+        />
+        <DropdownAlert
+          showCancel
+          translucent
+          updateStatusBar={false}
+          infoColor={styles.$tertiaryColor}
+          onCancel={() => this.props.navigation.goBack(null)}
+          titleStyle={[styles.dropdownTitle, { marginLeft: 0 }]}
+          messageStyle={[styles.dropdownMessage, { marginLeft: 0 }]}
+          ref={ref => (this.dropdownExit = ref)}
         />
 
         {this.props.workoutStore.showCountDown ? <CountDown /> : null}

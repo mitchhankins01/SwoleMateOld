@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, toJS } from 'mobx';
 import firebase from 'react-native-firebase';
 import BackgroundTimer from 'react-native-background-timer';
 
@@ -52,9 +52,10 @@ class WorkoutStore {
     this.workoutComplete = bool;
 
     if (bool) {
+      return console.log(toJS(this.workoutLog));
       this.stopTimer();
-      this.setWorkoutLog(this.workoutLog);
-      this.syncWorkoutLog(this.workoutLog);
+      this.setWorkoutLog(toJS(this.workoutLog));
+      this.syncWorkoutLog(toJS(this.workoutLog));
     }
   }
 

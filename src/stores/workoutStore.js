@@ -9,7 +9,9 @@ class WorkoutStore {
   @observable countDown = 60;
   @observable showCountDown = false;
   // Finished workout log
-  @observable workoutLog = {}; // Workout log must be cleared after submitting
+  @observable workoutLog = {};
+  // Past log
+  @observable fetchedLog;
 
   // timePassed
   @action startTimer = () => {
@@ -75,7 +77,40 @@ class WorkoutStore {
     });
 
     workoutLog.completedExercises.forEach(each => {
-      userLogsRef.collection('exercises').add(each);
+      userLogsRef.collection('exercises').add({
+        logKey: userLogsRef.id,
+        exerciseKey: each.exerciseKey,
+        completedSets: each.completedSets,
+        completed: new Date().toISOString().substr(0, 10),
+      });
+    });
+  }
+
+  @action fetchExerciseLog = currentExercise => {
+    const currentExerciseKey = currentExercise.exerciseKey;
+
+    const logsRef = firebase.firestore()
+    .collection('userLogs')
+    .where('author', '==', firebase.auth().currentUser.uid);
+
+    logsRef.get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(log => {
+        log.ref.collection('exercises').onSnapshot(snapShot => {
+          snapShot.forEach(exerciseLogInfo => {
+            const exerciseLog = exerciseLogInfo.data();
+            if (exerciseLog.exerciseKey === currentExerciseKey) {
+              if (!this.fetchedLog) {
+                this.fetchedLog = exerciseLog;
+                return;
+              }
+              if (new Date(this.fetchedLog.completed).getTime() < new Date(exerciseLog.completed).getTime()) {
+                this.fetchedLog = exerciseLog;
+              }
+            }
+          });
+        });
+      });
     });
   }
 }

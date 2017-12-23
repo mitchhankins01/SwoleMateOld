@@ -32,8 +32,6 @@ class LogStore {
     const workout = { key: 'workout', color: '#EDF0F1' };
 
     // Used to store exercises in, so it canbe appended to workoutLogs
-
-
     const logsRef = firebase.firestore()
     .collection('userLogs')
     .where('author', '==', firebase.auth().currentUser.uid);

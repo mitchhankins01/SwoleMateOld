@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { NavigationActions } from 'react-navigation';
 import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import { BackHandler, Text, TextInput, View } from 'react-native';
-
+import {toJS} from 'mobx';
 import { Overview } from './';
 import themeStyles from './styles';
 import { Picker } from '../../components/Picker';
 import { ActionBar } from '../../components/ActionBar';
 import { CountDown } from '../../components/CountDown';
 
-@inject('userStore', 'programStore', 'workoutStore') @observer
+@inject('userStore', 'programStore', 'workoutStore', 'logStore') @observer
 class Workout extends Component {
   state = {
     // Input
@@ -217,9 +216,34 @@ class Workout extends Component {
   }
 
   renderLog(styles, type, completedSets) {
+    this.props.workoutStore.fetchExerciseLog(this.state.currentExercise);
+    const fetchedLog = toJS(this.props.workoutStore.fetchedLog);
+
     if (type === 'current') {
+      if (completedSets.length === 0) {
+        return (
+          <Text style={styles.logTextSets}>
+            First Set
+          </Text>
+        );
+      }
       return (
         completedSets.map(each =>
+          <Text key={each.set} style={styles.logTextSets}>
+            {`Set ${each.set}: ${each.weight}x${each.reps}`}
+          </Text>
+        )
+      );
+    } else if (type === 'past') {
+      if (fetchedLog.completedSets.length === 0) {
+        return (
+          <Text style={styles.logTextSets}>
+            No Past Log
+          </Text>
+        );
+      }
+      return (
+        fetchedLog.completedSets.map(each =>
           <Text key={each.set} style={styles.logTextSets}>
             {`Set ${each.set}: ${each.weight}x${each.reps}`}
           </Text>
@@ -261,6 +285,7 @@ class Workout extends Component {
             <View style={styles.divider} />
             <View style={{ flex: 1 }}>
               <Text style={styles.logTextHeader}>Past Log</Text>
+              {this.renderLog(styles, 'past', null)}
             </View>
           </View>
         </Animatable.View>

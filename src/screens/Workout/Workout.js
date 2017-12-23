@@ -183,6 +183,8 @@ class Workout extends Component {
       return this.setState({ workoutComplete: true });
     }
 
+    if (exerciseIndex === 0) this.props.workoutStore.fetchExerciseLog(exerciseList[0]);
+
     // Create an array with all the program exercises
     const exercises = exerciseList.map(exercise => exercise);
 
@@ -219,8 +221,7 @@ class Workout extends Component {
 
   renderLog(styles, type, completedSets) {
     const fetchedLog = toJS(this.props.workoutStore.fetchedLog);
-    console.log(toJS(this.props.workoutStore.fetchedLog));
-
+console.log(fetchedLog);
     if (type === 'current') {
       if (completedSets.length === 0) {
         return (

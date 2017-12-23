@@ -87,19 +87,21 @@ class WorkoutStore {
   }
 
   @action fetchExerciseLog = currentExercise => {
+    if (!currentExercise) return;
+
     const currentExerciseKey = currentExercise.exerciseKey;
-    
+
     const logsRef = firebase.firestore()
     .collection('userLogs')
     .where('author', '==', firebase.auth().currentUser.uid);
 
     logsRef.get()
     .then(querySnapshot => {
+      this.fetchedLog = [];
       querySnapshot.forEach(log => {
         log.ref.collection('exercises').onSnapshot(snapShot => {
           snapShot.forEach(exerciseLogInfo => {
             const exerciseLog = exerciseLogInfo.data();
-
             if (exerciseLog.exerciseKey === currentExerciseKey) {
               if (this.fetchedLog.length === 0) {
                 this.fetchedLog = exerciseLog;

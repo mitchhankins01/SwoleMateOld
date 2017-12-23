@@ -3,15 +3,151 @@ import firebase from 'react-native-firebase';
 import BackgroundTimer from 'react-native-background-timer';
 
 class WorkoutStore {
+  // Current workout
+  @observable reps = 10;
+  @observable weight = 10;
+  @observable exerciseIndex = 0;
+  @observable exerciseList = [];
+  @observable exerciseName = '';
+  @observable exerciseRest = 60;
+  @observable allExercises = [];
+  @observable currentExercise = [];
+  @observable exerciseSetIndex = 1;
+  @observable exerciseLog = {
+    exerciseKey: '',
+    completedSets: [],
+  };
+  @observable workoutLog = {
+    timePassed: 0,
+    completedExercises: [],
+  };
   // Overall time passed in workout
   @observable timePassed = 0;
   // Current exercise rest
   @observable countDown = 60;
   @observable showCountDown = false;
-  // Finished workout log
-  @observable workoutLog = {};
   // Past log
   @observable fetchedLog = [];
+
+  // Current workout
+  @action initWorkout = (exercises, selectedDayKey, allExercises) => {
+    this.allExercises = allExercises;
+
+    const filteredExerciseList = exercises.filter(each => {
+      return each.day === selectedDayKey;
+    });
+    this.exerciseList = filteredExerciseList;
+
+    this.startTimer();
+    this.loadExercise();
+  }
+
+  @action terminateWorkout = () => {
+    this.clearTimer();
+    this.clearCountDown();
+    this.setWorkoutLog({});
+  }
+
+  @action toggleWorkoutComplete = bool => {
+    this.workoutComplete = bool;
+
+    if (bool) {
+      this.stopTimer();
+      this.setWorkoutLog(this.workoutLog);
+      this.syncWorkoutLog(this.workoutLog);
+    }
+  }
+
+  @action setWeight = weight => {
+    this.weight = weight;
+  }
+
+  @action setReps = reps => {
+    this.reps = reps;
+  }
+
+  @action loadExercise = () => {
+    if (this.exerciseIndex >= this.exerciseList.length) {
+      return this.toggleWorkoutComplete(true);
+    }
+    // if on the first exercise, fetch log now, otherwise fetch later
+    if (this.exerciseIndex === 0) {
+      this.fetchExerciseLog(this.exerciseList[0]);
+    } else {
+      // increment by one?
+      this.fetchExerciseLog(this.exerciseList[this.exerciseIndex]);
+    }
+
+    // Get exercise key to append it to the exerciseLog
+    const exerciseKey = this.exerciseList[this.exerciseIndex].exerciseKey;
+    // Pull meta info off all exercises when compared to the current exercise,
+    // to get exercise name
+    const currentExerciseMeta = this.allExercises.find(query => {
+      return query.key === this.exerciseList[this.exerciseIndex].exerciseKey;
+    });
+
+    // Update current workout state
+    this.exerciseName = currentExerciseMeta.name;
+    this.exerciseLog = { ...this.exerciseLog, exerciseKey };
+    this.currentExercise = this.exerciseList[this.exerciseIndex];
+    // IMPLEMENT, can rest be pulled of curr ex to reduce code?
+    this.exerciseRest = this.exerciseList[this.exerciseIndex].rest;
+  }
+
+  @action onPressSave = () => {
+    const { sets } = this.currentExercise;
+    const { completedSets } = this.exerciseLog;
+
+    if (completedSets.length === sets - 1) {
+      this.saveSet();
+      this.saveExercise();
+    } else if (completedSets.length === sets - 2 || sets === 1) {
+      // showlastsetinfo(exerciseIndex)
+
+      this.saveSet();
+    } else {
+      this.saveSet();
+    }
+  }
+
+  @action saveSet = () => {
+    // Set and start countDown
+    this.setCountDown(this.currentExercise.rest);
+    this.startCountDown(true);
+
+    // Save set in array
+    this.exerciseLog.completedSets.push({
+      reps: this.reps,
+      weight: this.weight,
+      set: this.exerciseSetIndex,
+    });
+
+    // Prep for next set
+    this.reps = 10;
+    this.weight = 10;
+    this.exerciseSetIndex += 1;
+    this.exerciseLog = {
+      completedSets: this.exerciseLog.completedSets,
+      exerciseKey: this.exerciseLog.exerciseKey,
+    };
+  }
+
+  @action saveExercise = () => {
+    // Save current exerciselog in the workoutLog
+    this.workoutLog.timePassed = this.timePassed;
+    this.workoutLog.completedExercises.push(this.exerciseLog);
+
+    // Prep for next exercise
+    this.exerciseIndex += 1;
+    this.exerciseSetIndex = 1;
+    this.exerciseLog = {
+      exerciseKey: '',
+      completedSets: [],
+    };
+
+    // Load next exercise
+    this.loadExercise();
+  }
 
   // timePassed
   @action startTimer = () => {
@@ -66,7 +202,8 @@ class WorkoutStore {
     this.workoutLog = {};
   }
 
-  @action addWorkoutLog = workoutLog => {
+  @action syncWorkoutLog = workoutLog => {
+    console.log('called');
     const userLogsRef = firebase.firestore().collection('userLogs').doc();
 
     userLogsRef.set({
@@ -77,10 +214,11 @@ class WorkoutStore {
     });
 
     workoutLog.completedExercises.forEach(each => {
+      console.log(each.completedSets);
       userLogsRef.collection('exercises').add({
         logKey: userLogsRef.id,
         exerciseKey: each.exerciseKey,
-        completedSets: each.completedSets,
+        completedSets: [each.completedSets],
         completed: new Date().toISOString().substr(0, 10),
       });
     });

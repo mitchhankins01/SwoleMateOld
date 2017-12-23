@@ -83,6 +83,7 @@ class Workout extends Component {
 
   onPressSave() {
     const {
+      exerciseList,
       exerciseIndex,
       currentExercise: { sets },
       exerciseLog: { completedSets },
@@ -94,6 +95,7 @@ class Workout extends Component {
 
     if (completedSets.length === sets - 1) {
       this.saveSet(() => this.saveExercise());
+      this.props.workoutStore.fetchExerciseLog(exerciseList[exerciseIndex + 1]);
     } else if (completedSets.length === sets - 2 || sets === 1) {
       this.showLastSetInfo(exerciseIndex);
       this.saveSet();
@@ -216,8 +218,8 @@ class Workout extends Component {
   }
 
   renderLog(styles, type, completedSets) {
-    this.props.workoutStore.fetchExerciseLog(this.state.currentExercise);
     const fetchedLog = toJS(this.props.workoutStore.fetchedLog);
+    console.log(toJS(this.props.workoutStore.fetchedLog));
 
     if (type === 'current') {
       if (completedSets.length === 0) {
@@ -235,7 +237,7 @@ class Workout extends Component {
         )
       );
     } else if (type === 'past') {
-      if (fetchedLog.completedSets.length === 0) {
+      if (fetchedLog.length === 0) {
         return (
           <Text style={styles.logTextSets}>
             No Past Log

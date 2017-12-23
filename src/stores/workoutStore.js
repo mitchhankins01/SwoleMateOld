@@ -11,7 +11,7 @@ class WorkoutStore {
   // Finished workout log
   @observable workoutLog = {};
   // Past log
-  @observable fetchedLog;
+  @observable fetchedLog = [];
 
   // timePassed
   @action startTimer = () => {
@@ -88,7 +88,7 @@ class WorkoutStore {
 
   @action fetchExerciseLog = currentExercise => {
     const currentExerciseKey = currentExercise.exerciseKey;
-
+    
     const logsRef = firebase.firestore()
     .collection('userLogs')
     .where('author', '==', firebase.auth().currentUser.uid);
@@ -99,8 +99,9 @@ class WorkoutStore {
         log.ref.collection('exercises').onSnapshot(snapShot => {
           snapShot.forEach(exerciseLogInfo => {
             const exerciseLog = exerciseLogInfo.data();
+
             if (exerciseLog.exerciseKey === currentExerciseKey) {
-              if (!this.fetchedLog) {
+              if (this.fetchedLog.length === 0) {
                 this.fetchedLog = exerciseLog;
                 return;
               }

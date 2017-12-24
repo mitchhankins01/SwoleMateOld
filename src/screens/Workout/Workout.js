@@ -88,8 +88,9 @@ class Workout extends Component {
   }
 
   renderLog(styles, type) {
-    const { completedSets } = this.props.workoutStore.exerciseLog;
     const fetchedLog = toJS(this.props.workoutStore.fetchedLog);
+    const { exerciseLog: { completedSets } } = this.props.workoutStore;
+
     if (type === 'current') {
       if (completedSets.length === 0) {
         return (
@@ -207,10 +208,10 @@ class Workout extends Component {
           translucent
           updateStatusBar={false}
           infoColor={styles.$tertiaryColor}
+          ref={ref => (this.dropdownExit = ref)}
           onCancel={() => this.props.navigation.goBack(null)}
           titleStyle={[styles.dropdownTitle, { marginLeft: 0 }]}
           messageStyle={[styles.dropdownMessage, { marginLeft: 0 }]}
-          ref={ref => (this.dropdownExit = ref)}
         />
 
         {this.props.workoutStore.showCountDown ? <CountDown /> : null}

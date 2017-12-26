@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
-import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { View, TouchableOpacity, Text, ScrollView, FlatList } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Form } from '../Form';
@@ -249,37 +249,29 @@ class Card extends Component {
 
   renderSettingsCard(styles) {
     let delay = 0;
-    const { children, onPressOption, gotoMain, content: { options, title } } = this.props;
+    const { children, onPressOption, content: { options } } = this.props;
 
     return (
       <View style={styles.logCardContainer}>
         {children}
         <View style={styles.cardDivider} />
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
-          {options.map((option, i) => {
-            delay = i === 0 ? 0 : delay += 250;
+        <FlatList
+          data={options}
+          keyExtractor={(item, index) => index}
+          renderItem={({ item, index }) => {
+            delay = index === 0 ? 0 : delay += 250;
             return (
-              <Animatable.View delay={delay} animation='mySlideInUp' duration={750} key={option.title}>
-                <TouchableOpacity onPress={() => onPressOption(option.onPress)}>
+              <Animatable.View useNativeDriver delay={delay} animation='mySlideInUp' duration={750} key={item.title}>
+                <TouchableOpacity onPress={() => onPressOption(item.onPress)}>
                   <View style={styles.optionButton}>
-                    <Icon type='entypo' color='#EDF0F1' name={option.icon} />
-                    <Text style={styles.settingsOption}>{option.title}</Text>
+                    <Icon type='entypo' color='#EDF0F1' name={item.icon} />
+                    <Text style={styles.settingsOption}>{item.title}</Text>
                   </View>
                 </TouchableOpacity>
               </Animatable.View>
             );
-          })}
-          {title !== 'Main' ?
-          <Animatable.View animation='mySlideInUp' delay={delay + 250} duration={750}>
-            <TouchableOpacity onPress={() => gotoMain()}>
-              <View style={styles.optionButton}>
-                <Icon type='entypo' color='#EDF0F1' name='back' />
-                <Text style={styles.settingsOption}>Back</Text>
-              </View>
-            </TouchableOpacity>
-          </Animatable.View>
-          : null}
-        </ScrollView>
+          }}
+        />
       </View>
     );
   }

@@ -91,6 +91,11 @@ class Settings extends Component {
               icon: 'trash',
               onPress: () => this.setState({ showInput: true, updateValue: 'delete' })
             },
+            {
+              title: 'Back',
+              icon: 'back',
+              onPress: () => this.props.userStore.updateScreenIndex('Main')
+            },
           ]
         };
       case 'General':
@@ -101,7 +106,12 @@ class Settings extends Component {
               title: imperial ? 'Use Metric System (Kg)' : 'Use Imperial System (Lb)',
               icon: 'suitcase',
               onPress: () => toggleImperial()
-            }
+            },
+            {
+              title: 'Back',
+              icon: 'back',
+              onPress: () => this.props.userStore.updateScreenIndex('Main')
+            },
           ]
         };
       case 'Theme':
@@ -125,6 +135,11 @@ class Settings extends Component {
               icon: 'palette',
               name: 'standard3',
               onPress: () => updateTheme('standard3')
+            },
+            {
+              title: 'Back',
+              icon: 'back',
+              onPress: () => this.props.userStore.updateScreenIndex('Main')
             },
           ]
         };
@@ -250,12 +265,11 @@ class Settings extends Component {
     return (
       <LinearGradient colors={gradients} style={styles.container}>
         <Header title={'Settings'} styles={styles} />
-        <Animatable.View style={{ flex: 1 }} animation='zoomIn'>
+        <View style={{ flex: 1 }}>
           <Card
             settingsCard
             content={this.renderContent()}
             onPressOption={onPress => onPress()}
-            gotoMain={() => this.props.userStore.updateScreenIndex('Main')}
           >
             <Avatar
               xlarge
@@ -266,7 +280,7 @@ class Settings extends Component {
               source={{ uri: 'https://avatars0.githubusercontent.com/u/25047564?s=400&u=448846745e78cadb366ef01444365e0c6f12a73f&v=4' }}
             />
           </Card>
-        </Animatable.View>
+        </View>
         {this.renderInput(styles)}
         {this.renderError()}
         {this.renderSuccess()}

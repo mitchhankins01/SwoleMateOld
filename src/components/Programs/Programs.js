@@ -20,6 +20,7 @@ class Programs extends Component {
     loading: false,
     allPrograms: [],
     allExercises: [],
+    showAnimation: false,
   }
 
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
@@ -159,9 +160,11 @@ class Programs extends Component {
 
     return (
       <Animatable.View
-        duration={750}
+        useNativeDriver
         ref='programCard'
         animation='mySlider'
+        duration={this.state.showAnimation ? 750 : 1}
+        onAnimationEnd={() => this.setState({ showAnimation: true })}
       >
         {renderType}
         <DropdownAlert

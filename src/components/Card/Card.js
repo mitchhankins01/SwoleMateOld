@@ -160,12 +160,6 @@ class Card extends Component {
     );
   }
 
-  showAnimation() {
-    if (this.refs.programCard) {
-      this.refs.programCard.mySlideInUp();
-    }
-  }
-
   renderLogCard(styles) {
     const {
       isWorkout, isBodyStats, isNutrition, updateScreenIndex, workoutLogs, workoutLogsExercises
@@ -288,6 +282,12 @@ class Card extends Component {
         </ScrollView>
       </View>
     );
+  }
+
+  showAnimation() {
+    if (this.refs.programCard) {
+      this.refs.programCard.mySlideInUp();
+    }
   }
 
   render() {

@@ -1,4 +1,5 @@
-import { View } from 'react-native';
+import { View, ListView } from 'react-native';
+import { toJS } from 'mobx';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
@@ -32,47 +33,58 @@ class Programs extends Component {
   }
 
   renderAllPrograms = () => {
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     if (this.props.programStore.length === 0) return <Card empty title='Program' />;
 
     return (
-      this.props.programStore.allPrograms.map(program => {
-        return (
-          <Card
-            type='entypo'
-            item={program}
-            icon='clipboard'
-            key={program.key}
-            activeOpacity={0.2}
-            subtitle={`${program.frequency} Days - ${program.level} - ${program.type}`}
-            onPress={() => this.updateScreenIndex('selectedProgram', null, program.key)}
-          />
-        );
-      })
+      <ListView
+        style={{ width: '100%' }}
+        dataSource={ds.cloneWithRows(toJS(this.props.programStore.allPrograms))}
+        renderRow={rowData => {
+          return (
+            <Card
+              type='entypo'
+              icon='clipboard'
+              activeOpacity={0.2}
+              item={rowData.program}
+              key={rowData.program.key}
+              subtitle={`${rowData.program.frequency} Days - ${rowData.program.level} - ${rowData.program.type}`}
+              onPress={() => this.updateScreenIndex('selectedProgram', null, rowData.program.key)}
+            />
+          );
+        }}
+      />
     );
   }
 
   renderProgramDays = () => {
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     if (this.props.programStore.days.length === 0) return <Card empty title='Workout' />;
 
     return (
-      this.props.programStore.days.map(day => {
-        return (
-          <Card
-            item={day}
-            key={day.key}
-            type='entypo'
-            icon='folder'
-            activeOpacity={0.2}
-            info={this.state.info}
-            subtitle={`${day.primaryGroup} - ${day.secondaryGroup}`}
-            onPress={() => this.updateScreenIndex('programExercises', day.key)}
-          />
-        );
-      })
+      <ListView
+        style={{ width: '100%', backgroundColor: 'red' }}
+        dataSource={ds.cloneWithRows(toJS(this.props.programStore.days))}
+        renderRow={day => {
+          return (
+            <Card
+              type='entypo'
+              icon='folder'
+              activeOpacity={0.2}
+              item={day}
+              info={this.state.info}
+              key={day.key}
+              subtitle={`${day.primaryGroup} - ${day.secondaryGroup}`}
+              onPress={() => this.updateScreenIndex('programExercises', day.key)}
+            />
+          );
+        }}
+      />
     );
   }
 
   renderProgramExercises = () => {
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     return (
       this.props.programStore.exercises.map(exercise => {
         if (exercise.day === this.props.programStore.selectedDayKey) {

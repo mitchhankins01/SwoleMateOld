@@ -157,6 +157,18 @@ const themeStyles = themes.createStyleSheet({
     alignSelf: 'center',
     fontFamily: 'Exo-Medium',
   },
+  pastLogsContainer: {
+    top: 0,
+    flex: 1,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    elevation: 1,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  }
 });
 
 export default themeStyles;

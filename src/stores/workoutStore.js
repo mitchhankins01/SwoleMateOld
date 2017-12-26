@@ -31,6 +31,8 @@ class WorkoutStore {
   @observable showCountDown = false;
   // Past log
   @observable fetchedLog = [];
+  @observable fetchedLogAll = [];
+  @observable showPastLogs = false;
 
   // Current workout
   @action initWorkout = (exercises, selectedDayKey, allExercises) => {
@@ -73,6 +75,10 @@ class WorkoutStore {
       timePassed: 0,
       completedExercises: [],
     };
+  }
+
+  @action toggleShowPastLogs = bool => {
+    this.showPastLogs = bool;
   }
 
   @action toggleWorkoutComplete = bool => {
@@ -255,7 +261,6 @@ class WorkoutStore {
     });
 
     workoutLog.completedExercises.forEach(each => {
-      console.log(each.completedSets);
       userLogsRef.collection('exercises').add({
         logKey: userLogsRef.id,
         exerciseKey: each.exerciseKey,
@@ -282,6 +287,7 @@ class WorkoutStore {
           snapShot.forEach(exerciseLogInfo => {
             const exerciseLog = exerciseLogInfo.data();
             if (exerciseLog.exerciseKey === currentExerciseKey) {
+              this.fetchedLogAll.push(exerciseLog);
               if (this.fetchedLog.length === 0) {
                 this.fetchedLog = exerciseLog;
                 return;

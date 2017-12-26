@@ -1,11 +1,11 @@
+import { toJS } from 'mobx';
 import React, { Component } from 'react';
+import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
-import { BackHandler, Text, TextInput, View } from 'react-native';
-
-import {toJS} from 'mobx';
+import { BackHandler, Text, TextInput, View, ScrollView, ListView, TouchableOpacity } from 'react-native';
 
 import { Overview } from './';
 import themeStyles from './styles';
@@ -15,30 +15,6 @@ import { CountDown } from '../../components/CountDown';
 
 @inject('userStore', 'programStore', 'workoutStore', 'logStore') @observer
 class Workout extends Component {
-  state = {
-    // Input
-    reps: 10,
-    weight: 10,
-    // Various
-    workoutComplete: false,
-    // Current exercise
-    exerciseList: [],
-    exerciseIndex: 0,
-    exerciseRest: 60,
-    exerciseName: '',
-    exerciseSetIndex: 1,
-    currentExercise: [],
-    // Logs
-    exerciseLog: {
-      exerciseKey: '',
-      completedSets: [],
-    },
-    workoutLog: {
-      timePassed: 0,
-      completedExercises: [],
-    },
-  }
-
   componentWillMount() {
     const {
       workoutStore: { initWorkout },
@@ -100,11 +76,13 @@ class Workout extends Component {
         );
       }
       return (
-        completedSets.map(each =>
-          <Text key={each.set} style={styles.logTextSets}>
-            {`Set ${each.set}: ${each.weight}x${each.reps}`}
-          </Text>
-        )
+        <ScrollView>
+          {completedSets.map(each =>
+            <Text key={each.set} style={styles.logTextSets}>
+              {`Set ${each.set}: ${each.weight}x${each.reps}`}
+            </Text>
+          )}
+        </ScrollView>
       );
     } else if (type === 'past') {
       if (fetchedLog.length === 0) {
@@ -115,11 +93,13 @@ class Workout extends Component {
         );
       }
       return (
-        fetchedLog.completedSets.map(each =>
-          <Text key={each.set} style={styles.logTextSets}>
-            {`Set ${each.set}: ${each.weight}x${each.reps}`}
-          </Text>
-        )
+        <ScrollView>
+          {fetchedLog.completedSets.map(each =>
+            <Text key={each.set} style={styles.logTextSets}>
+              {`Set ${each.set}: ${each.weight}x${each.reps}`}
+            </Text>
+          )}
+        </ScrollView>
       );
     }
   }
@@ -127,9 +107,19 @@ class Workout extends Component {
   render() {
     const styles = themeStyles[this.props.userStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
     const {
-      onPressSave, reps, weight, setReps, setWeight, exerciseName, workoutComplete
+      reps,
+      weight,
+      setReps,
+      setWeight,
+      onPressSave,
+      showPastLogs,
+      exerciseName,
+      fetchedLogAll,
+      workoutComplete,
+      toggleShowPastLogs,
     } = this.props.workoutStore;
 
     if (workoutComplete) {
@@ -150,10 +140,10 @@ class Workout extends Component {
               {this.renderLog(styles, 'current')}
             </View>
             <View style={styles.divider} />
-            <View style={{ flex: 1 }}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => toggleShowPastLogs(true)}>
               <Text style={styles.logTextHeader}>Past Log</Text>
               {this.renderLog(styles, 'past')}
-            </View>
+            </TouchableOpacity>
           </View>
         </Animatable.View>
 
@@ -186,6 +176,36 @@ class Workout extends Component {
             onPressClose={() => this.renderCloseAlert()}
           />
         </Animatable.View>
+
+        {showPastLogs ?
+        <View style={styles.pastLogsContainer}>
+          <Text style={[styles.headerText, { marginVertical: 40 }]}>Past Logs</Text>
+          <ListView
+            style={{ width: '100%' }}
+            dataSource={ds.cloneWithRows(toJS(fetchedLogAll))}
+            renderRow={rowData => {
+              return (
+                <Text key={rowData.logKey} style={styles.logTextSets}>
+                  {`${rowData.completed}\n`}
+                  {rowData.completedSets.map(set => {
+                    return (
+                      <Text key={set.set} style={styles.logTextSets}>
+                        {`Set ${set.set}: ${set.weight}x${set.reps}\n`}
+                      </Text>
+                    );
+                  })}
+                </Text>
+              );
+            }}
+          />
+          <Icon
+            size={50}
+            name='close'
+            onPress={() => toggleShowPastLogs(false)}
+            iconStyle={{ color: '#EDF0F1', marginVertical: 30 }}
+          />
+        </View>
+      : null}
 
         {this.props.workoutStore.showLastSetInfo ?
           this.dropdown.alertWithType(

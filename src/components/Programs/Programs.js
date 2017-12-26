@@ -2,6 +2,7 @@ import { View, ListView, FlatList } from 'react-native';
 import { toJS } from 'mobx';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import * as Animatable from 'react-native-animatable';
 
 import DropdownAlert from 'react-native-dropdownalert';
 
@@ -110,6 +111,12 @@ class Programs extends Component {
     );
   }
 
+  componentWillUpdate() {
+    if (this.refs.programCard) {
+      this.refs.programCard.mySlider();
+    }
+  }
+
   render() {
     const { loading, screenIndex, showUpdateForm } = this.props.programStore;
 
@@ -151,7 +158,11 @@ class Programs extends Component {
     }
 
     return (
-      <View>
+      <Animatable.View
+        duration={750}
+        ref='programCard'
+        animation='mySlider'
+      >
         {renderType}
         <DropdownAlert
           translucent
@@ -159,7 +170,7 @@ class Programs extends Component {
           updateStatusBar={false}
           ref={ref => (this.dropdown = ref)}
         />
-      </View>
+      </Animatable.View>
     );
   }
 }

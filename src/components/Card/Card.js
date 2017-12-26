@@ -284,12 +284,6 @@ class Card extends Component {
     );
   }
 
-  showAnimation() {
-    if (this.refs.programCard) {
-      this.refs.programCard.mySlideInRight();
-    }
-  }
-
   render() {
     const {
       // Empty Card
@@ -321,12 +315,8 @@ class Card extends Component {
     if (addCard) return this.renderAddCard(styles, typeAddCard);
 
     return (
-      <Animatable.View
-        duration={500}
-        ref='programCard'
-        animation='mySlideOutLeft'
+      <View
         style={styles.cardContainer}
-        onAnimationEnd={() => this.showAnimation()}
       >
         <TouchableOpacity key={item.name} onPress={onPress} activeOpacity={activeOpacity}>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -365,7 +355,7 @@ class Card extends Component {
             })}
           />
         </View>
-      </Animatable.View>
+      </View>
     );
   }
 }

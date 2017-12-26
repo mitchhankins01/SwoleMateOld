@@ -56,20 +56,34 @@ Animatable.initializeRegistryWithDefinitions({
       translateY: 0
     },
   },
-  mySlideInDown: {
-    from: {
-      translateY: -500
-    },
-    to: {
-      translateY: 0
-    },
-  },
   mySlideOutUp: {
     from: {
       translateY: 0
     },
     to: {
       translateY: -500
+    },
+  },
+  mySlider: {
+    0: {
+      translateY: 0
+    },
+    0.6: {
+      translateY: -500
+    },
+    0.60001: {
+      translateY: 500
+    },
+    1: {
+      translateY: 0
+    },
+  },
+  mySlideInDown: {
+    from: {
+      translateY: -500
+    },
+    to: {
+      translateY: 0
     },
   },
   mySlideInLeft: {
@@ -83,21 +97,25 @@ Animatable.initializeRegistryWithDefinitions({
   mySlideInRight: {
     from: {
       scale: 0.01,
-      translateX: 500
+      opacity: 0.5,
+      translateX: 500,
     },
     to: {
       scale: 1,
-      translateX: 0
+      opacity: 1,
+      translateX: 0,
     },
   },
   mySlideOutLeft: {
     from: {
       scale: 1,
-      translateX: 0
+      opacity: 1,
+      translateX: 0,
     },
     to: {
       scale: 0.01,
-      translateX: -500
+      opacity: 0.5,
+      translateX: -500,
     },
   },
 });

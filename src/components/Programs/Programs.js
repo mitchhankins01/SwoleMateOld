@@ -1,4 +1,4 @@
-import { View, ListView } from 'react-native';
+import { View, ListView, FlatList } from 'react-native';
 import { toJS } from 'mobx';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
@@ -33,23 +33,21 @@ class Programs extends Component {
   }
 
   renderAllPrograms = () => {
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     if (this.props.programStore.length === 0) return <Card empty title='Program' />;
 
     return (
-      <ListView
-        style={{ width: '100%' }}
-        dataSource={ds.cloneWithRows(toJS(this.props.programStore.allPrograms))}
-        renderRow={rowData => {
+      <FlatList
+        data={toJS(this.props.programStore.allPrograms)}
+        renderItem={({ item }) => {
           return (
             <Card
               type='entypo'
+              item={item}
               icon='clipboard'
+              key={item.key}
               activeOpacity={0.2}
-              item={rowData.program}
-              key={rowData.program.key}
-              subtitle={`${rowData.program.frequency} Days - ${rowData.program.level} - ${rowData.program.type}`}
-              onPress={() => this.updateScreenIndex('selectedProgram', null, rowData.program.key)}
+              subtitle={`${item.frequency} Days - ${item.level} - ${item.type}`}
+              onPress={() => this.updateScreenIndex('selectedProgram', null, item.key)}
             />
           );
         }}
@@ -58,24 +56,22 @@ class Programs extends Component {
   }
 
   renderProgramDays = () => {
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     if (this.props.programStore.days.length === 0) return <Card empty title='Workout' />;
 
     return (
-      <ListView
-        style={{ width: '100%', backgroundColor: 'red' }}
-        dataSource={ds.cloneWithRows(toJS(this.props.programStore.days))}
-        renderRow={day => {
+      <FlatList
+        data={toJS(this.props.programStore.days)}
+        renderItem={({ item }) => {
           return (
             <Card
+              item={item}
               type='entypo'
               icon='folder'
+              key={item.key}
               activeOpacity={0.2}
-              item={day}
               info={this.state.info}
-              key={day.key}
-              subtitle={`${day.primaryGroup} - ${day.secondaryGroup}`}
-              onPress={() => this.updateScreenIndex('programExercises', day.key)}
+              subtitle={`${item.primaryGroup} - ${item.secondaryGroup}`}
+              onPress={() => this.updateScreenIndex('programExercises', item.key)}
             />
           );
         }}
@@ -84,29 +80,33 @@ class Programs extends Component {
   }
 
   renderProgramExercises = () => {
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const { exercises, selectedDayKey, allExercises } = this.props.programStore;
+
     return (
-      this.props.programStore.exercises.map(exercise => {
-        if (exercise.day === this.props.programStore.selectedDayKey) {
-          const match = this.props.programStore.allExercises.find(eachExercise => {
-            return eachExercise.key === exercise.exerciseKey;
-          });
-          // Modify match with actual exercise key, to facilitate deleting form program
-          const item = Object.assign({}, match, { key: exercise.key });
-          return (
-            <Card
-              item={item}
-              key={item.key}
-              icon='dumbbell'
-              activeOpacity={1}
-              info={this.state.info}
-              type='material-community'
-              subtitle={`${exercise.sets} Sets - ${exercise.reps} Reps - ${exercise.rest}s Rest`}
-            />
-          );
-        }
-        return null;
-      })
+      <FlatList
+        data={toJS(exercises)}
+        renderItem={({ item }) => {
+          if (item.day === selectedDayKey) {
+            const match = allExercises.find(eachExercise => {
+              return eachExercise.key === item.exerciseKey;
+            });
+            const exercise = Object.assign({}, match, { key: item.key });
+
+            return (
+              <Card
+                item={exercise}
+                key={exercise.key}
+                icon='dumbbell'
+                activeOpacity={1}
+                info={this.state.info}
+                type='material-community'
+                subtitle={`${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest`}
+              />
+            );
+          }
+          return null;
+        }}
+      />
     );
   }
 

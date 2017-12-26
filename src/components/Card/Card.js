@@ -286,7 +286,7 @@ class Card extends Component {
 
   showAnimation() {
     if (this.refs.programCard) {
-      this.refs.programCard.mySlideInUp();
+      this.refs.programCard.mySlideInRight();
     }
   }
 
@@ -324,7 +324,7 @@ class Card extends Component {
       <Animatable.View
         duration={500}
         ref='programCard'
-        animation='mySlideOutUp'
+        animation='mySlideOutLeft'
         style={styles.cardContainer}
         onAnimationEnd={() => this.showAnimation()}
       >

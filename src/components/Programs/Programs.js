@@ -1,9 +1,8 @@
-import { View, ListView, FlatList } from 'react-native';
 import { toJS } from 'mobx';
+import { FlatList } from 'react-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
-
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { Card } from '../Card';
@@ -21,6 +20,12 @@ class Programs extends Component {
     allPrograms: [],
     allExercises: [],
     showAnimation: false,
+  }
+
+  componentWillUpdate() {
+    if (this.refs.programCard) {
+      this.refs.programCard.mySlider(750);
+    }
   }
 
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
@@ -112,12 +117,6 @@ class Programs extends Component {
     );
   }
 
-  componentWillUpdate() {
-    if (this.refs.programCard) {
-      this.refs.programCard.mySlider(750);
-    }
-  }
-
   render() {
     const { loading, screenIndex, showUpdateForm } = this.props.programStore;
 
@@ -159,10 +158,7 @@ class Programs extends Component {
     }
 
     return (
-      <Animatable.View
-        useNativeDriver
-        ref='programCard'
-      >
+      <Animatable.View useNativeDriver ref='programCard'>
         {renderType}
         <DropdownAlert
           translucent

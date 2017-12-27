@@ -84,29 +84,31 @@ Animatable.initializeRegistryWithDefinitions({
   },
   mySlideInDown: {
     from: {
+      scale: 0.01,
       translateY: -500
     },
     to: {
+      scale: 1,
       translateY: 0
     },
   },
   mySlideInLeft: {
     from: {
+      scale: 0.01,
       translateX: -500
     },
     to: {
+      scale: 1,
       translateX: 0
     },
   },
   mySlideInRight: {
     from: {
       scale: 0.01,
-      opacity: 0.5,
       translateX: 500,
     },
     to: {
       scale: 1,
-      opacity: 1,
       translateX: 0,
     },
   },

@@ -148,7 +148,7 @@ class Workout extends Component {
         </Animatable.View>
 
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
-          <Animatable.View style={styles.inputContainer} animation='mySlideInLeft' delay={750}>
+          <Animatable.View style={styles.inputContainer} animation='mySlideInLeft' delay={250}>
             <Text style={styles.inputHeader}>Weight</Text>
             {this.renderTextInput(styles, 'weight')}
             <Picker
@@ -157,7 +157,7 @@ class Workout extends Component {
               setWeight={change => setWeight(change)}
             />
           </Animatable.View>
-          <Animatable.View style={styles.inputContainer} animation='mySlideInRight' delay={1000}>
+          <Animatable.View style={styles.inputContainer} animation='mySlideInRight' delay={250}>
             <Text style={styles.inputHeader}>Reps</Text>
             {this.renderTextInput(styles, 'reps')}
             <Picker
@@ -168,7 +168,7 @@ class Workout extends Component {
           </Animatable.View>
         </View>
 
-        <Animatable.View animation='mySlideInUp' delay={1250}>
+        <Animatable.View animation='mySlideInUp' delay={500}>
           <ActionBar
             workout
             navigation={this.props.navigation}

@@ -8,7 +8,7 @@ const themeStyles = themes.createStyleSheet({
   cardContainer: {
     margin: 15,
     padding: 15,
-    elevation: 1,
+    elevation: 3,
     borderWidth: 2,
     borderRadius: 5,
     shadowOpacity: 0.3,
@@ -21,7 +21,7 @@ const themeStyles = themes.createStyleSheet({
     flex: 1,
     margin: 15,
     padding: 15,
-    elevation: 1,
+    elevation: 3,
     borderWidth: 2,
     borderRadius: 5,
     shadowOpacity: 0.3,

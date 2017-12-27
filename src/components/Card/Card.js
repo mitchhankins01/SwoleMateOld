@@ -261,7 +261,13 @@ class Card extends Component {
           renderItem={({ item, index }) => {
             delay = index === 0 ? 0 : delay += 250;
             return (
-              <Animatable.View useNativeDriver delay={delay} animation='mySlideInUp' duration={750} key={item.title}>
+              <Animatable.View
+                delay={delay}
+                duration={750}
+                useNativeDriver
+                key={item.title}
+                animation='mySlideInUp'
+              >
                 <TouchableOpacity onPress={() => onPressOption(item.onPress)}>
                   <View style={styles.optionButton}>
                     <Icon type='entypo' color='#EDF0F1' name={item.icon} />
@@ -307,9 +313,7 @@ class Card extends Component {
     if (addCard) return this.renderAddCard(styles, typeAddCard);
 
     return (
-      <View
-        style={styles.cardContainer}
-      >
+      <View style={styles.cardContainer}>
         <TouchableOpacity key={item.name} onPress={onPress} activeOpacity={activeOpacity}>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Icon name={icon} type={type} color='#EDF0F1' />

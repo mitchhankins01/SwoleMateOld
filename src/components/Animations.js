@@ -66,15 +66,19 @@ Animatable.initializeRegistryWithDefinitions({
   },
   mySlider: {
     0: {
+      // scale: 1,
       translateY: 0
     },
-    0.6: {
+    0.5: {
+      // scale: 0.5,
       translateY: -500
     },
-    0.60001: {
+    0.50001: {
+      // scale: 0.5,
       translateY: 500
     },
     1: {
+      // scale: 1,
       translateY: 0
     },
   },

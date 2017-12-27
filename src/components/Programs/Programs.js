@@ -43,10 +43,10 @@ class Programs extends Component {
         renderItem={({ item }) => {
           return (
             <Card
-              type='entypo'
               item={item}
-              icon='clipboard'
+              type='entypo'
               key={item.key}
+              icon='clipboard'
               activeOpacity={0.2}
               subtitle={`${item.frequency} Days - ${item.level} - ${item.type}`}
               onPress={() => this.updateScreenIndex('selectedProgram', null, item.key)}
@@ -114,7 +114,7 @@ class Programs extends Component {
 
   componentWillUpdate() {
     if (this.refs.programCard) {
-      this.refs.programCard.mySlider();
+      this.refs.programCard.mySlider(750);
     }
   }
 
@@ -162,9 +162,6 @@ class Programs extends Component {
       <Animatable.View
         useNativeDriver
         ref='programCard'
-        animation='mySlider'
-        duration={this.state.showAnimation ? 750 : 1}
-        onAnimationEnd={() => this.setState({ showAnimation: true })}
       >
         {renderType}
         <DropdownAlert

@@ -129,7 +129,7 @@ class Programs extends Component {
     }
 
     return (
-      <Animatable.View useNativeDriver ref='programCard'>
+      <Animatable.View useNativeDriver ref='programCard' style={{ flex: 1 }}>
         <FlatList
           data={this.findData()}
           onScroll={({ nativeEvent: { contentOffset } }) => {

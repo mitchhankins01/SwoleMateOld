@@ -478,24 +478,18 @@ class ProgramStore {
   }
 
   @action deleteProgramDay = (programInfo, deleteKey) => {
-    const programDaysRef = firebase.firestore()
+    const ref = firebase.firestore()
     .collection('userPrograms')
     .doc(programInfo[0].key)
     .collection('days');
 
     // delete and fix indices other days
-    programDaysRef.doc(deleteKey).delete()
+    ref.doc(deleteKey).delete()
     .then(() => {
-      programDaysRef.orderBy('index').get().then(querySnapshot => {
-        querySnapshot.docChanges.map(updateDay => {
+      ref.orderBy('index').get().then(querySnapshot => {
+        querySnapshot.docChanges.forEach(updateDay => {
           const updateRef = updateDay.doc.ref.path;
           firebase.firestore().doc(updateRef).update({ index: updateDay.newIndex });
-        });
-
-        querySnapshot.forEach(info => {
-          // const day = info.data();
-          // const remainingDaysRef = info.ref.path;
-          // remainingDaysRef.update({ index: 1 });
         });
       });
     })
@@ -505,12 +499,21 @@ class ProgramStore {
   }
 
   @action deleteProgramExercise = (programInfo, deleteKey) => {
-    firebase.firestore()
+    const ref = firebase.firestore()
     .collection('userPrograms')
     .doc(programInfo[0].key)
-    .collection('exercises')
-    .doc(deleteKey)
-    .delete()
+    .collection('exercises');
+
+    // delete and fix indices
+    ref.doc(deleteKey).delete()
+    .then(() => {
+      ref.orderBy('index').get().then(querySnapshot => {
+        querySnapshot.docChanges.forEach(updateExercise => {
+          const updateRef = updateExercise.doc.ref.path;
+          firebase.firestore().doc(updateRef).update({ index: updateExercise.newIndex });
+        });
+      });
+    })
     .catch(error => {
       this.error = error.message;
     });

@@ -38,25 +38,15 @@ class Home extends Component {
      // programStore.addExercises();
    }
 
-   componentDidMount() {
-     /* Check for error from loading FB Programs */
-     this.renderError(this.props.programError);
-   }
-
-   componentWillReceiveProps(nextProps) {
-     // Reset scrollIndex due to navigation
-     if (nextProps.screenIndex !== this.props.updateScreenIndex) {
-       this.setState({ scrollIndex: 0 });
-     }
-   }
-
    componentWillUpdate() {
      const { titleView } = this.refs;
      if (titleView) { titleView.zoomIn(); }
    }
 
-   renderError(error) {
-     if (error) { this.dropdown.alertWithType('error', 'Something went wrong', error); }
+   renderError() {
+     if (this.props.programStore.error !== '') {
+       this.dropdown.alertWithType('info', 'Whoops', this.props.programStore.error);
+     }
    }
 
    renderTitle() {
@@ -83,12 +73,14 @@ class Home extends Component {
       <LinearGradient colors={gradients} style={styles.homeContainer} >
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
         <Header title={this.renderTitle().toString().substring(0, 30)} styles={styles} />
-
+{console.log(this.props.programStore.error)}
         <Greeting styles={styles} />
 
         <Programs navigation={this.props.navigation} />
 
         <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} />
+
+        {this.renderError()}
 
         <DropdownAlert
           translucent
@@ -98,6 +90,7 @@ class Home extends Component {
           titleStyle={styles.dropdownTitle}
           ref={ref => (this.dropdown = ref)}
           messageStyle={styles.dropdownMessage}
+          onClose={() => this.props.programStore.resetError()}
         />
       </LinearGradient>
     );

@@ -3,6 +3,7 @@ import firebase from 'react-native-firebase';
 
 class ProgramStore {
   // Various
+  @observable error = '';
   @observable loading = false;
   @observable scrollIndex = 0;
   @observable selectedDayKey = '';
@@ -39,6 +40,10 @@ class ProgramStore {
     this.updateFormItem = item;
   }
 
+  @action resetError = () => {
+    this.error = '';
+  }
+
   @action fetchPrimaryProgram = () => {
     firebase.firestore().collection('userPrograms')
     .where('author', '==', firebase.auth().currentUser.uid)
@@ -47,7 +52,6 @@ class ProgramStore {
       const primaryProgram = allPrograms.docs.find(each => {
         return each.data().index === 0;
       });
-      console.log(primaryProgram.id);
       this.fetchProgram(primaryProgram.id);
     });
   }
@@ -397,7 +401,7 @@ class ProgramStore {
           .catch(error => {
             this.error = error.message;
           });
-          
+
           // Incase new index 0
           this.fetchPrimaryProgram();
           break;
@@ -482,18 +486,26 @@ class ProgramStore {
     const ref = firebase.firestore()
     .collection('userPrograms');
 
-    ref.doc(deleteKey).delete()
-    .then(() => {
-      ref.orderBy('index').get().then(querySnapshot => {
-        querySnapshot.docChanges.forEach(updateProgram => {
-          const updateRef = updateProgram.doc.ref.path;
-          firebase.firestore().doc(updateRef)
-          .update({ index: updateProgram.newIndex });
+    // Check if last program
+    ref.doc(deleteKey).get()
+    .then(doc => {
+      if (doc.data().index === 0) {
+        this.error = 'Last program can only be edited';
+      } else {
+        ref.doc(deleteKey).delete()
+        .then(() => {
+          ref.orderBy('index').get().then(querySnapshot => {
+            querySnapshot.docChanges.forEach(updateProgram => {
+              const updateRef = updateProgram.doc.ref.path;
+              firebase.firestore().doc(updateRef)
+              .update({ index: updateProgram.newIndex });
+            });
+          });
+        })
+        .catch(error => {
+          this.error = error.message;
         });
-      });
-    })
-    .catch(error => {
-      this.error = error.message;
+      }
     });
   }
 

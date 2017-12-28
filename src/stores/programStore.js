@@ -468,10 +468,19 @@ class ProgramStore {
   }
 
   @action deleteProgram = deleteKey => {
-    firebase.firestore()
-    .collection('userPrograms')
-    .doc(deleteKey)
-    .delete()
+    const ref = firebase.firestore()
+    .collection('userPrograms');
+
+    ref.doc(deleteKey).delete()
+    .then(() => {
+      ref.orderBy('index').get().then(querySnapshot => {
+        querySnapshot.docChanges.forEach(updateProgram => {
+          const updateRef = updateProgram.doc.ref.path;
+          firebase.firestore().doc(updateRef)
+          .update({ index: updateProgram.newIndex });
+        });
+      });
+    })
     .catch(error => {
       this.error = error.message;
     });
@@ -489,7 +498,8 @@ class ProgramStore {
       ref.orderBy('index').get().then(querySnapshot => {
         querySnapshot.docChanges.forEach(updateDay => {
           const updateRef = updateDay.doc.ref.path;
-          firebase.firestore().doc(updateRef).update({ index: updateDay.newIndex });
+          firebase.firestore().doc(updateRef)
+          .update({ index: updateDay.newIndex });
         });
       });
     })
@@ -510,7 +520,8 @@ class ProgramStore {
       ref.orderBy('index').get().then(querySnapshot => {
         querySnapshot.docChanges.forEach(updateExercise => {
           const updateRef = updateExercise.doc.ref.path;
-          firebase.firestore().doc(updateRef).update({ index: updateExercise.newIndex });
+          firebase.firestore().doc(updateRef)
+          .update({ index: updateExercise.newIndex });
         });
       });
     })

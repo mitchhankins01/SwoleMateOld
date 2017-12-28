@@ -22,7 +22,7 @@ class Card extends Component {
   onPressDelete() {
     const { selectedDeleteKey } = this.state;
     const { programStore: {
-      screenIndex, deleteProgram, deleteProgramDay, deleteProgramExercise
+      screenIndex, info, deleteProgram, deleteProgramDay, deleteProgramExercise
     } } = this.props;
 
     switch (screenIndex) {
@@ -31,9 +31,9 @@ class Card extends Component {
         return deleteProgram(selectedDeleteKey);
       case 'primaryProgram':
       case 'selectedProgram':
-        return deleteProgramDay(selectedDeleteKey);
+        return deleteProgramDay(info, selectedDeleteKey);
       case 'programExercises':
-        return deleteProgramExercise(selectedDeleteKey);
+        return deleteProgramExercise(info, selectedDeleteKey);
     }
   }
 

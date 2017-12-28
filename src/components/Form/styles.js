@@ -44,7 +44,6 @@ const themeStyles = themes.createStyleSheet({
     height: 30,
     borderRadius: 5,
     alignSelf: 'center',
-    alignItems: 'center',
     marginBottom: 20,
     justifyContent: 'center',
     width: DEVICE_WIDTH * 0.6,
@@ -53,12 +52,12 @@ const themeStyles = themes.createStyleSheet({
   dropdownContainerText: {
     fontSize: 14,
     color: '#EDF0F1',
+    paddingVertical: 10,
+    paddingHorizontal: 50,
     fontFamily: 'Exo-Medium',
     backgroundColor: 'transparent',
   },
   dropdownList: {
-    marginLeft: -5,
-    justifyContent: 'center',
     backgroundColor: '$secondaryColor',
   },
   cardDivider: {

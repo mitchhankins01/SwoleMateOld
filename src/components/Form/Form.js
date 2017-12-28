@@ -2,7 +2,7 @@ import t from 'tcomb-form-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Button } from 'react-native-elements';
-import { View, ScrollView } from 'react-native';
+import { View, FlatList } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -95,26 +95,27 @@ class Form extends Component {
           dropdownTextStyle={styles.dropdownContainerText}
           onSelect={(index, value) => this.setState({ selectedFilterGroup: value })}
         />
-        <ScrollView style={{ height: 300 }}>
-          {exercises().map(exercise => {
+        <FlatList
+          data={exercises()}
+          renderItem={({ item }) => {
             return (
               <Button
                 raised
                 transparent
-                key={exercise.key}
-                title={exercise.name}
+                key={item.key}
+                title={item.name}
                 fontFamily='Exo-Regular'
-                buttonStyle={{ height: 45, marginVertical: 3, backgroundColor: 'transparent' }}
+                buttonStyle={{ height: 45, backgroundColor: 'transparent', paddingVertical: 10 }}
                 containerViewStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start' }}
                 onPress={() => this.setState({
                   showExerciseList: false,
-                  selectedExerciseKey: exercise.key,
-                  selectedExerciseName: exercise.name,
+                  selectedExerciseKey: item.key,
+                  selectedExerciseName: item.name,
                 })}
               />
             );
-          })}
-        </ScrollView>
+          }}
+        />
       </View>
     );
   }
@@ -133,7 +134,7 @@ class Form extends Component {
             title={selectedExerciseName || 'Select Exercise'}
             icon={{ name: 'dumbbell', type: 'material-community' }}
             containerViewStyle={{ backgroundColor: 'transparent' }}
-            buttonStyle={{ marginBottom: 10, backgroundColor: 'transparent' }}
+            buttonStyle={{ backgroundColor: 'transparent', padding: 15 }}
             onPress={() => this.setState({ showExerciseList: !showExerciseList })}
           />
         </Animatable.View>
@@ -179,7 +180,7 @@ class Form extends Component {
           <Entypo
             size={25}
             name={'back'}
-            style={{ color: '#EDF0F1' }}
+            style={{ color: '#EDF0F1', padding: 10, margin: -10 }}
             underlayColor={'transparent'}
             onPress={() => {
               programStore.toggleShowUpdateForm(false);
@@ -189,7 +190,7 @@ class Form extends Component {
           <Entypo
             size={25}
             name={'check'}
-            style={{ color: '#EDF0F1' }}
+            style={{ color: '#EDF0F1', padding: 10, margin: -10 }}
             underlayColor={'transparent'}
             onPress={() => this.onSavePressed()}
           />

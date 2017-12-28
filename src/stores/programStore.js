@@ -40,10 +40,13 @@ class ProgramStore {
   }
 
   @action fetchPrimaryProgram = () => {
-    firebase.firestore().collection('users')
-    .doc(firebase.auth().currentUser.uid)
-    .onSnapshot(userDoc => {
-      this.fetchProgram(userDoc.data().primaryProgram);
+    firebase.firestore().collection('userPrograms')
+    .where('author', '==', firebase.auth().currentUser.uid)
+    .onSnapshot(allPrograms => {
+      const primaryProgram = allPrograms.docs.find(each => {
+        return each.data().index === 0;
+      });
+      this.fetchProgram(primaryProgram.id);
     });
   }
 

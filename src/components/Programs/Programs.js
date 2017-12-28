@@ -138,6 +138,8 @@ class Programs extends Component {
                 });
                 data = { ...match, key: item.key, index: item.index };
               } else return null;
+            } else if (screenIndex === 'allPrograms' && item.index === 0) {
+              data = { ...item, name: `${item.name} (Default)` };
             } else {
               data = item;
             }

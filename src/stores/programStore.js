@@ -42,10 +42,12 @@ class ProgramStore {
   @action fetchPrimaryProgram = () => {
     firebase.firestore().collection('userPrograms')
     .where('author', '==', firebase.auth().currentUser.uid)
-    .onSnapshot(allPrograms => {
+    .get()
+    .then(allPrograms => {
       const primaryProgram = allPrograms.docs.find(each => {
         return each.data().index === 0;
       });
+      console.log(primaryProgram.id);
       this.fetchProgram(primaryProgram.id);
     });
   }
@@ -285,6 +287,9 @@ class ProgramStore {
           .catch(error => {
             this.error = error.message;
           });
+
+          // Incase new index 0
+          this.fetchPrimaryProgram();
           break;
         }
       case 'primaryProgram':
@@ -392,6 +397,9 @@ class ProgramStore {
           .catch(error => {
             this.error = error.message;
           });
+          
+          // Incase new index 0
+          this.fetchPrimaryProgram();
           break;
         }
       case 'primaryProgram':

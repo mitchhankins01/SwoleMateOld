@@ -331,6 +331,16 @@ class Card extends Component {
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           <Entypo
             size={25}
+            name={'arrow-up'}
+            style={styles.cardIcon}
+            underlayColor={'transparent'}
+            onPress={() => this.setState({
+              selectedDeleteKey: item.key,
+              warningVisible: !this.state.warningVisible,
+            })}
+          />
+          <Entypo
+            size={25}
             name={'edit'}
             style={styles.cardIcon}
             underlayColor={'transparent'}
@@ -343,6 +353,16 @@ class Card extends Component {
             ref='deleteButton'
             size={22}
             name={'trash'}
+            style={styles.cardIcon}
+            underlayColor={'transparent'}
+            onPress={() => this.setState({
+              selectedDeleteKey: item.key,
+              warningVisible: !this.state.warningVisible,
+            })}
+          />
+          <Entypo
+            size={25}
+            name={'arrow-down'}
             style={styles.cardIcon}
             underlayColor={'transparent'}
             onPress={() => this.setState({

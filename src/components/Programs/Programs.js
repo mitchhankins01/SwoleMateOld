@@ -127,6 +127,13 @@ class Programs extends Component {
       );
     }
 
+    if (this.findData().length === 0) {
+      const title = this.props.programStore.screenIndex === 'allPrograms'
+      ? 'Program' : 'Workout';
+
+      return <Card emptyCard title={title} />;
+    }
+
     return (
       <Animatable.View useNativeDriver ref='programCard' style={{ flex: 1 }}>
         <FlatList
@@ -144,7 +151,7 @@ class Programs extends Component {
                   return eachExercise.key === item.exerciseKey;
                 });
                 data = { ...match, key: item.key, index: item.index };
-              } else return;
+              } else return <Card emptyCard title='Exercise' />;
             } else {
               data = item;
             }

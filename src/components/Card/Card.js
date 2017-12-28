@@ -285,7 +285,7 @@ class Card extends Component {
   render() {
     const {
       // Empty Card
-      empty,
+      emptyCard,
       title,
       // New Card
       addCard,
@@ -308,10 +308,10 @@ class Card extends Component {
 
     if (logCard) return this.renderLogCard(styles);
     if (updateCard) return this.renderUpdateCard(styles);
-    if (empty) return this.renderEmptyCard(styles, title);
     if (settingsCard) return this.renderSettingsCard(styles);
     if (addCard) return this.renderAddCard(styles, typeAddCard);
 
+    if (emptyCard) return this.renderEmptyCard(styles, title);
     return (
       <View style={styles.cardContainer}>
         <TouchableOpacity key={item.name} onPress={onPress} activeOpacity={activeOpacity}>

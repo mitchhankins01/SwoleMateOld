@@ -75,9 +75,9 @@ class Home extends Component {
     const styles = themeStyles[this.props.userStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
-    if (this.props.programStore.loading) {
-      this.dropdown.alertWithType('info', "I'll be back", "We're Loading");
-    }
+    // if (this.props.programStore.loading) {
+    //   this.dropdown.alertWithType('info', "I'll be back", "We're Loading");
+    // }
 
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >

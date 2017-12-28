@@ -114,7 +114,7 @@ class WorkoutStore {
       // increment by one?
       this.fetchExerciseLog(this.exerciseList[this.exerciseIndex]);
     }
-    
+
     // Set target reps
     this.reps = this.exerciseList[this.exerciseIndex].reps;
 
@@ -278,6 +278,7 @@ class WorkoutStore {
 
     const logsRef = firebase.firestore()
     .collection('userLogs')
+    .orderBy('completed', 'desc')
     .where('author', '==', firebase.auth().currentUser.uid);
 
     logsRef.get()

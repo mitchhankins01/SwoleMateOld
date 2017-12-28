@@ -63,8 +63,8 @@ class ProgramStore {
       });
       this.loading = false;
     });
-
-    programRef.collection('days').onSnapshot(querySnapshot => {
+//.orderBy('index')
+    programRef.collection('days').orderBy('index').onSnapshot(querySnapshot => {
       this.loading = true;
       this.days.length = 0;
       querySnapshot.forEach(day => {
@@ -74,7 +74,7 @@ class ProgramStore {
       this.loading = false;
     });
 
-    programRef.collection('exercises').onSnapshot(querySnapshot => {
+    programRef.collection('exercises').orderBy('index').onSnapshot(querySnapshot => {
       this.loading = true;
       this.exercises.length = 0;
       querySnapshot.forEach(exercise => {
@@ -88,6 +88,7 @@ class ProgramStore {
   @action fetchAllPrograms = () => {
     const allProgramsRef = firebase.firestore()
     .collection('userPrograms')
+    .orderBy('index')
     .where('author', '==', firebase.auth().currentUser.uid);
 
     allProgramsRef.onSnapshot(querySnapshot => {
@@ -128,67 +129,121 @@ class ProgramStore {
   }
 
   @action addProgram = values => {
-    firebase.firestore().collection('userPrograms').add({
-      type: values.type,
-      name: values.name,
-      level: values.level,
-      frequency: values.frequency,
-      description: values.description,
-      author: firebase.auth().currentUser.uid,
-    })
-    .then(() => {
-      this.updateScreenIndex('allPrograms');
-    })
-    .catch(error => {
-      this.error = error.message;
+    let index = 0;
+
+    firebase.firestore()
+    .collection('userPrograms')
+    .get()
+    .then(querySnapshot => {
+      if (querySnapshot.empty) {
+        index = 0;
+      } else {
+        querySnapshot.forEach(program => {
+          const data = program.data();
+          if (data.index >= index) {
+            index = Number(data.index) + 1;
+          }
+        });
+      }
+
+      firebase.firestore().collection('userPrograms').add({
+        index,
+        type: values.type,
+        name: values.name,
+        level: values.level,
+        frequency: values.frequency,
+        description: values.description,
+        author: firebase.auth().currentUser.uid,
+      })
+      .then(() => {
+        this.updateScreenIndex('allPrograms');
+      })
+      .catch(error => {
+        this.error = error.message;
+      });
     });
   }
 
   @action addProgramDay = (values, programInfo) => {
     // IMPLEMENT does nto need programinfo, use this.into instead like in update
+
+    let index = 0;
+
     const ref = firebase.firestore()
     .collection('userPrograms')
     .doc(programInfo[0].key)
-    .collection('days')
-    .doc();
+    .collection('days');
 
-    ref.set({
-      key: ref.id,
-      name: values.name,
-      description: values.description,
-      primaryGroup: values.primaryGroup,
-      secondaryGroup: values.secondaryGroup,
-      author: firebase.auth().currentUser.uid,
-    })
-    .then(() => {
-      this.updateScreenIndex('selectedProgram');
-    })
-    .catch(error => {
-      this.error = error.message;
+    ref.get()
+    .then(querySnapshot => {
+      if (querySnapshot.empty) {
+        index = 0;
+      } else {
+        querySnapshot.forEach(day => {
+          const data = day.data();
+          if (data.index >= index) {
+            index = Number(data.index) + 1;
+          }
+        });
+      }
+
+      const setRef = ref.doc();
+      setRef.set({
+        index,
+        key: setRef.id,
+        name: values.name,
+        description: values.description,
+        primaryGroup: values.primaryGroup,
+        secondaryGroup: values.secondaryGroup,
+        author: firebase.auth().currentUser.uid,
+      })
+      .then(() => {
+        this.updateScreenIndex('selectedProgram');
+      })
+      .catch(error => {
+        this.error = error.message;
+      });
     });
   }
 
   @action addProgramExercise = (values, programInfo, selectedDayKey, selectedExerciseKey) => {
+    let index = 0;
+
     const ref = firebase.firestore()
     .collection('userPrograms')
     .doc(programInfo[0].key)
-    .collection('exercises')
-    .doc();
+    .collection('exercises');
 
-    ref.set({
-      key: ref.id,
-      sets: values.sets,
-      reps: values.reps,
-      rest: values.rest,
-      day: selectedDayKey,
-      exerciseKey: selectedExerciseKey,
-      author: firebase.auth().currentUser.uid,
-    })
-    .then(() => {
-      this.updateScreenIndex('programExercises');
-    })
-    .catch(error => {
-      this.error = error.message;
+    ref.get()
+    .then(querySnapshot => {
+      if (querySnapshot.empty) {
+        index = 0;
+      } else {
+        querySnapshot.forEach(day => {
+          const data = day.data();
+          if (data.index >= index) {
+            index = Number(data.index) + 1;
+          }
+        });
+      }
+
+      const setRef = ref.doc();
+      setRef.set({
+        index,
+        key: setRef.id,
+        sets: values.sets,
+        reps: values.reps,
+        rest: values.rest,
+        day: selectedDayKey,
+        exerciseKey: selectedExerciseKey,
+        author: firebase.auth().currentUser.uid,
+      })
+      .then(() => {
+        this.updateScreenIndex('programExercises');
+      })
+      .catch(error => {
+        this.error = error.message;
+      });
     });
   }
 

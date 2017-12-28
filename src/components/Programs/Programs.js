@@ -146,7 +146,6 @@ class Programs extends Component {
               <Card
                 item={data}
                 key={data.key}
-                info={this.state.info}
                 type={this.findContent(item).iconType}
                 icon={this.findContent(item).iconName}
                 onPress={this.findContent(item).onPress}

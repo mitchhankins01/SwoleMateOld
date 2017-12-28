@@ -165,14 +165,14 @@ class ProgramStore {
     });
   }
 
-  @action addProgramDay = (values, programInfo) => {
+  @action addProgramDay = values => {
     // IMPLEMENT does nto need programinfo, use this.into instead like in update
 
     let index = 0;
 
     const ref = firebase.firestore()
     .collection('userPrograms')
-    .doc(programInfo[0].key)
+    .doc(this.info[0].key)
     .collection('days');
 
     ref.get()
@@ -207,12 +207,12 @@ class ProgramStore {
     });
   }
 
-  @action addProgramExercise = (values, programInfo, selectedDayKey, selectedExerciseKey) => {
+  @action addProgramExercise = (values, selectedDayKey, selectedExerciseKey) => {
     let index = 0;
 
     const ref = firebase.firestore()
     .collection('userPrograms')
-    .doc(programInfo[0].key)
+    .doc(this.info[0].key)
     .collection('exercises');
 
     ref.get()
@@ -486,10 +486,10 @@ class ProgramStore {
     });
   }
 
-  @action deleteProgramDay = (programInfo, deleteKey) => {
+  @action deleteProgramDay = deleteKey => {
     const ref = firebase.firestore()
     .collection('userPrograms')
-    .doc(programInfo[0].key)
+    .doc(this.info[0].key)
     .collection('days');
 
     // delete and fix indices other days
@@ -508,10 +508,10 @@ class ProgramStore {
     });
   }
 
-  @action deleteProgramExercise = (programInfo, deleteKey) => {
+  @action deleteProgramExercise = deleteKey => {
     const ref = firebase.firestore()
     .collection('userPrograms')
-    .doc(programInfo[0].key)
+    .doc(this.info[0].key)
     .collection('exercises');
 
     // delete and fix indices

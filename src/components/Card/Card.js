@@ -22,7 +22,7 @@ class Card extends Component {
   onPressDelete() {
     const { selectedDeleteKey } = this.state;
     const { programStore: {
-      screenIndex, info, deleteProgram, deleteProgramDay, deleteProgramExercise
+      screenIndex, deleteProgram, deleteProgramDay, deleteProgramExercise
     } } = this.props;
 
     switch (screenIndex) {
@@ -31,9 +31,9 @@ class Card extends Component {
         return deleteProgram(selectedDeleteKey);
       case 'primaryProgram':
       case 'selectedProgram':
-        return deleteProgramDay(info, selectedDeleteKey);
+        return deleteProgramDay(selectedDeleteKey);
       case 'programExercises':
-        return deleteProgramExercise(info, selectedDeleteKey);
+        return deleteProgramExercise(selectedDeleteKey);
     }
   }
 
@@ -82,7 +82,7 @@ class Card extends Component {
   }
 
   renderAddCard(styles) {
-    const { info, programStore: { screenIndex } } = this.props;
+    const { programStore: { screenIndex } } = this.props;
 
     const getTitle = () => {
       switch (screenIndex) {
@@ -94,16 +94,14 @@ class Card extends Component {
     };
 
     const getForm = () => {
-      const { allExercises } = this.props;
-
       switch (screenIndex) {
         default: break;
         case 'addProgram':
-          return <Form info={info} formType='addProgram' />;
+          return <Form formType='addProgram' />;
         case 'addProgramDay':
-          return <Form info={info} formType='addProgramDay' />;
+          return <Form formType='addProgramDay' />;
         case 'addProgramExercise':
-          return <Form info={info} formType='addProgramExercise' allExercises={allExercises} />;
+          return <Form formType='addProgramExercise' />;
       }
     };
 

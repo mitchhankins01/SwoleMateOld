@@ -88,28 +88,6 @@ class Programs extends Component {
         iconType = 'material-community';
         subtitle = `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest`;
         break;
-      case 'addProgram':
-        return (
-          <Animatable.View useNativeDriver ref='programCard'>
-            <Card addCard typeAddCard='addProgram' info={this.state.info} />
-          </Animatable.View>
-        );
-      case 'addProgramDay':
-        return (
-          <Animatable.View useNativeDriver ref='programCard'>
-            <Card addCard typeAddCard='addProgramDay' info={this.state.info} />
-          </Animatable.View>
-        );
-      case 'addProgramExercise':
-        return (
-          <Animatable.View useNativeDriver ref='programCard'>
-            <Card
-              addCard
-              info={this.state.info}
-              typeAddCard='addProgramExercise'
-            />
-          </Animatable.View>
-        );
     }
 
     return { onPress, iconName, iconType, subtitle, activeOpacity };
@@ -121,14 +99,15 @@ class Programs extends Component {
     } = this.props.programStore;
 
     if (loading) return null;
-    if (showUpdateForm) {
-      return (
-        <Card updateCard />
-      );
+    if (showUpdateForm) return <Card updateCard />;
+    if (screenIndex === 'addProgram' ||
+        screenIndex === 'addProgramDay' ||
+        screenIndex === 'addProgramExercise') {
+      return <Card addCard info={this.state.info} />;
     }
 
     if (this.findData().length === 0) {
-      const title = this.props.programStore.screenIndex === 'allPrograms'
+      const title = screenIndex === 'allPrograms'
       ? 'Program' : 'Workout';
 
       return <Card emptyCard title={title} />;

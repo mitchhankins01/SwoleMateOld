@@ -81,11 +81,11 @@ class Card extends Component {
     );
   }
 
-  renderAddCard(styles, typeAddCard) {
-    const { info } = this.props;
+  renderAddCard(styles) {
+    const { info, programStore: { screenIndex } } = this.props;
 
     const getTitle = () => {
-      switch (typeAddCard) {
+      switch (screenIndex) {
         default: break;
         case 'addProgram': return 'Add Program';
         case 'addProgramDay': return 'Add Workout';
@@ -96,7 +96,7 @@ class Card extends Component {
     const getForm = () => {
       const { allExercises } = this.props;
 
-      switch (typeAddCard) {
+      switch (screenIndex) {
         default: break;
         case 'addProgram':
           return <Form info={info} formType='addProgram' />;

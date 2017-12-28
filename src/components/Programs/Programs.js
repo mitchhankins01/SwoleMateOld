@@ -109,8 +109,15 @@ class Programs extends Component {
     if (this.findData().length === 0) {
       const title = screenIndex === 'allPrograms'
       ? 'Program' : 'Workout';
-
       return <Card emptyCard title={title} />;
+    }
+    if (screenIndex === 'programExercises') {
+      const exercisesForThisDay = this.findData().filter(each => {
+        return each.day === selectedDayKey;
+      });
+      if (exercisesForThisDay.length === 0) {
+        return <Card emptyCard title='Exercise' />;
+      }
     }
 
     return (
@@ -130,7 +137,7 @@ class Programs extends Component {
                   return eachExercise.key === item.exerciseKey;
                 });
                 data = { ...match, key: item.key, index: item.index };
-              } else return <Card emptyCard title='Exercise' />;
+              } else return null;
             } else {
               data = item;
             }

@@ -3,7 +3,6 @@ import { FlatList } from 'react-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import { Card } from '../Card';
 
@@ -26,7 +25,7 @@ class Programs extends Component {
     const { programCard } = this.refs;
 
     if (programCard) {
-      programCard.zoomIn(750);
+      programCard.mySlider(750);
     }
   }
 

@@ -97,7 +97,7 @@ class Programs extends Component {
             const match = allExercises.find(eachExercise => {
               return eachExercise.key === item.exerciseKey;
             });
-            const exercise = Object.assign({}, match, { key: item.key });
+            const exercise = Object.assign({}, match, { key: item.key, index: item.index });
 
             return (
               <Card

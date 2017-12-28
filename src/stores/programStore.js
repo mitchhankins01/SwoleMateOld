@@ -56,20 +56,20 @@ class ProgramStore {
       this.loading = true;
       this.info.length = 0;
       const {
-        author, frequency, description, level, name, type
+        author, frequency, description, level, name, type, index
       } = thisProgram.data();
       this.info.push({
-        author, frequency, description, level, name, type, key: thisProgram.id
+        author, frequency, description, level, name, type, key: thisProgram.id, index
       });
       this.loading = false;
     });
-//.orderBy('index')
+
     programRef.collection('days').orderBy('index').onSnapshot(querySnapshot => {
       this.loading = true;
       this.days.length = 0;
       querySnapshot.forEach(day => {
-        const { author, description, key, name, primaryGroup, secondaryGroup } = day.data();
-        this.days.push({ author, description, key, name, primaryGroup, secondaryGroup });
+        const { author, description, key, name, primaryGroup, secondaryGroup, index } = day.data();
+        this.days.push({ author, description, key, name, primaryGroup, secondaryGroup, index });
       });
       this.loading = false;
     });
@@ -78,8 +78,8 @@ class ProgramStore {
       this.loading = true;
       this.exercises.length = 0;
       querySnapshot.forEach(exercise => {
-        const { author, day, exerciseKey, key, reps, rest, sets } = exercise.data();
-        this.exercises.push({ author, day, exerciseKey, key, reps, rest, sets });
+        const { author, day, exerciseKey, key, reps, rest, sets, index } = exercise.data();
+        this.exercises.push({ author, day, exerciseKey, key, reps, rest, sets, index });
       });
       this.loading = false;
     });
@@ -96,12 +96,13 @@ class ProgramStore {
       this.allPrograms.length = 0;
       querySnapshot.forEach(program => {
         const {
-          author, frequency, description, level, name, type
+          author, frequency, description, level, name, type, index
         } = program.data();
 
         this.allPrograms.push({
           type,
           name,
+          index,
           level,
           author,
           program,
@@ -245,6 +246,90 @@ class ProgramStore {
         this.error = error.message;
       });
     });
+  }
+
+  @action toggleUp = item => {
+    switch (this.screenIndex) {
+      default: return;
+      case 'programExercises':
+        {
+          // I the requested to edit item is first one
+          if (item.index === 0) return;
+          // Obtain target and use it to get the preceding element
+          const target = this.exercises.find(exercise => {
+            return exercise.key === item.key;
+          });
+          const subTarget = this.exercises[target.index - 1];
+
+          const targetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(this.info[0].key)
+          .collection('exercises')
+          .doc(target.key);
+          const subTargetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(this.info[0].key)
+          .collection('exercises')
+          .doc(subTarget.key);
+
+          targetRef.update({
+            index: Number(target.index) - 1
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+
+          subTargetRef.update({
+            index: Number(target.index)
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+          break;
+        }
+    }
+  }
+
+  @action toggleDown = item => {
+    switch (this.screenIndex) {
+      default: return;
+      case 'programExercises':
+        {
+          // I the requested to edit item is the last one
+          if (item.index >= this.exercises.length - 1) return;
+          // Obtain target and use it to get the following element
+          const target = this.exercises.find(exercise => {
+            return exercise.key === item.key;
+          });
+          const subTarget = this.exercises[target.index + 1];
+
+          const targetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(this.info[0].key)
+          .collection('exercises')
+          .doc(target.key);
+          const subTargetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(this.info[0].key)
+          .collection('exercises')
+          .doc(subTarget.key);
+
+          targetRef.update({
+            index: Number(target.index) + 1
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+
+          subTargetRef.update({
+            index: Number(target.index)
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+          break;
+        }
+    }
   }
 
   @action deleteProgram = deleteKey => {

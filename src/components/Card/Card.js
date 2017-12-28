@@ -334,10 +334,7 @@ class Card extends Component {
             name={'arrow-up'}
             style={styles.cardIcon}
             underlayColor={'transparent'}
-            onPress={() => this.setState({
-              selectedDeleteKey: item.key,
-              warningVisible: !this.state.warningVisible,
-            })}
+            onPress={() => this.props.programStore.toggleUp(item)}
           />
           <Entypo
             size={25}
@@ -365,10 +362,7 @@ class Card extends Component {
             name={'arrow-down'}
             style={styles.cardIcon}
             underlayColor={'transparent'}
-            onPress={() => this.setState({
-              selectedDeleteKey: item.key,
-              warningVisible: !this.state.warningVisible,
-            })}
+            onPress={() => this.props.programStore.toggleDown(item)}
           />
         </View>
       </View>

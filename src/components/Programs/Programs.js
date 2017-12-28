@@ -23,10 +23,8 @@ class Programs extends Component {
   }
 
   componentWillUpdate() {
-    const { programCard } = this.refs;
-
-    if (programCard) {
-      programCard.zoomIn(750);
+    if (this.refs.programCard) {
+      this.refs.programCard.mySlider(750);
     }
   }
 
@@ -93,12 +91,24 @@ class Programs extends Component {
         return (
           <Animatable.View useNativeDriver ref='programCard'>
             <Card addCard typeAddCard='addProgram' info={this.state.info} />
+            <DropdownAlert
+              translucent
+              closeInterval={2000}
+              updateStatusBar={false}
+              ref={ref => (this.dropdown = ref)}
+            />
           </Animatable.View>
         );
       case 'addProgramDay':
         return (
           <Animatable.View useNativeDriver ref='programCard'>
             <Card addCard typeAddCard='addProgramDay' info={this.state.info} />
+            <DropdownAlert
+              translucent
+              closeInterval={2000}
+              updateStatusBar={false}
+              ref={ref => (this.dropdown = ref)}
+            />
           </Animatable.View>
         );
       case 'addProgramExercise':
@@ -109,6 +119,12 @@ class Programs extends Component {
               info={this.state.info}
               typeAddCard='addProgramExercise'
             />
+            <DropdownAlert
+              translucent
+              closeInterval={2000}
+              updateStatusBar={false}
+              ref={ref => (this.dropdown = ref)}
+            />
           </Animatable.View>
         );
     }
@@ -117,9 +133,7 @@ class Programs extends Component {
   }
 
   render() {
-    const {
-      loading, showUpdateForm, screenIndex, allExercises, selectedDayKey
-    } = this.props.programStore;
+    const { loading, showUpdateForm, screenIndex, allExercises } = this.props.programStore;
 
     if (loading) return null;
     if (showUpdateForm) {
@@ -129,42 +143,40 @@ class Programs extends Component {
     }
 
     return (
-      <Animatable.View useNativeDriver ref='programCard'>
-        <FlatList
-          data={this.findData()}
-          onScroll={({ nativeEvent: { contentOffset } }) => {
-            if (!showUpdateForm) {
-              this.props.programStore.scrollIndex = contentOffset.y;
-            }
-          }}
-          renderItem={({ item }) => {
-            let data;
-            if (screenIndex === 'programExercises') {
-              if (item.day === selectedDayKey) {
-                const match = allExercises.find(eachExercise => {
-                  return eachExercise.key === item.exerciseKey;
-                });
-                data = { ...match, key: item.key, index: item.index };
-              } else return;
-            } else {
-              data = item;
-            }
+      <FlatList
+        data={this.findData()}
+        onScroll={event => {
+          console.log(event);
+          if (!this.props.programStore.showUpdateForm) {
+            this.props.programStore.scrollIndex = event.nativeEvent.contentOffset.y;
+          }
+        }}
+        renderItem={({ item }) => {
+          let data;
+          if (screenIndex === 'programExercises') {
+            const match = allExercises.find(eachExercise => {
+              return eachExercise.key === item.exerciseKey;
+            });
 
-            return (
-              <Card
-                item={data}
-                key={data.key}
-                info={this.state.info}
-                type={this.findContent(item).iconType}
-                icon={this.findContent(item).iconName}
-                onPress={this.findContent(item).onPress}
-                subtitle={this.findContent(item).subtitle}
-                activeOpacity={this.findContent(item).activeOpacity}
-              />
-            );
-          }}
-        />
-      </Animatable.View>
+            data = { ...match, key: item.key, index: item.index };
+          } else {
+            data = item;
+          }
+
+          return (
+            <Card
+              item={data}
+              key={data.key}
+              info={this.state.info}
+              type={this.findContent(item).iconType}
+              icon={this.findContent(item).iconName}
+              onPress={this.findContent(item).onPress}
+              subtitle={this.findContent(item).subtitle}
+              activeOpacity={this.findContent(item).activeOpacity}
+            />
+          );
+        }}
+      />
     );
   }
 }

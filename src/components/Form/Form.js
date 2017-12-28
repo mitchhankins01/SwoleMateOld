@@ -30,6 +30,7 @@ class Form extends Component {
       updateProgramDayForm,
       selectExerciseButton,
       addProgramExerciseForm,
+      updateProgramExerciseForm
     } = this.refs;
 
     if (showExerciseList) return this.setState({ showExerciseList: false });
@@ -43,6 +44,7 @@ class Form extends Component {
         case 'addProgramExercise': return addProgramExerciseForm.getValue();
         case 'updateProgram': return updateProgramForm.getValue();
         case 'updateProgramDay': return updateProgramDayForm.getValue();
+        case 'updateProgramExercise': return updateProgramExerciseForm.getValue();
       }
     };
 
@@ -62,6 +64,8 @@ class Form extends Component {
           return programStore.updateProgram(getValue());
         case 'updateProgramDay':
           return programStore.updateProgramDay(getValue());
+        case 'updateProgramExercise':
+          return programStore.updateProgramExercise(getValue());
       }
     }
   }
@@ -165,6 +169,14 @@ class Form extends Component {
               type={newProgramDay}
               options={dayOptions}
               ref='updateProgramDayForm'
+              value={this.props.programStore.updateFormItem}
+            />
+          );
+        case 'updateProgramExercise':
+          return (
+            <TForm
+              type={newProgramExercise}
+              ref='updateProgramExerciseForm'
               value={this.props.programStore.updateFormItem}
             />
           );

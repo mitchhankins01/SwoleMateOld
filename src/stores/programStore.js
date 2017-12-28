@@ -593,6 +593,25 @@ class ProgramStore {
     });
   }
 
+  @action updateProgramExercise = values => {
+    const ref = firebase.firestore()
+    .collection('userPrograms')
+    .doc(this.info[0].key)
+    .collection('exercises')
+    .doc(this.updateFormItem.key);
+
+    ref.update({
+      reps: values.reps,
+      sets: values.sets,
+      rest: values.rest,
+    })
+    .then(() => {
+      this.toggleShowUpdateForm(false);
+    })
+    .catch(error => {
+      this.error = error.message;
+    });
+  }
 
   @action addExercises = () => {
     exercises.map(each => {

@@ -136,7 +136,14 @@ class Programs extends Component {
                 const match = allExercises.find(eachExercise => {
                   return eachExercise.key === item.exerciseKey;
                 });
-                data = { ...match, key: item.key, index: item.index };
+                data = {
+                  ...match, 
+                  key: item.key,
+                  rest: item.rest,
+                  reps: item.reps,
+                  sets: item.sets,
+                  index: item.index,
+                };
               } else return null;
             } else if (screenIndex === 'allPrograms' && item.index === 0) {
               data = { ...item, name: `${item.name} (Default)` };

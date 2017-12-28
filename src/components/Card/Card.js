@@ -128,6 +128,7 @@ class Card extends Component {
         case 'allPrograms': return 'Edit Program';
         case 'primaryProgram':
         case 'selectedProgram': return 'Edit Workout';
+        case 'programExercises': return 'Edit Exercise';
       }
     };
 
@@ -139,6 +140,8 @@ class Card extends Component {
         case 'primaryProgram':
         case 'selectedProgram':
           return <Form formType='updateProgramDay' />;
+        case 'programExercises':
+          return <Form formType='updateProgramExercise' />;
       }
     };
 

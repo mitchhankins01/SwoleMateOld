@@ -125,7 +125,7 @@ class Workout extends Component {
     if (workoutComplete) {
       return <Overview gradients={gradients} navigation={this.props.navigation} />;
     }
-
+    
     return (
       <LinearGradient colors={gradients} style={styles.container} >
 
@@ -213,15 +213,15 @@ class Workout extends Component {
           )
         : null}
         <DropdownAlert
-          zIndex={5}
           translucent
+          zIndex={5}
+          closeInterval={3000}
           updateStatusBar={false}
           infoColor={styles.$tertiaryColor}
           titleStyle={styles.dropdownTitle}
           ref={ref => (this.dropdown = ref)}
           messageStyle={styles.dropdownMessage}
           onClose={() => this.props.workoutStore.toggleLastSetInfo(false)}
-          closeInterval={this.props.workoutStore.currentExercise.rest * 1000}
         />
         <DropdownAlert
           showCancel

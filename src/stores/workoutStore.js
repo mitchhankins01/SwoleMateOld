@@ -92,7 +92,6 @@ class WorkoutStore {
   }
 
   @action toggleLastSetInfo = bool => {
-    console.log('toggle');
     this.showLastSetInfo = bool;
   }
 
@@ -115,6 +114,9 @@ class WorkoutStore {
       // increment by one?
       this.fetchExerciseLog(this.exerciseList[this.exerciseIndex]);
     }
+    
+    // Set target reps
+    this.reps = this.exerciseList[this.exerciseIndex].reps;
 
     // Get exercise key to append it to the exerciseLog
     const exerciseKey = this.exerciseList[this.exerciseIndex].exerciseKey;
@@ -171,7 +173,6 @@ class WorkoutStore {
     });
 
     // Prep for next set
-    this.reps = 10;
     this.weight = 10;
     this.exerciseSetIndex += 1;
     this.exerciseLog = {
@@ -199,18 +200,18 @@ class WorkoutStore {
 
   // timePassed
   @action startTimer = () => {
-    this.timePassedID = setInterval(() => {
+    this.timePassedID = BackgroundTimer.setInterval(() => {
       this.timePassed += 1;
     }, 1000);
   }
 
   @action stopTimer = () => {
-    clearInterval(this.timePassedID);
+    BackgroundTimer.clearInterval(this.timePassedID);
   }
 
   @action clearTimer = () => {
     this.timePassed = 0;
-    clearInterval(this.timePassedID);
+    BackgroundTimer.clearInterval(this.timePassedID);
   }
 
   // countDown

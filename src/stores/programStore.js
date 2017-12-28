@@ -249,12 +249,78 @@ class ProgramStore {
   }
 
   @action toggleUp = item => {
+    // If the requested to edit item is first one
+    if (item.index === 0) return;
+
     switch (this.screenIndex) {
       default: return;
+      case 'allPrograms':
+        {
+          // Obtain target and use it to get the preceding element
+          const target = this.allPrograms.find(program => {
+            return program.key === item.key;
+          });
+          const subTarget = this.allPrograms[target.index - 1];
+
+          const targetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(target.key);
+          const subTargetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(subTarget.key);
+
+          targetRef.update({
+            index: Number(target.index) - 1
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+
+          subTargetRef.update({
+            index: Number(target.index)
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+          break;
+        }
+      case 'primaryProgram':
+      case 'selectedProgram':
+       {
+         // Obtain target and use it to get the preceding element
+         const target = this.days.find(day => {
+           return day.key === item.key;
+         });
+         const subTarget = this.days[target.index - 1];
+
+         const targetRef = firebase.firestore()
+         .collection('userPrograms')
+         .doc(this.info[0].key)
+         .collection('days')
+         .doc(target.key);
+         const subTargetRef = firebase.firestore()
+         .collection('userPrograms')
+         .doc(this.info[0].key)
+         .collection('days')
+         .doc(subTarget.key);
+
+         targetRef.update({
+           index: Number(target.index) - 1
+         })
+         .catch(error => {
+           this.error = error.message;
+         });
+
+         subTargetRef.update({
+           index: Number(target.index)
+         })
+         .catch(error => {
+           this.error = error.message;
+         });
+         break;
+       }
       case 'programExercises':
         {
-          // I the requested to edit item is first one
-          if (item.index === 0) return;
           // Obtain target and use it to get the preceding element
           const target = this.exercises.find(exercise => {
             return exercise.key === item.key;
@@ -291,11 +357,81 @@ class ProgramStore {
   }
 
   @action toggleDown = item => {
+    console.log(this.screenIndex);
     switch (this.screenIndex) {
       default: return;
+      case 'allPrograms':
+        {
+          // If the requested to edit item is the last one
+          if (item.index >= this.allPrograms.length - 1) return;
+          // Obtain target and use it to get the following element
+          const target = this.allPrograms.find(program => {
+            return program.key === item.key;
+          });
+          const subTarget = this.allPrograms[target.index + 1];
+
+          const targetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(target.key);
+          const subTargetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(subTarget.key);
+
+          targetRef.update({
+            index: Number(target.index) + 1
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+
+          subTargetRef.update({
+            index: Number(target.index)
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+          break;
+        }
+      case 'primaryProgram':
+      case 'selectedProgram':
+        {
+          // If the requested to edit item is the last one
+          if (item.index >= this.days.length - 1) return;
+          // Obtain target and use it to get the following element
+          const target = this.days.find(day => {
+            return day.key === item.key;
+          });
+          const subTarget = this.days[target.index + 1];
+
+          const targetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(this.info[0].key)
+          .collection('days')
+          .doc(target.key);
+          const subTargetRef = firebase.firestore()
+          .collection('userPrograms')
+          .doc(this.info[0].key)
+          .collection('days')
+          .doc(subTarget.key);
+
+          targetRef.update({
+            index: Number(target.index) + 1
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+
+          subTargetRef.update({
+            index: Number(target.index)
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+          break;
+        }
       case 'programExercises':
         {
-          // I the requested to edit item is the last one
+          // If the requested to edit item is the last one
           if (item.index >= this.exercises.length - 1) return;
           // Obtain target and use it to get the following element
           const target = this.exercises.find(exercise => {

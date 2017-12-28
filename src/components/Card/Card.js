@@ -323,7 +323,7 @@ class Card extends Component {
           </View>
           <View style={styles.cardDivider} />
           <Text style={styles.cardSubtitle}>
-            {subtitle}
+            {`(${item.index + 1}) ${subtitle}`}
           </Text>
           {this.renderWarning(styles, item.key)}
           <View style={styles.cardDivider} />

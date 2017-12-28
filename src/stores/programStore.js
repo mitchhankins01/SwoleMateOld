@@ -357,7 +357,6 @@ class ProgramStore {
   }
 
   @action toggleDown = item => {
-    console.log(this.screenIndex);
     switch (this.screenIndex) {
       default: return;
       case 'allPrograms':
@@ -479,12 +478,27 @@ class ProgramStore {
   }
 
   @action deleteProgramDay = (programInfo, deleteKey) => {
-    firebase.firestore()
+    const programDaysRef = firebase.firestore()
     .collection('userPrograms')
     .doc(programInfo[0].key)
-    .collection('days')
-    .doc(deleteKey)
-    .delete()
+    .collection('days');
+
+    // delete and fix indices other days
+    programDaysRef.doc(deleteKey).delete()
+    .then(() => {
+      programDaysRef.orderBy('index').get().then(querySnapshot => {
+        querySnapshot.docChanges.map(updateDay => {
+          const updateRef = updateDay.doc.ref.path;
+          firebase.firestore().doc(updateRef).update({ index: updateDay.newIndex });
+        });
+
+        querySnapshot.forEach(info => {
+          // const day = info.data();
+          // const remainingDaysRef = info.ref.path;
+          // remainingDaysRef.update({ index: 1 });
+        });
+      });
+    })
     .catch(error => {
       this.error = error.message;
     });

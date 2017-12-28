@@ -1,29 +1,8 @@
-import { Dimensions, Easing } from 'react-native';
+import { Dimensions } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
-
-function makeAwesome(translationType, pivotPoint) {
-  const modifier = Math.min(1, Math.max(-1, pivotPoint));
-  return {
-    easing: Easing.bezier(0.175, 0.885, 0.32, 1),
-    0: {
-      opacity: 0,
-      scale: 0.1,
-      [translationType]: modifier * -1000,
-    },
-    0.6: {
-      opacity: 1,
-      scale: 0.457,
-      [translationType]: pivotPoint,
-    },
-    1: {
-      scale: 1,
-      [translationType]: 0,
-    },
-  };
-}
 
 Animatable.initializeRegistryWithDefinitions({
   awesomeOut: {
@@ -66,19 +45,19 @@ Animatable.initializeRegistryWithDefinitions({
   },
   mySlider: {
     0: {
-      // scale: 1,
+      opacity: 1,
       translateY: 0
     },
     0.5: {
-      // scale: 0.5,
+      opacity: 0,
       translateY: -500
     },
     0.50001: {
-      // scale: 0.5,
+      opacity: 0,
       translateY: 500
     },
     1: {
-      // scale: 1,
+      opacity: 1,
       translateY: 0
     },
   },

@@ -40,7 +40,7 @@ class Programs extends Component {
   }
 
   renderAllPrograms = () => {
-    if (this.props.programStore.length === 0) return <Card empty title='Program' />;
+    if (this.props.programStore.allPrograms.length === 0) return <Card empty title='Program' />;
 
     return (
       <FlatList
@@ -117,56 +117,119 @@ class Programs extends Component {
     );
   }
 
-  render() {
-    const { loading, screenIndex, showUpdateForm } = this.props.programStore;
+  findData() {
+    const { screenIndex, allPrograms, days, exercises } = this.props.programStore;
 
-    if (loading) return null;
+    switch (screenIndex) {
+      default: return [];
+      case 'allPrograms':
+        return toJS(allPrograms);
+      case 'primaryProgram':
+      case 'selectedProgram':
+        return toJS(days);
+      case 'programExercises':
+        return toJS(exercises);
+      }
+  }
 
-    let renderType;
-    if (showUpdateForm) {
-       renderType = <Card updateCard />;
-    } else {
-      switch (screenIndex) {
-        default:
-          return null;
-        case 'allPrograms':
-          renderType = this.renderAllPrograms();
-          break;
-        case 'primaryProgram':
-        case 'selectedProgram':
-          renderType = this.renderProgramDays();
-          break;
-        case 'programExercises':
-          renderType = this.renderProgramExercises(this.props.programExercises);
-          break;
-        case 'addProgram':
-          renderType = <Card addCard typeAddCard='addProgram' info={this.state.info} />;
-          break;
-        case 'addProgramDay':
-          renderType = <Card addCard typeAddCard='addProgramDay' info={this.state.info} />;
-          break;
-        case 'addProgramExercise':
-          renderType = (
+  findContent(item) {
+    const { screenIndex, days, exercises } = this.props.programStore;
+
+    let onPress;
+    let iconName;
+    let subtitle;
+    let activeOpacity;
+
+    switch (screenIndex) {
+      default: return [];
+      case 'allPrograms':
+        activeOpacity = 0.2;
+        iconName = 'clipboard';
+        subtitle = `${item.frequency} Days - ${item.level} - ${item.type}`;
+        onPress = () => this.updateScreenIndex('selectedProgram', null, item.key);
+        break;
+      case 'primaryProgram':
+      case 'selectedProgram':
+        activeOpacity = 0.2;
+        iconName = 'folder';
+        subtitle = `${item.primaryGroup} - ${item.secondaryGroup}`;
+        onPress = () => this.updateScreenIndex('programExercises', item.key);
+        break;
+      case 'programExercises':
+        return toJS(exercises);
+      case 'addProgram':
+        return (
+          <Animatable.View useNativeDriver ref='programCard'>
+            <Card addCard typeAddCard='addProgram' info={this.state.info} />
+            <DropdownAlert
+              translucent
+              closeInterval={2000}
+              updateStatusBar={false}
+              ref={ref => (this.dropdown = ref)}
+            />
+          </Animatable.View>
+        );
+      case 'addProgramDay':
+        return (
+          <Animatable.View useNativeDriver ref='programCard'>
+            <Card addCard typeAddCard='addProgramDay' info={this.state.info} />
+            <DropdownAlert
+              translucent
+              closeInterval={2000}
+              updateStatusBar={false}
+              ref={ref => (this.dropdown = ref)}
+            />
+          </Animatable.View>
+        );
+      case 'addProgramExercise':
+        return (
+          <Animatable.View useNativeDriver ref='programCard'>
             <Card
               addCard
               info={this.state.info}
               typeAddCard='addProgramExercise'
-              allExercises={this.state.allExercises}
             />
-          );
-      }
+            <DropdownAlert
+              translucent
+              closeInterval={2000}
+              updateStatusBar={false}
+              ref={ref => (this.dropdown = ref)}
+            />
+          </Animatable.View>
+        );
+    }
+
+    return { onPress, iconName, subtitle, activeOpacity };
+  }
+
+  render() {
+    const { loading, showUpdateForm } = this.props.programStore;
+
+    if (loading) return null;
+    if (showUpdateForm) {
+      return (
+        <Card updateCard />
+      );
     }
 
     return (
-      <Animatable.View useNativeDriver ref='programCard'>
-        {renderType}
-        <DropdownAlert
-          translucent
-          closeInterval={2000}
-          updateStatusBar={false}
-          ref={ref => (this.dropdown = ref)}
-        />
-      </Animatable.View>
+      <FlatList
+        data={this.findData()}
+        renderItem={({ item }) => {
+          return (
+            <Card
+              item={item}
+              type='entypo'
+              info={this.state.info}
+              key={item.key}
+              icon={this.findContent(item).iconName}
+              onPress={this.findContent(item).onPress}
+              subtitle={this.findContent(item).subtitle}
+              activeOpacity={this.findContent(item).activeOpacity}
+            />
+          );
+        }}
+      />
     );
   }
 }

@@ -90,13 +90,15 @@ class Home extends Component {
           style={{ marginTop: 10 }}
           contentContainerStyle={{ flex: 1 }}
           onScroll={event => {
+            console.log(event);
             if (!this.props.programStore.showUpdateForm) {
               this.props.programStore.scrollIndex = event.nativeEvent.contentOffset.y;
             }
           }}
         >
-          <Programs navigation={this.props.navigation} />
+
         </ScrollView>
+        <Programs navigation={this.props.navigation} />
 
         <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} />
 

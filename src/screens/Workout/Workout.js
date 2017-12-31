@@ -10,7 +10,6 @@ import { BackHandler, Text, TextInput, View, ScrollView, ListView, TouchableOpac
 import { Overview } from './';
 import themeStyles from './styles';
 import { Picker } from '../../components/Picker';
-import { ActionBar } from '../../components/ActionBar';
 import { CountDown } from '../../components/CountDown';
 
 @inject('userStore', 'programStore', 'workoutStore', 'logStore') @observer
@@ -125,7 +124,7 @@ class Workout extends Component {
     if (workoutComplete) {
       return <Overview gradients={gradients} navigation={this.props.navigation} />;
     }
-    
+
     return (
       <LinearGradient colors={gradients} style={styles.container} >
 
@@ -168,12 +167,27 @@ class Workout extends Component {
           </Animatable.View>
         </View>
 
-        <Animatable.View animation='mySlideInUp' delay={500}>
-          <ActionBar
-            workout
-            navigation={this.props.navigation}
-            onPressSave={() => onPressSave()}
-            onPressClose={() => this.renderCloseAlert()}
+        <Animatable.View style={styles.actionBar} animation='mySlideInUp' delay={500}>
+          <Icon
+            size={30}
+            type='entypo'
+            name={'back'}
+            color={'#EDF0F1'}
+            iconStyle={{ padding: 15 }}
+            underlayColor={'transparent'}
+            onPress={() => this.renderCloseAlert()}
+          />
+          <Text style={styles.actionBarText}>
+            {new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7)}
+          </Text>
+          <Icon
+            size={25}
+            type='entypo'
+            name={'check'}
+            color={'#EDF0F1'}
+            iconStyle={{ padding: 15 }}
+            underlayColor={'transparent'}
+            onPress={() => this.onPressSave()}
           />
         </Animatable.View>
 

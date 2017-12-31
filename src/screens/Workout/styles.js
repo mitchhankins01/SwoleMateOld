@@ -168,7 +168,31 @@ const themeStyles = themes.createStyleSheet({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  }
+  },
+  actionBar: {
+    top: 10,
+    height: 55,
+    elevation: 1,
+    borderWidth: 2,
+    borderRadius: 5,
+    shadowOpacity: 1,
+    marginBottom: 20,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    width: DEVICE_WIDTH * 0.92,
+    borderColor: '$primaryColor',
+    shadowColor: '$primaryColor',
+    justifyContent: 'space-around',
+    shadowOffset: { width: 2, height: 2 },
+    backgroundColor: 'rgba(237, 240, 241, 0.1)',
+  },
+  actionBarText: {
+    width: 80,
+    fontSize: 16,
+    color: '#EDF0F1',
+    fontFamily: 'exo',
+    alignSelf: 'center',
+  },
 });
 
 export default themeStyles;

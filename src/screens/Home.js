@@ -12,8 +12,7 @@ import Header from '../components/Header';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
 import { Programs } from '../components/Programs';
-import {ButtonGroup} from '../components/ButtonGroup';
-import { ActionBar } from '../components/ActionBar';
+import { ButtonGroup } from '../components/ButtonGroup';
 
 @inject('userStore', 'programStore') @observer
 class Home extends Component {
@@ -82,8 +81,6 @@ class Home extends Component {
         <ButtonGroup />
 
         <Programs navigation={this.props.navigation} />
-
-        <ActionBar scrollIndex={this.state.scrollIndex} navigation={this.props.navigation} />
 
         {this.renderError()}
 

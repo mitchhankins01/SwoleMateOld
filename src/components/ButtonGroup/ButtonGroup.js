@@ -16,7 +16,7 @@ const handlePress = ({ programStore: { updateScreenIndex } }, index) => {
 
 export default inject('programStore', 'userStore')(observer((props) => {
   const styles = themeStyles[props.userStore.selected];
-  const { screenIndex } = props.programStore;
+  const { screenIndex, showUpdateForm } = props.programStore;
   const getIndex = () => {
     switch (screenIndex) {
       default: return null;
@@ -25,8 +25,11 @@ export default inject('programStore', 'userStore')(observer((props) => {
       case 'selectedProgram': return 1;
     }
   };
-  
+
+  if (showUpdateForm) return null;
+
   switch (screenIndex) {
+    default: return null;
     case 'allPrograms':
     case 'primaryProgram':
     case 'selectedProgram':
@@ -42,7 +45,5 @@ export default inject('programStore', 'userStore')(observer((props) => {
           innerBorderStyle={{ width: 0, color: styles.$primaryColor }}
         />
       );
-
-        default: return null;
   }
 }));

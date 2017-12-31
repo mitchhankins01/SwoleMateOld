@@ -24,6 +24,7 @@ const Header = ({ title, styles, onLeftPress, onRightPress }) => {
         underlayColor: 'transparent'
       }} */
       outerContainerStyles={{
+        zIndex: 100,
         elevation: 1,
         shadowOpacity: 1,
         borderBottomWidth: 0,

@@ -6,6 +6,7 @@ const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const themeStyles = themes.createStyleSheet({
   containerStyle: {
+    zIndex: 100,
     height: 50,
     elevation: 3,
     marginTop: 20,

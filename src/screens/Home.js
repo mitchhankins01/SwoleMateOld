@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, TouchableOpacity } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,6 +13,7 @@ import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
 import { Programs } from '../components/Programs';
 import { ButtonGroup } from '../components/ButtonGroup';
+import { ActionButton } from '../components/ActionButton';
 
 @inject('userStore', 'programStore') @observer
 class Home extends Component {
@@ -83,6 +84,8 @@ class Home extends Component {
         <Programs navigation={this.props.navigation} />
 
         {this.renderError()}
+
+        <ActionButton />
 
         <DropdownAlert
           translucent

@@ -5,7 +5,15 @@ import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
-import { BackHandler, Text, TextInput, View, ScrollView, ListView, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  ListView,
+  TextInput,
+  ScrollView,
+  BackHandler,
+  TouchableOpacity,
+} from 'react-native';
 
 import { Overview } from './';
 import themeStyles from './styles';
@@ -35,8 +43,8 @@ class Workout extends Component {
   }
 
   componentWillUnmount() {
-    this.props.workoutStore.terminateWorkout();
     this.backHandler.remove();
+    this.props.workoutStore.terminateWorkout();
   }
 
   renderCloseAlert() {

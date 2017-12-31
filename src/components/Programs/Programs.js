@@ -21,7 +21,7 @@ class Programs extends Component {
     showAnimation: false,
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     const { programCard } = this.refs;
 
     if (programCard) {
@@ -137,7 +137,7 @@ class Programs extends Component {
                   return eachExercise.key === item.exerciseKey;
                 });
                 data = {
-                  ...match, 
+                  ...match,
                   key: item.key,
                   rest: item.rest,
                   reps: item.reps,

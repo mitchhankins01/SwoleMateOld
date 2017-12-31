@@ -28,7 +28,7 @@ class Logs extends Component {
     this.props.logStore.fetchLogs();
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     if (this.refs.mainView && !this.props.logStore.error) {
       this.refs.mainView.awesomeIn(500);
     }

@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
+import { StatusBar } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { ScrollView, StatusBar } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+// Initialize animations
 import Animations from '../components/Animations';
+
 import Header from '../components/Header';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
 import { Programs } from '../components/Programs';
+import {ButtonGroup} from '../components/ButtonGroup';
 import { ActionBar } from '../components/ActionBar';
 
 @inject('userStore', 'programStore') @observer
@@ -38,7 +41,7 @@ class Home extends Component {
      // programStore.addExercises();
    }
 
-   componentWillUpdate() {
+   componentDidUpdate() {
      const { titleView } = this.refs;
      if (titleView) { titleView.zoomIn(); }
    }
@@ -73,8 +76,10 @@ class Home extends Component {
       <LinearGradient colors={gradients} style={styles.homeContainer} >
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
         <Header title={this.renderTitle().toString().substring(0, 30)} styles={styles} />
-{console.log(this.props.programStore.error)}
-        <Greeting styles={styles} />
+
+        {/* <Greeting styles={styles} /> */}
+
+        <ButtonGroup />
 
         <Programs navigation={this.props.navigation} />
 

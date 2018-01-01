@@ -690,20 +690,21 @@ class ProgramStore {
 
     const programExercises = [
       {
-        title: 'Start Workout',
-        iconName: 'rocket',
-        iconType: 'entypo',
-        onPress: () => {
-          this.toggleShowActionOptions(false);
-        }
-      },
-      {
         title: 'Add Exercise',
         iconName: 'add-to-list',
         iconType: 'entypo',
         onPress: () => {
           this.toggleShowActionOptions(false);
           this.updateScreenIndex('addProgramExercise');
+        }
+      },
+      {
+        title: 'Back to Program',
+        iconName: 'list',
+        iconType: 'entypo',
+        onPress: () => {
+          this.toggleShowActionOptions(false);
+          this.updateScreenIndex('primaryProgram');
         }
       },
       {

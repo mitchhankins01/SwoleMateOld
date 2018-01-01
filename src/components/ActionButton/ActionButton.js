@@ -6,16 +6,6 @@ import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
 
-
-const renderOption = (styles, name, type, title, onPress) => {
-  return (
-    <TouchableOpacity style={styles.optionsButton} onPress={onPress}>
-      <Icon iconStyle={styles.optionsIcon} name={name} type={type} />
-      <Text style={styles.optionsText}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
-
 export default inject('programStore', 'userStore')(observer((props) => {
   const styles = themeStyles[props.userStore.selected];
   const {
@@ -60,16 +50,16 @@ export default inject('programStore', 'userStore')(observer((props) => {
       return (
         <View style={{ justifyContent: 'space-between', height: 50, flexDirection: 'row' }}>
           <TouchableOpacity
-            onPress={() => updateScreenIndex('primaryProgram')}
-            style={styles.buttonContainer}
-          >
-            <Icon iconStyle={styles.iconContainer} name='back' type='entypo' />
-          </TouchableOpacity>
-          <TouchableOpacity
             style={styles.buttonContainer}
             onPress={() => toggleShowActionOptions(true)}
           >
             <Icon iconStyle={styles.iconContainer} name='dots-three-vertical' type='entypo' />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => props.navigation.navigate('Workout')}
+          >
+            <Icon iconStyle={[styles.iconContainer, { fontSize: 27 }]} name='rocket' type='entypo' />
           </TouchableOpacity>
         </View>
       );

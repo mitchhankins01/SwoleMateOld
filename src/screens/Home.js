@@ -85,7 +85,7 @@ class Home extends Component {
 
         {this.renderError()}
 
-        <ActionButton />
+        <ActionButton navigation={this.props.navigation} />
 
         <DropdownAlert
           translucent

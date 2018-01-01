@@ -631,6 +631,97 @@ class ProgramStore {
       );
     });
   }
+
+  // ActionButtonOptions
+  @action actionButtonOptions = () => {
+    const allPrograms = [
+      {
+        title: 'Add new Program',
+        iconName: 'add-to-list',
+        iconType: 'entypo',
+        onPress: () => {
+          this.toggleShowActionOptions(false);
+          this.updateScreenIndex('addProgram');
+        }
+      },
+      {
+        title: 'Default Program',
+        iconName: 'list',
+        iconType: 'entypo',
+        onPress: () => {
+          this.toggleShowActionOptions(false);
+          this.updateScreenIndex('primaryProgram');
+        }
+      },
+      {
+        title: 'Close',
+        iconName: 'back',
+        iconType: 'entypo',
+        onPress: () => this.toggleShowActionOptions(false)
+      },
+    ];
+
+    const programDays = [
+      {
+        title: 'Add new Workout',
+        iconName: 'add-to-list',
+        iconType: 'entypo',
+        onPress: () => {
+          this.toggleShowActionOptions(false);
+          this.updateScreenIndex('addProgramDay');
+        }
+      },
+      {
+        title: 'All Programs',
+        iconName: 'list',
+        iconType: 'entypo',
+        onPress: () => {
+          this.toggleShowActionOptions(false);
+          this.updateScreenIndex('allPrograms');
+        }
+      },
+      {
+        title: 'Close',
+        iconName: 'back',
+        iconType: 'entypo',
+        onPress: () => this.toggleShowActionOptions(false)
+      },
+    ];
+
+    const programExercises = [
+      {
+        title: 'Start Workout',
+        iconName: 'rocket',
+        iconType: 'entypo',
+        onPress: () => {
+          this.toggleShowActionOptions(false);
+        }
+      },
+      {
+        title: 'Add Exercise',
+        iconName: 'add-to-list',
+        iconType: 'entypo',
+        onPress: () => {
+          this.toggleShowActionOptions(false);
+          this.updateScreenIndex('addProgramExercise');
+        }
+      },
+      {
+        title: 'Close',
+        iconName: 'back',
+        iconType: 'entypo',
+        onPress: () => this.toggleShowActionOptions(false)
+      },
+    ];
+
+    switch (this.screenIndex) {
+      default: return null;
+      case 'allPrograms': return allPrograms;
+      case 'primaryProgram':
+      case 'selectedProgram': return programDays;
+      case 'programExercises': return programExercises;
+    }
+  }
 }
 
 const exercises = [

@@ -10,11 +10,12 @@ const themeStyles = themes.createStyleSheet({
     left: 0,
     right: 0,
     bottom: 0,
+    elevation: 5,
     zIndex: 101,
     alignItems: 'center',
     position: 'absolute',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   buttonContainer: {
     width: 50,

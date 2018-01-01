@@ -1,8 +1,8 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
-import { TouchableOpacity, View, Text, FlatList } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { TouchableOpacity, View, Text } from 'react-native';
 
 import themeStyles from './styles';
 

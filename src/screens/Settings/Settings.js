@@ -286,6 +286,7 @@ class Settings extends Component {
         {this.renderSuccess()}
         <DropdownAlert
           translucent
+          zIndex={100}
           elevation={5}
           closeInterval={2000}
           updateStatusBar={false}

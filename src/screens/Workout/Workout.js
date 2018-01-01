@@ -195,7 +195,7 @@ class Workout extends Component {
             color={'#EDF0F1'}
             iconStyle={{ padding: 15 }}
             underlayColor={'transparent'}
-            onPress={() => this.onPressSave()}
+            onPress={() => onPressSave()}
           />
         </Animatable.View>
 

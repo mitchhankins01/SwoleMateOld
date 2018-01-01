@@ -89,6 +89,7 @@ class Home extends Component {
 
         <DropdownAlert
           translucent
+          zIndex={100}
           closeInterval={2000}
           updateStatusBar={false}
           infoColor={styles.$tertiaryColor}

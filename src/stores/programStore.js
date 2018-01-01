@@ -646,7 +646,7 @@ class ProgramStore {
       },
       {
         title: 'Default Program',
-        iconName: 'list',
+        iconName: 'folder',
         iconType: 'entypo',
         onPress: () => {
           this.toggleShowActionOptions(false);
@@ -673,7 +673,7 @@ class ProgramStore {
       },
       {
         title: 'All Programs',
-        iconName: 'list',
+        iconName: 'clipboard',
         iconType: 'entypo',
         onPress: () => {
           this.toggleShowActionOptions(false);
@@ -700,7 +700,7 @@ class ProgramStore {
       },
       {
         title: 'Back to Program',
-        iconName: 'list',
+        iconName: 'folder',
         iconType: 'entypo',
         onPress: () => {
           this.toggleShowActionOptions(false);

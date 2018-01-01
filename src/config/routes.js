@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import Main from '../screens/Main';
 import Home from '../screens/Home';
@@ -24,17 +24,10 @@ const MainStack = StackNavigator({
     screen: Workout,
   },
   HomeStack: {
-    screen: TabNavigator({
+    screen: DrawerNavigator({
       Home: { screen: Home },
       Logs: { screen: Logs },
       Settings: { screen: Settings },
-    }, {
-      tabBarComponent: TabBar,
-      animationEnabled: true,
-      tabBarPosition: 'bottom',
-      tabBarOptions: {
-        showIcon: true,
-      },
     })
   },
 }, {

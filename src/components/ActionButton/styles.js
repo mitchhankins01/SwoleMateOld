@@ -17,6 +17,16 @@ const themeStyles = themes.createStyleSheet({
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
+  actionView: {
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 70,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'space-between',
+  },
   buttonContainer: {
     width: 50,
     height: 50,
@@ -43,14 +53,14 @@ const themeStyles = themes.createStyleSheet({
     borderWidth: 2,
     borderRadius: 5,
     flexDirection: 'row',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     width: DEVICE_WIDTH * 0.8,
     borderColor: '$primaryColor',
     backgroundColor: 'rgba(237, 240, 241, 0.1)',
   },
   optionsIcon: {
     fontSize: 20,
-    marginRight: 10,
+    marginHorizontal: 10,
     color: '#EDF0F1',
   },
   optionsText: {

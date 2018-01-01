@@ -6,27 +6,31 @@ import { TouchableOpacity, View, Text } from 'react-native';
 
 import themeStyles from './styles';
 
+import Color from 'color';
+
 export default inject('programStore', 'userStore')(observer((props) => {
   const styles = themeStyles[props.userStore.selected];
+  const backgroundColor = Color(styles.$tertiaryColor).alpha(0.8);
   const {
     screenIndex,
+    scrollIndex,
     showUpdateForm,
     updateScreenIndex,
     showActionOptions,
     toggleShowActionOptions,
   } = props.programStore;
 
-  if (showUpdateForm) return null;
+  if (showUpdateForm || scrollIndex > 0) return null;
 
   if (showActionOptions) {
     let delay = 0;
     return (
       <View style={styles.optionsView}>
-        {props.programStore.actionButtonOptions().map(option => {
+        {actionButtonOptions(props).map(option => {
           delay += 250;
           return (
-            <Animatable.View animation='mySlideInUp' delay={delay} duration={750}>
-              <TouchableOpacity style={styles.optionsButton} onPress={option.onPress} key={option.title}>
+            <Animatable.View animation='mySlideInUp' delay={delay} duration={750} key={option.title}>
+              <TouchableOpacity style={styles.optionsButton} onPress={option.onPress}>
                 <Icon iconStyle={styles.optionsIcon} name={option.iconName} type={option.iconType} />
                 <Text style={styles.optionsText}>{option.title}</Text>
               </TouchableOpacity>
@@ -43,18 +47,20 @@ export default inject('programStore', 'userStore')(observer((props) => {
     case 'primaryProgram':
     case 'selectedProgram':
       return (
-        <Animatable.View animation='mySlideInRightBoring'>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => toggleShowActionOptions(true)}
-          >
-            <Icon iconStyle={styles.iconContainer} name='dots-three-vertical' type='entypo' />
-          </TouchableOpacity>
-        </Animatable.View>
+        <View style={[styles.actionView, { backgroundColor, justifyContent: 'flex-end' }]}>
+          <Animatable.View animation='mySlideInRightBoring'>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => toggleShowActionOptions(true)}
+            >
+              <Icon iconStyle={styles.iconContainer} name='dots-three-vertical' type='entypo' />
+            </TouchableOpacity>
+          </Animatable.View>
+        </View>
       );
     case 'programExercises':
       return (
-        <View style={{ justifyContent: 'space-between', height: 70, flexDirection: 'row', backgroundColor: 'transparent', alignItems: 'center' }}>
+        <View style={[styles.actionView, { backgroundColor }]}>
           <Animatable.View animation='mySlideInLeftBoring'>
             <TouchableOpacity
               style={styles.buttonContainer}
@@ -83,3 +89,127 @@ export default inject('programStore', 'userStore')(observer((props) => {
       );
   }
 }));
+
+const actionButtonOptions = (props) => {
+  const {
+    screenIndex,
+    updateScreenIndex,
+    toggleShowActionOptions,
+  } = props.programStore;
+
+  const allPrograms = [
+    {
+      title: 'Main Menu',
+      iconName: 'menu',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        props.navigation.navigate('DrawerOpen');
+      }
+    },
+    {
+      title: 'Add new Program',
+      iconName: 'add-to-list',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        updateScreenIndex('addProgram');
+      }
+    },
+    {
+      title: 'Default Program',
+      iconName: 'folder',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        updateScreenIndex('primaryProgram');
+      }
+    },
+    {
+      title: 'Close',
+      iconName: 'back',
+      iconType: 'entypo',
+      onPress: () => toggleShowActionOptions(false)
+    },
+  ];
+
+  const programDays = [
+    {
+      title: 'Main Menu',
+      iconName: 'menu',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        props.navigation.navigate('DrawerOpen');
+      }
+    },
+    {
+      title: 'Add new Workout',
+      iconName: 'add-to-list',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        updateScreenIndex('addProgramDay');
+      }
+    },
+    {
+      title: 'All Programs',
+      iconName: 'clipboard',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        updateScreenIndex('allPrograms');
+      }
+    },
+    {
+      title: 'Close',
+      iconName: 'back',
+      iconType: 'entypo',
+      onPress: () => toggleShowActionOptions(false)
+    },
+  ];
+
+  const programExercises = [
+    {
+      title: 'Main Menu',
+      iconName: 'menu',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        props.navigation.navigate('DrawerOpen');
+      }
+    },
+    {
+      title: 'Add Exercise',
+      iconName: 'add-to-list',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        updateScreenIndex('addProgramExercise');
+      }
+    },
+    {
+      title: 'Back to Program',
+      iconName: 'folder',
+      iconType: 'entypo',
+      onPress: () => {
+        toggleShowActionOptions(false);
+        updateScreenIndex('primaryProgram');
+      }
+    },
+    {
+      title: 'Close',
+      iconName: 'back',
+      iconType: 'entypo',
+      onPress: () => toggleShowActionOptions(false)
+    },
+  ];
+
+  switch (screenIndex) {
+    default: return null;
+    case 'allPrograms': return allPrograms;
+    case 'primaryProgram':
+    case 'selectedProgram': return programDays;
+    case 'programExercises': return programExercises;
+  }
+};

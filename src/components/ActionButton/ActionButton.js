@@ -19,14 +19,18 @@ export default inject('programStore', 'userStore')(observer((props) => {
   if (showUpdateForm) return null;
 
   if (showActionOptions) {
+    let delay = 0;
     return (
       <View style={styles.optionsView}>
         {props.programStore.actionButtonOptions().map(option => {
+          delay += 250;
           return (
-            <TouchableOpacity style={styles.optionsButton} onPress={option.onPress} key={option.title}>
-              <Icon iconStyle={styles.optionsIcon} name={option.iconName} type={option.iconType} />
-              <Text style={styles.optionsText}>{option.title}</Text>
-            </TouchableOpacity>
+            <Animatable.View animation='mySlideInUp' delay={delay} duration={750}>
+              <TouchableOpacity style={styles.optionsButton} onPress={option.onPress} key={option.title}>
+                <Icon iconStyle={styles.optionsIcon} name={option.iconName} type={option.iconType} />
+                <Text style={styles.optionsText}>{option.title}</Text>
+              </TouchableOpacity>
+            </Animatable.View>
           );
         })}
       </View>
@@ -39,28 +43,42 @@ export default inject('programStore', 'userStore')(observer((props) => {
     case 'primaryProgram':
     case 'selectedProgram':
       return (
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => toggleShowActionOptions(true)}
-        >
-          <Icon iconStyle={styles.iconContainer} name='dots-three-vertical' type='entypo' />
-        </TouchableOpacity>
-      );
-    case 'programExercises':
-      return (
-        <View style={{ justifyContent: 'space-between', height: 50, flexDirection: 'row' }}>
+        <Animatable.View animation='mySlideInRightBoring'>
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={() => toggleShowActionOptions(true)}
           >
             <Icon iconStyle={styles.iconContainer} name='dots-three-vertical' type='entypo' />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => props.navigation.navigate('Workout')}
-          >
-            <Icon iconStyle={[styles.iconContainer, { fontSize: 27 }]} name='rocket' type='entypo' />
-          </TouchableOpacity>
+        </Animatable.View>
+      );
+    case 'programExercises':
+      return (
+        <View style={{ justifyContent: 'space-between', height: 70, flexDirection: 'row', backgroundColor: 'transparent', alignItems: 'center' }}>
+          <Animatable.View animation='mySlideInLeftBoring'>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => updateScreenIndex('selectedProgram')}
+            >
+              <Icon iconStyle={styles.iconContainer} name='back' type='entypo' />
+            </TouchableOpacity>
+          </Animatable.View>
+          <Animatable.View animation='mySlideInUpBoring'>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => props.navigation.navigate('Workout')}
+            >
+              <Icon iconStyle={[styles.iconContainer, { fontSize: 27 }]} name='rocket' type='entypo' />
+            </TouchableOpacity>
+          </Animatable.View>
+          <Animatable.View animation='mySlideInRightBoring'>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => toggleShowActionOptions(true)}
+            >
+              <Icon iconStyle={styles.iconContainer} name='dots-three-vertical' type='entypo' />
+            </TouchableOpacity>
+          </Animatable.View>
         </View>
       );
   }

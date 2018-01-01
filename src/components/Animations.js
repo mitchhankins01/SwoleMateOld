@@ -17,6 +17,30 @@ Animatable.initializeRegistryWithDefinitions({
       scale: 10,
     },
   },
+  mySlideInRightBoring: {
+    from: {
+      translateX: 100,
+    },
+    to: {
+      translateX: 0,
+    },
+  },
+  mySlideInLeftBoring: {
+    from: {
+      translateX: -100,
+    },
+    to: {
+      translateX: 0,
+    },
+  },
+  mySlideInUpBoring: {
+    from: {
+      translateY: 100,
+    },
+    to: {
+      translateY: 0,
+    },
+  },
   awesomeIn: {
     from: {
       opacity: 0,

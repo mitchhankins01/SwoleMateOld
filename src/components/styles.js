@@ -292,6 +292,7 @@ const themeStyles = themes.createStyleSheet({
     alignSelf: 'center',
     fontFamily: 'Exo-Medium',
   },
+  
 });
 
 export default themeStyles;

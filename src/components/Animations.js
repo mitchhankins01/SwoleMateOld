@@ -53,7 +53,7 @@ Animatable.initializeRegistryWithDefinitions({
   },
   mySlideInUp: {
     from: {
-      translateY: 500
+      translateY: DEVICE_HEIGHT
     },
     to: {
       translateY: 0

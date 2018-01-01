@@ -5,7 +5,7 @@ import Main from '../screens/Main';
 import Home from '../screens/Home';
 import Login from '../screens/Login';
 import { Logs } from '../screens/Logs';
-import TabBar from '../components/TabBar';
+import Drawer from '../components/Drawer';
 import Register from '../screens/Register';
 import { Workout } from '../screens/Workout';
 import { Settings } from '../screens/Settings';
@@ -28,6 +28,13 @@ const MainStack = StackNavigator({
       Home: { screen: Home },
       Logs: { screen: Logs },
       Settings: { screen: Settings },
+    }, {
+    contentComponent: Drawer,
+    animationEnabled: true,
+    tabBarPosition: 'bottom',
+    tabBarOptions: {
+      showIcon: true,
+    },
     })
   },
 }, {

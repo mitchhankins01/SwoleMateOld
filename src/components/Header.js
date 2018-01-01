@@ -2,16 +2,15 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { Header as NativeHeader } from 'react-native-elements';
 
-const Header = ({ title, styles, onLeftPress, onRightPress }) => {
+const Header = ({ title, styles, onLeftPress, onRightPress, navigation }) => {
   return (
     <NativeHeader
-      /*leftComponent={{
+      leftComponent={{
         icon: 'menu',
         color: '#fff',
-        onPress:
-        onLeftPress,
-        underlayColor: 'transparent'
-      }}*/
+        underlayColor: 'transparent',
+        onPress: () => navigation.navigate('DrawerOpen'),
+      }}
       centerComponent={{
         text: title,
         style: { fontFamily: 'Exo-Medium', color: '#EDF0F1', fontSize: 20 }

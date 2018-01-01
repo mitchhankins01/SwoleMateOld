@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StatusBar } from 'react-native';
 
 import themeStyles from './styles';
 import { Card } from '../../components/Card';
@@ -16,8 +16,8 @@ import Header from '../../components/Header';
 @inject('userStore') @observer
 class Settings extends Component {
   static navigationOptions = {
-    tabBarLabel: 'Settings',
-    tabBarIcon: ({ tintColor, focused }) => (
+    drawerLabel: 'Settings',
+    drawerIcon: ({ tintColor, focused }) => (
       <Ionicons
         size={26}
         style={{ color: tintColor }}
@@ -264,7 +264,8 @@ class Settings extends Component {
 
     return (
       <LinearGradient colors={gradients} style={styles.container}>
-        <Header title={'Settings'} styles={styles} />
+        <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
+        <Header title={'Settings'} styles={styles} navigation={this.props.navigation} />
         <View style={{ flex: 1 }}>
           <Card
             settingsCard

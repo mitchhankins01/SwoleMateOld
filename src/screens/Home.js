@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, TouchableOpacity } from 'react-native';
+import { StatusBar } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,8 +19,8 @@ import { ActionButton } from '../components/ActionButton';
 class Home extends Component {
 
    static navigationOptions = {
-     tabBarLabel: 'Home',
-     tabBarIcon: ({ tintColor, focused }) => (
+     drawerLabel: 'Home',
+     drawerIcon: ({ tintColor, focused }) => (
        <Ionicons
          name={focused ? 'ios-home' : 'ios-home-outline'}
          size={26}
@@ -75,7 +75,11 @@ class Home extends Component {
     return (
       <LinearGradient colors={gradients} style={styles.homeContainer} >
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
-        <Header title={this.renderTitle().toString().substring(0, 30)} styles={styles} />
+        <Header
+          styles={styles}
+          navigation={this.props.navigation}
+          title={this.renderTitle().toString().substring(0, 30)}
+        />
 
         {/* <Greeting styles={styles} /> */}
 

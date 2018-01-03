@@ -52,7 +52,7 @@ class Overview extends Component {
     const duration =
       new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7);
 
-    const weightLifted = imperial ? `${totalWeight.toPrecision(4)} Lbs` : `${totalWeight.toPrecision(4)} Kg`
+    const weightLifted = `${totalWeight.toPrecision(4)} ${imperial ? 'Lbs' : 'Kg'}`;
 
     return (
       <LinearGradient

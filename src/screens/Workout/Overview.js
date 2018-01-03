@@ -6,7 +6,6 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import themeStyles from './styles';
 
-// Workout log must be cleared after submitting
 @inject('workoutStore', 'userStore') @observer
 class Overview extends Component {
   state = {
@@ -45,13 +44,14 @@ class Overview extends Component {
   }
 
   render() {
-    const { imperial } = this.props.userStore;
+    const {
+      workoutStore: { timePassed },
+      userStore: { imperial, selected },
+    } = this.props;
     const { totalWeight, totalSets, totalReps, totalExercises } = this.state;
 
-    const styles = themeStyles[this.props.userStore.selected];
-    const duration =
-      new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7);
-
+    const styles = themeStyles[selected];
+    const duration = new Date(timePassed * 1000).toISOString().substr(12, 7);
     const weightLifted = `${totalWeight.toPrecision(4)} ${imperial ? 'Lbs' : 'Kg'}`;
 
     return (

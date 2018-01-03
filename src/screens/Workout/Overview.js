@@ -27,10 +27,10 @@ class Overview extends Component {
     const totalExercises = completedExercises.length;
 
     completedExercises.forEach(each => {
+      totalSets += each.completedSets.length;
+
       each.completedSets.forEach(detail => {
         totalWeight += detail.weight / (1.0278 - (0.0278 * detail.reps));
-
-        totalSets += each.completedSets.length;
 
         totalReps += detail.reps;
 
@@ -45,11 +45,14 @@ class Overview extends Component {
   }
 
   render() {
+    const { imperial } = this.props.userStore;
     const { totalWeight, totalSets, totalReps, totalExercises } = this.state;
 
     const styles = themeStyles[this.props.userStore.selected];
     const duration =
       new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7);
+
+    const weightLifted = imperial ? `${totalWeight.toPrecision(4)} Lbs` : `${totalWeight.toPrecision(4)} Kg`
 
     return (
       <LinearGradient
@@ -64,7 +67,7 @@ class Overview extends Component {
           <Text style={styles.overviewInfo}>Workout Duration:</Text>
           <Text style={styles.overviewDetail}>{duration}</Text>
           <Text style={styles.overviewInfo}>Weight Lifted:</Text>
-          <Text style={styles.overviewDetail}>{totalWeight.toPrecision(4)}</Text>
+          <Text style={styles.overviewDetail}>{weightLifted}</Text>
           <Text style={styles.overviewInfo}>Sets Completed:</Text>
           <Text style={styles.overviewDetail}>{totalSets}</Text>
           <Text style={styles.overviewInfo}>Reps Completed:</Text>

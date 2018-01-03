@@ -51,15 +51,19 @@ class Workout extends Component {
     this.dropdownExit.alertWithType('info', 'Exit', 'Tap this close button to exit');
   }
 
-  renderTextInput(styles, type) {
+  renderTextInput(styles, type, ref) {
     const { reps, weight, setReps, setWeight } = this.props.workoutStore;
 
     return (
     <TextInput
+      onFocus={() => {
+        if (type === 'reps') return setReps('');
+        if (type === 'weight') return setWeight('');
+      }}
+      ref={ref}
       keyboardType='numeric'
       style={styles.spinnerText}
       enablesReturnKeyAutomatically
-      clearButtonMode='while-editing'
       underlineColorAndroid='transparent'
       value={type === 'weight' ? weight.toString() : reps.toString()}
       onChangeText={number => {
@@ -157,7 +161,7 @@ class Workout extends Component {
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
           <Animatable.View style={styles.inputContainer} animation='mySlideInLeft' delay={250}>
             <Text style={styles.inputHeader}>Weight</Text>
-            {this.renderTextInput(styles, 'weight')}
+            {this.renderTextInput(styles, 'weight', 'weightInput')}
             <Picker
               type='weight'
               weight={weight}
@@ -166,7 +170,7 @@ class Workout extends Component {
           </Animatable.View>
           <Animatable.View style={styles.inputContainer} animation='mySlideInRight' delay={250}>
             <Text style={styles.inputHeader}>Reps</Text>
-            {this.renderTextInput(styles, 'reps')}
+            {this.renderTextInput(styles, 'reps', 'repsInput')}
             <Picker
               type='reps'
               reps={reps}
@@ -195,7 +199,11 @@ class Workout extends Component {
             color={'#EDF0F1'}
             iconStyle={{ padding: 15 }}
             underlayColor={'transparent'}
-            onPress={() => onPressSave()}
+            onPress={() => {
+              onPressSave();
+              this.refs.repsInput.blur();
+              this.refs.weightInput.blur();
+            }}
           />
         </Animatable.View>
 

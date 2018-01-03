@@ -148,6 +148,9 @@ class WorkoutStore {
     const { sets } = this.currentExercise;
     const { completedSets } = this.exerciseLog;
 
+    if (!this.reps) this.reps = 0;
+    if (!this.weight) this.weight = 0;
+
     if (completedSets.length === sets - 1) {
       this.saveSet();
       this.saveExercise();

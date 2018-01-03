@@ -53,6 +53,7 @@ class Register extends Component {
 
   writeUserData(uid) {
     const ref = firebase.firestore().collection('users').doc(uid);
+    const programRef = firebase.firestore().collection('userPrograms');
 
     const { name, email, sex, imperial, theme } = this.state;
 
@@ -68,6 +69,15 @@ class Register extends Component {
     })
     .catch(() => {
       firebase.auth().currentUser.delete();
+    });
+
+    programRef.add({
+      index: 0,
+      frequency: '5',
+      level: 'Beginner',
+      name: 'SwoleMate',
+      description: 'Default Program',
+      author: firebase.auth().currentUser.uid,
     });
   }
 

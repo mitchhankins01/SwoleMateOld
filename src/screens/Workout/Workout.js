@@ -56,16 +56,16 @@ class Workout extends Component {
 
     return (
     <TextInput
-      onFocus={() => {
-        if (type === 'reps') return setReps('');
-        if (type === 'weight') return setWeight('');
-      }}
       ref={ref}
       keyboardType='numeric'
       style={styles.spinnerText}
       enablesReturnKeyAutomatically
       underlineColorAndroid='transparent'
       value={type === 'weight' ? weight.toString() : reps.toString()}
+      onFocus={() => {
+        if (type === 'reps') return setReps('');
+        if (type === 'weight') return setWeight('');
+      }}
       onChangeText={number => {
         if (type === 'reps') return setReps(number);
         if (type === 'weight') return setWeight(number);

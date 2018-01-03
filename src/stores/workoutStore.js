@@ -56,11 +56,13 @@ class WorkoutStore {
     this.timePassed = 0;
     this.countDown = 60;
     this.fetchedLog = [];
-    this.exerciseRest = 60;
-    this.allExercises = [];
     this.exerciseIndex = 0;
     this.exerciseList = [];
+    this.exerciseRest = 60;
+    this.allExercises = [];
     this.exerciseName = '';
+    this.fetchedLogAll = [];
+    this.showPastLogs = false;
     this.currentExercise = [];
     this.exerciseSetIndex = 1;
     this.nextExerciseName = '';
@@ -109,9 +111,8 @@ class WorkoutStore {
     }
     // if on the first exercise, fetch log now, otherwise fetch later
     if (this.exerciseIndex === 0) {
-      this.fetchExerciseLog(this.exerciseList[0]);
+      this.fetchExerciseLog(this.exerciseList[0], () => this.loadLastWeight(0));
     } else {
-      // increment by one?
       this.fetchExerciseLog(this.exerciseList[this.exerciseIndex]);
     }
 
@@ -176,12 +177,14 @@ class WorkoutStore {
     });
 
     // Prep for next set
-    this.weight = 10;
     this.exerciseSetIndex += 1;
+
     this.exerciseLog = {
       completedSets: this.exerciseLog.completedSets,
       exerciseKey: this.exerciseLog.exerciseKey,
     };
+
+    this.loadLastWeight(this.exerciseSetIndex - 1);
   }
 
   @action saveExercise = () => {
@@ -199,6 +202,17 @@ class WorkoutStore {
 
     // Load next exercise
     this.loadExercise();
+  }
+
+  @action loadLastWeight = index => {
+    const fetched = toJS(this.fetchedLog);
+
+    if (fetched.length === 0) {
+      this.weight = 10;
+    } else {
+      if (this.exerciseSetIndex >= fetched.completedSets.length) return;
+      this.weight = fetched.completedSets[index].weight;
+    }
   }
 
   // timePassed
@@ -274,7 +288,7 @@ class WorkoutStore {
     });
   }
 
-  @action fetchExerciseLog = currentExercise => {
+  @action fetchExerciseLog = (currentExercise, cb) => {
     if (!currentExercise) return;
 
     const currentExerciseKey = currentExercise.exerciseKey;
@@ -295,10 +309,12 @@ class WorkoutStore {
               this.fetchedLogAll.push(exerciseLog);
               if (this.fetchedLog.length === 0) {
                 this.fetchedLog = exerciseLog;
+                cb();
                 return;
               }
               if (new Date(this.fetchedLog.completed).getTime() < new Date(exerciseLog.completed).getTime()) {
                 this.fetchedLog = exerciseLog;
+                cb();
               }
             }
           });

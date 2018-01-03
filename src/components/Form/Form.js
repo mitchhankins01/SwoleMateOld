@@ -2,14 +2,15 @@ import t from 'tcomb-form-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Button } from 'react-native-elements';
-import { View, FlatList } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import ModalDropdown from 'react-native-modal-dropdown';
+import { View, FlatList, Dimensions } from 'react-native';
 
 import themeStyles from './styles';
 
 const TForm = t.form.Form;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 @inject('userStore', 'programStore') @observer
 class Form extends Component {
@@ -101,6 +102,7 @@ class Form extends Component {
         />
         <FlatList
           data={exercises()}
+          style={{ height: DEVICE_HEIGHT * 0.47 }}
           renderItem={({ item }) => {
             return (
               <Button
@@ -196,7 +198,13 @@ class Form extends Component {
             underlayColor={'transparent'}
             onPress={() => {
               programStore.toggleShowUpdateForm(false);
-              programStore.updateScreenIndex('selectedProgram');
+              if (programStore.screenIndex === 'addProgram') {
+                programStore.updateScreenIndex('allPrograms');
+              } else if (programStore.screenIndex === 'addProgramDay') {
+                programStore.updateScreenIndex('selectedProgram');
+              } else if (programStore.screenIndex === 'addProgramExercise') {
+                programStore.updateScreenIndex('programExercises');
+              }
             }}
           />
           <Entypo

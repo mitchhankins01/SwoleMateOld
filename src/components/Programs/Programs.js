@@ -8,35 +8,24 @@ import { Card } from '../Card';
 
 @inject('userStore', 'programStore') @observer
 class Programs extends Component {
-  state = {
-    // Primary or Selected Program
-    info: [],
-    days: [],
-    exercises: [],
-    // Various
-    error: '',
-    loading: false,
-    allPrograms: [],
-    allExercises: [],
-    showAnimation: false,
-  }
-
-  componentDidUpdate() {
-    const { programCard } = this.refs;
-
-    if (programCard) {
-      programCard.mySlider(750);
-    }
-  }
+  // componentDidUpdate() {
+  //   const { programCard } = this.refs;
+  //
+  //   if (programCard) {
+  //     programCard.mySlider(750);
+  //   }
+  // }
 
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
-    const { programStore } = this.props;
+    const { programStore: {
+      updateScreenIndex, updateSelectedDayKey, fetchProgram, updateSelectedProgramKey
+    } } = this.props;
 
-    if (screenIndex) programStore.updateScreenIndex(screenIndex);
-    if (selectedDayKey) programStore.updateSelectedDayKey(selectedDayKey);
+    if (screenIndex) updateScreenIndex(screenIndex);
+    if (selectedDayKey) updateSelectedDayKey(selectedDayKey);
     if (selectedProgram) {
-      programStore.fetchProgram(null, selectedProgram);
-      programStore.updateSelectedProgramKey(selectedProgram);
+      fetchProgram(null, selectedProgram);
+      updateSelectedProgramKey(selectedProgram);
     }
   }
 
@@ -79,7 +68,10 @@ class Programs extends Component {
         iconType = 'entypo';
         iconName = 'folder';
         subtitle = `${item.primaryGroup} - ${item.secondaryGroup}`;
-        onPress = () => this.updateScreenIndex('programExercises', item.key);
+        onPress = () => {
+          this.updateScreenIndex('programExercises', item.key);
+          this.refs.programCard.mySlideInUp(750);
+        };
         break;
       case 'programExercises':
         activeOpacity = 1;
@@ -103,7 +95,7 @@ class Programs extends Component {
     if (screenIndex === 'addProgram' ||
         screenIndex === 'addProgramDay' ||
         screenIndex === 'addProgramExercise') {
-      return <Card addCard info={this.state.info} />;
+      return <Card addCard />;
     }
 
     if (this.findData().length === 0) {
@@ -155,7 +147,6 @@ class Programs extends Component {
               <Card
                 item={data}
                 key={data.key}
-                info={this.state.info}
                 type={this.findContent(item).iconType}
                 icon={this.findContent(item).iconName}
                 onPress={this.findContent(item).onPress}

@@ -200,7 +200,7 @@ class Card extends Component {
                   </Text>
                   {each.completedSets.map((set, index) => {
                     return (<Text key={index} style={styles.logDetail}>
-                      {`Set: ${set.set} ${set.reps}x${set.weight} `}
+                      {`Set ${set.set}: ${set.reps}x${set.weight} `}
                     </Text>);
                   })}
                 </View>

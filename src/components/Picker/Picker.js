@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import { Wheel } from 'teaset';
-import { Platform } from 'react-native';
+import { Platform, Picker as RNPicker } from 'react-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { WheelPicker } from 'react-native-wheel-picker-android';
@@ -10,10 +11,8 @@ import themeStyles from './styles';
 class Picker extends Component {
   constructor(props) {
     super(props);
-    this.numbers = [];
-    this.numbersStr = [];
-    for (let i = 0; i <= 100; ++i) this.numbers.push(i);
-    for (let i = 0; i <= 100; ++i) this.numbersStr.push(`${i}`);
+    this.repsArray = _.range(0, 101, 1);
+    this.weightArray = _.range(0, 505, 5);
   }
 
   onChangeInput(type, number) {
@@ -24,9 +23,20 @@ class Picker extends Component {
     }
   }
 
+  getNumbers(type) {
+    switch (type) {
+      default: return null;
+      case 'reps': return this.repsArray.map(number => number.toString());
+      case 'weight': return this.weightArray.map(number => number.toString());
+    }
+  }
+
   render() {
-    const { type } = this.props;
+    const { type, weight, reps } = this.props;
     const styles = themeStyles[this.props.userStore.selected];
+
+    let array = this.weightArray;
+    if (type === 'reps') array = this.repsArray;
 
     switch (Platform.OS) {
       case 'android':
@@ -35,32 +45,31 @@ class Picker extends Component {
             isCurved
             renderIndicator
             itemTextSize={40}
-            data={this.numbersStr}
             itemTextColor='#EDF0F1'
+            data={this.getNumbers(type)}
             itemTextFontFamily='Exo-Medium'
             selectedItemTextColor='#EDF0F1'
             indicatorColor={styles.$primaryColor}
             style={{ height: 200, marginTop: 10, width: '100%' }}
             onItemSelected={event => this.onChangeInput(type, event.data)}
             selectedItemPosition={
-              type === 'weight' ? Number(this.props.weight) : Number(this.props.reps)
+              type === 'weight' ? Number(weight / 5) : Number(reps)
             }
           />
         );
       default:
         return (
-          <Wheel
-            holeLine={0}
-            items={this.numbers}
-            maskStyle={{ backgroundColor: 'transparent' }}
-            onChange={number => this.onChangeInput(type, number)}
-            style={{ height: 200, marginTop: 10, backgroundColor: 'transparent' }}
-            index={type === 'weight' ? Number(this.props.weight) : Number(this.props.reps)}
-            itemStyle={{ textAlign: 'center', color: '#EDF0F1', fontFamily: 'Exo-Medium' }}
-            holeStyle={{
-              borderColor: styles.$primaryColor, borderTopWidth: 1, borderBottomWidth: 1
-            }}
-          />
+          <RNPicker
+            onValueChange={number => this.onChangeInput(type, number)}
+            selectedValue={type === 'weight' ? weight.toString() : reps.toString()}
+            itemStyle={{ textAlign: 'center', color: '#EDF0F1', fontFamily: 'Exo-Medium', fontSize: 16 }}
+          >
+            {array.map(number => {
+              return (
+                <RNPicker.Item key={number} label={number.toString()} value={number.toString()} />
+              );
+            })}
+          </RNPicker>
         );
     }
   }

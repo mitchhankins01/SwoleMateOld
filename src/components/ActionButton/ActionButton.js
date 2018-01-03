@@ -29,7 +29,7 @@ export default inject('programStore', 'userStore')(observer((props) => {
         {actionButtonOptions(props).map(option => {
           delay += 250;
           return (
-            <Animatable.View animation='mySlideInUp' delay={delay} duration={750} key={option.title}>
+            <Animatable.View animation='mySlideInUp' delay={delay} duration={250} key={option.title}>
               <TouchableOpacity style={styles.optionsButton} onPress={option.onPress}>
                 <Icon iconStyle={styles.optionsIcon} name={option.iconName} type={option.iconType} />
                 <Text style={styles.optionsText}>{option.title}</Text>
@@ -108,7 +108,7 @@ const actionButtonOptions = (props) => {
       }
     },
     {
-      title: 'Add new Program',
+      title: 'Add Program',
       iconName: 'add-to-list',
       iconType: 'entypo',
       onPress: () => {
@@ -127,7 +127,7 @@ const actionButtonOptions = (props) => {
     },
     {
       title: 'Close',
-      iconName: 'back',
+      iconName: 'cross',
       iconType: 'entypo',
       onPress: () => toggleShowActionOptions(false)
     },
@@ -144,7 +144,7 @@ const actionButtonOptions = (props) => {
       }
     },
     {
-      title: 'Add new Workout',
+      title: 'Add Workout',
       iconName: 'add-to-list',
       iconType: 'entypo',
       onPress: () => {
@@ -163,7 +163,7 @@ const actionButtonOptions = (props) => {
     },
     {
       title: 'Close',
-      iconName: 'back',
+      iconName: 'cross',
       iconType: 'entypo',
       onPress: () => toggleShowActionOptions(false)
     },
@@ -199,7 +199,7 @@ const actionButtonOptions = (props) => {
     },
     {
       title: 'Close',
-      iconName: 'back',
+      iconName: 'cross',
       iconType: 'entypo',
       onPress: () => toggleShowActionOptions(false)
     },

@@ -89,7 +89,7 @@ class Programs extends Component {
     const {
       loading, showUpdateForm, screenIndex, allExercises, selectedDayKey
     } = this.props.programStore;
-
+console.log(loading);
     if (loading) return null;
     if (showUpdateForm) return <Card updateCard />;
     if (screenIndex === 'addProgram' ||
@@ -98,7 +98,7 @@ class Programs extends Component {
       return <Card addCard />;
     }
 
-    if (this.findData().length === 0) {
+    if (this.findData().length === 0 && !loading) {
       const title = screenIndex === 'allPrograms'
       ? 'Program' : 'Workout';
       return <Card emptyCard title={title} />;

@@ -106,7 +106,6 @@ class ProgramStore {
     .where('author', '==', firebase.auth().currentUser.uid);
 
     allProgramsRef.onSnapshot(querySnapshot => {
-      this.loading = true;
       this.allPrograms.length = 0;
       querySnapshot.forEach(program => {
         const {
@@ -125,13 +124,10 @@ class ProgramStore {
           key: program.id,
         });
       });
-      this.loading = false;
     });
   }
 
   @action fetchAllExercises = () => {
-    this.loading = true;
-
     firebase.firestore().collection('exercises').orderBy('name')
     .get()
     .then(querySnapshot => {
@@ -140,7 +136,6 @@ class ProgramStore {
         this.allExercises.push({ key, name, group, description });
       });
     });
-    this.loading = false;
   }
 
   @action addProgram = values => {

@@ -190,7 +190,7 @@ class Workout extends Component {
             onPress={() => this.renderCloseAlert()}
           />
           <Text style={styles.actionBarText}>
-            {new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7)}
+            {/* {new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7)} */}
           </Text>
           <Icon
             size={25}

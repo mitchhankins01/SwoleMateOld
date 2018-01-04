@@ -260,11 +260,11 @@ class Card extends Component {
           data={options}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
-            delay = index === 0 ? 0 : delay += 250;
+            delay = index === 0 ? 0 : delay += 100;
             return (
               <Animatable.View
                 delay={delay}
-                duration={750}
+                duration={500}
                 useNativeDriver
                 key={item.title}
                 animation='mySlideInUp'

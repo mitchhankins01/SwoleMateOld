@@ -8,14 +8,6 @@ import { Card } from '../Card';
 
 @inject('userStore', 'programStore') @observer
 class Programs extends Component {
-  // componentDidUpdate() {
-  //   const { programCard } = this.refs;
-  //
-  //   if (programCard) {
-  //     programCard.mySlider(750);
-  //   }
-  // }
-
   updateScreenIndex(screenIndex, selectedDayKey, selectedProgram) {
     const { programStore: {
       updateScreenIndex, updateSelectedDayKey, fetchProgram, updateSelectedProgramKey
@@ -89,7 +81,7 @@ class Programs extends Component {
     const {
       loading, showUpdateForm, screenIndex, allExercises, selectedDayKey
     } = this.props.programStore;
-console.log(loading);
+
     if (loading) return null;
     if (showUpdateForm) return <Card updateCard />;
     if (screenIndex === 'addProgram' ||

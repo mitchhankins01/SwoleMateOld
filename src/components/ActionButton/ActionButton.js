@@ -1,12 +1,11 @@
 import React from 'react';
+import Color from 'color';
 import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
 import { TouchableOpacity, View, Text } from 'react-native';
 
 import themeStyles from './styles';
-
-import Color from 'color';
 
 export default inject('programStore', 'userStore')(observer((props) => {
   const styles = themeStyles[props.userStore.selected];
@@ -27,9 +26,9 @@ export default inject('programStore', 'userStore')(observer((props) => {
     return (
       <View style={styles.optionsView}>
         {actionButtonOptions(props).map(option => {
-          delay += 250;
+          delay += 100;
           return (
-            <Animatable.View animation='mySlideInUp' delay={delay} duration={250} key={option.title}>
+            <Animatable.View animation='mySlideInUp' delay={delay} duration={500} key={option.title}>
               <TouchableOpacity style={styles.optionsButton} onPress={option.onPress}>
                 <Icon iconStyle={styles.optionsIcon} name={option.iconName} type={option.iconType} />
                 <Text style={styles.optionsText}>{option.title}</Text>

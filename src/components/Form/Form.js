@@ -87,7 +87,7 @@ class Form extends Component {
     };
 
     const options = ['Show All Exercises', 'Abs', 'Back', 'Biceps', 'Calves',
-      'Chest', 'Forearms', 'Glutes', 'Shoulders', 'Triceps', 'Cardio'];
+      'Chest', 'Forearms', 'Glutes', 'Legs', 'Shoulders', 'Triceps', 'Cardio'];
 
     return (
       <View>
@@ -305,6 +305,7 @@ const muscleGroups = t.enums({
   Chest: 'Chest',
   Forearms: 'Forearms',
   Glutes: 'Glutes',
+  Legs: 'Legs',
   Shoulders: 'Shoulders',
   Triceps: 'Triceps',
   Cardio: 'Cardio',

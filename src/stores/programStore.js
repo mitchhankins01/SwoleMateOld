@@ -10,7 +10,6 @@ class ProgramStore {
   @observable updateFormItem = {};
   @observable showUpdateForm = false;
   @observable selectedProgramKey = '';
-  @observable showActionOptions = false;
   @observable screenIndex = 'primaryProgram';
   // Get program info
   @observable info = [];
@@ -39,10 +38,6 @@ class ProgramStore {
 
   @action setUpdateFormItem = item => {
     this.updateFormItem = item;
-  }
-
-  @action toggleShowActionOptions = bool => {
-    this.showActionOptions = bool;
   }
 
   @action resetError = () => {

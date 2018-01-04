@@ -106,7 +106,7 @@ class Card extends Component {
     };
 
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps='always'>
         <View style={styles.cardContainer} >
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Entypo style={styles.cardTitle} name={'add-to-list'} />
@@ -146,7 +146,7 @@ class Card extends Component {
     };
 
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps='always'>
         <View style={styles.cardContainer} >
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Entypo style={styles.cardTitle} name={'add-to-list'} />

@@ -178,6 +178,7 @@ class Form extends Component {
           return (
             <TForm
               type={newProgramExercise}
+              options={exerciseOptions}
               ref='updateProgramExerciseForm'
               value={this.props.programStore.updateFormItem}
             />

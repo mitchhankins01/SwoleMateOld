@@ -34,6 +34,10 @@ class Settings extends Component {
     password: firebase.auth().currentUser.email,
   };
 
+  componentWillUnmount() {
+    this.props.userStore.updateScreenIndex('Main');
+  }
+
   renderContent() {
     const {
       imperial, toggleImperial, updateTheme, screenIndex, updateScreenIndex

@@ -36,9 +36,11 @@ class Home extends Component {
        programStore: {
          getScreenIndex,
          fetchAllPrograms,
+         getShowUpdateForm,
          updateScreenIndex,
          fetchAllExercises,
          fetchPrimaryProgram,
+         toggleShowUpdateForm,
        },
        userStore,
        navigation
@@ -51,6 +53,10 @@ class Home extends Component {
      // programStore.addExercises();
 
      this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+       if (getShowUpdateForm()) {
+         toggleShowUpdateForm(false);
+         return true;
+       }
        if (navigation.state.routeName === 'Home' && getScreenIndex() !== 'primaryProgram') {
          updateScreenIndex('primaryProgram');
          return true;

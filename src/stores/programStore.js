@@ -40,6 +40,10 @@ class ProgramStore {
     this.showUpdateForm = bool;
   }
 
+  @action getShowUpdateForm = () => {
+    return this.showUpdateForm;
+  }
+
   @action setUpdateFormItem = item => {
     this.updateFormItem = item;
   }

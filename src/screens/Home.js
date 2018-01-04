@@ -81,13 +81,17 @@ class Home extends Component {
    renderTitle() {
      const { days, info, screenIndex, selectedDayKey } = this.props.programStore;
 
-     if (screenIndex === 'primaryProgram' || screenIndex === 'selectedProgram') {
-       return info.map(detail => detail.name);
-     } else if (screenIndex === 'programExercises') {
-       return days.filter(day => day.key === selectedDayKey).map(detail => detail.name);
-     } else if (screenIndex === 'allPrograms') {
-       return 'All Programs';
-     } return 'Update';
+     switch (screenIndex) {
+       default: return 'SwoleMate';
+       case 'allPrograms': return 'All Programs';
+       case 'primaryProgram':
+       case 'selectedProgram': return info.map(detail => detail.name);
+       case 'programExercises':
+         return days.filter(day => day.key === selectedDayKey).map(detail => detail.name);
+       case 'updateProgram': return 'Edit Program';
+       case 'updateProgramDay': return 'Edit Workout';
+       case 'updateProgramExercise': return 'Edit Exercise';
+     }
    }
 
   render() {

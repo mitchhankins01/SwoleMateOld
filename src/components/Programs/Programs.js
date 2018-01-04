@@ -70,7 +70,7 @@ class Programs extends Component {
         onPress = () => {};
         iconName = 'dumbbell';
         iconType = 'material-community';
-        subtitle = `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest`;
+        subtitle = `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`;
         break;
     }
 

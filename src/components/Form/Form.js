@@ -155,7 +155,7 @@ class Form extends Component {
         case 'addProgramDay':
           return <TForm ref='addProgramDayForm' type={newProgramDay} options={dayOptions} />;
         case 'addProgramExercise':
-          return <TForm ref='addProgramExerciseForm' type={newProgramExercise} />;
+          return <TForm ref='addProgramExerciseForm' type={newProgramExercise} options={exerciseOptions} />;
         case 'updateProgram':
           return (
             <TForm
@@ -323,3 +323,11 @@ const newProgramExercise = t.struct({
   reps: t.Number,
   rest: t.Number,
 });
+
+const exerciseOptions = {
+  fields: {
+    rest: {
+      label: 'Rest (seconds)',
+    },
+  }
+};

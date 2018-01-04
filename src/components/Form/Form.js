@@ -111,8 +111,8 @@ class Form extends Component {
                 key={item.key}
                 title={item.name}
                 fontFamily='Exo-Regular'
-                buttonStyle={{ height: 45, backgroundColor: 'transparent', paddingVertical: 10 }}
                 containerViewStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start' }}
+                buttonStyle={{ height: 45, backgroundColor: 'transparent', paddingVertical: 10 }}
                 onPress={() => this.setState({
                   showExerciseList: false,
                   selectedExerciseKey: item.key,
@@ -127,8 +127,8 @@ class Form extends Component {
   }
 
   render() {
+    const { formType, userStore, programStore } = this.props;
     const { showExerciseList, selectedExerciseName } = this.state;
-    const { formType, userStore, programStore, selectedUpdate } = this.props;
     const styles = themeStyles[userStore.selected];
 
     const exercisesButton = () => {
@@ -281,12 +281,14 @@ const newProgram = t.struct({
 const dayOptions = {
   fields: {
     primaryGroup: {
+      label: 'Primary Muscle Group',
       itemStyle: {
         color: '#EDF0F1',
         fontFamily: 'Exo-Regular',
       },
     },
     secondaryGroup: {
+      label: 'Secondary Muscle Group',
       itemStyle: {
         color: '#EDF0F1',
         fontFamily: 'Exo-Regular',

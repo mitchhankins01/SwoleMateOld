@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StatusBar } from 'react-native';
 import { inject, observer } from 'mobx-react';
+import { BackHandler, StatusBar } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -32,13 +32,31 @@ class Home extends Component {
    state = { scrollIndex: 0 }
 
    componentWillMount() {
-     const { programStore, userStore } = this.props;
+     const {
+       programStore: {
+         getScreenIndex,
+         fetchAllPrograms,
+         updateScreenIndex,
+         fetchAllExercises,
+         fetchPrimaryProgram,
+       },
+       userStore,
+       navigation
+     } = this.props;
 
      userStore.fetchTheme();
-     programStore.fetchAllPrograms();
-     programStore.fetchAllExercises();
-     programStore.fetchPrimaryProgram();
+     fetchAllPrograms();
+     fetchAllExercises();
+     fetchPrimaryProgram();
      // programStore.addExercises();
+
+     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+       if (navigation.state.routeName === 'Home' && getScreenIndex() !== 'primaryProgram') {
+         updateScreenIndex('primaryProgram');
+         return true;
+       }
+       return false;
+     });
    }
 
    componentDidUpdate() {
@@ -46,10 +64,18 @@ class Home extends Component {
      if (titleView) { titleView.zoomIn(); }
    }
 
+    componentWillUnmount() {
+      this.backHandler.remove();
+    }
+
    renderError() {
      if (this.props.programStore.error !== '') {
        this.dropdown.alertWithType('info', 'Whoops', this.props.programStore.error);
      }
+   }
+
+   renderCloseAlert() {
+     this.dropdownExit.alertWithType('info', 'Exit', 'Tap this close button to exit');
    }
 
    renderTitle() {
@@ -101,6 +127,18 @@ class Home extends Component {
           ref={ref => (this.dropdown = ref)}
           messageStyle={styles.dropdownMessage}
           onClose={() => this.props.programStore.resetError()}
+        />
+
+        <DropdownAlert
+          showCancel
+          translucent
+          zIndex={100}
+          updateStatusBar={false}
+          infoColor={styles.$tertiaryColor}
+          ref={ref => (this.dropdownExit = ref)}
+          onCancel={() => this.props.navigation.goBack(null)}
+          titleStyle={[styles.dropdownTitle, { marginLeft: 0 }]}
+          messageStyle={[styles.dropdownMessage, { marginLeft: 0 }]}
         />
       </LinearGradient>
     );

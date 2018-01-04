@@ -24,6 +24,10 @@ class ProgramStore {
     this.screenIndex = index;
   }
 
+  @action getScreenIndex = () => {
+    return this.screenIndex;
+  }
+
   @action updateSelectedDayKey = key => {
     this.selectedDayKey = key;
   }

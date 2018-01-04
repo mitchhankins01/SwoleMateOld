@@ -32,7 +32,6 @@ class Workout extends Component {
   }
 
   componentDidMount() {
-    // Implement, move to Main?
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       if (this.props.navigation.state.routeName === 'Workout') {
         this.renderCloseAlert();

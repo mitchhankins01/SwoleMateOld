@@ -3,13 +3,14 @@ import { StatusBar } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Button } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
-import DropdownAlert from 'react-native-dropdownalert';
+// import DropdownAlert from 'react-native-dropdownalert';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 
 import themeStyles from './styles';
 import Header from '../../components/Header';
 import { Card } from '../../components/Card';
+import { Alert } from '../../components/Alert';
 import { Calendar } from '../../components/Calendar';
 
 @inject('userStore', 'logStore') @observer
@@ -29,12 +30,6 @@ class Logs extends Component {
     this.props.logStore.fetchLogs();
   }
 
-  componentDidUpdate() {
-    if (this.refs.mainView && !this.props.logStore.error) {
-      this.refs.mainView.awesomeIn(500);
-    }
-  }
-
   renderContent() {
     const { screenIndex, showCalendar } = this.props.logStore;
     switch (screenIndex) {
@@ -46,17 +41,9 @@ class Logs extends Component {
     }
   }
 
-  renderError() {
-    const { error, showError } = this.props.logStore;
-
-    if (showError) {
-     this.dropdown.alertWithType('error', 'Whoops', error || 'Something went wrong!');
-    }
-  }
-
   render() {
     const styles = themeStyles[this.props.userStore.selected];
-    const { showCalendar, toggleCalendar } = this.props.logStore;
+    const { showCalendar, toggleCalendar, toggleError, showError, error } = this.props.logStore;
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
     return (
@@ -68,7 +55,10 @@ class Logs extends Component {
         </Animatable.View>
         <Button
           raised
-          onPress={() => toggleCalendar()}
+          onPress={() => {
+            toggleCalendar();
+            this.refs.mainView.awesomeIn(500);
+          }}
           buttonStyle={styles.calendarButton}
           textStyle={styles.calendarButtonText}
           containerViewStyle={styles.calendarButtonContainer}
@@ -78,14 +68,14 @@ class Logs extends Component {
             : { name: 'calendar', type: 'entypo', size: 18 }
           }
         />
-        {this.renderError()}
-        <DropdownAlert
-          translucent
-          closeInterval={2000}
-          updateStatusBar={false}
-          ref={ref => (this.dropdown = ref)}
-          onClose={() => this.props.logStore.toggleError(false)}
-        />
+        {showError ?
+          <Alert
+            acknowledge
+            title='Whoops'
+            message={error}
+            onPressSave={() => toggleError(false)}
+          />
+          : null}
       </LinearGradient>
     );
   }

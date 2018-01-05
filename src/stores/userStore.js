@@ -36,6 +36,10 @@ class UserStore {
     this.screenIndex = index;
   }
 
+  @action getScreenIndex = () => {
+    return this.screenIndex;
+  }
+
   // Theme
   @action fetchTheme = () => {
     firebase.firestore()

@@ -2,10 +2,10 @@ import Color from 'color';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { inject, observer } from 'mobx-react';
-import { View, StatusBar } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, StatusBar, BackHandler } from 'react-native';
 
 import themeStyles from './styles';
 import { Card } from '../../components/Card';
@@ -33,7 +33,27 @@ class Settings extends Component {
     password: firebase.auth().currentUser.email,
   };
 
+  componentWillMount() {
+    const {
+      navigation,
+      userStore: { getScreenIndex, updateScreenIndex },
+    } = this.props;
+
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      // if (getShowUpdateForm()) {
+      //   toggleShowUpdateForm(false);
+      //   return true;
+      // }
+      if (navigation.state.routeName === 'Settings' && getScreenIndex() !== 'Main') {
+        updateScreenIndex('Main');
+        return true;
+      }
+      return false;
+    });
+  }
+
   componentWillUnmount() {
+    this.backHandler.remove();
     this.props.userStore.updateScreenIndex('Main');
   }
 

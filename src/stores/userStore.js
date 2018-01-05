@@ -139,9 +139,10 @@ class UserStore {
   @action switchSuccess = () => {
     this.screenIndex = 'Main';
     this.showSuccess = true;
-    setTimeout(() => {
-      this.showSuccess = false;
-    }, 2000);
+  }
+
+  @action toggleShowSuccess = bool => {
+    this.showSuccess = bool;
   }
 }
 

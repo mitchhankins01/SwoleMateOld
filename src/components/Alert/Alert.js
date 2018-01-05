@@ -1,10 +1,29 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TextInput } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
+
+const getContent = (styles, props) => {
+  switch (props.input) {
+    default:
+      return <ScrollView><Text style={styles.message}>{props.message}</Text></ScrollView>;
+    case true:
+      return (
+        <ScrollView>
+          <Text style={styles.message}>{props.message}</Text>
+          <TextInput
+            value={props.value}
+            style={props.style}
+            underlineColorAndroid='transparent'
+            onChangeText={props.onChangeText}
+          />
+        </ScrollView>
+      );
+  }
+};
 
 const getIcons = (styles, { acknowledge, programStore, onPressClose, onPressSave }) => {
   switch (acknowledge) {
@@ -53,9 +72,9 @@ export default inject('userStore', 'programStore')(observer((props) => {
 
   return (
     <View style={styles.container}>
-      <Animatable.View style={styles.alertContainer} animation='awesomeIn' duration={500}>
+      <Animatable.View style={styles.alertContainer} duration={500} animation='awesomeIn'>
         <Text style={styles.title}>{props.title}</Text>
-        <ScrollView><Text style={styles.message}>{props.message}</Text></ScrollView>
+        {getContent(styles, props)}
         {getIcons(styles, props)}
       </Animatable.View>
     </View>

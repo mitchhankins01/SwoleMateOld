@@ -4,7 +4,6 @@ import firebase from 'react-native-firebase';
 import { inject, observer } from 'mobx-react';
 import { Avatar, Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
-import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, TextInput, TouchableOpacity, Text, StatusBar } from 'react-native';
@@ -12,6 +11,7 @@ import { View, TextInput, TouchableOpacity, Text, StatusBar } from 'react-native
 import themeStyles from './styles';
 import { Card } from '../../components/Card';
 import Header from '../../components/Header';
+import { Alert } from '../../components/Alert';
 
 @inject('userStore') @observer
 class Settings extends Component {
@@ -153,87 +153,73 @@ class Settings extends Component {
   renderInput(styles) {
     const { showInput, updateValue } = this.state;
     const { updateName, updateEmail, updatePassword, deleteUser } = this.props.userStore;
+    const capitalize = str => str[0].toUpperCase() + str.slice(1).toLowerCase();
 
     const getInput = () => {
       switch (updateValue) {
         default: return null;
         case 'name':
+          return (
+            <Alert
+              input
+              title='Name'
+              message='Change Name'
+              value={this.state[updateValue]}
+              style={this.getStyles().textInput}
+              onChangeText={text => this.setState({ [updateValue]: text })}
+              onPressClose={() => this.setState({ showInput: false, updateValue: '' })}
+              onPressSave={() => {
+                this.setState({ showInput: false, updateValue: '' });
+                return updateName(this.state.name);
+              }}
+            />
+          );
         case 'email':
+          return (
+            <Alert
+              input
+              title='Email'
+              message='Change Email'
+              value={this.state[updateValue]}
+              style={this.getStyles().textInput}
+              onChangeText={text => this.setState({ [updateValue]: text })}
+              onPressClose={() => this.setState({ showInput: false, updateValue: '' })}
+              onPressSave={() => {
+                this.setState({ showInput: false, updateValue: '' });
+                return updateEmail(this.state.email);
+              }}
+            />
+          );
         case 'password':
           return (
-            <View>
-              <TextInput
-                value={this.state[updateValue]}
-                style={this.getStyles().textInput}
-                underlineColorAndroid='transparent'
-                onChangeText={text => this.setState({ [updateValue]: text })}
-              />
-              {updateValue === 'password' ?
-                <View style={{ marginBottom: -150 }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                    this.setState({ showInput: false, updateValue: '' });
-                  }}
-                  >
-                    <Text style={[this.getStyles().passwordText, { marginTop: 30 }]}>Cancel</Text>
-                  </TouchableOpacity>
-                  <View style={{ marginVertical: 30 }} />
-                  <TouchableOpacity
-                    onPress={() => {
-                    this.setState({ showInput: false, updateValue: '' });
-                    updatePassword(this.state.password);
-                  }}
-                  >
-                    <Text style={this.getStyles().passwordText}>Send Reset Password Email</Text>
-                  </TouchableOpacity>
-                </View>
-              :
-                <View style={this.getStyles().buttonView}>
-                  <Icon
-                    size={80}
-                    name='cross'
-                    type='entypo'
-                    color={styles.$primaryColor}
-                    onPress={() => this.setState({ showInput: false, updateValue: '' })}
-                  />
-                  <Icon
-                    size={75}
-                    name='check'
-                    type='entypo'
-                    color={styles.$primaryColor}
-                    onPress={() => {
-                      this.setState({ showInput: false, updateValue: '' });
-                      if (updateValue === 'name') return updateName(this.state.name);
-                      if (updateValue === 'email') return updateEmail(this.state.email);
-                    }}
-                  />
-                </View>}
-            </View>
+            <Alert
+              input
+              title='Password'
+              message='Your password-reset email will be sent here'
+              value={this.state[updateValue]}
+              style={this.getStyles().textInput}
+              onChangeText={text => this.setState({ [updateValue]: text })}
+              onPressClose={() => this.setState({ showInput: false, updateValue: '' })}
+              onPressSave={() => {
+                this.setState({ showInput: false, updateValue: '' });
+                updatePassword(this.state.password);
+              }}
+            />
           );
         case 'delete':
           return (
-            <View>
-              <Text style={this.getStyles().deleteText}>Are you sure? All your data will be deleted :(</Text>
-              <View style={this.getStyles().buttonView}>
-                <Icon
-                  size={80}
-                  name='cross'
-                  type='entypo'
-                  color={styles.$primaryColor}
-                  onPress={() => this.setState({ showInput: false, updateValue: '' })}
-                />
-                <Icon
-                  size={75}
-                  name='check'
-                  type='entypo'
-                  color={styles.$primaryColor}
-                  onPress={() => {
-                    this.setState({ showInput: false, updateValue: '' });
-                    if (updateValue === 'delete') return deleteUser();
-                  }}
-                />
-              </View>
-            </View>
+            <Alert
+              title='Delete Account'
+              message='Are you sure? All your data will be deleted :('
+              value={this.state[updateValue]}
+              style={this.getStyles().textInput}
+              onChangeText={text => this.setState({ [updateValue]: text })}
+              onPressClose={() => this.setState({ showInput: false, updateValue: '' })}
+              onPressSave={() => {
+                this.setState({ showInput: false, updateValue: '' });
+                return deleteUser();
+              }}
+            />
           );
       }
     };
@@ -246,24 +232,9 @@ class Settings extends Component {
     );
   }
 
-  renderError() {
-    const { error, showError } = this.props.userStore;
-
-    if (showError) {
-     this.dropdown.alertWithType('error', 'Whoops', error.message || 'Something went wrong!');
-    }
-  }
-
-  renderSuccess() {
-    const { showSuccess } = this.props.userStore;
-
-    if (showSuccess) {
-       this.dropdown.alertWithType('success', 'Bam!', 'Changes Saved');
-    }
-  }
-
   render() {
-    const styles = themeStyles[this.props.userStore.selected];
+    const { error, showError, selected, showSuccess, toggleShowSuccess, toggleError } = this.props.userStore;
+    const styles = themeStyles[selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
 
     return (
@@ -287,20 +258,22 @@ class Settings extends Component {
           </Card>
         </View>
         {this.renderInput(styles)}
-        {this.renderError()}
-        {this.renderSuccess()}
-        <DropdownAlert
-          translucent
-          zIndex={100}
-          elevation={5}
-          closeInterval={2000}
-          updateStatusBar={false}
-          ref={ref => (this.dropdown = ref)}
-          successColor={styles.$tertiaryColor}
-          titleStyle={this.getStyles().dropdownTitle}
-          messageStyle={this.getStyles().dropdownMessage}
-          onClose={() => this.props.userStore.toggleError(false)}
-        />
+        {showError ?
+          <Alert
+            acknowledge
+            title='Whoops'
+            onPressSave={() => toggleError(false)}
+            message={error.message || 'Something went wrong! :('}
+          />
+          : null}
+        {showSuccess ?
+          <Alert
+            acknowledge
+            title='Yay!'
+            message='Changes saved :)'
+            onPressSave={() => toggleShowSuccess(false)}
+          />
+          : null}
       </LinearGradient>
     );
   }
@@ -325,9 +298,11 @@ class Settings extends Component {
         height: 40,
         width: 300,
         padding: 10,
+        marginTop: 20,
         borderWidth: 1,
         borderRadius: 5,
         color: '#EDF0F1',
+        alignSelf: 'center',
         fontFamily: 'Exo-Regular',
         borderColor: styles.$primaryColor,
         backgroundColor: styles.$tertiaryColor,
@@ -338,21 +313,6 @@ class Settings extends Component {
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-around',
-      },
-      dropdownTitle: {
-        fontSize: 20,
-        marginBottom: 5,
-        marginLeft: -36,
-        color: '#EDF0F1',
-        alignSelf: 'center',
-        fontFamily: 'Exo-Bold',
-      },
-      dropdownMessage: {
-        fontSize: 16,
-        marginLeft: -36,
-        color: '#EDF0F1',
-        alignSelf: 'center',
-        fontFamily: 'Exo-Medium',
       },
       passwordText: {
         fontSize: 20,

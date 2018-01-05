@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // Initialize animations
 import Animations from '../components/Animations';
 
+import { Alert } from '../components/Alert';
 import Header from '../components/Header';
 import Greeting from '../components/Greeting';
 import themeStyles from '../components/styles';
@@ -74,16 +75,6 @@ class Home extends Component {
       this.backHandler.remove();
     }
 
-   renderError() {
-     if (this.props.programStore.error !== '') {
-       this.dropdown.alertWithType('info', 'Whoops', this.props.programStore.error);
-     }
-   }
-
-   renderCloseAlert() {
-     this.dropdownExit.alertWithType('info', 'Exit', 'Tap this close button to exit');
-   }
-
    renderTitle() {
      const { days, info, screenIndex, selectedDayKey } = this.props.programStore;
 
@@ -103,7 +94,7 @@ class Home extends Component {
   render() {
     const styles = themeStyles[this.props.userStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-
+    const { error } = this.props.programStore;
     // if (this.props.programStore.loading) {
     //   this.dropdown.alertWithType('info', "I'll be back", "We're Loading");
     // }
@@ -118,12 +109,11 @@ class Home extends Component {
         />
 
         {/* <Greeting styles={styles} /> */}
+        {error ? <Alert acknowledge title='Whoops' message={error} /> : null}
 
         <ButtonGroup />
 
         <Programs navigation={this.props.navigation} />
-
-        {this.renderError()}
 
         <ActionButton navigation={this.props.navigation} />
 
@@ -139,17 +129,6 @@ class Home extends Component {
           onClose={() => this.props.programStore.resetError()}
         />
 
-        <DropdownAlert
-          showCancel
-          translucent
-          zIndex={100}
-          updateStatusBar={false}
-          infoColor={styles.$tertiaryColor}
-          ref={ref => (this.dropdownExit = ref)}
-          onCancel={() => this.props.navigation.goBack(null)}
-          titleStyle={[styles.dropdownTitle, { marginLeft: 0 }]}
-          messageStyle={[styles.dropdownMessage, { marginLeft: 0 }]}
-        />
       </LinearGradient>
     );
   }

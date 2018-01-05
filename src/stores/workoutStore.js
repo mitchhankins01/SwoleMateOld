@@ -309,12 +309,12 @@ class WorkoutStore {
               this.fetchedLogAll.push(exerciseLog);
               if (this.fetchedLog.length === 0) {
                 this.fetchedLog = exerciseLog;
-                cb();
+                if (cb) cb();
                 return;
               }
               if (new Date(this.fetchedLog.completed).getTime() < new Date(exerciseLog.completed).getTime()) {
                 this.fetchedLog = exerciseLog;
-                cb();
+                if (cb) cb();
               }
             }
           });

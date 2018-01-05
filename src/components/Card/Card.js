@@ -166,6 +166,8 @@ class Card extends Component {
       isWorkout, isBodyStats, isNutrition, updateScreenIndex, workoutLogs, workoutLogsExercises
     } = this.props.logStore;
 
+    const unit = this.props.userStore.imperial ? 'Lbs' : 'Kg';
+
     if (this.props.workout) {
       const workoutLogsExercisesToJS = toJS(workoutLogsExercises);
       const timePassed = new Date(workoutLogs[0].timePassed * 1000).toISOString().substr(12, 7);
@@ -200,7 +202,7 @@ class Card extends Component {
                   </Text>
                   {each.completedSets.map((set, index) => {
                     return (<Text key={index} style={styles.logDetail}>
-                      {`Set ${set.set}: ${set.reps}x${set.weight} `}
+                      {`Set ${set.set}: ${set.reps}x${set.weight} ${unit}`}
                     </Text>);
                   })}
                 </View>

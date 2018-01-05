@@ -33,9 +33,9 @@ class Login extends Component {
   onLoginSuccess() {
     this.setState({
       email: '',
+      error: '',
       password: '',
       loading: false,
-      error: ''
     });
   }
 

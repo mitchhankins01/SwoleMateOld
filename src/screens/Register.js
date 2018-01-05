@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
-import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import { Text, View, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Button, FormLabel, FormInput, ButtonGroup } from 'react-native-elements';
 
+import { Alert } from '../components/Alert';
 import themeStyles from '../components/styles';
 
 class Register extends Component {
@@ -31,23 +31,18 @@ class Register extends Component {
   }
 
   onFail(error) {
-    this.setState({ loading: false });
-    this.dropdown.alertWithType(
-      'error',
-      'Something went wrong',
-      error.message
-    );
+    this.setState({ loading: false, error: error.message });
   }
 
   clearState() {
     this.setState({
+      sex: 0,
       name: '',
       email: '',
-      password: '',
       error: '',
+      password: '',
       loading: false,
-      sex: 0,
-      imperial: true
+      imperial: true,
     });
   }
 
@@ -244,12 +239,14 @@ class Register extends Component {
             )}
           </View>
         </KeyboardAvoidingView>
-        <DropdownAlert
-          ref={ref => (this.dropdown = ref)}
-          updateStatusBar={false}
-          closeInterval={7000}
-          translucent
-        />
+        {this.state.error ?
+          <Alert
+            acknowledge
+            title='Whoops'
+            message={this.state.error}
+            onPressSave={() => this.setState({ error: '' })}
+          />
+          : null}
       </LinearGradient>
     );
   }

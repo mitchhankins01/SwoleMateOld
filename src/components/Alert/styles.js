@@ -5,7 +5,16 @@ const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const themeStyles = themes.createStyleSheet({
-  containerStyle: {
+  container: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  alertContainer: {
     zIndex: 500,
     height: 250,
     elevation: 5,

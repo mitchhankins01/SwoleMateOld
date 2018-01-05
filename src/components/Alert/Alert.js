@@ -52,10 +52,12 @@ export default inject('userStore', 'programStore')(observer((props) => {
   const styles = themeStyles[props.userStore.selected];
 
   return (
-    <Animatable.View style={styles.containerStyle} animation='awesomeIn' duration={500}>
-      <Text style={styles.title}>{props.title}</Text>
-      <ScrollView><Text style={styles.message}>{props.message}</Text></ScrollView>
-      {getIcons(styles, props)}
-    </Animatable.View>
+    <View style={styles.container}>
+      <Animatable.View style={styles.alertContainer} animation='awesomeIn' duration={500}>
+        <Text style={styles.title}>{props.title}</Text>
+        <ScrollView><Text style={styles.message}>{props.message}</Text></ScrollView>
+        {getIcons(styles, props)}
+      </Animatable.View>
+    </View>
   );
 }));

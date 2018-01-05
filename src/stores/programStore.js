@@ -146,6 +146,7 @@ class ProgramStore {
 
     firebase.firestore()
     .collection('userPrograms')
+    .where('author', '==', firebase.auth().currentUser.uid)
     .get()
     .then(querySnapshot => {
       if (querySnapshot.empty) {
@@ -230,8 +231,9 @@ class ProgramStore {
       if (querySnapshot.empty) {
         index = 0;
       } else {
-        querySnapshot.forEach(day => {
-          const data = day.data();
+        querySnapshot.forEach(exercise => {
+          const data = exercise.data();
+          if (data.day !== selectedDayKey) return;
           if (data.index >= index) {
             index = Number(data.index) + 1;
           }
@@ -338,7 +340,12 @@ class ProgramStore {
           const target = this.exercises.find(exercise => {
             return exercise.key === item.key;
           });
-          const subTarget = this.exercises[target.index - 1];
+
+          const filteredExercises = this.exercises.filter(exercise => {
+            return exercise.day === this.selectedDayKey;
+          });
+
+          const subTarget = filteredExercises[target.index - 1];
 
           const targetRef = firebase.firestore()
           .collection('userPrograms')
@@ -446,13 +453,18 @@ class ProgramStore {
         }
       case 'programExercises':
         {
+          const filteredExercises = this.exercises.filter(exercise => {
+            return exercise.day === this.selectedDayKey;
+          });
+
           // If the requested to edit item is the last one
-          if (item.index >= this.exercises.length - 1) return;
+          if (item.index >= filteredExercises.length - 1) return;
           // Obtain target and use it to get the following element
           const target = this.exercises.find(exercise => {
             return exercise.key === item.key;
           });
-          const subTarget = this.exercises[target.index + 1];
+
+          const subTarget = filteredExercises[target.index + 1];
 
           const targetRef = firebase.firestore()
           .collection('userPrograms')
@@ -543,6 +555,7 @@ class ProgramStore {
     .then(() => {
       ref.orderBy('index').get().then(querySnapshot => {
         querySnapshot.docChanges.forEach(updateExercise => {
+          if (updateExercise.doc.data().day !== programInfo[0].key) return;
           const updateRef = updateExercise.doc.ref.path;
           firebase.firestore().doc(updateRef)
           .update({ index: updateExercise.newIndex });
@@ -616,19 +629,19 @@ class ProgramStore {
     });
   }
 
-  @action addExercises = () => {
-    exercises.map(each => {
-      const ref = firebase.firestore().collection('exercises').doc();
-      return (
-        ref.set({
-          description: each.description,
-          group: each.group,
-          name: each.name,
-          key: ref.id,
-        })
-      );
-    });
-  }
+  // @action addExercises = () => {
+  //   exercises.map(each => {
+  //     const ref = firebase.firestore().collection('exercises').doc();
+  //     return (
+  //       ref.set({
+  //         description: each.description,
+  //         group: each.group,
+  //         name: each.name,
+  //         key: ref.id,
+  //       })
+  //     );
+  //   });
+  // }
 
 }
 

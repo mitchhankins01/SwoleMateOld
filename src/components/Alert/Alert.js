@@ -6,13 +6,19 @@ import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
 
-const getIcons = (styles, { acknowledge, programStore }) => {
+const getIcons = (styles, { acknowledge, programStore, onPressClose, onPressSave }) => {
   switch (acknowledge) {
     default:
       return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          {renderIcon(styles, 'cross', 30, () => programStore.resetError())}
-          {renderIcon(styles, 'check', 25, () => programStore.resetError())}
+          {renderIcon(styles, 'cross', 30, () => {
+            onPressClose();
+            programStore.resetError();
+          })}
+          {renderIcon(styles, 'check', 25, () => {
+            onPressSave();
+            programStore.resetError();
+          })}
         </View>
       );
     case true:

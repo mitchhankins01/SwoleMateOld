@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { BackHandler, StatusBar } from 'react-native';
-import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -116,18 +115,6 @@ class Home extends Component {
         <Programs navigation={this.props.navigation} />
 
         <ActionButton navigation={this.props.navigation} />
-
-        <DropdownAlert
-          translucent
-          zIndex={100}
-          closeInterval={2000}
-          updateStatusBar={false}
-          infoColor={styles.$tertiaryColor}
-          titleStyle={styles.dropdownTitle}
-          ref={ref => (this.dropdown = ref)}
-          messageStyle={styles.dropdownMessage}
-          onClose={() => this.props.programStore.resetError()}
-        />
 
       </LinearGradient>
     );

@@ -33,6 +33,8 @@ class WorkoutStore {
   @observable fetchedLog = [];
   @observable fetchedLogAll = [];
   @observable showPastLogs = false;
+  // Alert
+  @observable showAlert = false;
 
   // Current workout
   @action initWorkout = (exercises, selectedDayKey, allExercises) => {
@@ -61,6 +63,7 @@ class WorkoutStore {
     this.exerciseRest = 60;
     this.allExercises = [];
     this.exerciseName = '';
+    this.showAlert = false;
     this.fetchedLogAll = [];
     this.showPastLogs = false;
     this.currentExercise = [];
@@ -77,6 +80,10 @@ class WorkoutStore {
       timePassed: 0,
       completedExercises: [],
     };
+  }
+
+  @action toggleAlert = bool => {
+    this.showAlert = bool;
   }
 
   @action toggleShowPastLogs = bool => {

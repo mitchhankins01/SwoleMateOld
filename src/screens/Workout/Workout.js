@@ -17,6 +17,7 @@ import {
 
 import { Overview } from './';
 import themeStyles from './styles';
+import { Alert } from '../../components/Alert';
 import { Picker } from '../../components/Picker';
 import { CountDown } from '../../components/CountDown';
 
@@ -34,7 +35,7 @@ class Workout extends Component {
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       if (this.props.navigation.state.routeName === 'Workout') {
-        this.renderCloseAlert();
+        this.props.workoutStore.toggleAlert(true);
         return true;
       }
       return false;
@@ -125,8 +126,9 @@ class Workout extends Component {
       setReps,
       setWeight,
       onPressSave,
-      showPastLogs,
+      toggleAlert,
       exerciseName,
+      showPastLogs,
       fetchedLogAll,
       workoutComplete,
       toggleShowPastLogs,
@@ -186,7 +188,7 @@ class Workout extends Component {
             color={'#EDF0F1'}
             iconStyle={{ padding: 15 }}
             underlayColor={'transparent'}
-            onPress={() => this.renderCloseAlert()}
+            onPress={() => toggleAlert(true)}
           />
           <Text style={styles.actionBarText}>
             {/* {new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7)} */}
@@ -252,6 +254,16 @@ class Workout extends Component {
           messageStyle={styles.dropdownMessage}
           onClose={() => this.props.workoutStore.toggleLastSetInfo(false)}
         />
+
+        {this.props.workoutStore.showAlert ?
+          <Alert
+            title='Are You Sure?'
+            message='Your workout will not be saved'
+            onPressClose={() => this.props.workoutStore.toggleAlert(false)}
+            onPressSave={() => this.props.navigation.goBack(null)}
+          />
+          : null}
+
         <DropdownAlert
           showCancel
           translucent

@@ -8,6 +8,7 @@ const themeStyles = themes.createStyleSheet({
   containerStyle: {
     zIndex: 500,
     height: 250,
+    elevation: 5,
     width: DEVICE_WIDTH,
     alignSelf: 'center',
     position: 'absolute',

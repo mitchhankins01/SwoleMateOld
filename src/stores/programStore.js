@@ -49,7 +49,6 @@ class ProgramStore {
   }
 
   @action resetError = () => {
-    console.log('reset');
     this.error = '';
   }
 

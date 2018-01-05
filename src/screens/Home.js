@@ -93,7 +93,7 @@ class Home extends Component {
   render() {
     const styles = themeStyles[this.props.userStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-    const { error } = this.props.programStore;
+    const { error, resetError } = this.props.programStore;
     // if (this.props.programStore.loading) {
     //   this.dropdown.alertWithType('info', "I'll be back", "We're Loading");
     // }
@@ -108,7 +108,14 @@ class Home extends Component {
         />
 
         {/* <Greeting styles={styles} /> */}
-        {error ? <Alert acknowledge title='Whoops' message={error} /> : null}
+        {error ?
+          <Alert
+            acknowledge
+            title='Whoops'
+            message={error}
+            onPressSave={() => resetError()}
+          />
+          : null}
 
         <ButtonGroup />
 

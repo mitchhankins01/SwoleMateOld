@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import firebase from 'react-native-firebase';
+import LinearGradient from 'react-native-linear-gradient';
+import { Button, FormLabel, FormInput } from 'react-native-elements';
 import {
   Text,
   View,
-  KeyboardAvoidingView,
   Keyboard,
   StatusBar,
+  KeyboardAvoidingView,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { Button, FormLabel, FormInput } from 'react-native-elements';
-import firebase from 'react-native-firebase';
-import DropdownAlert from 'react-native-dropdownalert';
+
+import { Alert } from '../components/Alert';
 import themeStyles from '../components/styles';
 
 class Login extends Component {
@@ -26,8 +27,7 @@ class Login extends Component {
   };
 
   onLoginFail(error) {
-    this.setState({ loading: false });
-    this.dropdown.alertWithType('error', 'Something went wrong', error.message);
+    this.setState({ loading: false, error: error.message });
   }
 
   onLoginSuccess() {
@@ -154,12 +154,14 @@ class Login extends Component {
             )}
           </View>
         </KeyboardAvoidingView>
-        <DropdownAlert
-          ref={ref => (this.dropdown = ref)}
-          updateStatusBar={false}
-          closeInterval={7000}
-          translucent
-        />
+        {this.state.error ?
+          <Alert
+            acknowledge
+            title='Whoops'
+            message={this.state.error}
+            onPressSave={() => this.setState({ error: '' })}
+          />
+          : null}
       </LinearGradient>
     );
   }

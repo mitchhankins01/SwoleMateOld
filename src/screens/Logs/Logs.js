@@ -3,7 +3,6 @@ import { StatusBar } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Button } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
-// import DropdownAlert from 'react-native-dropdownalert';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 

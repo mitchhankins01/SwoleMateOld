@@ -38,7 +38,9 @@ const renderIcon = (styles, name, size, onPress) => {
       type='entypo'
       color='#EDF0F1'
       onPress={onPress}
+      underlayColor='transparent'
       containerStyle={styles.iconContainer}
+      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
     />
   );
 };
@@ -47,7 +49,7 @@ export default inject('userStore', 'programStore')(observer((props) => {
   const styles = themeStyles[props.userStore.selected];
 
   return (
-    <Animatable.View style={styles.containerStyle} animation='zoomIn'>
+    <Animatable.View style={styles.containerStyle} animation='awesomeIn' duration={500}>
       <Text style={styles.title}>{props.title}</Text>
       <ScrollView><Text style={styles.message}>{props.message}</Text></ScrollView>
       {getIcons(styles, props)}

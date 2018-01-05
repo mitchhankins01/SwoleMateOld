@@ -2,11 +2,10 @@ import Color from 'color';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { inject, observer } from 'mobx-react';
-import { Avatar, Icon } from 'react-native-elements';
-import * as Animatable from 'react-native-animatable';
+import { View, StatusBar } from 'react-native';
+import { Avatar } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, TextInput, TouchableOpacity, Text, StatusBar } from 'react-native';
 
 import themeStyles from './styles';
 import { Card } from '../../components/Card';
@@ -150,10 +149,9 @@ class Settings extends Component {
     }
   }
 
-  renderInput(styles) {
+  renderInput() {
     const { showInput, updateValue } = this.state;
     const { updateName, updateEmail, updatePassword, deleteUser } = this.props.userStore;
-    const capitalize = str => str[0].toUpperCase() + str.slice(1).toLowerCase();
 
     const getInput = () => {
       switch (updateValue) {
@@ -306,27 +304,6 @@ class Settings extends Component {
         fontFamily: 'Exo-Regular',
         borderColor: styles.$primaryColor,
         backgroundColor: styles.$tertiaryColor,
-      },
-      buttonView: {
-        paddingTop: 50,
-        marginBottom: -150,
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-      },
-      passwordText: {
-        fontSize: 20,
-        color: '#EDF0F1',
-        // marginBottom: -150,
-        alignSelf: 'center',
-        fontFamily: 'Exo-Bold',
-      },
-      deleteText: {
-        fontSize: 20,
-        color: 'red',
-        alignSelf: 'center',
-        marginHorizontal: 20,
-        fontFamily: 'Exo-Bold',
       },
     };
   }

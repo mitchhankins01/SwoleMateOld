@@ -26,8 +26,6 @@ class Settings extends Component {
   };
 
   state = {
-    updateValue: '',
-    showInput: false,
     name: this.props.userStore.name,
     email: firebase.auth().currentUser.email,
     password: firebase.auth().currentUser.email,
@@ -36,14 +34,14 @@ class Settings extends Component {
   componentWillMount() {
     const {
       navigation,
-      userStore: { getScreenIndex, updateScreenIndex },
+      userStore: { getScreenIndex, updateScreenIndex, getShowInput, toggleShowInput },
     } = this.props;
 
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      // if (getShowUpdateForm()) {
-      //   toggleShowUpdateForm(false);
-      //   return true;
-      // }
+      if (getShowInput()) {
+        toggleShowInput(false);
+        return true;
+      }
       if (navigation.state.routeName === 'Settings' && getScreenIndex() !== 'Main') {
         updateScreenIndex('Main');
         return true;
@@ -59,7 +57,7 @@ class Settings extends Component {
 
   renderContent() {
     const {
-      imperial, toggleImperial, updateTheme, screenIndex, updateScreenIndex
+      imperial, toggleImperial, updateTheme, screenIndex, updateScreenIndex, toggleShowInput, setUpdateValue
     } = this.props.userStore;
 
     switch (screenIndex) {
@@ -97,22 +95,34 @@ class Settings extends Component {
             {
               title: 'Name',
               icon: 'message',
-              onPress: () => this.setState({ showInput: true, updateValue: 'name' })
+              onPress: () => {
+                toggleShowInput(true);
+                setUpdateValue('name');
+              }
             },
             {
               title: 'Email',
               icon: 'email',
-              onPress: () => this.setState({ showInput: true, updateValue: 'email' })
+              onPress: () => {
+                toggleShowInput(true);
+                setUpdateValue('email');
+              }
             },
             {
               title: 'Password',
               icon: 'lock',
-              onPress: () => this.setState({ showInput: true, updateValue: 'password' })
+              onPress: () => {
+                toggleShowInput(true);
+                setUpdateValue('password');
+              }
             },
             {
               title: 'Delete Account',
               icon: 'trash',
-              onPress: () => this.setState({ showInput: true, updateValue: 'delete' })
+              onPress: () => {
+                toggleShowInput(true);
+                setUpdateValue('delete');
+              }
             },
             {
               title: 'Back',
@@ -170,8 +180,9 @@ class Settings extends Component {
   }
 
   renderInput() {
-    const { showInput, updateValue } = this.state;
-    const { updateName, updateEmail, updatePassword, deleteUser } = this.props.userStore;
+    const {
+      updateName, updateEmail, updatePassword, deleteUser, showInput, updateValue, toggleShowInput, setUpdateValue
+    } = this.props.userStore;
 
     const getInput = () => {
       switch (updateValue) {
@@ -185,9 +196,13 @@ class Settings extends Component {
               value={this.state[updateValue]}
               style={this.getStyles().textInput}
               onChangeText={text => this.setState({ [updateValue]: text })}
-              onPressClose={() => this.setState({ showInput: false, updateValue: '' })}
+              onPressClose={() => {
+                toggleShowInput(false);
+                setUpdateValue('');
+              }}
               onPressSave={() => {
-                this.setState({ showInput: false, updateValue: '' });
+                toggleShowInput(false);
+                setUpdateValue('');
                 return updateName(this.state.name);
               }}
             />
@@ -201,9 +216,13 @@ class Settings extends Component {
               value={this.state[updateValue]}
               style={this.getStyles().textInput}
               onChangeText={text => this.setState({ [updateValue]: text })}
-              onPressClose={() => this.setState({ showInput: false, updateValue: '' })}
+              onPressClose={() => {
+                toggleShowInput(false);
+                setUpdateValue('');
+              }}
               onPressSave={() => {
-                this.setState({ showInput: false, updateValue: '' });
+                toggleShowInput(false);
+                setUpdateValue('');
                 return updateEmail(this.state.email);
               }}
             />
@@ -217,10 +236,14 @@ class Settings extends Component {
               value={this.state[updateValue]}
               style={this.getStyles().textInput}
               onChangeText={text => this.setState({ [updateValue]: text })}
-              onPressClose={() => this.setState({ showInput: false, updateValue: '' })}
+              onPressClose={() => {
+                toggleShowInput(false);
+                setUpdateValue('');
+              }}
               onPressSave={() => {
-                this.setState({ showInput: false, updateValue: '' });
-                updatePassword(this.state.password);
+                toggleShowInput(false);
+                setUpdateValue('');
+                return updatePassword(this.state.password);
               }}
             />
           );
@@ -232,9 +255,13 @@ class Settings extends Component {
               value={this.state[updateValue]}
               style={this.getStyles().textInput}
               onChangeText={text => this.setState({ [updateValue]: text })}
-              onPressClose={() => this.setState({ showInput: false, updateValue: '' })}
+              onPressClose={() => {
+                toggleShowInput(false);
+                setUpdateValue('');
+              }}
               onPressSave={() => {
-                this.setState({ showInput: false, updateValue: '' });
+                toggleShowInput(false);
+                setUpdateValue('');
                 return deleteUser();
               }}
             />

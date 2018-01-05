@@ -29,6 +29,9 @@ class UserStore {
   @observable showError = false;
   @observable showSuccess = false;
   @observable selected = 'standard';
+  // Settings
+  @observable updateValue = '';
+  @observable showInput = false;
   @observable screenIndex = 'Main';
 
   // For Settings
@@ -38,6 +41,19 @@ class UserStore {
 
   @action getScreenIndex = () => {
     return this.screenIndex;
+  }
+
+  @action toggleShowInput = bool => {
+    if (!bool) this.updateValue = '';
+    this.showInput = bool;
+  }
+
+  @action setUpdateValue = value => {
+    this.updateValue = value;
+  }
+
+  @action getShowInput = () => {
+    return this.showInput;
   }
 
   // Theme

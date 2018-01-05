@@ -45,7 +45,7 @@ class WorkoutStore {
     });
     this.exerciseList = filteredExerciseList;
 
-    this.startTimer();
+    // this.startTimer();
     this.loadExercise();
   }
 
@@ -223,19 +223,12 @@ class WorkoutStore {
   }
 
   // timePassed
-  @action startTimer = () => {
-    this.timePassedID = BackgroundTimer.setInterval(() => {
-      this.timePassed += 1;
-    }, 1000);
-  }
-
-  @action stopTimer = () => {
-    BackgroundTimer.clearInterval(this.timePassedID);
+  @action tickTimer = () => {
+    this.timePassed += 1;
   }
 
   @action clearTimer = () => {
     this.timePassed = 0;
-    BackgroundTimer.clearInterval(this.timePassedID);
   }
 
   // countDown

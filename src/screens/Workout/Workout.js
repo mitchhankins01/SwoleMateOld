@@ -17,6 +17,7 @@ import {
 import { Overview } from './';
 import themeStyles from './styles';
 import { Alert } from '../../components/Alert';
+import { Timer } from '../../components/Timer';
 import { Picker } from '../../components/Picker';
 import { CountDown } from '../../components/CountDown';
 
@@ -27,7 +28,6 @@ class Workout extends Component {
       workoutStore: { initWorkout },
       programStore: { exercises, selectedDayKey, allExercises }
     } = this.props;
-
     initWorkout(exercises, selectedDayKey, allExercises);
   }
 
@@ -186,6 +186,7 @@ class Workout extends Component {
             onPress={() => toggleAlert(true)}
           />
           <Text style={styles.actionBarText}>
+            <Timer />
             {/* {new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7)} */}
           </Text>
           <Icon

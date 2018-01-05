@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
 import * as Animatable from 'react-native-animatable';
-import DropdownAlert from 'react-native-dropdownalert';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   Text,
@@ -45,10 +44,6 @@ class Workout extends Component {
   componentWillUnmount() {
     this.backHandler.remove();
     this.props.workoutStore.terminateWorkout();
-  }
-
-  renderCloseAlert() {
-    this.dropdownExit.alertWithType('info', 'Exit', 'Tap this close button to exit');
   }
 
   renderTextInput(styles, type, ref) {
@@ -239,41 +234,23 @@ class Workout extends Component {
       : null}
 
         {this.props.workoutStore.showLastSetInfo ?
-          this.dropdown.alertWithType(
-            'info', 'Last set', `Up Next: ${this.props.workoutStore.nextExerciseName.name}`
-          )
+          <Alert
+            acknowledge
+            title='Last Set!'
+            onPressSave={() => this.props.navigation.goBack(null)}
+            message={`Up Next: \n${this.props.workoutStore.nextExerciseName.name}`}
+            onPressSave={() => this.props.workoutStore.toggleLastSetInfo(false)}
+          />
         : null}
-        <DropdownAlert
-          translucent
-          zIndex={5}
-          closeInterval={3000}
-          updateStatusBar={false}
-          infoColor={styles.$tertiaryColor}
-          titleStyle={styles.dropdownTitle}
-          ref={ref => (this.dropdown = ref)}
-          messageStyle={styles.dropdownMessage}
-          onClose={() => this.props.workoutStore.toggleLastSetInfo(false)}
-        />
 
         {this.props.workoutStore.showAlert ?
           <Alert
             title='Are You Sure?'
             message='Your workout will not be saved'
-            onPressClose={() => this.props.workoutStore.toggleAlert(false)}
             onPressSave={() => this.props.navigation.goBack(null)}
+            onPressClose={() => this.props.workoutStore.toggleAlert(false)}
           />
           : null}
-
-        <DropdownAlert
-          showCancel
-          translucent
-          updateStatusBar={false}
-          infoColor={styles.$tertiaryColor}
-          ref={ref => (this.dropdownExit = ref)}
-          onCancel={() => this.props.navigation.goBack(null)}
-          titleStyle={[styles.dropdownTitle, { marginLeft: 0 }]}
-          messageStyle={[styles.dropdownMessage, { marginLeft: 0 }]}
-        />
 
         {this.props.workoutStore.showCountDown ? <CountDown /> : null}
 

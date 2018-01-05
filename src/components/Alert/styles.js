@@ -36,7 +36,7 @@ const themeStyles = themes.createStyleSheet({
     borderColor: '#EDF0F1',
     borderWidth: 1,
     borderRadius: 20,
-    marginVertical: 10,
+    marginVertical: 15,
   },
 });
 

@@ -24,7 +24,10 @@ const getIcons = (styles, { acknowledge, programStore, onPressClose, onPressSave
     case true:
       return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          {renderIcon(styles, 'check', 25, () => programStore.resetError())}
+          {renderIcon(styles, 'check', 25, () => {
+            onPressSave();
+            programStore.resetError();
+          })}
         </View>
       );
   }

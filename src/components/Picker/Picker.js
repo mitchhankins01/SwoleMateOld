@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { Wheel } from 'teaset';
 import { Platform, Picker as RNPicker } from 'react-native';
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';

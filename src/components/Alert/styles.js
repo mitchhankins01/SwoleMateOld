@@ -11,6 +11,7 @@ const themeStyles = themes.createStyleSheet({
     right: 0,
     bottom: 0,
     zIndex: 500,
+    elevation: 5,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',

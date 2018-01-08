@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {
   Text,
   View,
-  ListView,
+  FlatList,
   TextInput,
   ScrollView,
   BackHandler,
@@ -110,10 +110,81 @@ class Workout extends Component {
     }
   }
 
+  renderPastLogs(styles) {
+    let delay = 0;
+    const {
+      fetchedLogAll,
+      toggleShowPastLogs,
+    } = this.props.workoutStore;
+
+    return (
+      <View style={styles.pastLogsContainer}>
+        <Text style={[styles.headerText, { marginVertical: 40 }]}>Past Logs</Text>
+        <FlatList
+          data={toJS(fetchedLogAll)}
+          keyExtractor={(item, index) => index}
+          renderItem={({ item, index }) => {
+            delay = index === 0 ? 0 : delay += 150;
+            return (
+              <Animatable.Text
+                delay={delay}
+                key={item.logKey}
+                animation='zoomIn'
+                style={styles.logTextSets}
+              >
+                {`${item.completed}\n`}
+                {item.completedSets.map(set => {
+                  return (
+                    <Text key={set.set} style={styles.logTextSets}>
+                      {`Set ${set.set}: ${set.weight}x${set.reps}\n`}
+                    </Text>
+                  );
+                })}
+              </Animatable.Text>
+            );
+          }}
+        />
+        <Icon
+          size={50}
+          name='close'
+          onPress={() => toggleShowPastLogs(false)}
+          iconStyle={{ color: '#EDF0F1', marginVertical: 30 }}
+        />
+      </View>
+    );
+  }
+
+  renderExerciseList(styles) {
+    let delay = 0;
+    return (
+      <View style={styles.pastLogsContainer}>
+        <Text style={[styles.headerText, { marginVertical: 40 }]}>Past Logs</Text>
+        <FlatList
+          data={toJS(this.props.workoutStore.exerciseList)}
+          keyExtractor={(item, index) => index}
+          renderItem={({ item, index }) => {
+            delay = index === 0 ? 0 : delay += 150;
+            return (
+              <Animatable.Text
+                delay={delay}
+                key={item.logKey}
+                animation='zoomIn'
+                style={styles.logTextSets}
+              >
+                <TouchableOpacity key={item} style={styles.exerciseListButton}>
+                  {item.author}
+                </TouchableOpacity>
+              </Animatable.Text>
+            );
+          }}
+        />
+      </View>
+    );
+  }
+
   render() {
     const styles = themeStyles[this.props.userStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
     const {
       reps,
@@ -124,7 +195,6 @@ class Workout extends Component {
       toggleAlert,
       exerciseName,
       showPastLogs,
-      fetchedLogAll,
       workoutComplete,
       toggleShowPastLogs,
     } = this.props.workoutStore;
@@ -135,11 +205,11 @@ class Workout extends Component {
 
     return (
       <LinearGradient colors={gradients} style={styles.container} >
-
+        {/* Exercise Name */}
         <Animatable.View style={styles.headerContainer} animation='mySlideInDown'>
           <Text style={styles.headerText}>{exerciseName}</Text>
         </Animatable.View>
-
+        {/* Logs */}
         <Animatable.View style={styles.logContainer} animation='mySlideInDown'>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }} >
             <View style={{ flex: 1 }}>
@@ -153,7 +223,7 @@ class Workout extends Component {
             </TouchableOpacity>
           </View>
         </Animatable.View>
-
+        {/* Inputs */}
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
           <Animatable.View style={styles.inputContainer} animation='mySlideInLeft' delay={250}>
             <Text style={styles.inputHeader}>Weight</Text>
@@ -174,7 +244,7 @@ class Workout extends Component {
             />
           </Animatable.View>
         </View>
-
+        {/* Action Bar */}
         <Animatable.View style={styles.actionBar} animation='mySlideInUp' delay={500}>
           <Icon
             size={30}
@@ -187,7 +257,6 @@ class Workout extends Component {
           />
           <Text style={styles.actionBarText}>
             <Timer />
-            {/* {new Date(this.props.workoutStore.timePassed * 1000).toISOString().substr(12, 7)} */}
           </Text>
           <Icon
             size={25}
@@ -197,43 +266,16 @@ class Workout extends Component {
             iconStyle={{ padding: 15 }}
             underlayColor={'transparent'}
             onPress={() => {
-              onPressSave();
-              this.refs.repsInput.blur();
-              this.refs.weightInput.blur();
+              this.props.workoutStore.logList();
+              // onPressSave();
+              // this.refs.repsInput.blur();
+              // this.refs.weightInput.blur();
             }}
           />
         </Animatable.View>
 
-        {showPastLogs ?
-        <View style={styles.pastLogsContainer}>
-          <Text style={[styles.headerText, { marginVertical: 40 }]}>Past Logs</Text>
-          <ListView
-            style={{ width: '100%' }}
-            dataSource={ds.cloneWithRows(toJS(fetchedLogAll))}
-            renderRow={rowData => {
-              return (
-                <Text key={rowData.logKey} style={styles.logTextSets}>
-                  {`${rowData.completed}\n`}
-                  {rowData.completedSets.map(set => {
-                    return (
-                      <Text key={set.set} style={styles.logTextSets}>
-                        {`Set ${set.set}: ${set.weight}x${set.reps}\n`}
-                      </Text>
-                    );
-                  })}
-                </Text>
-              );
-            }}
-          />
-          <Icon
-            size={50}
-            name='close'
-            onPress={() => toggleShowPastLogs(false)}
-            iconStyle={{ color: '#EDF0F1', marginVertical: 30 }}
-          />
-        </View>
-      : null}
-
+        {showPastLogs ? this.renderPastLogs(styles) : null}
+        {this.renderExerciseList(styles)}
         {this.props.workoutStore.showLastSetInfo ?
           <Alert
             acknowledge

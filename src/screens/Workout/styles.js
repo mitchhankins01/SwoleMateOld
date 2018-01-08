@@ -193,6 +193,9 @@ const themeStyles = themes.createStyleSheet({
     fontFamily: 'exo',
     alignSelf: 'center',
   },
+  exerciseListButton: {
+    backgroundColor: 'red'
+  }
 });
 
 export default themeStyles;

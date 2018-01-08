@@ -36,6 +36,10 @@ class WorkoutStore {
   // Alert
   @observable showAlert = false;
 
+  @action logList = () => {
+    return console.log(toJS(this.exerciseList));
+  }
+
   // Current workout
   @action initWorkout = (exercises, selectedDayKey, allExercises) => {
     this.allExercises = allExercises;

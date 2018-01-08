@@ -266,16 +266,15 @@ class Workout extends Component {
             iconStyle={{ padding: 15 }}
             underlayColor={'transparent'}
             onPress={() => {
-              this.props.workoutStore.logList();
-              // onPressSave();
-              // this.refs.repsInput.blur();
-              // this.refs.weightInput.blur();
+              onPressSave();
+              this.refs.repsInput.blur();
+              this.refs.weightInput.blur();
             }}
           />
         </Animatable.View>
 
         {showPastLogs ? this.renderPastLogs(styles) : null}
-        {this.renderExerciseList(styles)}
+        {/* {this.renderExerciseList(styles)} */}
         {this.props.workoutStore.showLastSetInfo ?
           <Alert
             acknowledge

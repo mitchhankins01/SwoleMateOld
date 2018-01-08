@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ButtonGroup } from 'react-native-elements';
-import * as Animatable from 'react-native-animatable';
 
 import themeStyles from './styles';
 

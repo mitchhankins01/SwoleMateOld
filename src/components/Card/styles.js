@@ -6,16 +6,17 @@ const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const themeStyles = themes.createStyleSheet({
   cardContainer: {
-    margin: 15,
+    marginVertical: 15,
     padding: 15,
-    elevation: 3,
-    borderWidth: 2,
-    borderRadius: 5,
-    shadowOpacity: 0.3,
-    borderColor: '$primaryColor',
-    shadowColor: 'rgba(0,0,0, 1)',
-    shadowOffset: { height: 0, width: 0 },
-    backgroundColor: 'rgba(237, 240, 241, 0.1)',
+    // elevation: 3,
+    // borderWidth: 2,
+    // borderRadius: 5,
+    // shadowOpacity: 0.3,
+    // borderColor: '$primaryColor',
+    // shadowColor: 'rgba(0,0,0, 1)',
+    // shadowOffset: { height: 0, width: 0 },
+    // backgroundColor: 'rgba(237, 240, 241, 0.1)',
+    backgroundColor: '$secondaryColor',
   },
   logCardContainer: {
     flex: 1,

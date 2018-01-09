@@ -16,6 +16,7 @@ const themeStyles = themes.createStyleSheet({
     width: null,
     height: null,
     justifyContent: 'flex-start',
+    backgroundColor: '$tertiaryColor',
   },
   loadingContainer: {
     flex: 1,
@@ -292,7 +293,7 @@ const themeStyles = themes.createStyleSheet({
     alignSelf: 'center',
     fontFamily: 'Exo-Medium',
   },
-  
+
 });
 
 export default themeStyles;

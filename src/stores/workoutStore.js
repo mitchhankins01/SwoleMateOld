@@ -312,6 +312,7 @@ class WorkoutStore {
     logsRef.get()
     .then(querySnapshot => {
       this.fetchedLog = [];
+      this.fetchedLogAll = [];
       querySnapshot.forEach(log => {
         log.ref.collection('exercises').onSnapshot(snapShot => {
           snapShot.forEach(exerciseLogInfo => {

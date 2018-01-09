@@ -27,7 +27,10 @@ export default inject('workoutStore', 'userStore')(observer((props) => {
               title={getName(allExercises, item)}
               icon={{ name: 'dumbbell', type: 'material-community' }}
               buttonStyle={{ backgroundColor: 'transparent', padding: 15 }}
-              onPress={() => console.log(item)}
+              onPress={() => {
+                props.workoutStore.exerciseIndex = item.index;
+                props.workoutStore.loadExercise();
+              }}
             />
           );
         }}

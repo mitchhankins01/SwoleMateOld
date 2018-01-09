@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { BackHandler, StatusBar, View } from 'react-native';
+import { BackHandler, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -97,7 +97,7 @@ class Home extends Component {
     // }
 
     return (
-      <View style={styles.homeContainer} >
+      <LinearGradient colors={gradients} style={styles.homeContainer} >
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content' />
         <Header
           styles={styles}
@@ -121,7 +121,7 @@ class Home extends Component {
 
         <ActionButton navigation={this.props.navigation} />
 
-      </View>
+      </LinearGradient>
     );
   }
 }

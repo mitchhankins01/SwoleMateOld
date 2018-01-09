@@ -19,7 +19,7 @@ const renderButton = (styles, animation, icon, onPress) => {
 
 export default inject('programStore', 'userStore')(observer((props) => {
   const styles = themeStyles[props.userStore.selected];
-  const backgroundColor = Color(styles.$secondaryColor).alpha(0.8);
+  const backgroundColor = Color(styles.$tertiaryColor).alpha(0.8);
   const {
     screenIndex,
     scrollIndex,

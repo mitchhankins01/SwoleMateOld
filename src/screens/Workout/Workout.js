@@ -155,8 +155,6 @@ class Workout extends Component {
   }
 
   renderExerciseList(styles) {
-    return null;
-    console.log('render');
     let delay = 0;
     return (
       <View style={styles.pastLogsContainer}>
@@ -165,7 +163,6 @@ class Workout extends Component {
           data={toJS(this.props.workoutStore.exerciseList)}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
-            console.log(item);
             delay = index === 0 ? 0 : delay += 150;
             return (
               <Animatable.Text
@@ -277,7 +274,7 @@ class Workout extends Component {
         </Animatable.View>
 
         {showPastLogs ? this.renderPastLogs(styles) : null}
-        {this.renderExerciseList(styles)}
+        {/* {this.renderExerciseList(styles)} */}
         {this.props.workoutStore.showLastSetInfo ?
           <Alert
             acknowledge

@@ -26,7 +26,6 @@ const themeStyles = themes.createStyleSheet({
     alignItems: 'center',
     position: 'absolute',
     justifyContent: 'space-between',
-    backgroundColor: '$secondaryColor'
   },
   buttonContainer: {
     width: 50,

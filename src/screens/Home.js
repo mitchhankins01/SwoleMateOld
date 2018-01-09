@@ -29,8 +29,6 @@ class Home extends Component {
      ),
    };
 
-   state = { scrollIndex: 0 }
-
    componentWillMount() {
      const {
        programStore: {

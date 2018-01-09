@@ -26,7 +26,7 @@ export default inject('programStore', 'userStore')(observer((props) => {
   };
 
   if (showUpdateForm) return null;
-
+  
   switch (screenIndex) {
     default: return null;
     case 'allPrograms':
@@ -40,7 +40,7 @@ export default inject('programStore', 'userStore')(observer((props) => {
           onPress={index => handlePress(props, index)}
           containerStyle={styles.containerStyle}
           selectedBackgroundColor={styles.$primaryColor}
-          buttons={['All Programs', 'Default', 'Discover']}
+          buttons={['All Programs', 'Selected', 'Discover']}
           innerBorderStyle={{ width: 0, color: styles.$primaryColor }}
         />
       );

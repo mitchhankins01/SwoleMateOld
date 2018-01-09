@@ -4,8 +4,8 @@ import { Icon } from 'react-native-elements';
 import { inject, observer } from 'mobx-react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
-import { View, TouchableOpacity, Text, ScrollView, FlatList } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, TouchableOpacity, Text, ScrollView, FlatList } from 'react-native';
 
 import { Form } from '../Form';
 import themeStyles from './styles';

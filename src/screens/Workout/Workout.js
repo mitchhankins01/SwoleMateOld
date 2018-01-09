@@ -20,6 +20,7 @@ import { Alert } from '../../components/Alert';
 import { Timer } from '../../components/Timer';
 import { Picker } from '../../components/Picker';
 import { CountDown } from '../../components/CountDown';
+import { ExerciseList } from '../../components/ExerciseList';
 
 @inject('userStore', 'programStore', 'workoutStore', 'logStore') @observer
 class Workout extends Component {
@@ -154,34 +155,6 @@ class Workout extends Component {
     );
   }
 
-  renderExerciseList(styles) {
-    let delay = 0;
-    return (
-      <View style={styles.pastLogsContainer}>
-        <Text style={[styles.headerText, { marginVertical: 40 }]}>Past Logs</Text>
-        <FlatList
-          data={toJS(this.props.workoutStore.exerciseList)}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) => {
-            delay = index === 0 ? 0 : delay += 150;
-            return (
-              <Animatable.Text
-                delay={delay}
-                key={item.logKey}
-                animation='zoomIn'
-                style={styles.logTextSets}
-              >
-                <TouchableOpacity key={item} style={styles.exerciseListButton}>
-                  {item.author}
-                </TouchableOpacity>
-              </Animatable.Text>
-            );
-          }}
-        />
-      </View>
-    );
-  }
-
   render() {
     const styles = themeStyles[this.props.userStore.selected];
     const gradients = [styles.$primaryColor, styles.$secondaryColor, styles.$tertiaryColor];
@@ -196,7 +169,9 @@ class Workout extends Component {
       exerciseName,
       showPastLogs,
       workoutComplete,
+      showExerciseList,
       toggleShowPastLogs,
+      toggleExerciseList,
     } = this.props.workoutStore;
 
     if (workoutComplete) {
@@ -253,7 +228,7 @@ class Workout extends Component {
             color={'#EDF0F1'}
             iconStyle={{ padding: 15 }}
             underlayColor={'transparent'}
-            onPress={() => toggleAlert(true)}
+            onPress={() => toggleExerciseList(true)}
           />
           <Text style={styles.actionBarText}>
             <Timer />
@@ -273,8 +248,10 @@ class Workout extends Component {
           />
         </Animatable.View>
 
+        {showExerciseList ? <ExerciseList /> : null }
+
         {showPastLogs ? this.renderPastLogs(styles) : null}
-        {/* {this.renderExerciseList(styles)} */}
+
         {this.props.workoutStore.showLastSetInfo ?
           <Alert
             acknowledge

@@ -1,5 +1,5 @@
-import { action, observable, toJS } from 'mobx';
 import firebase from 'react-native-firebase';
+import { action, observable, toJS } from 'mobx';
 import BackgroundTimer from 'react-native-background-timer';
 
 class WorkoutStore {
@@ -35,6 +35,8 @@ class WorkoutStore {
   @observable showPastLogs = false;
   // Alert
   @observable showAlert = false;
+  // Exercise List
+  @observable showExerciseList = false;
 
   @action logList = () => {
     return console.log(toJS(this.exerciseList));
@@ -76,6 +78,7 @@ class WorkoutStore {
     this.showCountDown = false;
     this.showLastSetInfo = false;
     this.workoutComplete = false;
+    this.showExerciseList = false;
     this.exerciseLog = {
       exerciseKey: '',
       completedSets: [],
@@ -106,6 +109,10 @@ class WorkoutStore {
 
   @action toggleLastSetInfo = bool => {
     this.showLastSetInfo = bool;
+  }
+
+  @action toggleExerciseList = bool => {
+    this.showExerciseList = bool;
   }
 
   @action setWeight = weight => {

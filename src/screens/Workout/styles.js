@@ -17,6 +17,7 @@ const themeStyles = themes.createStyleSheet({
     marginTop: 30,
     borderWidth: 2,
     borderRadius: 5,
+    marginBottom: 10,
     shadowOpacity: 0.3,
     borderColor: '$primaryColor',
     shadowColor: 'rgba(0,0,0, 1)',

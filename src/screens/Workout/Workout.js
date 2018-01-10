@@ -112,7 +112,6 @@ class Workout extends Component {
   }
 
   renderPastLogs(styles) {
-    let delay = 0;
     const {
       fetchedLogAll,
       toggleShowPastLogs,
@@ -125,12 +124,11 @@ class Workout extends Component {
           data={toJS(fetchedLogAll)}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
-            delay = index === 0 ? 0 : delay += 150;
             return (
               <Animatable.Text
-                delay={delay}
                 key={item.logKey}
                 animation='zoomIn'
+                delay={index * 150}
                 style={styles.logTextSets}
               >
                 {`${item.completed}\n`}
@@ -228,13 +226,22 @@ class Workout extends Component {
             color={'#EDF0F1'}
             iconStyle={{ padding: 15 }}
             underlayColor={'transparent'}
+            onPress={() => toggleAlert(true)}
+          />
+          <Icon
+            size={27}
+            type='material-community'
+            name={'dumbbell'}
+            color={'#EDF0F1'}
+            iconStyle={{ padding: 15 }}
+            underlayColor={'transparent'}
             onPress={() => toggleExerciseList(true)}
           />
-          <Text style={styles.actionBarText}>
+          {/* <Text style={styles.actionBarText}>
             <Timer />
-          </Text>
+          </Text> */}
           <Icon
-            size={25}
+            size={27}
             type='entypo'
             name={'check'}
             color={'#EDF0F1'}

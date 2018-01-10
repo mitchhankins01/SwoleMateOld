@@ -115,6 +115,10 @@ class WorkoutStore {
     this.showExerciseList = bool;
   }
 
+  @action updateExerciseIndex = index => {
+    this.exerciseIndex = index;
+  }
+
   @action setWeight = weight => {
     this.weight = weight;
   }

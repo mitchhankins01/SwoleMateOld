@@ -1,11 +1,13 @@
-import { StackNavigator } from 'react-navigation'
-import Programs from '../Containers/Programs'
+import { StackNavigator } from 'react-navigation';
+import Programs from '../Containers/Programs';
+import Login from '../Containers/Login';
 
 // import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
-  Programs: { screen: Programs }
+  Programs: { screen: Programs },
+  Login: { screen: Login }
 }, {
   // Default config for all screens
   headerMode: 'none',

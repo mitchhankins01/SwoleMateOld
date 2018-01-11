@@ -3,7 +3,7 @@ import configureStore from './CreateStore'
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
-  nav: require('./NavigationRedux').reducer,
+  nav: require('./Reducers/Navigation').reducer,
 })
 
 export default () => {

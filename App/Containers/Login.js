@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TextInput, Text, TouchableOpacity, View, StatusBar } from 'react-native';
 
+import Alert from '../Components/Alert';
 import styles from './Styles/LoginStyles';
 
 export default class Login extends Component {
@@ -31,7 +32,7 @@ export default class Login extends Component {
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Login</Text>
+            <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Login</Text>

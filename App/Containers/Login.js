@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
+import ProgressBar from 'react-native-progress/Bar';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput, Text, TouchableOpacity, View, StatusBar } from 'react-native';
 
-import * as Actions from '../Redux/Actions/Auth';
-
+import { Colors, Constants } from '../Themes/';
 import Alert from '../Components/Alert';
+import * as Actions from '../Redux/Actions/Auth';
 import styles, { gradients, textColor } from './Styles/LoginStyles';
 
 class Login extends Component {
@@ -14,7 +15,9 @@ class Login extends Component {
 
   render() {
     // console.log(this.props.loginUser);
-    this.props.loginUser('mitchhankins92@gmail.com', 'biergeil');
+    const { loginUser } = this.props;
+    const { email, password } = this.state;
+
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -28,7 +31,7 @@ class Login extends Component {
           keyboardType="email-address"
           placeholderTextColor={textColor}
           underlineColorAndroid="transparent"
-          onChangeText={email => this.setState({ email })}
+          onChangeText={input => this.setState({ email: input })}
         />
         <TextInput
           secureTextEntry
@@ -38,14 +41,21 @@ class Login extends Component {
           value={this.state.password}
           placeholderTextColor={textColor}
           underlineColorAndroid="transparent"
-          onChangeText={password => this.setState({ password })}
+          onChangeText={input => this.setState({ password: input })}
+        />
+        <ProgressBar
+          useNativeDriver
+          indeterminate
+          style={styles.progress}
+          color={Colors.primaryColor}
+          width={Constants.DEV_WIDTH}
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
             <Icon name="person-add" iconStyle={styles.icon} />
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => console.log(this.state.password)}>
+          <TouchableOpacity style={styles.button} onPress={() => loginUser(email, password)}>
             <Icon name="check" type="entypo" iconStyle={styles.icon} />
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
@@ -56,7 +66,9 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  loginUser: (email, password) => dispatch(Actions.loginUser(email, password)),
+  loginUser: (email, password) => {
+    dispatch(Actions.loginUser(email, password));
+  },
 });
 
 export default connect(null, mapDispatchToProps)(Login);

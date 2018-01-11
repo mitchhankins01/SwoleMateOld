@@ -1,4 +1,5 @@
 import firebase from 'react-native-firebase';
+import { Alert } from 'react-native';
 import { LOGIN_USER, LOGIN_USER_FAIL, LOGIN_USER_SUCCESS } from '../Types/Auth';
 
 export const test = test => test;
@@ -22,14 +23,12 @@ export const loginUser = (email, password) => (dispatch) => {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .then(user => loginUserSuccess(dispatch, user))
+    .then((user) => {
+      Alert.alert('success');
+      // loginUserSuccess(dispatch, user);
+    })
     .catch((error) => {
+      Alert.alert(error.message);
       console.log(error);
-
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(user => loginUserSuccess(dispatch, user))
-        .catch(() => loginUserFail(dispatch));
     });
 };

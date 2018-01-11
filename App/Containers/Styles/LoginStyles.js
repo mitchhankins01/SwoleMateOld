@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Colors } from '../../Themes/';
+import { Fonts, Colors, Constants } from '../../Themes/';
 
 export const textColor = Colors.text;
 export const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
@@ -60,5 +60,10 @@ export default StyleSheet.create({
     marginRight: 10,
     color: Colors.text,
     fontSize: Fonts.size.h6,
+  },
+  progress: {
+    marginBottom: 10,
+    alignSelf: 'center',
+    width: Constants.DEV_WIDTH * 0.9,
   },
 });

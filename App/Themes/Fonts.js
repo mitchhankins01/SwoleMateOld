@@ -1,7 +1,7 @@
 const type = {
-  base: 'Avenir-Book',
-  bold: 'Avenir-Black',
-  emphasis: 'HelveticaNeue-Italic'
+  regular: 'Exo-Regular',
+  medium: 'Exo-Medium',
+  bold: 'Exo-Bold',
 }
 
 const size = {
@@ -20,35 +20,35 @@ const size = {
 
 const style = {
   h1: {
-    fontFamily: type.base,
+    fontFamily: type.regular,
     fontSize: size.h1
   },
   h2: {
-    fontWeight: 'bold',
+    fontWeight: type.regular,
     fontSize: size.h2
   },
   h3: {
-    fontFamily: type.emphasis,
+    fontFamily: type.regular,
     fontSize: size.h3
   },
   h4: {
-    fontFamily: type.base,
+    fontFamily: type.regular,
     fontSize: size.h4
   },
   h5: {
-    fontFamily: type.base,
+    fontFamily: type.regular,
     fontSize: size.h5
   },
   h6: {
-    fontFamily: type.emphasis,
+    fontFamily: type.regular,
     fontSize: size.h6
   },
   normal: {
-    fontFamily: type.base,
+    fontFamily: type.regular,
     fontSize: size.regular
   },
   description: {
-    fontFamily: type.base,
+    fontFamily: type.regular,
     fontSize: size.medium
   }
 }

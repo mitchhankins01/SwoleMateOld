@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../../Themes/';
 
+export const textColor = Colors.text;
+export const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
+
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -23,32 +26,38 @@ export default StyleSheet.create({
   },
   input: {
     height: 40,
-    borderWidth: 1,
     marginBottom: 40,
     color: Colors.text,
+    borderBottomWidth: 1,
+    marginHorizontal: 20,
     paddingHorizontal: 20,
     fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.regular,
     borderColor: Colors.primaryColor,
-    backgroundColor: Colors.secondaryColor,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   button: {
-    borderWidth: 1,
-    borderColor: Colors.primaryColor,
     height: 50,
     width: 150,
+    borderWidth: 1,
     borderRadius: 5,
+    marginHorizontal: 20,
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: Colors.secondaryColor,
+    borderColor: Colors.primaryColor,
   },
   buttonText: {
     color: Colors.text,
     fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.medium,
+  },
+  icon: {
+    marginRight: 10,
+    color: Colors.text,
+    fontSize: Fonts.size.h6,
   },
 });

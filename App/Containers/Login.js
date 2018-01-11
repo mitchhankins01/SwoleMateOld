@@ -1,15 +1,20 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput, Text, TouchableOpacity, View, StatusBar } from 'react-native';
 
+import * as Actions from '../Redux/Actions/Auth';
+
 import Alert from '../Components/Alert';
 import styles, { gradients, textColor } from './Styles/LoginStyles';
 
-export default class Login extends Component {
+class Login extends Component {
   state = { email: '', password: '' };
 
   render() {
+    console.log(this.props.test);
+
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -26,6 +31,7 @@ export default class Login extends Component {
           onChangeText={email => this.setState({ email })}
         />
         <TextInput
+          secureTextEntry
           style={styles.input}
           autoCapitalize="none"
           placeholder="Password"
@@ -39,7 +45,7 @@ export default class Login extends Component {
             <Icon name="person-add" iconStyle={styles.icon} />
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => console.log(this.state.password)}>
             <Icon name="check" type="entypo" iconStyle={styles.icon} />
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
@@ -48,3 +54,9 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  test: () => dispatch(Actions.actionOne()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

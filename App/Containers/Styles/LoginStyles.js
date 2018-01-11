@@ -36,6 +36,7 @@ export default StyleSheet.create({
     borderColor: Colors.primaryColor,
   },
   buttonContainer: {
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

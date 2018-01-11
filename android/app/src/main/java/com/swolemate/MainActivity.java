@@ -1,4 +1,4 @@
-package com.devpeaks.swolemate;
+package com.swolemate;
 
 import com.facebook.react.ReactActivity;
 

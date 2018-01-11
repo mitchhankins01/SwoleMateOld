@@ -14,8 +14,7 @@ class Login extends Component {
   state = { email: '', password: '' };
 
   render() {
-    // console.log(this.props.loginUser);
-    const { loginUser } = this.props;
+    const { loginUser, auth: { loading } } = this.props;
     const { email, password } = this.state;
 
     return (
@@ -43,13 +42,15 @@ class Login extends Component {
           underlineColorAndroid="transparent"
           onChangeText={input => this.setState({ password: input })}
         />
-        <ProgressBar
-          useNativeDriver
-          indeterminate
-          style={styles.progress}
-          color={Colors.primaryColor}
-          width={Constants.DEV_WIDTH}
-        />
+        {loading ? (
+          <ProgressBar
+            useNativeDriver
+            indeterminate
+            style={styles.progress}
+            color={Colors.primaryColor}
+            width={Constants.DEV_WIDTH}
+          />
+        ) : null}
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
             <Icon name="person-add" iconStyle={styles.icon} />
@@ -65,10 +66,14 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
 const mapDispatchToProps = dispatch => ({
   loginUser: (email, password) => {
     dispatch(Actions.loginUser(email, password));
   },
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

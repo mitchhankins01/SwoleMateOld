@@ -4,8 +4,11 @@ import { LOGIN_USER, LOGIN_USER_FAIL, LOGIN_USER_SUCCESS } from '../Types/Auth';
 
 export const test = test => test;
 
-const loginUserFail = (dispatch) => {
-  dispatch({ type: LOGIN_USER_FAIL });
+const loginUserFail = (dispatch, error) => {
+  dispatch({
+    type: LOGIN_USER_FAIL,
+    payload: error,
+  });
 };
 
 const loginUserSuccess = (dispatch, user) => {
@@ -14,7 +17,7 @@ const loginUserSuccess = (dispatch, user) => {
     payload: user,
   });
 
-  Actions.main();
+  // Actions.main();
 };
 
 export const loginUser = (email, password) => (dispatch) => {
@@ -23,12 +26,6 @@ export const loginUser = (email, password) => (dispatch) => {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .then((user) => {
-      Alert.alert('success');
-      // loginUserSuccess(dispatch, user);
-    })
-    .catch((error) => {
-      Alert.alert(error.message);
-      console.log(error);
-    });
+    .then(user => loginUserSuccess(dispatch, user))
+    .catch(error => loginUserFail(dispatch, error.message));
 };

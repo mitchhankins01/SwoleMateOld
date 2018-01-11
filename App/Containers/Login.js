@@ -13,8 +13,8 @@ class Login extends Component {
   state = { email: '', password: '' };
 
   render() {
-    console.log(this.props.test);
-
+    // console.log(this.props.loginUser);
+    this.props.loginUser('mitchhankins92@gmail.com', 'biergeil');
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -56,7 +56,7 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  test: () => dispatch(Actions.actionOne()),
+  loginUser: (email, password) => dispatch(Actions.loginUser(email, password)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

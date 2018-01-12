@@ -46,20 +46,18 @@ const getContent = (props) => {
   }
 };
 
-const getIcons = ({
-  acknowledge, programStore, onPressClose, onPressSave,
-}) => {
+const getIcons = ({ acknowledge, onPressClose, onPressSave }) => {
   switch (acknowledge) {
     default:
       return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           {renderIcon('cross', 30, () => {
             onPressClose();
-            programStore.resetError();
+            // programStore.resetError();
           })}
           {renderIcon('check', 25, () => {
             onPressSave();
-            programStore.resetError();
+            // programStore.resetError();
           })}
         </View>
       );
@@ -68,7 +66,7 @@ const getIcons = ({
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           {renderIcon('check', 25, () => {
             onPressSave();
-            programStore.resetError();
+            // programStore.resetError();
           })}
         </View>
       );

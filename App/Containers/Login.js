@@ -14,7 +14,7 @@ class Login extends Component {
   state = { email: '', password: '' };
 
   render() {
-    const { loginUser, auth: { loading } } = this.props;
+    const { loginUser, resetAuth, auth: { loading, error } } = this.props;
     const { email, password } = this.state;
 
     return (
@@ -51,6 +51,9 @@ class Login extends Component {
             width={Constants.DEV_WIDTH}
           />
         ) : null}
+        {error ? (
+          <Alert acknowledge title="Whoops" message={error} onPressSave={resetAuth} />
+        ) : null}
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
             <Icon name="person-add" iconStyle={styles.icon} />
@@ -71,6 +74,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  resetAuth: () => dispatch(Actions.resetAuth()),
   loginUser: (email, password) => {
     dispatch(Actions.loginUser(email, password));
   },

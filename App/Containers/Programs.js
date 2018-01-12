@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { StatusBar, FlatList } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Header from '../Components/Header';
@@ -10,8 +11,52 @@ import ActionButton from '../Components/ActionButton';
 
 import styles, { gradients, textColor } from './Styles/ProgramStyles';
 
+const getIcons = (props) => {
+  const {
+    addHandler, toggleDrawer, toggleExercises, program: { showExercises },
+  } = props;
+
+  switch (showExercises) {
+    case false:
+      return [
+        {
+          icon: 'menu',
+          animation: 'zoomIn',
+          onPress: () => toggleDrawer(),
+        },
+        {
+          icon: 'plus',
+          animation: 'zoomIn',
+          onPress: () => addHandler(),
+        },
+      ];
+    case true:
+      return [
+        {
+          icon: 'back',
+          animation: 'zoomIn',
+          onPress: () => toggleExercises(false, null),
+        },
+        {
+          icon: 'rocket',
+          animation: 'zoomIn',
+          onPress: () => {}, // Start Lift
+        },
+        {
+          icon: 'plus',
+          animation: 'zoomIn',
+          onPress: () => addHandler(),
+        },
+      ];
+    default:
+      return null;
+  }
+};
+
 const Programs = (props) => {
   const {
+    addHandler,
+    toggleDrawer,
     toggleExercises,
     program: {
       days, dayKey, exercises, showExercises,
@@ -42,7 +87,7 @@ const Programs = (props) => {
           />
         )}
       />
-      <ActionButton />
+      <ActionButton buttons={getIcons(props)} />
     </LinearGradient>
   );
 };
@@ -55,6 +100,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getPrograms: dispatch(Actions.getPrograms()),
   toggleExercises: (bool, dayKey) => dispatch(Actions.toggleExercises(bool, dayKey)),
+  addHandler: () => dispatch(NavigationActions.navigate({ routeName: 'AddProgram' })),
+  toggleDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerToggle' })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Programs);

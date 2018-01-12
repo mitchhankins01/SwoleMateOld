@@ -5,6 +5,7 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import Drawer from './Drawer';
 import Login from '../Containers/Login';
 import Programs from '../Containers/Programs';
+import AddProgram from '../Containers/AddProgram';
 // import styles from './Styles/NavigationStyles'
 
 const PrimaryNav = StackNavigator(
@@ -24,6 +25,12 @@ const PrimaryNav = StackNavigator(
                   name={focused ? 'ios-home' : 'ios-home-outline'}
                 />
               ),
+            },
+          },
+          AddProgram: {
+            screen: AddProgram,
+            navigationOptions: {
+              drawerLabel: () => null,
             },
           },
         },

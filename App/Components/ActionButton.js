@@ -1,12 +1,12 @@
 import React from 'react';
-import Color from 'color';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
+import { NavigationActions } from 'react-navigation';
 import { TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import styles from './Styles/ActionButtonStyles';
-import { Colors } from '../Themes';
+import * as Actions from '../Redux/Actions/Program';
 
 const renderButton = (animation, icon, onPress) => (
   <Animatable.View animation={animation}>
@@ -15,32 +15,31 @@ const renderButton = (animation, icon, onPress) => (
     </TouchableOpacity>
   </Animatable.View>
 );
-// SCROLL INDEX
-const ActionButton = ({ nav, program: { showExercises } }) => {
+
+const ActionButton = ({
+  nav, toggleExercises, toggleDrawer, program: { showExercises },
+}) => {
   // if (showUpdateForm || scrollIndex > 0) return null;
 
-  switch (showExercises) {
-    default:
-      return null;
-    case false:
-      return (
-        <View style={styles.actionView}>
-          {renderButton('zoomIn', 'menu', () => nav.navigate('DrawerOpen'))}
+  if (!showExercises) {
+    return (
+      <View style={styles.actionView}>
+        {renderButton('zoomIn', 'menu', () => toggleDrawer())}
 
-          {renderButton('zoomIn', 'plus', () => updateScreenIndex('addProgramDay'))}
-        </View>
-      );
-    case true:
-      return (
-        <View style={styles.actionView}>
-          {renderButton('zoomIn', 'back', () => updateScreenIndex('selectedProgram'))}
-
-          {renderButton('zoomIn', 'rocket', () => props.nav.navigate('Workout'))}
-
-          {renderButton('zoomIn', 'plus', () => updateScreenIndex('addProgramExercise'))}
-        </View>
-      );
+        {renderButton('zoomIn', 'plus', () => updateScreenIndex('addProgramDay'))}
+      </View>
+    );
   }
+
+  return (
+    <View style={styles.actionView}>
+      {renderButton('zoomIn', 'back', () => toggleExercises(false))}
+
+      {renderButton('zoomIn', 'rocket', () => props.nav.navigate('Workout'))}
+
+      {renderButton('zoomIn', 'plus', () => updateScreenIndex('addProgramExercise'))}
+    </View>
+  );
 };
 
 const mapStateToProps = ({ nav, program }) => ({
@@ -48,4 +47,9 @@ const mapStateToProps = ({ nav, program }) => ({
   program,
 });
 
-export default connect(mapStateToProps)(ActionButton);
+const mapDispatchToProps = dispatch => ({
+  toggleExercises: bool => dispatch(Actions.toggleExercises(bool)),
+  toggleDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerToggle' })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActionButton);

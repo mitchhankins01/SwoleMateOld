@@ -1,6 +1,7 @@
 import Color from 'color';
-import { Colors } from '../../Themes/';
 import { StyleSheet } from 'react-native';
+
+import { Colors } from '../../Themes/';
 
 export default StyleSheet.create({
   actionView: {

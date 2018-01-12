@@ -11,17 +11,18 @@ import styles, { gradients, textColor } from './Styles/ProgramStyles';
 
 const Programs = props => (
   <LinearGradient style={styles.container} colors={gradients}>
-    {props.getPrograms()}
     <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
     <Header title="Programs" />
     <ProgramCard />
   </LinearGradient>
 );
 
-// wraps dispatch to create nicer functions to call within our component
-const mapDispatchToProps = dispatch => ({
-  getPrograms: () => dispatch(Actions.getPrograms()),
-  //   startup: () => dispatch(StartupActions.startup())
+const mapStateToProps = state => ({
+  program: state.program,
 });
 
-export default connect(null, mapDispatchToProps)(Programs);
+const mapDispatchToProps = dispatch => ({
+  getPrograms: dispatch(Actions.getPrograms()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Programs);

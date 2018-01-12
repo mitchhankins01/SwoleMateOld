@@ -12,7 +12,7 @@ const ProgramCard = () => (
       <Icon name="trash" type="entypo" color={Colors.primaryColor} size={25} />
     </View>
     <View style={styles.centerSection}>
-      <Icon name="dumbbell" type="material-community" color={Colors.primaryColor} size={20} />
+      <Icon name="dumbbell" type="material-community" color={Colors.text} size={20} />
       <Text style={styles.title}>Exercise Name</Text>
       <Text style={styles.subtitle}>2 Sets - 3 Reps - 70s Rest</Text>
     </View>

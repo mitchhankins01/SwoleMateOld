@@ -8,6 +8,80 @@ import {
   GET_PROGRAMS_SUCCESS,
 } from '../Types/Program';
 
+const getProgramFail = (dispatch, error) => {
+  dispatch({
+    type: GET_PROGRAM_FAIL,
+    payload: error,
+  });
+};
+
+const getProgramSuccess = (dispatch, info, days, exercises) => {
+  dispatch({
+    type: GET_PROGRAM_SUCCESS,
+    payload: { info, days, exercises },
+  });
+};
+
+export const getProgram = (dispatch, programs, selected) => {
+  dispatch({ type: GET_PROGRAM });
+
+  let id;
+  if (!selected) {
+    programs.forEach((p) => {
+      if (p.index === 0) id = p.id;
+    });
+  } else id = selected;
+
+  const info = [];
+  const days = [];
+  const exercises = [];
+  const programRef = firebase
+    .firestore()
+    .collection('userPrograms')
+    .doc(id);
+
+  programRef.onSnapshot(
+    (thisProgram) => {
+      const data = thisProgram.data();
+      info.push(data);
+    },
+    (error) => {
+      getProgramFail(dispatch, error.message);
+    },
+  );
+
+  programRef
+    .collection('days')
+    .orderBy('index')
+    .onSnapshot(
+      (querySnapshot) => {
+        querySnapshot.forEach((day) => {
+          const data = day.data();
+          days.push(data);
+        });
+      },
+      (error) => {
+        getProgramFail(dispatch, error.message);
+      },
+    );
+
+  programRef
+    .collection('exercises')
+    .orderBy('index')
+    .onSnapshot(
+      (querySnapshot) => {
+        querySnapshot.forEach((exercise) => {
+          const data = exercise.data();
+          exercises.push(data);
+        });
+        getProgramSuccess(dispatch, info, days, exercises);
+      },
+      (error) => {
+        getProgramFail(dispatch, error.message);
+      },
+    );
+};
+
 const getProgramsFail = (dispatch, error) => {
   dispatch({
     type: GET_PROGRAMS_FAIL,
@@ -15,13 +89,12 @@ const getProgramsFail = (dispatch, error) => {
   });
 };
 
-const getProgramsSuccess = (dispatch, program) => {
+const getProgramsSuccess = (dispatch, programs) => {
   dispatch({
     type: GET_PROGRAMS_SUCCESS,
-    payload: program,
+    payload: programs,
   });
 };
-export const test = test2 => test2;
 
 export const getPrograms = () => (dispatch) => {
   dispatch({ type: GET_PROGRAMS });
@@ -39,6 +112,7 @@ export const getPrograms = () => (dispatch) => {
         const data = program.data();
         programs.push({ ...data, id: program.id });
       });
+      getProgram(dispatch, programs, null);
       getProgramsSuccess(dispatch, programs);
     },
     (error) => {

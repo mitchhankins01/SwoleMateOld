@@ -1,8 +1,10 @@
+import React from 'react';
+import { Icon } from 'react-native-elements';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
-import Programs from '../Containers/Programs';
-import Login from '../Containers/Login';
 
 import Drawer from './Drawer';
+import Login from '../Containers/Login';
+import Programs from '../Containers/Programs';
 // import styles from './Styles/NavigationStyles'
 
 const PrimaryNav = StackNavigator(
@@ -11,7 +13,19 @@ const PrimaryNav = StackNavigator(
     HomeStack: {
       screen: DrawerNavigator(
         {
-          Programs: { screen: Programs },
+          Programs: {
+            screen: Programs,
+            navigationOptions: {
+              drawerIcon: ({ tintColor, focused }) => (
+                <Icon
+                  size={26}
+                  type="ionicon"
+                  color={tintColor}
+                  name={focused ? 'ios-home' : 'ios-home-outline'}
+                />
+              ),
+            },
+          },
         },
         {
           headerMode: 'none',

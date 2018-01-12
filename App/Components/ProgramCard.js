@@ -6,14 +6,14 @@ import { Colors } from '../Themes';
 import styles from './Styles/ProgramCardStyles';
 
 const ProgramCard = ({
-  icon, type, title, subtitle, onPress,
+  icon, type, title, subtitle, onPress, opacity,
 }) => (
   <View style={styles.container}>
     <View style={styles.leftSection}>
       <Icon name="edit" type="entypo" color={Colors.primaryColor} size={25} />
       <Icon name="trash" type="entypo" color={Colors.primaryColor} size={25} />
     </View>
-    <TouchableOpacity style={styles.centerSection} onPress={onPress}>
+    <TouchableOpacity style={styles.centerSection} onPress={onPress} activeOpacity={opacity}>
       <Icon name={icon} type={type} color={Colors.text} size={20} />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>

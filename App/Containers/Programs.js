@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import { StatusBar, FlatList } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import * as Actions from '../Redux/Actions/Program';
 import Header from '../Components/Header';
+import * as Actions from '../Redux/Actions/Program';
 import ProgramCard from '../Components/ProgramCard';
+import ActionButton from '../Components/ActionButton';
 
 import styles, { gradients, textColor } from './Styles/ProgramStyles';
 
@@ -26,6 +27,7 @@ const Programs = (props) => {
         data={showExercises ? exercises.filter(e => e.day === dayKey) : days}
         renderItem={({ item }) => (
           <ProgramCard
+            opacity={showExercises ? 1 : 0}
             icon={showExercises ? 'dumbbell' : 'folder'}
             type={showExercises ? 'material-community' : 'entypo'}
             onPress={showExercises ? null : () => toggleExercises(true, item.key)}
@@ -40,6 +42,7 @@ const Programs = (props) => {
           />
         )}
       />
+      <ActionButton />
     </LinearGradient>
   );
 };

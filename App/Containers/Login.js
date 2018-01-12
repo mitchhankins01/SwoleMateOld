@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import firebase from 'react-native-firebase';
 import { Icon } from 'react-native-elements';
 import ProgressBar from 'react-native-progress/Bar';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,6 +13,22 @@ import styles, { gradients, textColor } from './Styles/LoginStyles';
 
 class Login extends Component {
   state = { email: '', password: '' };
+
+  componentWillMount() {
+    this.authListener = this.authListener.bind(this);
+    this.authListener();
+  }
+
+  componentWillUnmount() {
+    this.authListener = undefined;
+  }
+
+  authListener() {
+    this.authListener = firebase.auth().onAuthStateChanged((user) => {
+      if (user) console.log(user);
+      else console.log('no user');
+    });
+  }
 
   render() {
     const { loginUser, resetAuth, auth: { loading, error } } = this.props;

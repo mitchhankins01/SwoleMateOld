@@ -6,12 +6,11 @@ import createStore from '../Redux';
 const store = createStore();
 
 export default class App extends Component {
-    render () {
-      return (
-        <Provider store={store}>
-          <ReduxNavigation />
-        </Provider>
-      )
-    }
+  render() {
+    return (
+      <Provider store={store}>
+        <ReduxNavigation />
+      </Provider>
+    );
   }
-  
+}

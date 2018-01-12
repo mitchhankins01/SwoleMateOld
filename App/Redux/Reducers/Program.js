@@ -1,4 +1,5 @@
 import {
+  TOGGLE_EXERCISES,
   GET_PROGRAM,
   GET_PROGRAMS,
   GET_PROGRAM_FAIL,
@@ -11,18 +12,28 @@ const INITIAL_STATE = {
   info: [],
   days: [],
   error: '',
+  dayKey: '',
   exercises: [],
   loading: false,
+  showExercises: false,
 };
 
 const INITIAL_STATE_2 = {
   error: '',
   programs: [],
   loading: false,
+  allExercises: [],
 };
 
 const programReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case TOGGLE_EXERCISES: {
+      return {
+        ...state,
+        dayKey: action.payload.dayKey,
+        showExercises: action.payload.bool,
+      };
+    }
     case GET_PROGRAM:
       return { ...state, loading: true, error: '' };
     case GET_PROGRAM_SUCCESS:
@@ -50,7 +61,12 @@ const programsReducer = (state = INITIAL_STATE_2, action) => {
     case GET_PROGRAMS:
       return { ...state, loading: true, error: '' };
     case GET_PROGRAMS_SUCCESS:
-      return { ...state, ...INITIAL_STATE, programs: action.payload };
+      return {
+        ...state,
+        ...INITIAL_STATE,
+        programs: action.payload.programs,
+        allExercises: action.payload.allExercises,
+      };
     case GET_PROGRAMS_FAIL:
       return {
         ...state,

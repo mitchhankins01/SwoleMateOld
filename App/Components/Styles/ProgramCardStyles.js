@@ -30,6 +30,7 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
   },
   title: {
+    marginTop: 5,
     color: Colors.text,
     fontSize: Fonts.size.h5,
     fontFamily: Fonts.type.medium,

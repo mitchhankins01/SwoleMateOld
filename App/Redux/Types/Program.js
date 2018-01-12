@@ -1,3 +1,4 @@
+export const TOGGLE_EXERCISES = 'toggle_exercises';
 export const GET_PROGRAM = 'get_program';
 export const GET_PROGRAMS = 'get_programs';
 export const GET_PROGRAM_FAIL = 'get_program_fail';

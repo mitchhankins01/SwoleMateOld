@@ -1,5 +1,6 @@
 import firebase from 'react-native-firebase';
 import {
+  TOGGLE_EXERCISES,
   GET_PROGRAM,
   GET_PROGRAMS,
   GET_PROGRAM_FAIL,
@@ -7,6 +8,13 @@ import {
   GET_PROGRAM_SUCCESS,
   GET_PROGRAMS_SUCCESS,
 } from '../Types/Program';
+
+export const toggleExercises = (bool, dayKey) => (dispatch) => {
+  dispatch({
+    type: TOGGLE_EXERCISES,
+    payload: { bool, dayKey },
+  });
+};
 
 const getProgramFail = (dispatch, error) => {
   dispatch({
@@ -89,10 +97,10 @@ const getProgramsFail = (dispatch, error) => {
   });
 };
 
-const getProgramsSuccess = (dispatch, programs) => {
+const getProgramsSuccess = (dispatch, programs, allExercises) => {
   dispatch({
     type: GET_PROGRAMS_SUCCESS,
-    payload: programs,
+    payload: { programs, allExercises },
   });
 };
 
@@ -100,11 +108,24 @@ export const getPrograms = () => (dispatch) => {
   dispatch({ type: GET_PROGRAMS });
 
   const programs = [];
+  const allExercises = [];
   const programsRef = firebase
     .firestore()
     .collection('userPrograms')
     .orderBy('index')
     .where('author', '==', firebase.auth().currentUser.uid);
+
+  firebase
+    .firestore()
+    .collection('exercises')
+    .orderBy('name')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((exercise) => {
+        const data = exercise.data();
+        allExercises.push(data);
+      });
+    });
 
   programsRef.onSnapshot(
     (querySnapshot) => {
@@ -113,7 +134,7 @@ export const getPrograms = () => (dispatch) => {
         programs.push({ ...data, id: program.id });
       });
       getProgram(dispatch, programs, null);
-      getProgramsSuccess(dispatch, programs);
+      getProgramsSuccess(dispatch, programs, allExercises);
     },
     (error) => {
       getProgramsFail(dispatch, error.message);

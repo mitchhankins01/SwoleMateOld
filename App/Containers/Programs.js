@@ -56,19 +56,20 @@ const getIcons = (props) => {
 const Programs = (props) => {
   const {
     programs,
-    toggleExercises,
     getPrograms,
+    toggleExercises,
     program: {
-      days, dayKey, exercises, showExercises, loading,
+      days, dayKey, exercises, showExercises, loading, info,
     },
   } = props;
 
   if (loading || programs.loading) return null;
 
+  const title = showExercises ? 'Exercises' : info.map(({ name }) => name).toString();
   return (
     <LinearGradient style={styles.container} colors={gradients}>
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-      <Header title="Programs" />
+      <Header title={title} />
       <FlatList
         data={showExercises ? exercises.filter(e => e.day === dayKey) : days}
         renderItem={({ item }) => (
@@ -78,17 +79,18 @@ const Programs = (props) => {
             type={showExercises ? 'material-community' : 'entypo'}
             onPress={showExercises ? null : () => toggleExercises(true, item.key)}
             subtitle={
-              showExercises
-                ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
-                : `${item.primaryGroup} - ${item.secondaryGroup}`
-            }
+                showExercises
+                  ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
+                  : `${item.primaryGroup} - ${item.secondaryGroup}`
+              }
             title={
-              showExercises
-                ? programs.allExercises.find(e => e.key === item.exerciseKey).name
-                : item.name
-            }
+                showExercises
+                  ? programs.allExercises.find(e => e.key === item.exerciseKey).name
+                  : item.name
+              }
           />
-        )}
+          )}
+        s
       />
       <ActionButton buttons={getIcons(props)} />
       {programs.fetched ? null : getPrograms()}

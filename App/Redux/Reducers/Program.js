@@ -22,6 +22,7 @@ const INITIAL_STATE_2 = {
   error: '',
   programs: [],
   loading: false,
+  fetched: false,
   allExercises: [],
 };
 
@@ -39,7 +40,7 @@ const programReducer = (state = INITIAL_STATE, action) => {
     case GET_PROGRAM_SUCCESS:
       return {
         ...state,
-        ...INITIAL_STATE,
+        loading: false,
         info: action.payload.info,
         days: action.payload.days,
         exercises: action.payload.exercises,
@@ -63,7 +64,8 @@ const programsReducer = (state = INITIAL_STATE_2, action) => {
     case GET_PROGRAMS_SUCCESS:
       return {
         ...state,
-        ...INITIAL_STATE,
+        fetched: true,
+        loading: false,
         programs: action.payload.programs,
         allExercises: action.payload.allExercises,
       };

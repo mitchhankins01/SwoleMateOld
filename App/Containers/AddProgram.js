@@ -11,10 +11,10 @@ import ActionButton from '../Components/ActionButton';
 
 import styles, { gradients, textColor } from './Styles/AddProgramStyles';
 
-const Programs = ({ goBack }) => (
+const Programs = ({ goBack, program: { showExercises } }) => (
   <LinearGradient style={styles.container} colors={gradients}>
     <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-    <Header title="Add" />
+    <Header title={showExercises ? 'Add Exercise' : 'Add Workout'} />
     <ActionButton buttons={getButtons(goBack)} />
   </LinearGradient>
 );
@@ -38,7 +38,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPrograms: dispatch(Actions.getPrograms()),
   goBack: () => dispatch(NavigationActions.back('Programs')),
   toggleExercises: (bool, dayKey) => dispatch(Actions.toggleExercises(bool, dayKey)),
 });

@@ -55,14 +55,15 @@ const getIcons = (props) => {
 
 const Programs = (props) => {
   const {
-    addHandler,
-    toggleDrawer,
+    programs,
     toggleExercises,
+    getPrograms,
     program: {
-      days, dayKey, exercises, showExercises,
+      days, dayKey, exercises, showExercises, loading,
     },
-    programs: { allExercises },
   } = props;
+
+  if (loading || programs.loading) return null;
 
   return (
     <LinearGradient style={styles.container} colors={gradients}>
@@ -82,12 +83,15 @@ const Programs = (props) => {
                 : `${item.primaryGroup} - ${item.secondaryGroup}`
             }
             title={
-              showExercises ? allExercises.find(e => e.key === item.exerciseKey).name : item.name
+              showExercises
+                ? programs.allExercises.find(e => e.key === item.exerciseKey).name
+                : item.name
             }
           />
         )}
       />
       <ActionButton buttons={getIcons(props)} />
+      {programs.fetched ? null : getPrograms()}
     </LinearGradient>
   );
 };
@@ -98,7 +102,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPrograms: dispatch(Actions.getPrograms()),
+  getPrograms: () => dispatch(Actions.getPrograms()),
   toggleExercises: (bool, dayKey) => dispatch(Actions.toggleExercises(bool, dayKey)),
   addHandler: () => dispatch(NavigationActions.navigate({ routeName: 'AddProgram' })),
   toggleDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerToggle' })),

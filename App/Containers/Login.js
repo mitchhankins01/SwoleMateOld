@@ -25,7 +25,7 @@ class Login extends Component {
 
   authListener() {
     this.authListener = firebase.auth().onAuthStateChanged((user) => {
-      if (user) console.log(user);
+      if (user) this.props.navigation.navigate('HomeStack');
       else console.log('no user');
     });
   }

@@ -5,26 +5,26 @@ import Login from '../Containers/Login';
 import Drawer from './Drawer';
 // import styles from './Styles/NavigationStyles'
 
-const PrimaryNav = DrawerNavigator(
+const PrimaryNav = StackNavigator(
   {
-    Programs: { screen: Programs },
-    LoginStack: {
-      screen: StackNavigator(
+    Login: { screen: Login },
+    HomeStack: {
+      screen: DrawerNavigator(
         {
-          Login: { screen: Login },
+          Programs: { screen: Programs },
         },
         {
           headerMode: 'none',
+          contentComponent: Drawer,
+          drawerOpenRoute: 'DrawerOpen',
+          drawerCloseRoute: 'DrawerClose',
+          drawerToggleRoute: 'DrawerToggle',
         },
       ),
     },
   },
   {
     headerMode: 'none',
-    contentComponent: Drawer,
-    drawerOpenRoute: 'DrawerOpen',
-    drawerCloseRoute: 'DrawerClose',
-    drawerToggleRoute: 'DrawerToggle',
   },
 );
 

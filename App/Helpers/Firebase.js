@@ -38,6 +38,41 @@ const ToggleDown = (days, programId, item, exercises, dayKey) => {
         });
       break;
     }
+    case 'exercise': {
+      const filteredExercises = exercises.filter(exercise => exercise.day === dayKey);
+      if (item.index >= filteredExercises.length - 1) return;
+      const target = item;
+      const subTarget = filteredExercises[target.index + 1];
+      const targetRef = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('exercises')
+        .doc(target.key);
+      const subTargetRef = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('exercises')
+        .doc(subTarget.key);
+
+      targetRef
+        .update({
+          index: Number(target.index) + 1,
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+
+      subTargetRef
+        .update({
+          index: Number(target.index),
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+      break;
+    }
   }
 };
 

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { StatusBar, FlatList } from 'react-native';
+import { StatusBar, FlatList, Text } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -11,6 +11,7 @@ import { ProgramCard } from '../Components/ProgramCard';
 import ActionButton from '../Components/ActionButton';
 
 import styles, { gradients, textColor } from './Styles/ProgramStyles';
+import { Colors, Fonts } from '../Themes';
 
 const getProgramButtons = (props) => {
   const {
@@ -67,14 +68,31 @@ const Programs = (props) => {
 
   if (loading || programs.loading) return null;
   const programId = info.map(({ id }) => id).toString();
+  const data = showExercises ? exercises.filter(e => e.day === dayKey) : days;
   const title = showExercises ? 'Exercises' : info.map(({ name }) => name).toString();
+  const test = {
+    color: Colors.text,
+    alignSelf: 'center',
+    fontFamily: Fonts.type.medium,
+    fontSize: Fonts.size.h5,
+    marginTop: 30,
+    backgroundColor: Colors.secondaryColor,
+    padding: 20,
+  };
   return (
     <LinearGradient style={styles.container} colors={gradients}>
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       <Header title={title} />
+      {data.length === 0 ? (
+        <Text style={test}>
+          {showExercises
+            ? 'This Workout is empty, tap the lower right button to get started'
+            : 'This Program is empty, tap the lower right button to get started'}
+        </Text>
+      ) : null}
       <FlatList
         extraData={props.program}
-        data={showExercises ? exercises.filter(e => e.day === dayKey) : days}
+        data={data}
         renderItem={({ item }) => (
           <ProgramCard
             opacity={showExercises ? 1 : 0}
@@ -97,7 +115,6 @@ const Programs = (props) => {
             }
           />
         )}
-        s
       />
       <ActionButton buttons={getProgramButtons(props)} />
       {programs.fetched ? null : getPrograms()}

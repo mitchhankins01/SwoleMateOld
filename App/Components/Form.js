@@ -13,7 +13,12 @@ import styles from './Styles/FormStyles';
 const TForm = t.form.Form;
 
 class AddWorkout extends Component {
-  state = { showExerciseList: false, searchGroup: 'Show All Exercises' };
+  state = {
+    exerciseId: '',
+    showExerciseList: false,
+    exerciseName: 'Select Exercise',
+    searchGroup: 'Show All Exercises',
+  };
 
   renderExerciseList() {
     const options = [
@@ -52,7 +57,15 @@ class AddWorkout extends Component {
           style={{ marginBottom: 50, marginTop: 20 }}
           data={exercises()}
           renderItem={({ item }) => (
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                this.setState({
+                  exerciseId: item.key,
+                  showExerciseList: false,
+                  exerciseName: item.name,
+                })
+              }
+            >
               <Text style={styles.exerciseText}>{item.name}</Text>
             </TouchableOpacity>
           )}
@@ -77,7 +90,7 @@ class AddWorkout extends Component {
               style={styles.selectButton}
               onPress={() => this.setState({ showExerciseList: true })}
             >
-              <Text style={styles.selectButtonText}>Select Exercise</Text>
+              <Text style={styles.selectButtonText}>{this.state.exerciseName}</Text>
             </TouchableOpacity>
           </View>
         ) : (

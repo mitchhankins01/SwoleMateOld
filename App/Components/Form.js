@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
+import * as Animatable from 'react-native-animatable';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
-import { AddWorkoutFB } from '../Helpers/Firebase';
+import { AddWorkoutFB, AddExerciseFB } from '../Helpers/Firebase';
 import { Colors, Fonts } from '../Themes';
 import styles from './Styles/FormStyles';
 
@@ -86,12 +87,14 @@ class AddWorkout extends Component {
         {showExercises ? (
           <View>
             <TForm ref="exerciseForm" type={exerciseType} options={exerciseOptions} />
-            <TouchableOpacity
-              style={styles.selectButton}
-              onPress={() => this.setState({ showExerciseList: true })}
-            >
-              <Text style={styles.selectButtonText}>{this.state.exerciseName}</Text>
-            </TouchableOpacity>
+            <Animatable.View ref="selectButton">
+              <TouchableOpacity
+                style={styles.selectButton}
+                onPress={() => this.setState({ showExerciseList: true })}
+              >
+                <Text style={styles.selectButtonText}>{this.state.exerciseName}</Text>
+              </TouchableOpacity>
+            </Animatable.View>
           </View>
         ) : (
           <TForm ref="workoutForm" type={workoutType} options={workoutOptions} />
@@ -108,14 +111,30 @@ class AddWorkout extends Component {
               ? this.refs.exerciseForm.getValue()
               : this.refs.workoutForm.getValue();
             if (values) {
-              const programId = info.map(({ id }) => id).toString();
-              AddWorkoutFB(values, programId);
-              goBack();
+              if (showExercises) return this.handleOnSubmitExercise(values);
+              this.handleOnSubmitWorkout(values);
             }
           }}
         />
       </View>
     );
+  }
+
+  handleOnSubmitWorkout(values) {
+    const { goBack, program: { info } } = this.props;
+    const programId = info.map(({ id }) => id).toString();
+    AddWorkoutFB(values, programId);
+    goBack();
+  }
+
+  handleOnSubmitExercise(values) {
+    const { exerciseId } = this.state;
+    const { selectButton } = this.refs;
+    const { goBack, program: { info, dayKey } } = this.props;
+    const programId = info.map(({ id }) => id).toString();
+    if (!exerciseId && selectButton) return selectButton.wobble();
+    AddExerciseFB(values, programId, dayKey, exerciseId);
+    return goBack();
   }
 
   render() {

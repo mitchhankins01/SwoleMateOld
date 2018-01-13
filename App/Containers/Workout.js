@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Picker from '../Components/Picker';
 import { Colors, Fonts } from '../Themes';
 import Header from '../Components/Header';
+import * as Actions from '../Redux/Actions/Workout';
 import ActionButton from '../Components/ActionButton';
 import styles, { gradients, textColor } from './Styles/WorkoutStyles';
 
@@ -23,18 +24,8 @@ const getButtons = goBack => [
   },
 ];
 
-const setReps = (number) => {
-  // set reps
-};
-
-const setWeight = (number) => {
-  // set weight
-};
-
-const renderTextInput = (type) => {
-  // const { reps, weight } = this.props.workoutStore;
-  const reps = 0;
-  const weight = 0;
+const renderTextInput = (workout, setReps, setWeight, type) => {
+  const { reps, weight } = workout;
   return (
     <TextInput
       keyboardType="numeric"
@@ -54,7 +45,9 @@ const renderTextInput = (type) => {
   );
 };
 
-const Workout = ({ goBack }) => (
+const Workout = ({
+  goBack, setReps, setWeight, workout,
+}) => (
   <LinearGradient style={styles.container} colors={gradients}>
     <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
     <Header noMenu title="Workout" />
@@ -76,22 +69,26 @@ const Workout = ({ goBack }) => (
     <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
       <View style={styles.inputContainer} animation="mySlideInLeft" delay={250}>
         <Text style={styles.inputHeader}>Weight</Text>
-        {renderTextInput('weight')}
-        <Picker type="weight" weight={0} setWeight={change => setWeight(change)} />
+        {renderTextInput(workout, setReps, setWeight, 'weight')}
+        <Picker type="weight" weight={workout.weight} setWeight={number => setWeight(number)} />
       </View>
       <View style={styles.inputContainer} animation="mySlideInRight" delay={250}>
         <Text style={styles.inputHeader}>Reps</Text>
-        {renderTextInput('repsInput')}
-        <Picker type="reps" reps={0} setReps={change => setReps(change)} />
+        {renderTextInput(workout, setReps, setWeight, 'reps')}
+        <Picker type="reps" reps={workout.reps} setReps={number => setReps(number)} />
       </View>
     </View>
     <ActionButton buttons={getButtons(goBack)} />
   </LinearGradient>
 );
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  workout: state.workout,
+});
 
 const mapDispatchToProps = dispatch => ({
+  setReps: number => dispatch(Actions.setReps(number)),
+  setWeight: number => dispatch(Actions.setWeight(number)),
   goBack: () => dispatch(NavigationActions.back('Programs')),
 });
 

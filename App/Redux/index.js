@@ -3,6 +3,7 @@ import configureStore from './CreateStore';
 
 import AuthReducer from './Reducers/Auth';
 import * as Program from './Reducers/Program';
+import * as Workout from './Reducers/Workout';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -10,6 +11,7 @@ export const reducers = combineReducers({
   auth: AuthReducer,
   program: Program.programReducer,
   programs: Program.programsReducer,
+  workout: Workout.inputReducer,
 });
 
 export default () => {

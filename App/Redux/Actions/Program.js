@@ -50,8 +50,9 @@ export const getProgram = (dispatch, programs, selected) => {
 
   programRef.onSnapshot(
     (thisProgram) => {
+      info.length = 0;
       const data = thisProgram.data();
-      info.push(data);
+      info.push({ ...data, id: thisProgram.id });
     },
     (error) => {
       getProgramFail(dispatch, error.message);
@@ -63,6 +64,7 @@ export const getProgram = (dispatch, programs, selected) => {
     .orderBy('index')
     .onSnapshot(
       (querySnapshot) => {
+        days.length = 0;
         querySnapshot.forEach((day) => {
           const data = day.data();
           days.push(data);
@@ -78,6 +80,7 @@ export const getProgram = (dispatch, programs, selected) => {
     .orderBy('index')
     .onSnapshot(
       (querySnapshot) => {
+        exercises.length = 0;
         querySnapshot.forEach((exercise) => {
           const data = exercise.data();
           exercises.push(data);

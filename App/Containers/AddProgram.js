@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import Header from '../Components/Header';
 import * as Actions from '../Redux/Actions/Program';
-import ProgramCard from '../Components/ProgramCard';
+import { ModifyProgramCard } from '../Components/ProgramCard';
 import ActionButton from '../Components/ActionButton';
 
 import styles, { gradients, textColor } from './Styles/AddProgramStyles';
@@ -15,6 +15,7 @@ const Programs = ({ goBack, program: { showExercises } }) => (
   <LinearGradient style={styles.container} colors={gradients}>
     <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
     <Header title={showExercises ? 'Add Exercise' : 'Add Workout'} />
+    <ModifyProgramCard goBack={goBack} />
     <ActionButton buttons={getButtons(goBack)} />
   </LinearGradient>
 );
@@ -25,11 +26,11 @@ const getButtons = goBack => [
     animation: 'zoomIn',
     onPress: () => goBack(),
   },
-  {
-    icon: 'check',
-    animation: 'zoomIn',
-    onPress: () => {}, // Add Program
-  },
+  // {
+  //   icon: 'check',
+  //   animation: 'zoomIn',
+  //   onPress: () => {}, // Add Program
+  // },
 ];
 
 const mapStateToProps = state => ({

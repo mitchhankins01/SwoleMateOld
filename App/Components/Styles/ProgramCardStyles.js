@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Fonts, Colors, Constants } from '../../Themes/';
 
 export default StyleSheet.create({
+  // Program Card
   container: {
     height: 100,
     elevation: 5,
@@ -39,5 +40,19 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.regular,
     fontSize: Fonts.size.small,
     color: Colors.text,
+  },
+  // Modify
+  modifyContainer: {
+    flex: 1,
+    elevation: 5,
+    marginTop: 20,
+    marginBottom: 75,
+    borderTopWidth: 2,
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+    shadowColor: 'rgba(0,0,0, 1)',
+    borderColor: Colors.primaryColor,
+    shadowOffset: { height: 0, width: 0 },
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
 });

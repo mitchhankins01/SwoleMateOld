@@ -2,10 +2,17 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+import AddWorkout from '../Components/Form';
 import { Colors } from '../Themes';
 import styles from './Styles/ProgramCardStyles';
 
-const ProgramCard = ({
+export const ModifyProgramCard = props => (
+  <View style={styles.modifyContainer}>
+    <AddWorkout />
+  </View>
+);
+
+export const ProgramCard = ({
   icon, type, title, subtitle, onPress, opacity,
 }) => (
   <View style={styles.container}>
@@ -24,5 +31,3 @@ const ProgramCard = ({
     </View>
   </View>
 );
-
-export default ProgramCard;

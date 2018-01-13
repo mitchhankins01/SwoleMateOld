@@ -53,6 +53,7 @@ export const getProgram = (dispatch, programs, selected) => {
       info.length = 0;
       const data = thisProgram.data();
       info.push({ ...data, id: thisProgram.id });
+      getProgramSuccess(dispatch, info, days, exercises);
     },
     (error) => {
       getProgramFail(dispatch, error.message);
@@ -69,6 +70,7 @@ export const getProgram = (dispatch, programs, selected) => {
           const data = day.data();
           days.push(data);
         });
+        getProgramSuccess(dispatch, info, days, exercises);
       },
       (error) => {
         getProgramFail(dispatch, error.message);

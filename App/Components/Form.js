@@ -7,13 +7,13 @@ import * as Animatable from 'react-native-animatable';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
-import { AddWorkoutFB, AddExerciseFB } from '../Helpers/Firebase';
+import { AddWorkoutFB, AddExerciseFB, EditWorkoutFB, EditExerciseFB } from '../Helpers/Firebase';
 import { Colors, Fonts } from '../Themes';
 import styles from './Styles/FormStyles';
 
 const TForm = t.form.Form;
 
-class AddWorkout extends Component {
+class EditProgram extends Component {
   state = {
     exerciseId: '',
     showExerciseList: false,
@@ -21,20 +21,22 @@ class AddWorkout extends Component {
     searchGroup: 'Show All Exercises',
   };
 
-  handleOnSubmitWorkout(values) {
-    const { goBack, program: { info } } = this.props;
+  handleOnSubmitWorkout(values, edit) {
+    const { item, goBack, program: { info } } = this.props;
     const programId = info.map(({ id }) => id).toString();
-    AddWorkoutFB(values, programId);
+    if (edit) EditWorkoutFB(values, programId, item);
+    else AddWorkoutFB(values, programId);
     goBack();
   }
 
-  handleOnSubmitExercise(values) {
+  handleOnSubmitExercise(values, edit) {
     const { exerciseId } = this.state;
     const { selectButton } = this.refs;
-    const { goBack, program: { info, dayKey } } = this.props;
+    const { item, goBack, program: { info, dayKey } } = this.props;
     const programId = info.map(({ id }) => id).toString();
     if (!exerciseId && selectButton) return selectButton.wobble();
-    AddExerciseFB(values, programId, dayKey, exerciseId);
+    if (edit) EditExerciseFB(values, programId, dayKey, exerciseId, item);
+    else AddExerciseFB(values, programId, dayKey, exerciseId);
     return goBack();
   }
 
@@ -93,7 +95,9 @@ class AddWorkout extends Component {
   }
 
   renderForm() {
-    const { program: { showExercises } } = this.props;
+    const {
+      edit, programId, item, program: { showExercises },
+    } = this.props;
     return (
       <View>
         <Icon
@@ -103,7 +107,7 @@ class AddWorkout extends Component {
         />
         {showExercises ? (
           <View>
-            <TForm ref="exerciseForm" type={exerciseType} options={exerciseOptions} />
+            <TForm ref="exerciseForm" type={exerciseType} options={exerciseOptions} value={item} />
             <Animatable.View ref="selectButton">
               <TouchableOpacity
                 style={styles.selectButton}
@@ -114,7 +118,7 @@ class AddWorkout extends Component {
             </Animatable.View>
           </View>
         ) : (
-          <TForm ref="workoutForm" type={workoutType} options={workoutOptions} />
+          <TForm ref="workoutForm" type={workoutType} options={workoutOptions} value={item} />
         )}
         <Icon
           name="check"
@@ -128,8 +132,8 @@ class AddWorkout extends Component {
               ? this.refs.exerciseForm.getValue()
               : this.refs.workoutForm.getValue();
             if (values) {
-              if (showExercises) return this.handleOnSubmitExercise(values);
-              this.handleOnSubmitWorkout(values);
+              if (showExercises) return this.handleOnSubmitExercise(values, edit);
+              this.handleOnSubmitWorkout(values, edit);
             }
           }}
         />
@@ -154,7 +158,7 @@ const mapDispatchToProps = dispatch => ({
   goBack: () => dispatch(NavigationActions.back('Programs')),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddWorkout);
+export default connect(mapStateToProps, mapDispatchToProps)(EditProgram);
 
 const exerciseType = t.struct({
   sets: t.Number,

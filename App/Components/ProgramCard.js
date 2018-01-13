@@ -2,37 +2,45 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-import AddWorkout from '../Components/Form';
+import EditProgram from '../Components/Form';
 import { Colors } from '../Themes';
 import styles from './Styles/ProgramCardStyles';
 
-export const ModifyProgramCard = props => (
+export const EditProgramCard = ({ edit, programId, item }) => (
   <View style={styles.modifyContainer}>
-    <AddWorkout />
+    <EditProgram edit={edit} item={item} programId={programId} />
   </View>
 );
 
 export const ProgramCard = ({
-  icon, type, title, subtitle, onPress, opacity, onDelete,
+  icon,
+  type,
+  title,
+  subtitle,
+  onPress,
+  opacity,
+  onDelete,
+  onEdit,
 }) => (
   <View style={styles.container}>
     <View style={styles.leftSection}>
       <Icon
-        containerStyle={{ padding: 10 }}
         size={25}
         name="edit"
         type="entypo"
+        onPress={onEdit}
         underlayColor="transparent"
         color={Colors.primaryColor}
+        containerStyle={{ padding: 10 }}
       />
       <Icon
-        containerStyle={{ padding: 10 }}
         size={25}
         name="trash"
         type="entypo"
         onPress={onDelete}
         underlayColor="transparent"
         color={Colors.primaryColor}
+        containerStyle={{ padding: 10 }}
       />
     </View>
     <TouchableOpacity style={styles.centerSection} onPress={onPress} activeOpacity={opacity}>

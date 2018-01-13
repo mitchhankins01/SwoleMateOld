@@ -1,5 +1,28 @@
 import firebase from 'react-native-firebase';
 
+const EditWorkoutFB = (values, programId, item) => {
+  const ref = firebase
+    .firestore()
+    .collection('userPrograms')
+    .doc(programId)
+    .collection('days')
+    .doc(item.key);
+
+  ref
+    .update({
+      name: values.name,
+      description: values.description,
+      primaryGroup: values.primaryGroup,
+      secondaryGroup: values.secondaryGroup,
+      author: firebase.auth().currentUser.uid,
+    })
+    .then(() => {})
+    .catch((error) => {
+      this.error = error.message;
+    });
+};
+const EditExerciseFB = () => {};
+
 const deleteFB = (programId, dayKey, type, key) => {
   switch (type) {
     default:
@@ -148,4 +171,4 @@ const AddWorkoutFB = (values, programId) => {
   });
 };
 
-export { AddWorkoutFB, AddExerciseFB, deleteFB };
+export { AddWorkoutFB, AddExerciseFB, deleteFB, EditWorkoutFB, EditExerciseFB };

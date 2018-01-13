@@ -58,6 +58,7 @@ const Programs = (props) => {
   const {
     programs,
     getPrograms,
+    editProgram,
     toggleExercises,
     program: {
       days, dayKey, exercises, showExercises, loading, info,
@@ -72,8 +73,8 @@ const Programs = (props) => {
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       <Header title={title} />
       <FlatList
-        data={showExercises ? exercises.filter(e => e.day === dayKey) : days}
         extraData={props.program}
+        data={showExercises ? exercises.filter(e => e.day === dayKey) : days}
         renderItem={({ item }) => (
           <ProgramCard
             opacity={showExercises ? 1 : 0}
@@ -81,6 +82,7 @@ const Programs = (props) => {
             type={showExercises ? 'material-community' : 'entypo'}
             onPress={showExercises ? null : () => toggleExercises(true, item.key)}
             onDelete={() => deleteFB(programId, dayKey, item.type, item.key)}
+            onEdit={() => editProgram(programId, item)}
             subtitle={
               showExercises
                 ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
@@ -109,8 +111,18 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getPrograms: () => dispatch(Actions.getPrograms()),
   toggleExercises: (bool, dayKey) => dispatch(Actions.toggleExercises(bool, dayKey)),
-  addHandler: () => dispatch(NavigationActions.navigate({ routeName: 'AddProgram' })),
+  addHandler: () =>
+    dispatch(NavigationActions.navigate({ routeName: 'EditProgram', params: { edit: false } })),
   toggleDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerToggle' })),
+  editProgram: (programId, item) =>
+    dispatch(NavigationActions.navigate({
+      routeName: 'EditProgram',
+      params: {
+        item,
+        programId,
+        edit: true,
+      },
+    })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Programs);

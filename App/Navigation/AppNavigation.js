@@ -5,7 +5,7 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import Drawer from './Drawer';
 import Login from '../Containers/Login';
 import Programs from '../Containers/Programs';
-import AddProgram from '../Containers/AddProgram';
+import EditProgram from '../Containers/EditProgram';
 // import styles from './Styles/NavigationStyles'
 
 const PrimaryNav = StackNavigator(
@@ -27,8 +27,8 @@ const PrimaryNav = StackNavigator(
               ),
             },
           },
-          AddProgram: {
-            screen: AddProgram,
+          EditProgram: {
+            screen: EditProgram,
             navigationOptions: {
               drawerLabel: () => null,
             },

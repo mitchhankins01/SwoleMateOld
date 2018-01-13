@@ -11,9 +11,9 @@ export default StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     shadowColor: 'rgba(0,0,0, 1)',
-    backgroundColor: Colors.bgColor,
     borderColor: Colors.primaryColor,
     shadowOffset: { height: 0, width: 0 },
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
   leftSection: {
     flex: 1,
@@ -51,8 +51,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 2,
     shadowColor: 'rgba(0,0,0, 1)',
-    backgroundColor: Colors.bgColor,
     borderColor: Colors.primaryColor,
     shadowOffset: { height: 0, width: 0 },
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
 });

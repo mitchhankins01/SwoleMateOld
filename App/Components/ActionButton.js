@@ -10,11 +10,7 @@ const ActionButton = ({ buttons }) => (
     {buttons.map(button => (
       <Animatable.View animation={button.animation} key={button.icon}>
         <TouchableOpacity style={styles.buttonContainer} onPress={button.onPress}>
-          <Icon
-            name={button.icon}
-            iconStyle={styles.iconContainer}
-            type={button.type ? button.type : 'entypo'}
-          />
+          <Icon iconStyle={styles.iconContainer} name={button.icon} type="entypo" />
         </TouchableOpacity>
       </Animatable.View>
     ))}

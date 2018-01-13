@@ -14,7 +14,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     justifyContent: 'space-between',
-    backgroundColor: Colors.bgColor,
+    backgroundColor: Color(Colors.tertiaryColor).alpha(0.8),
   },
   buttonContainer: {
     width: 50,

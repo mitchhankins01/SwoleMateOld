@@ -4,6 +4,7 @@ import { StatusBar, FlatList } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
+import { deleteFB } from '../Helpers/Firebase';
 import Header from '../Components/Header';
 import * as Actions from '../Redux/Actions/Program';
 import { ProgramCard } from '../Components/ProgramCard';
@@ -64,6 +65,7 @@ const Programs = (props) => {
   } = props;
 
   if (loading || programs.loading) return null;
+  const programId = info.map(({ id }) => id).toString();
   const title = showExercises ? 'Exercises' : info.map(({ name }) => name).toString();
   return (
     <LinearGradient style={styles.container} colors={gradients}>
@@ -72,27 +74,25 @@ const Programs = (props) => {
       <FlatList
         data={showExercises ? exercises.filter(e => e.day === dayKey) : days}
         extraData={props.program}
-        renderItem={({ item }) => {
-          console.log(item.name);
-          return (
-            <ProgramCard
-              opacity={showExercises ? 1 : 0}
-              icon={showExercises ? 'dumbbell' : 'folder'}
-              type={showExercises ? 'material-community' : 'entypo'}
-              onPress={showExercises ? null : () => toggleExercises(true, item.key)}
-              subtitle={
-                showExercises
-                  ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
-                  : `${item.primaryGroup} - ${item.secondaryGroup}`
-              }
-              title={
-                showExercises
-                  ? programs.allExercises.find(e => e.key === item.exerciseKey).name
-                  : item.name
-              }
-            />
-          );
-        }}
+        renderItem={({ item }) => (
+          <ProgramCard
+            opacity={showExercises ? 1 : 0}
+            icon={showExercises ? 'dumbbell' : 'folder'}
+            type={showExercises ? 'material-community' : 'entypo'}
+            onPress={showExercises ? null : () => toggleExercises(true, item.key)}
+            onDelete={() => deleteFB(programId, dayKey, item.type, item.key)}
+            subtitle={
+              showExercises
+                ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
+                : `${item.primaryGroup} - ${item.secondaryGroup}`
+            }
+            title={
+              showExercises
+                ? programs.allExercises.find(e => e.key === item.exerciseKey).name
+                : item.name
+            }
+          />
+        )}
         s
       />
       <ActionButton buttons={getProgramButtons(props)} />

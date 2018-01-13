@@ -68,7 +68,7 @@ export const getProgram = (dispatch, programs, selected) => {
         days.length = 0;
         querySnapshot.forEach((day) => {
           const data = day.data();
-          days.push(data);
+          days.push({ ...data, type: 'workout' });
         });
         getProgramSuccess(dispatch, info, days, exercises);
       },
@@ -85,7 +85,7 @@ export const getProgram = (dispatch, programs, selected) => {
         exercises.length = 0;
         querySnapshot.forEach((exercise) => {
           const data = exercise.data();
-          exercises.push(data);
+          exercises.push({ ...data, type: 'exercise' });
         });
         getProgramSuccess(dispatch, info, days, exercises);
       },

@@ -13,12 +13,27 @@ export const ModifyProgramCard = props => (
 );
 
 export const ProgramCard = ({
-  icon, type, title, subtitle, onPress, opacity,
+  icon, type, title, subtitle, onPress, opacity, onDelete,
 }) => (
   <View style={styles.container}>
     <View style={styles.leftSection}>
-      <Icon name="edit" type="entypo" color={Colors.primaryColor} size={25} />
-      <Icon name="trash" type="entypo" color={Colors.primaryColor} size={25} />
+      <Icon
+        containerStyle={{ padding: 10 }}
+        size={25}
+        name="edit"
+        type="entypo"
+        underlayColor="transparent"
+        color={Colors.primaryColor}
+      />
+      <Icon
+        containerStyle={{ padding: 10 }}
+        size={25}
+        name="trash"
+        type="entypo"
+        onPress={onDelete}
+        underlayColor="transparent"
+        color={Colors.primaryColor}
+      />
     </View>
     <TouchableOpacity style={styles.centerSection} onPress={onPress} activeOpacity={opacity}>
       <Icon name={icon} type={type} color={Colors.text} size={20} />

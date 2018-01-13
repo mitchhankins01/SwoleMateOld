@@ -1,5 +1,71 @@
 import firebase from 'react-native-firebase';
 
+const deleteFB = (programId, dayKey, type, key) => {
+  switch (type) {
+    default:
+      return;
+    case 'workout': {
+      const ref = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('days');
+      // delete and fix indices other days
+      ref
+        .doc(key)
+        .delete()
+        .then(() => {
+          ref
+            .orderBy('index')
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.docChanges.forEach((updateDay) => {
+                const updateRef = updateDay.doc.ref.path;
+                firebase
+                  .firestore()
+                  .doc(updateRef)
+                  .update({ index: updateDay.newIndex });
+              });
+            });
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+      break;
+    }
+    case 'exercise': {
+      const ref = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('exercises');
+
+      // delete and fix indices
+      ref
+        .doc(key)
+        .delete()
+        .then(() => {
+          ref
+            .orderBy('index')
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.docChanges.forEach((updateExercise) => {
+                if (updateExercise.doc.data().day !== programId) return;
+                const updateRef = updateExercise.doc.ref.path;
+                firebase
+                  .firestore()
+                  .doc(updateRef)
+                  .update({ index: updateExercise.newIndex });
+              });
+            });
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+    }
+  }
+};
+
 const AddExerciseFB = (values, programId, dayKey, exerciseId) => {
   let index = 0;
 
@@ -82,4 +148,4 @@ const AddWorkoutFB = (values, programId) => {
   });
 };
 
-export { AddWorkoutFB, AddExerciseFB };
+export { AddWorkoutFB, AddExerciseFB, deleteFB };

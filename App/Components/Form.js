@@ -21,6 +21,23 @@ class AddWorkout extends Component {
     searchGroup: 'Show All Exercises',
   };
 
+  handleOnSubmitWorkout(values) {
+    const { goBack, program: { info } } = this.props;
+    const programId = info.map(({ id }) => id).toString();
+    AddWorkoutFB(values, programId);
+    goBack();
+  }
+
+  handleOnSubmitExercise(values) {
+    const { exerciseId } = this.state;
+    const { selectButton } = this.refs;
+    const { goBack, program: { info, dayKey } } = this.props;
+    const programId = info.map(({ id }) => id).toString();
+    if (!exerciseId && selectButton) return selectButton.wobble();
+    AddExerciseFB(values, programId, dayKey, exerciseId);
+    return goBack();
+  }
+
   renderExerciseList() {
     const options = [
       'Show All Exercises',
@@ -76,7 +93,7 @@ class AddWorkout extends Component {
   }
 
   renderForm() {
-    const { goBack, program: { info, showExercises } } = this.props;
+    const { program: { showExercises } } = this.props;
     return (
       <View>
         <Icon
@@ -118,23 +135,6 @@ class AddWorkout extends Component {
         />
       </View>
     );
-  }
-
-  handleOnSubmitWorkout(values) {
-    const { goBack, program: { info } } = this.props;
-    const programId = info.map(({ id }) => id).toString();
-    AddWorkoutFB(values, programId);
-    goBack();
-  }
-
-  handleOnSubmitExercise(values) {
-    const { exerciseId } = this.state;
-    const { selectButton } = this.refs;
-    const { goBack, program: { info, dayKey } } = this.props;
-    const programId = info.map(({ id }) => id).toString();
-    if (!exerciseId && selectButton) return selectButton.wobble();
-    AddExerciseFB(values, programId, dayKey, exerciseId);
-    return goBack();
   }
 
   render() {

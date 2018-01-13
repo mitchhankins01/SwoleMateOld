@@ -21,7 +21,25 @@ const EditWorkoutFB = (values, programId, item) => {
       this.error = error.message;
     });
 };
-const EditExerciseFB = () => {};
+const EditExerciseFB = (values, programId, dayKey, exerciseId, item) => {
+  const ref = firebase
+    .firestore()
+    .collection('userPrograms')
+    .doc(programId)
+    .collection('exercises')
+    .doc(item.key);
+
+  ref
+    .update({
+      reps: values.reps,
+      sets: values.sets,
+      rest: values.rest,
+    })
+    .then(() => {})
+    .catch((error) => {
+      this.error = error.message;
+    });
+};
 
 const deleteFB = (programId, dayKey, type, key) => {
   switch (type) {

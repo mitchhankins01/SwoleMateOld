@@ -108,14 +108,16 @@ class EditProgram extends Component {
         {showExercises ? (
           <View>
             <TForm ref="exerciseForm" type={exerciseType} options={exerciseOptions} value={item} />
-            <Animatable.View ref="selectButton">
-              <TouchableOpacity
-                style={styles.selectButton}
-                onPress={() => this.setState({ showExerciseList: true })}
-              >
-                <Text style={styles.selectButtonText}>{this.state.exerciseName}</Text>
-              </TouchableOpacity>
-            </Animatable.View>
+            {edit ? null : (
+              <Animatable.View ref="selectButton">
+                <TouchableOpacity
+                  style={styles.selectButton}
+                  onPress={() => this.setState({ showExerciseList: true })}
+                >
+                  <Text style={styles.selectButtonText}>{this.state.exerciseName}</Text>
+                </TouchableOpacity>
+              </Animatable.View>
+            )}
           </View>
         ) : (
           <TForm ref="workoutForm" type={workoutType} options={workoutOptions} value={item} />

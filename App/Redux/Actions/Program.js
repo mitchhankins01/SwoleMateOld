@@ -30,7 +30,7 @@ const getProgramSuccess = (dispatch, info, days, exercises) => {
   });
 };
 
-export const getProgram = (dispatch, programs, selected) => {
+export const getProgram = async (dispatch, programs, selected, allExercises) => {
   dispatch({ type: GET_PROGRAM });
 
   let id;
@@ -48,19 +48,18 @@ export const getProgram = (dispatch, programs, selected) => {
     .collection('userPrograms')
     .doc(id);
 
-  programRef.onSnapshot(
+  await programRef.onSnapshot(
     (thisProgram) => {
       info.length = 0;
       const data = thisProgram.data();
       info.push({ ...data, id: thisProgram.id });
-      getProgramSuccess(dispatch, info, days, exercises);
     },
     (error) => {
       getProgramFail(dispatch, error.message);
     },
   );
 
-  programRef
+  await programRef
     .collection('days')
     .orderBy('index')
     .onSnapshot(
@@ -70,14 +69,13 @@ export const getProgram = (dispatch, programs, selected) => {
           const data = day.data();
           days.push({ ...data, type: 'workout' });
         });
-        getProgramSuccess(dispatch, info, days, exercises);
       },
       (error) => {
         getProgramFail(dispatch, error.message);
       },
     );
 
-  programRef
+  await programRef
     .collection('exercises')
     .orderBy('index')
     .onSnapshot(
@@ -85,7 +83,8 @@ export const getProgram = (dispatch, programs, selected) => {
         exercises.length = 0;
         querySnapshot.forEach((exercise) => {
           const data = exercise.data();
-          exercises.push({ ...data, type: 'exercise' });
+          const name = allExercises.find(q => q.key === data.exerciseKey);
+          exercises.push({ ...data, name, type: 'exercise' });
         });
         getProgramSuccess(dispatch, info, days, exercises);
       },
@@ -109,7 +108,7 @@ const getProgramsSuccess = (dispatch, programs, allExercises) => {
   });
 };
 
-export const getPrograms = () => (dispatch) => {
+export const getPrograms = () => async (dispatch) => {
   dispatch({ type: GET_PROGRAMS });
 
   const programs = [];
@@ -120,7 +119,7 @@ export const getPrograms = () => (dispatch) => {
     .orderBy('index')
     .where('author', '==', firebase.auth().currentUser.uid);
 
-  firebase
+  await firebase
     .firestore()
     .collection('exercises')
     .orderBy('name')
@@ -138,7 +137,8 @@ export const getPrograms = () => (dispatch) => {
         const data = program.data();
         programs.push({ ...data, id: program.id });
       });
-      getProgram(dispatch, programs, null);
+      console.log(allExercises);
+      getProgram(dispatch, programs, null, allExercises);
       getProgramsSuccess(dispatch, programs, allExercises);
     },
     (error) => {

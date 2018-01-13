@@ -18,14 +18,51 @@ const getButtons = goBack => [
     onPress: () => goBack(),
   },
   {
-    icon: 'check',
-    animation: 'zoomIn',
+    icon: 'dumbbell',
     onPress: () => {},
+    animation: 'zoomIn',
+    type: 'material-community',
+  },
+  {
+    icon: 'check',
+    onPress: () => {},
+    animation: 'zoomIn',
   },
 ];
 
+const log = (type) => {
+  const tempLogs = [];
+
+  switch (type) {
+    default:
+      return null;
+    case 'past':
+      if (true) return <Text style={styles.logText}>No Past Log</Text>;
+      return (
+        <ScrollView>
+          {tempLogs.completedSets.map(each => (
+            <Text key={each.set} style={styles.logTextSets}>
+              {`Set ${each.set}: ${each.weight}x${each.reps}`}
+            </Text>
+          ))}
+        </ScrollView>
+      );
+    case 'current':
+      if (true) return <Text style={styles.logText}>First Set</Text>;
+      return (
+        <ScrollView>
+          {tempLogs.map(each => (
+            <Text key={each.set} style={styles.logTextSets}>
+              {`Set ${each.set}: ${each.weight}x${each.reps}`}
+            </Text>
+          ))}
+        </ScrollView>
+      );
+  }
+};
+
 const renderTextInput = (workout, setReps, setWeight, type) => {
-  const { reps, weight } = workout;
+  const { input: { reps, weight } } = workout;
   return (
     <TextInput
       keyboardType="numeric"
@@ -45,8 +82,17 @@ const renderTextInput = (workout, setReps, setWeight, type) => {
   );
 };
 
+const getExerciseList = (dayKey, exercises) => {
+  exercises.filter(exercise => exercise.day === dayKey);
+};
+
 const Workout = ({
-  goBack, setReps, setWeight, workout,
+  goBack,
+  setReps,
+  setWeight,
+  workout,
+  getExercise,
+  program: { dayKey, exercises },
 }) => (
   <LinearGradient style={styles.container} colors={gradients}>
     <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -56,12 +102,12 @@ const Workout = ({
       <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
         <View style={{ flex: 1 }}>
           <Text style={styles.logTextHeader}>Current Log</Text>
-          {/* {this.renderLog(styles, 'current')} */}
+          {log('current')}
         </View>
         <View style={styles.divider} />
         <TouchableOpacity style={{ flex: 1 }} onPress={() => toggleShowPastLogs(true)}>
           <Text style={styles.logTextHeader}>Past Log</Text>
-          {/* {this.renderLog(styles, 'past')} */}
+          {log('past')}
         </TouchableOpacity>
       </View>
     </View>
@@ -70,12 +116,16 @@ const Workout = ({
       <View style={styles.inputContainer} animation="mySlideInLeft" delay={250}>
         <Text style={styles.inputHeader}>Weight</Text>
         {renderTextInput(workout, setReps, setWeight, 'weight')}
-        <Picker type="weight" weight={workout.weight} setWeight={number => setWeight(number)} />
+        <Picker
+          type="weight"
+          weight={workout.input.weight}
+          setWeight={number => setWeight(number)}
+        />
       </View>
       <View style={styles.inputContainer} animation="mySlideInRight" delay={250}>
         <Text style={styles.inputHeader}>Reps</Text>
         {renderTextInput(workout, setReps, setWeight, 'reps')}
-        <Picker type="reps" reps={workout.reps} setReps={number => setReps(number)} />
+        <Picker type="reps" reps={workout.input.reps} setReps={number => setReps(number)} />
       </View>
     </View>
     <ActionButton buttons={getButtons(goBack)} />
@@ -83,12 +133,14 @@ const Workout = ({
 );
 
 const mapStateToProps = state => ({
+  program: state.program,
   workout: state.workout,
 });
 
 const mapDispatchToProps = dispatch => ({
   setReps: number => dispatch(Actions.setReps(number)),
   setWeight: number => dispatch(Actions.setWeight(number)),
+  getExercise: index => dispatch(Actions.getExercise(index)),
   goBack: () => dispatch(NavigationActions.back('Programs')),
 });
 

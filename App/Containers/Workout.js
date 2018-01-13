@@ -4,6 +4,7 @@ import { StatusBar, View, Text, TouchableOpacity, TextInput } from 'react-native
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
+import Picker from '../Components/Picker';
 import { Colors, Fonts } from '../Themes';
 import Header from '../Components/Header';
 import ActionButton from '../Components/ActionButton';
@@ -76,12 +77,12 @@ const Workout = ({ goBack }) => (
       <View style={styles.inputContainer} animation="mySlideInLeft" delay={250}>
         <Text style={styles.inputHeader}>Weight</Text>
         {renderTextInput('weight')}
-        {/* <Picker type="weight" weight={weight} setWeight={change => setWeight(change)} /> */}
+        <Picker type="weight" weight={0} setWeight={change => setWeight(change)} />
       </View>
       <View style={styles.inputContainer} animation="mySlideInRight" delay={250}>
         <Text style={styles.inputHeader}>Reps</Text>
         {renderTextInput('repsInput')}
-        {/* <Picker type="reps" reps={reps} setReps={change => setReps(change)} /> */}
+        <Picker type="reps" reps={0} setReps={change => setReps(change)} />
       </View>
     </View>
     <ActionButton buttons={getButtons(goBack)} />

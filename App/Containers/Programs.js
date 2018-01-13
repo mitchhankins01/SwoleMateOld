@@ -4,7 +4,7 @@ import { StatusBar, FlatList } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { deleteFB } from '../Helpers/Firebase';
+import { DeleteFB, ToggleUp, ToggleDown } from '../Helpers/Firebase';
 import Header from '../Components/Header';
 import * as Actions from '../Redux/Actions/Program';
 import { ProgramCard } from '../Components/ProgramCard';
@@ -78,11 +78,13 @@ const Programs = (props) => {
         renderItem={({ item }) => (
           <ProgramCard
             opacity={showExercises ? 1 : 0}
+            onEdit={() => editProgram(programId, item)}
             icon={showExercises ? 'dumbbell' : 'folder'}
             type={showExercises ? 'material-community' : 'entypo'}
+            onDelete={() => DeleteFB(programId, dayKey, item.type, item.key)}
             onPress={showExercises ? null : () => toggleExercises(true, item.key)}
-            onDelete={() => deleteFB(programId, dayKey, item.type, item.key)}
-            onEdit={() => editProgram(programId, item)}
+            onToggleUp={() => ToggleUp(days, programId, item, exercises, dayKey)}
+            onToggleDown={() => ToggleDown(days, programId, item, exercises, dayKey)}
             subtitle={
               showExercises
                 ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`

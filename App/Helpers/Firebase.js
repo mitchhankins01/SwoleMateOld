@@ -1,5 +1,119 @@
 import firebase from 'react-native-firebase';
 
+const ToggleDown = (days, programId, item, exercises, dayKey) => {
+  switch (item.type) {
+    default:
+      return;
+    case 'workout': {
+      if (item.index >= days.length - 1) return;
+      const target = item;
+      const subTarget = days[target.index + 1];
+      const targetRef = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('days')
+        .doc(target.key);
+      const subTargetRef = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('days')
+        .doc(subTarget.key);
+
+      targetRef
+        .update({
+          index: Number(target.index) + 1,
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+
+      subTargetRef
+        .update({
+          index: Number(target.index),
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+      break;
+    }
+  }
+};
+
+const ToggleUp = (days, programId, item, exercises, dayKey) => {
+  if (item.index === 0) return;
+  switch (item.type) {
+    default:
+      return;
+    case 'workout': {
+      const target = item;
+      const subTarget = days[target.index - 1];
+      const targetRef = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('days')
+        .doc(target.key);
+      const subTargetRef = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('days')
+        .doc(subTarget.key);
+      targetRef
+        .update({
+          index: Number(target.index) - 1,
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+      subTargetRef
+        .update({
+          index: Number(target.index),
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+      break;
+    }
+    case 'exercise': {
+      const target = item;
+      const filteredExercises = exercises.filter(exercise => exercise.day === dayKey);
+      const subTarget = filteredExercises[target.index - 1];
+      const targetRef = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('exercises')
+        .doc(target.key);
+      const subTargetRef = firebase
+        .firestore()
+        .collection('userPrograms')
+        .doc(programId)
+        .collection('exercises')
+        .doc(subTarget.key);
+
+      targetRef
+        .update({
+          index: Number(target.index) - 1,
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+
+      subTargetRef
+        .update({
+          index: Number(target.index),
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+      break;
+    }
+  }
+};
+
 const EditWorkoutFB = (values, programId, item) => {
   const ref = firebase
     .firestore()
@@ -41,7 +155,7 @@ const EditExerciseFB = (values, programId, dayKey, exerciseId, item) => {
     });
 };
 
-const deleteFB = (programId, dayKey, type, key) => {
+const DeleteFB = (programId, dayKey, type, key) => {
   switch (type) {
     default:
       return;
@@ -189,4 +303,12 @@ const AddWorkoutFB = (values, programId) => {
   });
 };
 
-export { AddWorkoutFB, AddExerciseFB, deleteFB, EditWorkoutFB, EditExerciseFB };
+export {
+  AddWorkoutFB,
+  AddExerciseFB,
+  DeleteFB,
+  EditWorkoutFB,
+  EditExerciseFB,
+  ToggleUp,
+  ToggleDown,
+};

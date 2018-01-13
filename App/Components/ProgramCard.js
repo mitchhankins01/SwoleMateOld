@@ -16,11 +16,13 @@ export const ProgramCard = ({
   icon,
   type,
   title,
-  subtitle,
+  onEdit,
   onPress,
   opacity,
+  subtitle,
   onDelete,
-  onEdit,
+  onToggleUp,
+  onToggleDown,
 }) => (
   <View style={styles.container}>
     <View style={styles.leftSection}>
@@ -49,8 +51,24 @@ export const ProgramCard = ({
       <Text style={styles.subtitle}>{subtitle}</Text>
     </TouchableOpacity>
     <View style={styles.rightSection}>
-      <Icon name="arrow-up" type="entypo" color={Colors.primaryColor} size={25} />
-      <Icon name="arrow-down" type="entypo" color={Colors.primaryColor} size={25} />
+      <Icon
+        size={25}
+        type="entypo"
+        name="arrow-up"
+        onPress={onToggleUp}
+        underlayColor="transparent"
+        color={Colors.primaryColor}
+        ontainerStyle={{ padding: 10 }}
+      />
+      <Icon
+        size={25}
+        type="entypo"
+        name="arrow-down"
+        onPress={onToggleDown}
+        underlayColor="transparent"
+        color={Colors.primaryColor}
+        ontainerStyle={{ padding: 10 }}
+      />
     </View>
   </View>
 );

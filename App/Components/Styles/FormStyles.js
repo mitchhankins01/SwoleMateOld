@@ -41,4 +41,45 @@ export default StyleSheet.create({
     fontSize: 30,
     color: Colors.primaryColor,
   },
+  selectButton: {
+    paddingVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectButtonText: {
+    color: Colors.text,
+    fontSize: Fonts.size.regular,
+    fontFamily: Fonts.type.medium,
+  },
+  dropdown: {
+    alignSelf: 'center',
+    width: Constants.DEV_WIDTH * 0.8,
+    backgroundColor: Colors.tertiaryColor,
+  },
+  dropdownStyle: {
+    height: 400,
+    width: Constants.DEV_WIDTH * 0.8,
+    backgroundColor: Colors.tertiaryColor,
+  },
+  dropdownText: {
+    padding: 15,
+    color: Colors.text,
+    width: Constants.DEV_WIDTH * 0.8,
+    fontSize: Fonts.size.regular,
+    fontFamily: Fonts.type.bold,
+    backgroundColor: 'transparent',
+  },
+  dropdownItemText: {
+    color: Colors.text,
+    width: Constants.DEV_WIDTH * 0.8,
+    fontSize: Fonts.size.regular,
+    fontFamily: Fonts.type.medium,
+    backgroundColor: 'transparent',
+  },
+  exerciseText: {
+    padding: 15,
+    fontFamily: Fonts.type.regular,
+    fontSize: Fonts.size.regular,
+    color: Colors.text,
+  },
 });

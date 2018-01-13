@@ -15,7 +15,7 @@ const Programs = ({ goBack, program: { showExercises } }) => (
   <LinearGradient style={styles.container} colors={gradients}>
     <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
     <Header title={showExercises ? 'Add Exercise' : 'Add Workout'} />
-    <ModifyProgramCard goBack={goBack} />
+    <ModifyProgramCard />
     <ActionButton buttons={getButtons(goBack)} />
   </LinearGradient>
 );

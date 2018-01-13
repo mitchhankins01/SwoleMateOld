@@ -1,23 +1,88 @@
 import t from 'tcomb-form-native';
-import { View } from 'react-native';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
+import ModalDropdown from 'react-native-modal-dropdown';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
 import { AddWorkoutFB } from '../Helpers/Firebase';
-import { Colors } from '../Themes';
+import { Colors, Fonts } from '../Themes';
 import styles from './Styles/FormStyles';
 
 const TForm = t.form.Form;
 
 class AddWorkout extends Component {
-  render() {
-    const { goBack, program: { info } } = this.props;
+  state = { showExerciseList: false, searchGroup: 'Show All Exercises' };
+
+  renderExerciseList() {
+    const options = [
+      'Show All Exercises',
+      'Abs',
+      'Back',
+      'Biceps',
+      'Calves',
+      'Chest',
+      'Forearms',
+      'Glutes',
+      'Legs',
+      'Shoulders',
+      'Triceps',
+      'Cardio',
+    ];
+    const { searchGroup } = this.state;
+    const exercises = () => {
+      if (searchGroup === '' || searchGroup === 'Show All Exercises') {
+        return [...this.props.programs.allExercises];
+      }
+      return this.props.programs.allExercises.filter(exercise => exercise.group === this.state.searchGroup);
+    };
     return (
-      <View style={styles.formStyle}>
-        <Icon name="folder" type="entypo" color={Colors.primaryColor} />
-        <TForm ref="workoutForm" type={workoutType} options={workoutOptions} />
+      <View>
+        <ModalDropdown
+          options={options}
+          style={styles.dropdown}
+          textStyle={styles.dropdownText}
+          dropdownStyle={styles.dropdownStyle}
+          defaultValue={this.state.searchGroup}
+          dropdownTextStyle={styles.dropdownItemText}
+          onSelect={(index, value) => this.setState({ searchGroup: value })}
+        />
+        <FlatList
+          style={{ marginBottom: 50, marginTop: 20 }}
+          data={exercises()}
+          renderItem={({ item }) => (
+            <TouchableOpacity>
+              <Text style={styles.exerciseText}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+    );
+  }
+
+  renderForm() {
+    const { goBack, program: { info, showExercises } } = this.props;
+    return (
+      <View>
+        <Icon
+          color={Colors.primaryColor}
+          name={showExercises ? 'dumbbell' : 'folder'}
+          type={showExercises ? 'material-community' : 'entypo'}
+        />
+        {showExercises ? (
+          <View>
+            <TForm ref="exerciseForm" type={exerciseType} options={exerciseOptions} />
+            <TouchableOpacity
+              style={styles.selectButton}
+              onPress={() => this.setState({ showExerciseList: true })}
+            >
+              <Text style={styles.selectButtonText}>Select Exercise</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TForm ref="workoutForm" type={workoutType} options={workoutOptions} />
+        )}
         <Icon
           name="check"
           type="entypo"
@@ -26,7 +91,9 @@ class AddWorkout extends Component {
           iconStyle={styles.icon}
           containerStyle={styles.button}
           onPress={() => {
-            const values = this.refs.workoutForm.getValue();
+            const values = showExercises
+              ? this.refs.exerciseForm.getValue()
+              : this.refs.workoutForm.getValue();
             if (values) {
               const programId = info.map(({ id }) => id).toString();
               AddWorkoutFB(values, programId);
@@ -37,9 +104,18 @@ class AddWorkout extends Component {
       </View>
     );
   }
+
+  render() {
+    return (
+      <View style={styles.formStyle}>
+        {this.state.showExerciseList ? this.renderExerciseList() : this.renderForm()}
+      </View>
+    );
+  }
 }
 const mapStateToProps = state => ({
   program: state.program,
+  programs: state.programs,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -47,6 +123,20 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddWorkout);
+
+const exerciseType = t.struct({
+  sets: t.Number,
+  reps: t.Number,
+  rest: t.Number,
+});
+
+const exerciseOptions = {
+  fields: {
+    rest: {
+      label: 'Rest (seconds)',
+    },
+  },
+};
 
 const workoutOptions = {
   fields: {

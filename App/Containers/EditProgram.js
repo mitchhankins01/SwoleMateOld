@@ -9,7 +9,7 @@ import * as Actions from '../Redux/Actions/Program';
 import { EditProgramCard } from '../Components/ProgramCard';
 import ActionButton from '../Components/ActionButton';
 
-import styles, { gradients, textColor } from './Styles/AddProgramStyles';
+import styles, { gradients, textColor } from './Styles/EditProgramStyles';
 
 const EditProgram = ({
   goBack,

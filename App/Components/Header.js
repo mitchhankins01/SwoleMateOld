@@ -5,14 +5,18 @@ import { Header as NativeHeader } from 'react-native-elements';
 
 import { Fonts, Colors } from '../Themes';
 
-const Header = ({ dispatch, title }) => (
+const Header = ({ dispatch, title, noMenu }) => (
   <NativeHeader
-    leftComponent={{
-      icon: 'menu',
-      color: Colors.text,
-      underlayColor: 'transparent',
-      onPress: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerOpen' })),
-    }}
+    leftComponent={
+      noMenu
+        ? null
+        : {
+            icon: 'menu',
+            color: Colors.text,
+            underlayColor: 'transparent',
+            onPress: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerOpen' })),
+          }
+    }
     centerComponent={{
       text: title,
       style: { fontFamily: Fonts.type.medium, color: Colors.text, fontSize: Fonts.size.h5 },

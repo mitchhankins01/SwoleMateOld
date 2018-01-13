@@ -4,6 +4,7 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import Drawer from './Drawer';
 import Login from '../Containers/Login';
+import Workout from '../Containers/Workout';
 import Programs from '../Containers/Programs';
 import EditProgram from '../Containers/EditProgram';
 // import styles from './Styles/NavigationStyles'
@@ -29,6 +30,12 @@ const PrimaryNav = StackNavigator(
           },
           EditProgram: {
             screen: EditProgram,
+            navigationOptions: {
+              drawerLabel: () => null,
+            },
+          },
+          Workout: {
+            screen: Workout,
             navigationOptions: {
               drawerLabel: () => null,
             },

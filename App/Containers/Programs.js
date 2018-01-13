@@ -15,7 +15,11 @@ import { Colors, Fonts } from '../Themes';
 
 const getProgramButtons = (props) => {
   const {
-    addHandler, toggleDrawer, toggleExercises, program: { showExercises },
+    addHandler,
+    toggleDrawer,
+    launchHandler,
+    toggleExercises,
+    program: { showExercises },
   } = props;
 
   switch (showExercises) {
@@ -42,7 +46,7 @@ const getProgramButtons = (props) => {
         {
           icon: 'rocket',
           animation: 'zoomIn',
-          onPress: () => {}, // Start Lift
+          onPress: () => launchHandler(),
         },
         {
           icon: 'plus',
@@ -70,21 +74,12 @@ const Programs = (props) => {
   const programId = info.map(({ id }) => id).toString();
   const data = showExercises ? exercises.filter(e => e.day === dayKey) : days;
   const title = showExercises ? 'Exercises' : info.map(({ name }) => name).toString();
-  const test = {
-    color: Colors.text,
-    alignSelf: 'center',
-    fontFamily: Fonts.type.medium,
-    fontSize: Fonts.size.h5,
-    marginTop: 30,
-    backgroundColor: Colors.secondaryColor,
-    padding: 20,
-  };
   return (
     <LinearGradient style={styles.container} colors={gradients}>
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       <Header title={title} />
       {data.length === 0 ? (
-        <Text style={test}>
+        <Text style={styles.emptyText}>
           {showExercises
             ? 'This Workout is empty, tap the lower right button to get started'
             : 'This Program is empty, tap the lower right button to get started'}
@@ -130,6 +125,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getPrograms: () => dispatch(Actions.getPrograms()),
   toggleExercises: (bool, dayKey) => dispatch(Actions.toggleExercises(bool, dayKey)),
+  launchHandler: () => dispatch(NavigationActions.navigate({ routeName: 'Workout' })),
   addHandler: () =>
     dispatch(NavigationActions.navigate({ routeName: 'EditProgram', params: { edit: false } })),
   toggleDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerToggle' })),

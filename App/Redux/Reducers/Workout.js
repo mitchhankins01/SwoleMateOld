@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import { SET_REPS, SET_WEIGHT, GET_EXERCISE } from '../Types/Workout';
+import { SET_REPS, SET_WEIGHT, INIT_WORKOUT } from '../Types/Workout';
 
 const IS_EXERCISE = {
-  empty: true,
+  exerciseList: [],
 };
 
 const INITIAL_STATE = {
@@ -14,8 +14,8 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
   switch (action.type) {
     default:
       return state;
-    case GET_EXERCISE:
-      return state;
+    case INIT_WORKOUT:
+      return { ...state, exerciseList: action.payload };
   }
 };
 

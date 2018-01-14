@@ -15,8 +15,6 @@ export const setWeight = number => (dispatch) => {
   });
 };
 
-export const getPrograms = index => (dispatch) => {};
-
 export const getExercise = index => (dispatch) => {
   dispatch({
     type: GET_EXERCISE,

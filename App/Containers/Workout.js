@@ -82,6 +82,8 @@ const renderTextInput = (workout, setReps, setWeight, type) => {
   );
 };
 
+const exerciseList = (exercises, dayKey) => exercises.filter(q => q.day === dayKey);
+
 const getExerciseList = (dayKey, exercises) => {
   exercises.filter(exercise => exercise.day === dayKey);
 };
@@ -95,6 +97,8 @@ const Workout = ({
   program: { dayKey, exercises },
 }) => (
   <LinearGradient style={styles.container} colors={gradients}>
+    {console.log(exerciseList(exercises, dayKey))}
+    {/* {getExercise(1)} */}
     <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
     <Header noMenu title="Workout" />
     {/* Logs */}

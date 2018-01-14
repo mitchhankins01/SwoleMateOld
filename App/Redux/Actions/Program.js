@@ -83,7 +83,7 @@ export const getProgram = async (dispatch, programs, selected, allExercises) => 
         exercises.length = 0;
         querySnapshot.forEach((exercise) => {
           const data = exercise.data();
-          const name = allExercises.find(q => q.key === data.exerciseKey);
+          const { name } = allExercises.find(q => q.key === data.exerciseKey);
           exercises.push({ ...data, name, type: 'exercise' });
         });
         getProgramSuccess(dispatch, info, days, exercises);
@@ -108,7 +108,7 @@ const getProgramsSuccess = (dispatch, programs, allExercises) => {
   });
 };
 
-export const getPrograms = () => async (dispatch) => {
+export const getPrograms = () => (dispatch) => {
   dispatch({ type: GET_PROGRAMS });
 
   const programs = [];
@@ -119,7 +119,20 @@ export const getPrograms = () => async (dispatch) => {
     .orderBy('index')
     .where('author', '==', firebase.auth().currentUser.uid);
 
-  await firebase
+  programsRef.onSnapshot(
+    (querySnapshot) => {
+      querySnapshot.forEach((program) => {
+        const data = program.data();
+        programs.push({ ...data, id: program.id });
+      });
+      getProgramsSuccess(dispatch, programs, allExercises);
+    },
+    (error) => {
+      getProgramsFail(dispatch, error.message);
+    },
+  );
+
+  firebase
     .firestore()
     .collection('exercises')
     .orderBy('name')
@@ -129,20 +142,6 @@ export const getPrograms = () => async (dispatch) => {
         const data = exercise.data();
         allExercises.push(data);
       });
-    });
-
-  programsRef.onSnapshot(
-    (querySnapshot) => {
-      querySnapshot.forEach((program) => {
-        const data = program.data();
-        programs.push({ ...data, id: program.id });
-      });
-      console.log(allExercises);
       getProgram(dispatch, programs, null, allExercises);
-      getProgramsSuccess(dispatch, programs, allExercises);
-    },
-    (error) => {
-      getProgramsFail(dispatch, error.message);
-    },
-  );
+    });
 };

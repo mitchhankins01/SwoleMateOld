@@ -3,6 +3,7 @@ import React from 'react';
 import { Platform, Picker as RNPicker } from 'react-native';
 import { WheelPicker } from 'react-native-wheel-picker-android';
 
+import { Colors, Fonts, Constants } from '../Themes';
 import styles from './Styles/PickerStyles';
 
 const getNumbers = (type, array) => {
@@ -42,26 +43,26 @@ const Picker = (props) => {
           isCurved
           renderIndicator
           itemTextSize={40}
-          itemTextColor="#EDF0F1"
+          itemTextColor={Colors.text}
           data={getNumbers(type, array)}
-          itemTextFontFamily="Exo-Medium"
-          selectedItemTextColor="#EDF0F1"
-          indicatorColor={styles.$primaryColor}
-          style={{ height: 200, marginTop: 10, width: '100%' }}
-          onItemSelected={event => onChangeInput(type, event.data, setReps, setWeight)}
+          selectedItemTextColor={Colors.text}
+          indicatorColor={Colors.primaryColor}
+          itemTextFontFamily={Fonts.type.medium}
           selectedItemPosition={type === 'weight' ? Number(weight / 5) : Number(reps)}
+          style={{ height: Constants.DEV_HEIGHT * 0.3, marginTop: 10, width: '100%' }}
+          onItemSelected={event => onChangeInput(type, event.data, setReps, setWeight)}
         />
       );
     default:
       return (
         <RNPicker
-          onValueChange={number => onChangeInput(type, number, setReps, setWeight)}
           selectedValue={type === 'weight' ? weight.toString() : reps.toString()}
+          onValueChange={number => onChangeInput(type, number, setReps, setWeight)}
           itemStyle={{
-            fontSize: 16,
-            color: '#EDF0F1',
+            color: Colors.text,
             textAlign: 'center',
-            fontFamily: 'Exo-Medium',
+            fontSize: Fonts.size.regular,
+            fontFamily: Fonts.type.medium,
           }}
         >
           {array.map(number => (

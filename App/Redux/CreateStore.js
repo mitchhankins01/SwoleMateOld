@@ -1,11 +1,10 @@
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import promiseMiddleware from 'redux-promise';
+import { composeWithDevTools } from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose } from 'redux';
 
 export default (rootReducer) => {
-  const store = createStore(rootReducer, applyMiddleware(logger, thunk, promiseMiddleware));
-
+  const store = compose(applyMiddleware(thunk, logger))(createStore)(rootReducer);
   return {
     store,
   };

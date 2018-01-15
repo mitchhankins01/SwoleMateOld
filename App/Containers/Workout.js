@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import firebase from 'react-native-firebase';
 import React, { Component } from 'react';
 import { StatusBar, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -83,11 +84,34 @@ const renderTextInput = (workout, setReps, setWeight, type) => {
 };
 
 class Workout extends Component {
-  componentWillMount() {
+  async componentWillMount() {
     const { initWorkout, program: { dayKey, exercises } } = this.props;
     const exerciseList = () => exercises.filter(q => q.day === dayKey);
+    // Implement this in logreducer, temporarily need it here //
+    const logsRef = firebase
+      .firestore()
+      .collection('userLogs')
+      .orderBy('completed', 'desc')
+      .where('author', '==', firebase.auth().currentUser.uid);
+    const logs = [];
+    await logsRef.get().then((querySnapshot) => {
+      querySnapshot.forEach((logf) => {
+        logf.ref.collection('exercises').onSnapshot((snapShot) => {
+          snapShot.forEach((exerciseLogInfo) => {
+            const exerciseLog = exerciseLogInfo.data();
+            logs.push(exerciseLog);
+          });
+        });
+      });
+    });
+    console.log(logs);
     initWorkout(exerciseList());
   }
+  // updateUI() {
+  //   -past log
+  //   -target reps
+  //   -name
+  // }
 
   render() {
     const {

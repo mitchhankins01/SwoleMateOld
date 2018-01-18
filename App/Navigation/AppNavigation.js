@@ -1,16 +1,18 @@
-import React from 'react';
-import { Icon } from 'react-native-elements';
-import { StackNavigator, DrawerNavigator } from 'react-navigation';
+import React from "react";
+import { Icon } from "react-native-elements";
+import { StackNavigator, DrawerNavigator } from "react-navigation";
 
-import Drawer from './Drawer';
-import Login from '../Containers/Login';
-import Workout from '../Containers/Workout';
-import Programs from '../Containers/Programs';
-import EditProgram from '../Containers/EditProgram';
+import Drawer from "./Drawer";
+import Register from "../Containers/Register";
+import Login from "../Containers/Login";
+import Workout from "../Containers/Workout";
+import Programs from "../Containers/Programs";
+import EditProgram from "../Containers/EditProgram";
 // import styles from './Styles/NavigationStyles'
 
 const PrimaryNav = StackNavigator(
   {
+    Register: { screen: Register },
     Login: { screen: Login },
     HomeStack: {
       screen: DrawerNavigator(
@@ -23,37 +25,37 @@ const PrimaryNav = StackNavigator(
                   size={26}
                   type="ionicon"
                   color={tintColor}
-                  name={focused ? 'ios-home' : 'ios-home-outline'}
+                  name={focused ? "ios-home" : "ios-home-outline"}
                 />
-              ),
-            },
+              )
+            }
           },
           EditProgram: {
             screen: EditProgram,
             navigationOptions: {
-              drawerLabel: () => null,
-            },
+              drawerLabel: () => null
+            }
           },
           Workout: {
             screen: Workout,
             navigationOptions: {
-              drawerLabel: () => null,
-            },
-          },
+              drawerLabel: () => null
+            }
+          }
         },
         {
-          headerMode: 'none',
+          headerMode: "none",
           contentComponent: Drawer,
-          drawerOpenRoute: 'DrawerOpen',
-          drawerCloseRoute: 'DrawerClose',
-          drawerToggleRoute: 'DrawerToggle',
-        },
-      ),
-    },
+          drawerOpenRoute: "DrawerOpen",
+          drawerCloseRoute: "DrawerClose",
+          drawerToggleRoute: "DrawerToggle"
+        }
+      )
+    }
   },
   {
-    headerMode: 'none',
-  },
+    headerMode: "none"
+  }
 );
 
 export default PrimaryNav;

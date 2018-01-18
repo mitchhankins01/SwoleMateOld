@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#import "FIRPerformanceAttributable.h"
+#import "FIRPerformanceSwiftNameSupport.h"
 
 /**
  * FIRTrace objects contain information about a "Trace", which is a sequence of steps. Traces can be
@@ -9,8 +9,8 @@
  * nature (e.g., Bytes downloaded). Counters are scoped to an FIRTrace object.
  */
 NS_EXTENSION_UNAVAILABLE("FirebasePerformance does not support app extensions at this time.")
-NS_SWIFT_NAME(Trace)
-@interface FIRTrace : NSObject <FIRPerformanceAttributable>
+FIR_SWIFT_NAME(Trace)
+@interface FIRTrace : NSObject
 
 /** @brief Name of the trace. */
 @property(nonatomic, copy, readonly, nonnull) NSString *name;
@@ -36,7 +36,7 @@ NS_SWIFT_NAME(Trace)
  * @param counterName The name of the counter to increment.
  */
 - (void)incrementCounterNamed:(nonnull NSString *)counterName
-    NS_SWIFT_NAME(incrementCounter(named:));
+    FIR_SWIFT_NAME(incrementCounter(named:));
 
 /**
  * Increments the counter for the provided counter name with the provided value. If it is a new
@@ -47,6 +47,6 @@ NS_SWIFT_NAME(Trace)
  * @param incrementValue The value the counter would be incremented with.
  */
 - (void)incrementCounterNamed:(nonnull NSString *)counterName by:(NSInteger)incrementValue
-    NS_SWIFT_NAME(incrementCounter(named:by:));
+    FIR_SWIFT_NAME(incrementCounter(named:by:));
 
 @end

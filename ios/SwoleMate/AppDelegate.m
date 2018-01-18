@@ -18,7 +18,7 @@
 {
   
   [FIRApp configure];
-  [FIRDatabase database].persistenceEnabled = YES;
+  FIRDatabase database].persistenceEnabled = YES;
   
   NSURL *jsCodeLocation;
 

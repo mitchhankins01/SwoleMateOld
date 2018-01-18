@@ -1,4 +1,3 @@
-#import "FIRHTTPMetric.h"
 #import "FIRPerformance.h"
-#import "FIRPerformanceAttributable.h"
+#import "FIRPerformanceSwiftNameSupport.h"
 #import "FIRTrace.h"

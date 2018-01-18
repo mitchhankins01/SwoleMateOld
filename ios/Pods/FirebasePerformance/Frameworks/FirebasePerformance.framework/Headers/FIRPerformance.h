@@ -1,12 +1,13 @@
 #import <Foundation/Foundation.h>
 
+#import "FIRPerformanceSwiftNameSupport.h"
 #import "FIRTrace.h"
 
 /** This class allows you to configure the Firebase Performance Reporting SDK. It also provides the
  *  interfaces to create timers and enable or disable automatic metrics capture.
  */
 NS_EXTENSION_UNAVAILABLE("FirebasePerformance does not support app extensions at this time.")
-NS_SWIFT_NAME(Performance)
+FIR_SWIFT_NAME(Performance)
 @interface FIRPerformance : NSObject
 
 /**
@@ -29,7 +30,7 @@ NS_SWIFT_NAME(Performance)
 @property(nonatomic, assign, getter=isInstrumentationEnabled) BOOL instrumentationEnabled;
 
 /** @return The shared instance. */
-+ (nonnull instancetype)sharedInstance NS_SWIFT_NAME(sharedInstance());
++ (nonnull instancetype)sharedInstance FIR_SWIFT_NAME(sharedInstance());
 
 /**
  * Creates an instance of FIRTrace after creating the shared instance of FIRPerformance. The trace
@@ -40,7 +41,7 @@ NS_SWIFT_NAME(Performance)
  * @return The FIRTrace object.
  */
 + (nullable FIRTrace *)startTraceWithName:(nonnull NSString *)name
-    NS_SWIFT_NAME(startTrace(name:));
+    FIR_SWIFT_NAME(startTrace(name:));
 
 /**
  * Creates an instance of FIRTrace. This API does not start the trace. To start the trace, use the
@@ -49,6 +50,6 @@ NS_SWIFT_NAME(Performance)
  * @param name The name of the Trace.
  * @return The FIRTrace object.
  */
-- (nullable FIRTrace *)traceWithName:(nonnull NSString *)name NS_SWIFT_NAME(trace(name:));
+- (nullable FIRTrace *)traceWithName:(nonnull NSString *)name FIR_SWIFT_NAME(trace(name:));
 
 @end

@@ -104,7 +104,6 @@ class Workout extends Component {
         });
       });
     });
-    console.log(logs);
     initWorkout(exerciseList());
   }
   // updateUI() {

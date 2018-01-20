@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { SET_REPS, SET_WEIGHT, INIT_WORKOUT } from '../Types/Workout';
 
 const IS_EXERCISE = {
+  logs: [],
   exerciseList: [],
 };
 
@@ -15,7 +16,7 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
     default:
       return state;
     case INIT_WORKOUT:
-      return { ...state, exerciseList: action.payload };
+      return { ...state, exerciseList: action.payload.exerciseList, logs: action.payload.logs };
   }
 };
 

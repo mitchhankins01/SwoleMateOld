@@ -15,38 +15,33 @@ export const setWeight = number => (dispatch) => {
   });
 };
 
-// export const initWorkout = exerciseList => (dispatch) => {
-//   dispatch({
-//     type: INIT_WORKOUT,
-//     payload: exerciseList,
-//   });
-// };
-
 export const initWorkout = exerciseList => async (dispatch) => {
-  const listWithLogs = [];
   const logsRef = firebase
     .firestore()
     .collection('userLogs')
     .orderBy('completed', 'desc')
     .where('author', '==', firebase.auth().currentUser.uid);
 
-  logsRef.get().then((querySnapshot) => {
-    querySnapshot.forEach((log) => {
-      log.ref.collection('exercises').onSnapshot((snapShot) => {
-        snapShot.forEach((exerciseLogInfo) => {
-          const exerciseLog = exerciseLogInfo.data();
-          exerciseList.forEach((exercise) => {
-            if (exercise.exerciseKey === exerciseLog.exerciseKey) {
-              listWithLogs.push({ ...exercise, ...exerciseLog });
-            }
-          });
-        });
-      });
+  try {
+    const querySnapshot = await logsRef.get();
+    const refs = querySnapshot.docs.map((log) => {
+      const ref = log.ref.collection('exercises');
+      return ref;
     });
-  });
+    const logsRaw = refs.map(each => each.get().then(log => log));
+    const logsData = logsRaw.map(each => each.then(({ docs }) => docs.map(doc => doc.data())));
+    const logsPromises = logsData.map(each => each.then(log => log));
+    const logs = await Promise.all(logsPromises).then(data => data);
 
-  exerciseList.forEach((exercise) => {
-    const { exerciseKey } = exercise;
-    console.log(listWithLogs.length);
-  });
+    dispatch({
+      type: INIT_WORKOUT,
+      payload: { exerciseList, logs },
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: INIT_WORKOUT,
+      payload: { exerciseList },
+    });
+  }
 };

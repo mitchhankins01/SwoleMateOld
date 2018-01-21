@@ -1,5 +1,5 @@
 import firebase from 'react-native-firebase';
-import { SET_REPS, SET_WEIGHT, INIT_WORKOUT, NEXT_EXERCISE } from '../Types/Workout';
+import { SET_REPS, SET_WEIGHT, INIT_WORKOUT, NEXT_EXERCISE, ON_PRESS_SAVE } from '../Types/Workout';
 
 export const setReps = number => (dispatch) => {
   dispatch({
@@ -45,5 +45,12 @@ export const nextExercise = index => (dispatch) => {
   dispatch({
     type: NEXT_EXERCISE,
     payload: index,
+  });
+};
+
+export const onPressSave = () => (dispatch, getState) => {
+  console.log(getState());
+  dispatch({
+    type: ON_PRESS_SAVE,
   });
 };

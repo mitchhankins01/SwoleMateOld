@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_REPS, SET_WEIGHT, INIT_WORKOUT, NEXT_EXERCISE } from '../Types/Workout';
+import { SET_REPS, SET_WEIGHT, INIT_WORKOUT, NEXT_EXERCISE, ON_PRESS_SAVE } from '../Types/Workout';
 
 const IS_EXERCISE = {
   logs: [],
@@ -17,6 +17,8 @@ const IS_EXERCISE = {
 const INITIAL_STATE = {
   reps: 0,
   weight: 0,
+  setIndex: 0,
+  completedSets: [],
 };
 
 const exerciseReducer = (state = IS_EXERCISE, action) => {
@@ -59,6 +61,15 @@ const inputReducer = (state = INITIAL_STATE, action) => {
     case SET_WEIGHT: {
       return { ...state, weight: action.payload };
     }
+    case ON_PRESS_SAVE:
+      return {
+        ...state,
+        setIndex: state.setIndex + 1,
+        completedSets: [
+          ...state.completedSets,
+          { set: state.setIndex, reps: state.reps, weight: state.weight },
+        ],
+      };
     default:
       return state;
   }

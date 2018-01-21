@@ -12,7 +12,7 @@ import * as Actions from '../Redux/Actions/Workout';
 import ActionButton from '../Components/ActionButton';
 import styles, { gradients, textColor } from './Styles/WorkoutStyles';
 
-const getButtons = goBack => [
+const getButtons = (goBack, onPressSave) => [
   {
     icon: 'back',
     animation: 'zoomIn',
@@ -26,7 +26,7 @@ const getButtons = goBack => [
   },
   {
     icon: 'check',
-    onPress: () => {},
+    onPress: () => onPressSave(),
     animation: 'zoomIn',
   },
 ];
@@ -101,7 +101,7 @@ class Workout extends Component {
 
   render() {
     const {
-      goBack, setReps, setWeight, workout,
+      goBack, onPressSave, setReps, setWeight, workout,
     } = this.props;
     const {
       name, initiated, logs, exerciseKey,
@@ -144,7 +144,7 @@ class Workout extends Component {
             <Picker type="reps" reps={workout.input.reps} setReps={number => setReps(number)} />
           </View>
         </View>
-        <ActionButton buttons={getButtons(goBack)} />
+        <ActionButton buttons={getButtons(goBack, onPressSave)} />
       </LinearGradient>
     );
   }
@@ -156,6 +156,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  onPressSave: () => dispatch(Actions.onPressSave()),
   setReps: number => dispatch(Actions.setReps(number)),
   setWeight: number => dispatch(Actions.setWeight(number)),
   goBack: () => dispatch(NavigationActions.back('Programs')),

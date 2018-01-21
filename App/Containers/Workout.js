@@ -104,9 +104,10 @@ class Workout extends Component {
       goBack, onPressSave, setReps, setWeight, workout,
     } = this.props;
     const {
-      name, initiated, logs, exerciseKey,
+      name, initiated, workoutComplete, logs, exerciseKey,
     } = this.props.workout.exercise;
-
+    console.log();
+    if (workoutComplete) return <Text>Completed</Text>;
     if (!initiated) return null;
 
     return (

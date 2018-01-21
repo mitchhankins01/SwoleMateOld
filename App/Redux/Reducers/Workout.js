@@ -5,6 +5,7 @@ const IS_EXERCISE = {
   logs: [],
   exerciseList: [],
   initiated: false,
+  workoutComplete: false,
   // Specific to current exercise
   sets: 2,
   name: '',
@@ -41,7 +42,9 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
         exerciseKey: action.payload.exerciseList[0].exerciseKey,
       };
     case NEXT_EXERCISE:
-      if (state.exerciseIndex + 1 >= state.exerciseList.length) return IS_EXERCISE;
+      if (state.exerciseIndex + 1 >= state.exerciseList.length) {
+        return { ...IS_EXERCISE, workoutComplete: true };
+      }
       return {
         ...state,
         name: state.exerciseList[action.payload.exerciseIndex].name,

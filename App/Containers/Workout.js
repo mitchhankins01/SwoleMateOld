@@ -1,16 +1,15 @@
 import { connect } from 'react-redux';
-import firebase from 'react-native-firebase';
 import React, { Component } from 'react';
-import { StatusBar, View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
+import { StatusBar, View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
 import Picker from '../Components/Picker';
-import { Colors, Fonts } from '../Themes';
 import Header from '../Components/Header';
+import CountDown from '../Components/CountDown';
 import * as Actions from '../Redux/Actions/Workout';
 import ActionButton from '../Components/ActionButton';
-import styles, { gradients, textColor } from './Styles/WorkoutStyles';
+import styles, { gradients } from './Styles/WorkoutStyles';
 
 const getButtons = (goBack, onPressSave) => [
   {
@@ -32,9 +31,7 @@ const getButtons = (goBack, onPressSave) => [
 ];
 
 const renderLog = (type, logs, exerciseKey, completedSets) => {
-  const tempLogs = [];
   let exerciseLogs = [];
-
   logs.forEach(logCollection =>
     logCollection.filter((log) => {
       if (log.exerciseKey === exerciseKey) {
@@ -148,6 +145,7 @@ class Workout extends Component {
             <Picker type="reps" reps={workout.input.reps} setReps={number => setReps(number)} />
           </View>
         </View>
+        <CountDown />
         <ActionButton buttons={getButtons(goBack, onPressSave)} />
       </LinearGradient>
     );

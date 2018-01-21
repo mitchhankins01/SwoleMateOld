@@ -30,7 +30,6 @@ const Header = ({ dispatch, title, noMenu }) => (
       }} */
     outerContainerStyles={{
       height: 70,
-      zIndex: 100,
       elevation: 1,
       shadowOpacity: 1,
       borderBottomWidth: 0,

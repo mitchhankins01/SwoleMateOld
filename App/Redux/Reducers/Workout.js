@@ -5,6 +5,7 @@ const IS_EXERCISE = {
   logs: [],
   exerciseList: [],
   initiated: false,
+  showCountDown: false,
   workoutComplete: false,
   // Specific to current exercise
   sets: 2,
@@ -53,6 +54,11 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
         sets: state.exerciseList[action.payload.exerciseIndex].sets,
         exerciseIndex: state.exerciseList[action.payload.exerciseIndex].index,
         exerciseKey: state.exerciseList[action.payload.exerciseIndex].exerciseKey,
+      };
+    case ON_PRESS_SAVE:
+      return {
+        ...state,
+        showCountDown: true,
       };
   }
 };

@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -38,6 +39,7 @@
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* SwoleMateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SwoleMateTests.m */; };
+		305A1A85201446DB00DB774D /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 305C5FA4200825A4006444E1 /* libART.a */; };
 		30FF00CF200817B600F30F36 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30FF00CE200817B600F30F36 /* GoogleService-Info.plist */; };
 		421CC0DF2DC046E891C8216D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A6880D6DF9D244A884C93077 /* MaterialIcons.ttf */; };
 		45BCB432C45E4257BED97725 /* exoMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2078435E4712448E9195FEE0 /* exoMedium.ttf */; };
@@ -451,6 +453,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				305A1A85201446DB00DB774D /* libART.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,

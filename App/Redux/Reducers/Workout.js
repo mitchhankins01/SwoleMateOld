@@ -1,5 +1,12 @@
 import { combineReducers } from 'redux';
-import { SET_REPS, SET_WEIGHT, INIT_WORKOUT, NEXT_EXERCISE, ON_PRESS_SAVE } from '../Types/Workout';
+import {
+  SET_REPS,
+  SET_WEIGHT,
+  INIT_WORKOUT,
+  NEXT_EXERCISE,
+  ON_PRESS_SAVE,
+  HIDE_COUNTDOWN,
+} from '../Types/Workout';
 
 const IS_EXERCISE = {
   logs: [],
@@ -56,10 +63,9 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
         exerciseKey: state.exerciseList[action.payload.exerciseIndex].exerciseKey,
       };
     case ON_PRESS_SAVE:
-      return {
-        ...state,
-        showCountDown: true,
-      };
+      return { ...state, showCountDown: true };
+    case HIDE_COUNTDOWN:
+      return { ...state, showCountDown: false };
   }
 };
 

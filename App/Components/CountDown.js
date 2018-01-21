@@ -4,16 +4,27 @@ import { View, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as Progress from 'react-native-progress';
 import * as Animatable from 'react-native-animatable';
+// import BackgroundTimer from 'react-native-background-timer';
 
 import { Constants, Colors } from '../Themes';
 import styles from './Styles/CountDownStyles';
+import { HIDE_COUNTDOWN } from '../Redux/Types/Workout';
 
-const CountDown = ({ rest, showCountDown }) => {
+const CountDown = ({ rest, showCountDown, onPressClose }) => {
   if (!showCountDown) return null;
+  let timeRemaining = rest;
+  BackgroundTimer.setInterval(() => {
+    if (this.countDown <= 0) {
+      // BackgroundTimer.clearInterval(this.countDownID);
+      // this.showCountDown = false;
+    } else {
+      timeRemaining -= 1;
+    }
+  }, 1000);
   return (
     <View style={styles.countDownContainer}>
       <Animatable.View style={styles.progressContainer} animation="zoomIn">
-        <Text style={styles.countDownText}>{rest}</Text>
+        <Text style={styles.countDownText}>{timeRemaining}</Text>
         <View>
           <Progress.CircleSnail
             indeterminate
@@ -30,10 +41,7 @@ const CountDown = ({ rest, showCountDown }) => {
           underlayColor="transparent"
           iconStyle={styles.countDownIcon}
           containerStyle={styles.buttonContainer}
-          onPress={() => {
-            toggleLastSetInfo(false);
-            toggleShowCountDown(false);
-          }}
+          onPress={() => onPressClose()}
         />
       </View>
     </View>
@@ -43,11 +51,7 @@ const CountDown = ({ rest, showCountDown }) => {
 const mapStateToProps = ({ workout: { exercise } }) => exercise;
 
 const mapDispatchToProps = dispatch => ({
-  // onPressSave: () => dispatch(Actions.onPressSave()),
-  // setReps: number => dispatch(Actions.setReps(number)),
-  // setWeight: number => dispatch(Actions.setWeight(number)),
-  // goBack: () => dispatch(NavigationActions.back('Programs')),
-  // initWorkout: (exercises, cb) => dispatch(Actions.initWorkout(exercises, cb)),
+  onPressClose: () => dispatch({ type: HIDE_COUNTDOWN }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CountDown);

@@ -31,7 +31,7 @@ const getButtons = (goBack, onPressSave) => [
   },
 ];
 
-const renderLog = (type, logs, exerciseKey) => {
+const renderLog = (type, logs, exerciseKey, completedSets) => {
   const tempLogs = [];
   let exerciseLogs = [];
 
@@ -58,12 +58,12 @@ const renderLog = (type, logs, exerciseKey) => {
         </ScrollView>
       );
     case 'current':
-      if (true) return <Text style={styles.logText}>First Set</Text>;
+      if (completedSets.length === 0) return <Text style={styles.logText}>First Set</Text>;
       return (
         <ScrollView>
-          {tempLogs.map(each => (
+          {completedSets.map(each => (
             <Text key={each.set} style={styles.logTextSets}>
-              {`Set ${each.set}: ${each.weight}x${each.reps}`}
+              {`Set ${each.set + 1}: ${each.weight}x${each.reps}`}
             </Text>
           ))}
         </ScrollView>
@@ -104,9 +104,12 @@ class Workout extends Component {
       goBack, onPressSave, setReps, setWeight, workout,
     } = this.props;
     const {
-      name, initiated, workoutComplete, logs, exerciseKey,
-    } = this.props.workout.exercise;
-    console.log();
+      input: { completedSets },
+      exercise: {
+        name, logs, initiated, exerciseKey, workoutComplete,
+      },
+    } = this.props.workout;
+
     if (workoutComplete) return <Text>Completed</Text>;
     if (!initiated) return null;
 
@@ -119,12 +122,12 @@ class Workout extends Component {
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.logTextHeader}>Current Log</Text>
-              {renderLog('current', logs, exerciseKey)}
+              {renderLog('current', logs, exerciseKey, completedSets)}
             </View>
             <View style={styles.divider} />
             <TouchableOpacity style={{ flex: 1 }} onPress={() => toggleShowPastLogs(true)}>
               <Text style={styles.logTextHeader}>Past Log</Text>
-              {renderLog('past', logs, exerciseKey)}
+              {renderLog('past', logs, exerciseKey, completedSets)}
             </TouchableOpacity>
           </View>
         </View>

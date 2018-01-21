@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 import React, { Component } from 'react';
-import { StatusBar, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { StatusBar, View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -31,17 +31,26 @@ const getButtons = goBack => [
   },
 ];
 
-const log = (type) => {
+const renderLog = (type, logs, exerciseKey) => {
   const tempLogs = [];
+  let exerciseLogs = [];
+
+  logs.forEach(logCollection =>
+    logCollection.filter((log) => {
+      if (log.exerciseKey === exerciseKey) {
+        exerciseLogs = log;
+      }
+      return null;
+    }));
 
   switch (type) {
     default:
       return null;
     case 'past':
-      if (true) return <Text style={styles.logText}>No Past Log</Text>;
+      if (exerciseLogs.length === 0) return <Text style={styles.logText}>No Past Log</Text>;
       return (
         <ScrollView>
-          {tempLogs.completedSets.map(each => (
+          {exerciseLogs.completedSets.map(each => (
             <Text key={each.set} style={styles.logTextSets}>
               {`Set ${each.set}: ${each.weight}x${each.reps}`}
             </Text>
@@ -84,53 +93,37 @@ const renderTextInput = (workout, setReps, setWeight, type) => {
 };
 
 class Workout extends Component {
-  async componentWillMount() {
+  componentWillMount() {
     const { initWorkout, program: { dayKey, exercises } } = this.props;
     const exerciseList = () => exercises.filter(q => q.day === dayKey);
-    // Implement this in logreducer, temporarily need it here //
-    const logsRef = firebase
-      .firestore()
-      .collection('userLogs')
-      .orderBy('completed', 'desc')
-      .where('author', '==', firebase.auth().currentUser.uid);
-    const logs = [];
-    await logsRef.get().then((querySnapshot) => {
-      querySnapshot.forEach((logf) => {
-        logf.ref.collection('exercises').onSnapshot((snapShot) => {
-          snapShot.forEach((exerciseLogInfo) => {
-            const exerciseLog = exerciseLogInfo.data();
-            logs.push(exerciseLog);
-          });
-        });
-      });
-    });
     initWorkout(exerciseList());
   }
-  // updateUI() {
-  //   -past log
-  //   -target reps
-  //   -name
-  // }
 
   render() {
     const {
       goBack, setReps, setWeight, workout,
     } = this.props;
+    const {
+      name, initiated, logs, exerciseKey,
+    } = this.props.workout.exercise;
+
+    if (!initiated) return null;
+
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-        <Header noMenu title="Workout" />
+        <Header noMenu title={name} />
         {/* Logs */}
         <View style={styles.logContainer} animation="mySlideInDown">
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.logTextHeader}>Current Log</Text>
-              {log('current')}
+              {renderLog('current', logs, exerciseKey)}
             </View>
             <View style={styles.divider} />
             <TouchableOpacity style={{ flex: 1 }} onPress={() => toggleShowPastLogs(true)}>
               <Text style={styles.logTextHeader}>Past Log</Text>
-              {log('past')}
+              {renderLog('past', logs, exerciseKey)}
             </TouchableOpacity>
           </View>
         </View>
@@ -166,7 +159,7 @@ const mapDispatchToProps = dispatch => ({
   setReps: number => dispatch(Actions.setReps(number)),
   setWeight: number => dispatch(Actions.setWeight(number)),
   goBack: () => dispatch(NavigationActions.back('Programs')),
-  initWorkout: exercises => dispatch(Actions.initWorkout(exercises)),
+  initWorkout: (exercises, cb) => dispatch(Actions.initWorkout(exercises, cb)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workout);

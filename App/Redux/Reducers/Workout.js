@@ -1,9 +1,17 @@
 import { combineReducers } from 'redux';
-import { SET_REPS, SET_WEIGHT, INIT_WORKOUT } from '../Types/Workout';
+import { SET_REPS, SET_WEIGHT, INIT_WORKOUT, NEXT_EXERCISE } from '../Types/Workout';
 
 const IS_EXERCISE = {
   logs: [],
   exerciseList: [],
+  initiated: false,
+  // Specific to current exercise
+  sets: 3,
+  name: '',
+  reps: 10,
+  rest: 60,
+  exerciseIndex: 0,
+  exerciseKey: '',
 };
 
 const INITIAL_STATE = {
@@ -16,7 +24,30 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
     default:
       return state;
     case INIT_WORKOUT:
-      return { ...state, exerciseList: action.payload.exerciseList, logs: action.payload.logs };
+      return {
+        ...state,
+        initiated: true,
+        logs: action.payload.logs,
+        exerciseList: action.payload.exerciseList,
+
+        name: action.payload.exerciseList[0].name,
+        reps: action.payload.exerciseList[0].reps,
+        rest: action.payload.exerciseList[0].rest,
+        sets: action.payload.exerciseList[0].sets,
+        exerciseIndex: action.payload.exerciseList[0].index,
+        exerciseKey: action.payload.exerciseList[0].exerciseKey,
+      };
+    case NEXT_EXERCISE:
+      // Implement index
+      return {
+        ...state,
+        name: state.exerciseList[state.exerciseIndex].name,
+        reps: state.exerciseList[state.exerciseIndex].reps,
+        rest: state.exerciseList[state.exerciseIndex].rest,
+        sets: state.exerciseList[state.exerciseIndex].sets,
+        exerciseIndex: state.exerciseList[state.exerciseIndex].index,
+        exerciseKey: state.exerciseList[state.exerciseIndex].exerciseKey,
+      };
   }
 };
 

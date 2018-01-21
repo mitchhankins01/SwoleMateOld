@@ -1,5 +1,5 @@
 import firebase from 'react-native-firebase';
-import { SET_REPS, SET_WEIGHT, INIT_WORKOUT } from '../Types/Workout';
+import { SET_REPS, SET_WEIGHT, INIT_WORKOUT, NEXT_EXERCISE } from '../Types/Workout';
 
 export const setReps = number => (dispatch) => {
   dispatch({
@@ -19,19 +19,14 @@ export const initWorkout = exerciseList => async (dispatch) => {
   const logsRef = firebase
     .firestore()
     .collection('userLogs')
-    .orderBy('completed', 'desc')
+    .orderBy('completed', 'asc')
     .where('author', '==', firebase.auth().currentUser.uid);
 
   try {
     const querySnapshot = await logsRef.get();
-    const refs = querySnapshot.docs.map((log) => {
-      const ref = log.ref.collection('exercises');
-      return ref;
-    });
-    const logsRaw = refs.map(each => each.get().then(log => log));
-    const logsData = logsRaw.map(each => each.then(({ docs }) => docs.map(doc => doc.data())));
-    const logsPromises = logsData.map(each => each.then(log => log));
-    const logs = await Promise.all(logsPromises).then(data => data);
+    const refs = querySnapshot.docs.map(log => log.ref.collection('exercises'));
+    const logsRaw = refs.map(each => each.get().then(({ docs }) => docs.map(item => item.data())));
+    const logs = await Promise.all(logsRaw).then(data => data.filter(log => log.length > 0));
 
     dispatch({
       type: INIT_WORKOUT,
@@ -44,4 +39,11 @@ export const initWorkout = exerciseList => async (dispatch) => {
       payload: { exerciseList },
     });
   }
+};
+
+export const nextExercise = index => (dispatch) => {
+  dispatch({
+    type: NEXT_EXERCISE,
+    payload: index,
+  });
 };

@@ -62,6 +62,12 @@ export default StyleSheet.create({
   logText: {
     color: Colors.text,
     alignSelf: 'center',
+    fontSize: Fonts.size.regular,
+    fontFamily: Fonts.type.regular,
+  },
+  logTextSets: {
+    color: Colors.text,
+    alignSelf: 'center',
     fontSize: Fonts.size.medium,
     fontFamily: Fonts.type.regular,
   },

@@ -6,12 +6,12 @@ const IS_EXERCISE = {
   exerciseList: [],
   initiated: false,
   // Specific to current exercise
-  sets: 3,
+  sets: 2,
   name: '',
   reps: 10,
   rest: 60,
-  exerciseIndex: 0,
   exerciseKey: '',
+  exerciseIndex: 0,
 };
 
 const INITIAL_STATE = {
@@ -19,6 +19,7 @@ const INITIAL_STATE = {
   weight: 0,
   setIndex: 0,
   completedSets: [],
+  completedExercises: [],
 };
 
 const exerciseReducer = (state = IS_EXERCISE, action) => {
@@ -40,15 +41,15 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
         exerciseKey: action.payload.exerciseList[0].exerciseKey,
       };
     case NEXT_EXERCISE:
-      // Implement index
+      if (state.exerciseIndex + 1 >= state.exerciseList.length) return IS_EXERCISE;
       return {
         ...state,
-        name: state.exerciseList[state.exerciseIndex].name,
-        reps: state.exerciseList[state.exerciseIndex].reps,
-        rest: state.exerciseList[state.exerciseIndex].rest,
-        sets: state.exerciseList[state.exerciseIndex].sets,
-        exerciseIndex: state.exerciseList[state.exerciseIndex].index,
-        exerciseKey: state.exerciseList[state.exerciseIndex].exerciseKey,
+        name: state.exerciseList[action.payload.exerciseIndex].name,
+        reps: state.exerciseList[action.payload.exerciseIndex].reps,
+        rest: state.exerciseList[action.payload.exerciseIndex].rest,
+        sets: state.exerciseList[action.payload.exerciseIndex].sets,
+        exerciseIndex: state.exerciseList[action.payload.exerciseIndex].index,
+        exerciseKey: state.exerciseList[action.payload.exerciseIndex].exerciseKey,
       };
   }
 };
@@ -68,6 +69,17 @@ const inputReducer = (state = INITIAL_STATE, action) => {
         completedSets: [
           ...state.completedSets,
           { set: state.setIndex, reps: state.reps, weight: state.weight },
+        ],
+      };
+    case NEXT_EXERCISE:
+      return {
+        ...INITIAL_STATE,
+        completedExercises: [
+          ...state.completedExercises,
+          {
+            completedSets: state.completedSets,
+            exerciseKey: action.payload.exerciseKey,
+          },
         ],
       };
     default:

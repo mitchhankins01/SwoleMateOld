@@ -41,16 +41,20 @@ export const initWorkout = exerciseList => async (dispatch) => {
   }
 };
 
-export const nextExercise = index => (dispatch) => {
-  dispatch({
-    type: NEXT_EXERCISE,
-    payload: index,
-  });
-};
-
 export const onPressSave = () => (dispatch, getState) => {
-  console.log(getState());
+  const {
+    workout: { input: { setIndex }, exercise: { sets, exerciseIndex, exerciseKey } },
+  } = getState();
+
   dispatch({
     type: ON_PRESS_SAVE,
+    payload: setIndex,
   });
+
+  if (sets <= setIndex + 1) {
+    dispatch({
+      type: NEXT_EXERCISE,
+      payload: { exerciseKey, exerciseIndex: exerciseIndex + 1 },
+    });
+  }
 };

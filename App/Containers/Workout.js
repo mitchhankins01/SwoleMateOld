@@ -98,15 +98,18 @@ class Workout extends Component {
 
   render() {
     const {
-      goBack, onPressSave, setReps, setWeight, workout,
-    } = this.props;
-    const {
-      input: { completedSets },
-      exercise: {
-        name, logs, initiated, exerciseKey, workoutComplete,
+      goBack,
+      setReps,
+      workout,
+      setWeight,
+      onPressSave,
+      workout: {
+        input: { completedSets },
+        exercise: {
+          name, logs, initiated, exerciseKey, workoutComplete, showCountDown,
+        },
       },
-    } = this.props.workout;
-
+    } = this.props;
     if (workoutComplete) return <Text>Completed</Text>;
     if (!initiated) return null;
 
@@ -145,7 +148,7 @@ class Workout extends Component {
             <Picker type="reps" reps={workout.input.reps} setReps={number => setReps(number)} />
           </View>
         </View>
-        <CountDown />
+        {showCountDown ? <CountDown /> : null}
         <ActionButton buttons={getButtons(goBack, onPressSave)} />
       </LinearGradient>
     );

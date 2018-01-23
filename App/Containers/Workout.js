@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { StatusBar, View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
+import Alert from '../Components/Alert';
 import Picker from '../Components/Picker';
 import Header from '../Components/Header';
 import CountDown from '../Components/CountDown';
@@ -90,6 +92,8 @@ const renderTextInput = (workout, setReps, setWeight, type) => {
 };
 
 class Workout extends Component {
+  state = { showCloseAlert: false };
+
   componentWillMount() {
     const { initWorkout, program: { dayKey, exercises } } = this.props;
     const exerciseList = () => exercises.filter(q => q.day === dayKey);
@@ -148,12 +152,31 @@ class Workout extends Component {
             <Picker type="reps" reps={workout.input.reps} setReps={number => setReps(number)} />
           </View>
         </View>
+        <ActionButton
+          buttons={getButtons(() => this.setState({ showCloseAlert: true }), onPressSave)}
+        />
         {showCountDown ? <CountDown /> : null}
-        <ActionButton buttons={getButtons(goBack, onPressSave)} />
+        {this.state.showCloseAlert ? (
+          <Alert
+            title="Are You Sure?"
+            message="Your workout will not be saved"
+            onPressSave={() => goBack()}
+            onPressClose={() => this.setState({ showCloseAlert: false })}
+          />
+        ) : null}
       </LinearGradient>
     );
   }
 }
+
+Workout.propTypes = {
+  goBack: PropTypes.func.isRequired,
+  workout: PropTypes.any.isRequired,
+  setReps: PropTypes.func.isRequired,
+  setWeight: PropTypes.func.isRequired,
+  onPressSave: PropTypes.func.isRequired,
+  initWorkout: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({
   program: state.program,

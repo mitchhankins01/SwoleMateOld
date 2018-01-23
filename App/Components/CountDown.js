@@ -13,7 +13,6 @@ import { HIDE_COUNTDOWN } from '../Redux/Types/Workout';
 class CountDown extends Component {
   state = {
     timeRemaining: this.props.rest,
-    appState: AppState.currentState,
   };
 
   componentDidMount() {

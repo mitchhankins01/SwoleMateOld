@@ -73,7 +73,6 @@ export default StyleSheet.create({
   },
   pastLogsContainer: {
     top: 0,
-    flex: 1,
     left: 0,
     right: 0,
     bottom: 0,
@@ -83,6 +82,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.secondaryColor,
   },
+  pastLogsFlatList: {
+    width: Constants.DEV_WIDTH,
+  },
   pastLogsHeader: {
     marginVertical: 30,
     color: Colors.text,
@@ -91,7 +93,8 @@ export default StyleSheet.create({
   },
   pastLogsText: {
     color: Colors.text,
-    fontSize: Fonts.size.regular,
+    alignSelf: 'center',
+    fontSize: Fonts.size.h5,
     fontFamily: Fonts.type.medium,
   },
   pastLogsIcon: {
@@ -111,9 +114,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.secondaryColor,
   },
-  exerciseListButtonContainer: {
+  overlayButtonContainer: {
     width: 50,
-    margin: 15,
+    margin: 10,
     height: 50,
     elevation: 3,
     borderWidth: 2,
@@ -124,7 +127,7 @@ export default StyleSheet.create({
     shadowColor: Colors.primaryColor,
     shadowOffset: { width: 0, height: 2 },
   },
-  exerciseListIcon: {
+  overlayIcon: {
     fontSize: 35,
     color: Colors.primaryColor,
   },

@@ -78,7 +78,7 @@ class Workout extends Component {
           data={exerciseList}
           renderItem={({ item, index }) => (
             <TouchableOpacity style={styles.exerciseListButton}>
-              <Text key={index} style={styles.exerciseListText}>
+              <Text style={styles.exerciseListText}>
                 {`${index + 1}. ${item.name}`}
               </Text>
             </TouchableOpacity>
@@ -87,9 +87,9 @@ class Workout extends Component {
         <Icon
           name="close"
           underlayColor="transparent"
-          iconStyle={styles.exerciseListIcon}
+          iconStyle={styles.overlayIcon}
           onPress={() => this.toggleExerciseList()}
-          containerStyle={styles.exerciseListButtonContainer}
+          containerStyle={styles.overlayButtonContainer}
         />
       </View>
     );
@@ -133,6 +133,8 @@ class Workout extends Component {
         <Text style={styles.pastLogsHeader}>Past Logs</Text>
         <FlatList
           data={filteredLogs}
+          style={styles.pastLogsFlatList}
+          keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => (
             <Text key={index} style={styles.pastLogsText}>
               {`${item.completed}\n`}
@@ -144,7 +146,13 @@ class Workout extends Component {
             </Text>
           )}
         />
-        <Icon name="close" onPress={() => this.togglePastLogs()} iconStyle={styles.pastLogsIcon} />
+        <Icon
+          name="close"
+          underlayColor="transparent"
+          iconStyle={styles.overlayIcon}
+          onPress={() => this.togglePastLogs()}
+          containerStyle={styles.overlayButtonContainer}
+        />
       </View>
     );
   }

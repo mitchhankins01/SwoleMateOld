@@ -71,4 +71,32 @@ export default StyleSheet.create({
     fontSize: Fonts.size.medium,
     fontFamily: Fonts.type.regular,
   },
+  pastLogsContainer: {
+    top: 0,
+    flex: 1,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    elevation: 1,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  pastLogsHeader: {
+    marginVertical: 30,
+    color: Colors.text,
+    fontSize: Fonts.size.h5,
+    fontFamily: Fonts.type.bold,
+  },
+  pastLogsText: {
+    color: Colors.text,
+    fontSize: Fonts.size.regular,
+    fontFamily: Fonts.type.medium,
+  },
+  pastLogsIcon: {
+    fontSize: 50,
+    marginBottom: 30,
+    color: Colors.text,
+  },
 });

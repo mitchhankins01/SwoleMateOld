@@ -22,7 +22,7 @@ import * as Actions from '../Redux/Actions/Workout';
 import ActionButton from '../Components/ActionButton';
 import styles, { gradients } from './Styles/WorkoutStyles';
 
-const getButtons = (goBack, onPressSave) => [
+const getButtons = (goBack, toggleExerciseList, onPressSave) => [
   {
     icon: 'back',
     animation: 'zoomIn',
@@ -30,7 +30,7 @@ const getButtons = (goBack, onPressSave) => [
   },
   {
     icon: 'dumbbell',
-    onPress: () => {},
+    onPress: () => toggleExerciseList(),
     animation: 'zoomIn',
     type: 'material-community',
   },
@@ -42,7 +42,7 @@ const getButtons = (goBack, onPressSave) => [
 ];
 
 class Workout extends Component {
-  state = { showCloseAlert: false, showPastLogs: false };
+  state = { showCloseAlert: false, showPastLogs: false, showExerciseList: false };
 
   componentWillMount() {
     const { initWorkout, program: { dayKey, exercises } } = this.props;
@@ -54,6 +54,10 @@ class Workout extends Component {
     this.setState({ showPastLogs: !this.state.showPastLogs });
   }
 
+  toggleExerciseList() {
+    this.setState({ showExerciseList: !this.state.showExerciseList });
+  }
+
   renderCloseAlert() {
     return (
       <Alert
@@ -62,6 +66,32 @@ class Workout extends Component {
         onPressSave={() => this.props.goBack()}
         onPressClose={() => this.setState({ showCloseAlert: false })}
       />
+    );
+  }
+
+  renderExerciselist() {
+    const { workout: { exercise: { exerciseList } } } = this.props;
+    return (
+      <View style={styles.exerciseListContainer}>
+        <Text style={styles.exerciseListHeader}>Exercise List</Text>
+        <FlatList
+          data={exerciseList}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity style={styles.exerciseListButton}>
+              <Text key={index} style={styles.exerciseListText}>
+                {`${index + 1}. ${item.name}`}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+        <Icon
+          name="close"
+          underlayColor="transparent"
+          iconStyle={styles.exerciseListIcon}
+          onPress={() => this.toggleExerciseList()}
+          containerStyle={styles.exerciseListButtonContainer}
+        />
+      </View>
     );
   }
 
@@ -170,7 +200,7 @@ class Workout extends Component {
         },
       },
     } = this.props;
-    const { showPastLogs, showCloseAlert } = this.state;
+    const { showPastLogs, showCloseAlert, showExerciseList } = this.state;
 
     if (!initiated) return null;
     if (workoutComplete) return <Text>Completed</Text>;
@@ -211,11 +241,16 @@ class Workout extends Component {
           </View>
         </View>
         <ActionButton
-          buttons={getButtons(() => this.setState({ showCloseAlert: true }), onPressSave)}
+          buttons={getButtons(
+            () => this.setState({ showCloseAlert: true }),
+            () => this.toggleExerciseList(),
+            onPressSave,
+          )}
         />
         {showCountDown ? <CountDown /> : null}
         {showPastLogs ? this.renderPastLogs() : null}
         {showCloseAlert ? this.renderCloseAlert() : null}
+        {showExerciseList ? this.renderExerciselist() : null}
       </LinearGradient>
     );
   }

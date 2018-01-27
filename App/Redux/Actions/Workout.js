@@ -1,19 +1,12 @@
 import firebase from 'react-native-firebase';
-import { SET_REPS, SET_WEIGHT, INIT_WORKOUT, NEXT_EXERCISE, ON_PRESS_SAVE } from '../Types/Workout';
-
-export const setReps = number => (dispatch) => {
-  dispatch({
-    type: SET_REPS,
-    payload: number,
-  });
-};
-
-export const setWeight = number => (dispatch) => {
-  dispatch({
-    type: SET_WEIGHT,
-    payload: number,
-  });
-};
+import {
+  SET_REPS,
+  SET_WEIGHT,
+  INIT_WORKOUT,
+  NEXT_EXERCISE,
+  ON_PRESS_SAVE,
+  CHANGE_EXERCISE,
+} from '../Types/Workout';
 
 export const initWorkout = exerciseList => async (dispatch) => {
   const logsRef = firebase
@@ -57,4 +50,25 @@ export const onPressSave = () => (dispatch, getState) => {
       payload: { exerciseKey, exerciseIndex: exerciseIndex + 1 },
     });
   }
+};
+
+export const changeExercise = index => (dispatch) => {
+  dispatch({
+    type: CHANGE_EXERCISE,
+    payload: { exerciseIndex: index },
+  });
+};
+
+export const setReps = number => (dispatch) => {
+  dispatch({
+    type: SET_REPS,
+    payload: number,
+  });
+};
+
+export const setWeight = number => (dispatch) => {
+  dispatch({
+    type: SET_WEIGHT,
+    payload: number,
+  });
 };

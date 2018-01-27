@@ -69,32 +69,6 @@ class Workout extends Component {
     );
   }
 
-  renderExerciselist() {
-    const { workout: { exercise: { exerciseList } } } = this.props;
-    return (
-      <View style={styles.exerciseListContainer}>
-        <Text style={styles.exerciseListHeader}>Exercise List</Text>
-        <FlatList
-          data={exerciseList}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity style={styles.exerciseListButton}>
-              <Text style={styles.exerciseListText}>
-                {`${index + 1}. ${item.name}`}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
-        <Icon
-          name="close"
-          underlayColor="transparent"
-          iconStyle={styles.overlayIcon}
-          onPress={() => this.toggleExerciseList()}
-          containerStyle={styles.overlayButtonContainer}
-        />
-      </View>
-    );
-  }
-
   renderTextInput(type) {
     const { setReps, setWeight, workout: { input: { reps, weight } } } = this.props;
 
@@ -114,6 +88,36 @@ class Workout extends Component {
           if (type === 'weight') return setWeight(number);
         }}
       />
+    );
+  }
+
+  renderExerciselist() {
+    const { changeExercise, workout: { exercise: { exerciseList } } } = this.props;
+    const update = (index) => {
+      changeExercise(index);
+      this.toggleExerciseList();
+    };
+    return (
+      <View style={styles.exerciseListContainer}>
+        <Text style={styles.exerciseListHeader}>Exercise List</Text>
+        <FlatList
+          data={exerciseList}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity style={styles.exerciseListButton} onPress={() => update(index)}>
+              <Text style={styles.exerciseListText}>
+                {`${index + 1}. ${item.name}`}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+        <Icon
+          name="close"
+          underlayColor="transparent"
+          iconStyle={styles.overlayIcon}
+          onPress={() => this.toggleExerciseList()}
+          containerStyle={styles.overlayButtonContainer}
+        />
+      </View>
     );
   }
 
@@ -272,6 +276,7 @@ Workout.propTypes = {
   setWeight: PropTypes.func.isRequired,
   onPressSave: PropTypes.func.isRequired,
   initWorkout: PropTypes.func.isRequired,
+  changeExercise: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -284,6 +289,7 @@ const mapDispatchToProps = dispatch => ({
   setReps: number => dispatch(Actions.setReps(number)),
   setWeight: number => dispatch(Actions.setWeight(number)),
   goBack: () => dispatch(NavigationActions.back('Programs')),
+  changeExercise: index => dispatch(Actions.changeExercise(index)),
   initWorkout: exercises => dispatch(Actions.initWorkout(exercises)),
 });
 

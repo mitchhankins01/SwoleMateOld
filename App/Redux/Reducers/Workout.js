@@ -6,6 +6,7 @@ import {
   NEXT_EXERCISE,
   ON_PRESS_SAVE,
   HIDE_COUNTDOWN,
+  CHANGE_EXERCISE,
 } from '../Types/Workout';
 
 const IS_EXERCISE = {
@@ -50,7 +51,8 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
         exerciseKey: action.payload.exerciseList[0].exerciseKey,
       };
     case NEXT_EXERCISE:
-      if (state.exerciseIndex + 1 >= state.exerciseList.length) {
+    case CHANGE_EXERCISE:
+      if (state.exerciseIndex + 1 >= state.exerciseList.length && action.type === NEXT_EXERCISE) {
         return { ...IS_EXERCISE, workoutComplete: true };
       }
       return {

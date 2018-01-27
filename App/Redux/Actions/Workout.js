@@ -36,26 +36,31 @@ export const initWorkout = exerciseList => async (dispatch) => {
 
 export const onPressSave = () => (dispatch, getState) => {
   const {
-    workout: { input: { setIndex }, exercise: { sets, exerciseIndex, exerciseKey } },
+    workout: {
+      input: { setIndex }, exercise: {
+        sets, exerciseList, exerciseKey, exerciseIndex,
+      },
+    },
   } = getState();
 
   dispatch({
     type: ON_PRESS_SAVE,
-    payload: setIndex,
+    payload: exerciseKey,
   });
 
   if (sets <= setIndex + 1) {
     dispatch({
       type: NEXT_EXERCISE,
-      payload: { exerciseKey, exerciseIndex: exerciseIndex + 1 },
+      payload: exerciseList[exerciseIndex + 1],
     });
   }
 };
 
-export const changeExercise = index => (dispatch) => {
+export const changeExercise = index => (dispatch, getState) => {
+  const { workout: { exercise: { exerciseList } } } = getState();
   dispatch({
     type: CHANGE_EXERCISE,
-    payload: { exerciseIndex: index },
+    payload: exerciseList[index],
   });
 };
 

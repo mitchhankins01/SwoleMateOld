@@ -162,7 +162,7 @@ class Workout extends Component {
   }
 
   renderLogOverview(type) {
-    const { workout: { input: { completedSets }, exercise: { logs, exerciseKey } } } = this.props;
+    const { workout: { input: { completedSets, performed }, exercise: { logs, exerciseKey } } } = this.props;
 
     let exerciseLogs = [];
     logs.forEach(logCollection =>
@@ -187,14 +187,17 @@ class Workout extends Component {
           </ScrollView>
         );
       case 'current':
-        if (completedSets.length === 0) return <Text style={styles.logText}>First Set</Text>;
+        if (!performed[exerciseKey]) return <Text style={styles.logText}>First Set</Text>;
         return (
           <ScrollView>
-            {completedSets.map(each => (
-              <Text key={each.set} style={styles.logTextSets}>
-                {`Set ${each.set + 1}: ${each.weight}x${each.reps}`}
-              </Text>
-            ))}
+            {Object.keys(performed[exerciseKey]).map((key) => {
+              const each = performed[exerciseKey][key];
+              return (
+                <Text key={each.set} style={styles.logTextSets}>
+                  {`Set ${each.set + 1}: ${each.weight}x${each.reps}`}
+                </Text>
+              );
+            })}
           </ScrollView>
         );
     }

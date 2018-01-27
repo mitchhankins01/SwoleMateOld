@@ -28,6 +28,9 @@ const INITIAL_STATE = {
   reps: 0,
   weight: 0,
   setIndex: 0,
+  performed: [],
+
+  // needed temp
   completedSets: [],
   completedExercises: [],
 };
@@ -57,12 +60,12 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
       }
       return {
         ...state,
-        name: state.exerciseList[action.payload.exerciseIndex].name,
-        reps: state.exerciseList[action.payload.exerciseIndex].reps,
-        rest: state.exerciseList[action.payload.exerciseIndex].rest,
-        sets: state.exerciseList[action.payload.exerciseIndex].sets,
-        exerciseIndex: state.exerciseList[action.payload.exerciseIndex].index,
-        exerciseKey: state.exerciseList[action.payload.exerciseIndex].exerciseKey,
+        name: action.payload.name,
+        reps: action.payload.reps,
+        rest: action.payload.rest,
+        sets: action.payload.sets,
+        exerciseIndex: action.payload.index,
+        exerciseKey: action.payload.exerciseKey,
       };
     case ON_PRESS_SAVE:
       return { ...state, showCountDown: true };
@@ -83,22 +86,16 @@ const inputReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         setIndex: state.setIndex + 1,
-        completedSets: [
-          ...state.completedSets,
-          { set: state.setIndex, reps: state.reps, weight: state.weight },
-        ],
+        performed: {
+          ...state.performed,
+          [action.payload]: {
+            ...state.performed[action.payload],
+            [state.setIndex]: { set: state.setIndex, reps: state.reps, weight: state.weight },
+          },
+        },
       };
     case NEXT_EXERCISE:
-      return {
-        ...INITIAL_STATE,
-        completedExercises: [
-          ...state.completedExercises,
-          {
-            completedSets: state.completedSets,
-            exerciseKey: action.payload.exerciseKey,
-          },
-        ],
-      };
+      return { ...INITIAL_STATE, performed: { ...state.performed } };
     default:
       return state;
   }

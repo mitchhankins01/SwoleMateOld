@@ -94,6 +94,12 @@ const inputReducer = (state = INITIAL_STATE, action) => {
           },
         },
       };
+    case CHANGE_EXERCISE:
+      if (!state.performed[action.payload.exerciseKey]) return { ...state, setIndex: 0 };
+      return {
+        ...state,
+        setIndex: Object.keys(state.performed[action.payload.exerciseKey]).length,
+      };
     case NEXT_EXERCISE:
       return { ...INITIAL_STATE, performed: { ...state.performed } };
     default:

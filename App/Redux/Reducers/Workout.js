@@ -29,10 +29,6 @@ const INITIAL_STATE = {
   weight: 0,
   setIndex: 0,
   performed: [],
-
-  // needed temp
-  completedSets: [],
-  completedExercises: [],
 };
 
 const exerciseReducer = (state = IS_EXERCISE, action) => {

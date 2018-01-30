@@ -1,3 +1,6 @@
+import _ from 'lodash';
+import firebase from 'react-native-firebase';
+
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
@@ -162,28 +165,27 @@ class Workout extends Component {
   }
 
   renderLogOverview(type) {
-    const { workout: { input: { completedSets, performed }, exercise: { logs, exerciseKey } } } = this.props;
-
-    let exerciseLogs = [];
-    logs.forEach(logCollection =>
-      logCollection.forEach((log) => {
-        if (log.exerciseKey === exerciseKey) {
-          exerciseLogs = log;
-        }
-      }));
+    const { workout: { input: { performed }, exercise: { logs, exerciseKey } } } = this.props;
+    let pastPerformed;
+    logs.forEach(logCollection => logCollection.forEach((log) => {
+      if (log.exerciseKey === exerciseKey) pastPerformed = log.performed;
+    }));
 
     switch (type) {
       default:
         return null;
       case 'past':
-        if (exerciseLogs.length === 0) return <Text style={styles.logText}>No Past Log</Text>;
+        if (!pastPerformed) return <Text style={styles.logText}>No Past Log</Text>;
         return (
           <ScrollView>
-            {exerciseLogs.completedSets.map(each => (
-              <Text key={each.set} style={styles.logTextSets}>
-                {`Set ${each.set}: ${each.weight}x${each.reps}`}
-              </Text>
-            ))}
+            {Object.keys(pastPerformed).map((key) => {
+              const each = pastPerformed[key];
+              return (
+                <Text key={each.set} style={styles.logTextSets}>
+                  {`Set ${each.set}: ${each.weight}x${each.reps}`}
+                </Text>
+              );
+            })}
           </ScrollView>
         );
       case 'current':
@@ -217,9 +219,23 @@ class Workout extends Component {
     } = this.props;
     const { showPastLogs, showCloseAlert, showExerciseList } = this.state;
 
+    if (workoutComplete) {
+      const userLogsRef = firebase.firestore().collection('userLogs').doc();
+      userLogsRef.set({
+        timePassed: 0,
+        type: 'workout',
+        author: firebase.auth().currentUser.uid,
+        completed: new Date().toISOString().substr(0, 10),
+      });
+      _.mapKeys(this.props.workout.input.performed, (value, key) => {
+        userLogsRef.collection('exercises').add({
+          performed: { ...value }, exerciseKey: key, logKey: userLogsRef.id,
+        });
+      });
+      return <Text>Completed</Text>;
+    }
     if (!initiated) return null;
-    if (workoutComplete) return <Text>Completed</Text>;
-
+    
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />

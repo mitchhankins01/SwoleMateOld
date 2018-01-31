@@ -29,6 +29,7 @@ const INITIAL_STATE = {
   weight: 0,
   setIndex: 0,
   performed: [],
+  startedAt: undefined,
 };
 
 const exerciseReducer = (state = IS_EXERCISE, action) => {
@@ -72,6 +73,9 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
 
 const inputReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case INIT_WORKOUT: {
+      return { ...state, startedAt: new Date() };
+    }
     case SET_REPS: {
       return { ...state, reps: action.payload };
     }
@@ -97,7 +101,7 @@ const inputReducer = (state = INITIAL_STATE, action) => {
         setIndex: Object.keys(state.performed[action.payload.exerciseKey]).length,
       };
     case NEXT_EXERCISE:
-      return { ...INITIAL_STATE, performed: { ...state.performed } };
+      return { ...INITIAL_STATE, performed: { ...state.performed }, startedAt: state.startedAt };
     default:
       return state;
   }

@@ -220,9 +220,10 @@ class Workout extends Component {
     const { showPastLogs, showCloseAlert, showExerciseList } = this.state;
 
     if (workoutComplete) {
+      const duration = new Date().getTime() - this.props.workout.input.startedAt.getTime();
       const userLogsRef = firebase.firestore().collection('userLogs').doc();
       userLogsRef.set({
-        timePassed: 0,
+        duration,
         type: 'workout',
         author: firebase.auth().currentUser.uid,
         completed: new Date().toISOString().substr(0, 10),

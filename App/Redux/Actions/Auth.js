@@ -13,10 +13,27 @@ const loginUserFail = (dispatch, error) => {
 };
 
 const loginUserSuccess = (dispatch, user) => {
-  dispatch({
-    type: LOGIN_USER_SUCCESS,
-    payload: user,
-  });
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(firebase.auth().currentUser.uid)
+    .onSnapshot(
+      (userDoc) => {
+        const { imperial, theme, name } = userDoc.data();
+        dispatch({
+          type: LOGIN_USER_SUCCESS,
+          payload: {
+            user, imperial, theme, name,
+          },
+        });
+      },
+      (error) => {
+        dispatch({
+          type: LOGIN_USER_FAIL,
+          payload: error,
+        });
+      },
+    );
 };
 
 export const loginSavedUser = user => (dispatch) => {

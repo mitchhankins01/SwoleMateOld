@@ -24,6 +24,7 @@ import CountDown from '../Components/CountDown';
 import * as Actions from '../Redux/Actions/Workout';
 import ActionButton from '../Components/ActionButton';
 import styles, { gradients } from './Styles/WorkoutStyles';
+import WorkoutOverview from '../Components/WorkoutOverview';
 
 const getButtons = (goBack, toggleExerciseList, onPressSave) => [
   {
@@ -207,6 +208,7 @@ class Workout extends Component {
 
   render() {
     const {
+      goBack,
       setReps,
       workout,
       setWeight,
@@ -233,7 +235,7 @@ class Workout extends Component {
           performed: { ...value }, exerciseKey: key, logKey: userLogsRef.id,
         });
       });
-      return <Text>Completed</Text>;
+      return <WorkoutOverview performed={this.props.workout.input.performed} duration={duration} goBack={goBack} />;
     }
     if (!initiated) return null;
     

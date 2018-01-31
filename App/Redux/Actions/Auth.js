@@ -19,6 +19,10 @@ const loginUserSuccess = (dispatch, user) => {
   });
 };
 
+export const loginSavedUser = user => (dispatch) => {
+  loginUserSuccess(dispatch, user);
+};
+
 export const loginUser = (email, password) => (dispatch) => {
   dispatch({ type: LOGIN_USER });
 

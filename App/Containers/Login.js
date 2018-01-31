@@ -25,8 +25,10 @@ class Login extends Component {
 
   authListener() {
     this.authListener = firebase.auth().onAuthStateChanged((user) => {
-      if (user) this.props.navigation.navigate('HomeStack');
-      else console.log('no user');
+      if (user) {
+        this.props.loginSavedUser(user);
+        this.props.navigation.navigate('HomeStack');
+      } else console.log('no user');
     });
   }
 
@@ -92,6 +94,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   resetAuth: () => dispatch(Actions.resetAuth()),
+  loginSavedUser: user => dispatch(Actions.loginSavedUser(user)),
   loginUser: (email, password) => {
     dispatch(Actions.loginUser(email, password));
   },

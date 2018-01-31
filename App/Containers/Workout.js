@@ -54,6 +54,10 @@ class Workout extends Component {
     initWorkout(exerciseList());
   }
 
+  componentWillUnmount() {
+    this.props.destroyWorkout();
+  }
+
   togglePastLogs() {
     this.setState({ showPastLogs: !this.state.showPastLogs });
   }
@@ -298,6 +302,7 @@ Workout.propTypes = {
   setWeight: PropTypes.func.isRequired,
   onPressSave: PropTypes.func.isRequired,
   initWorkout: PropTypes.func.isRequired,
+  destroyWorkout: PropTypes.func.isRequired,
   changeExercise: PropTypes.func.isRequired,
 };
 
@@ -310,6 +315,7 @@ const mapDispatchToProps = dispatch => ({
   onPressSave: () => dispatch(Actions.onPressSave()),
   setReps: number => dispatch(Actions.setReps(number)),
   setWeight: number => dispatch(Actions.setWeight(number)),
+  destroyWorkout: () => dispatch(Actions.destroyWorkout()),
   goBack: () => dispatch(NavigationActions.back('Programs')),
   changeExercise: index => dispatch(Actions.changeExercise(index)),
   initWorkout: exercises => dispatch(Actions.initWorkout(exercises)),

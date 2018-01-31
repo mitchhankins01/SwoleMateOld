@@ -6,7 +6,12 @@ import {
   NEXT_EXERCISE,
   ON_PRESS_SAVE,
   CHANGE_EXERCISE,
+  DESTROY_WORKOUT,
 } from '../Types/Workout';
+
+export const destroyWorkout = () => (dispatch) => {
+  dispatch({ type: DESTROY_WORKOUT });
+};
 
 export const initWorkout = exerciseList => async (dispatch) => {
   const logsRef = firebase

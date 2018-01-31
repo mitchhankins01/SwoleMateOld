@@ -7,7 +7,9 @@ import {
   ON_PRESS_SAVE,
   HIDE_COUNTDOWN,
   CHANGE_EXERCISE,
+  DESTROY_WORKOUT,
 } from '../Types/Workout';
+import { destroyWorkout } from '../Actions/Workout';
 
 const IS_EXERCISE = {
   logs: [],
@@ -29,13 +31,15 @@ const INITIAL_STATE = {
   weight: 0,
   setIndex: 0,
   performed: [],
-  startedAt: undefined,
+  startedAt: new Date(),
 };
 
 const exerciseReducer = (state = IS_EXERCISE, action) => {
   switch (action.type) {
     default:
       return state;
+    case DESTROY_WORKOUT:
+      return IS_EXERCISE;
     case INIT_WORKOUT:
       return {
         ...state,
@@ -73,6 +77,8 @@ const exerciseReducer = (state = IS_EXERCISE, action) => {
 
 const inputReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case DESTROY_WORKOUT:
+      return INITIAL_STATE;
     case INIT_WORKOUT: {
       return { ...state, startedAt: new Date() };
     }

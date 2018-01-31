@@ -20,10 +20,10 @@ const calculateStats = (performed) => {
   });
 
   return {
-    exerciseTotal,
     setTotal,
     repsTotal,
     weightTotal,
+    exerciseTotal,
   };
 };
 

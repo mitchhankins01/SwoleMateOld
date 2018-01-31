@@ -46,12 +46,21 @@ const getButtons = (goBack, toggleExerciseList, onPressSave) => [
 ];
 
 class Workout extends Component {
-  state = { showCloseAlert: false, showPastLogs: false, showExerciseList: false };
+  state = { showCloseAlert: false, showPastLogs: false, showExerciseList: false, showLastSetAlert: false, };
 
   componentWillMount() {
     const { initWorkout, program: { dayKey, exercises } } = this.props;
     const exerciseList = () => exercises.filter(q => q.day === dayKey);
     initWorkout(exerciseList());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      workout: { input: { setIndex }, exercise: { sets, showCountDown } },
+    } = nextProps;
+    if (sets - 1 === setIndex && !showCountDown) {
+      this.setState({ showLastSetAlert: true });
+    }
   }
 
   componentWillUnmount() {
@@ -64,17 +73,6 @@ class Workout extends Component {
 
   toggleExerciseList() {
     this.setState({ showExerciseList: !this.state.showExerciseList });
-  }
-
-  renderCloseAlert() {
-    return (
-      <Alert
-        title="Are You Sure?"
-        message="Your workout will not be saved"
-        onPressSave={() => this.props.goBack()}
-        onPressClose={() => this.setState({ showCloseAlert: false })}
-      />
-    );
   }
 
   renderTextInput(type) {
@@ -95,6 +93,28 @@ class Workout extends Component {
           if (type === 'reps') return setReps(number);
           if (type === 'weight') return setWeight(number);
         }}
+      />
+    );
+  }
+
+  renderLastSetAlert() {
+    return (
+      <Alert
+        message=""
+        acknowledge
+        title="Last Set!"
+        onPressSave={() => this.setState({ showLastSetAlert: false })}
+      />
+    );
+  }
+
+  renderCloseAlert() {
+    return (
+      <Alert
+        title="Are You Sure?"
+        message="Your workout will not be saved"
+        onPressSave={() => this.props.goBack()}
+        onPressClose={() => this.setState({ showCloseAlert: false })}
       />
     );
   }
@@ -223,7 +243,7 @@ class Workout extends Component {
         },
       },
     } = this.props;
-    const { showPastLogs, showCloseAlert, showExerciseList } = this.state;
+    const { showPastLogs, showCloseAlert, showExerciseList, showLastSetAlert } = this.state;
 
     if (workoutComplete) {
       const duration = new Date().getTime() - this.props.workout.input.startedAt.getTime();
@@ -289,6 +309,7 @@ class Workout extends Component {
         {showPastLogs ? this.renderPastLogs() : null}
         {showCloseAlert ? this.renderCloseAlert() : null}
         {showExerciseList ? this.renderExerciselist() : null}
+        {showLastSetAlert ? this.renderLastSetAlert() : null}
       </LinearGradient>
     );
   }

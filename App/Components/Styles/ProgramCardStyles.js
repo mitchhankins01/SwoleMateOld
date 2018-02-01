@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Colors, Constants } from '../../Themes/';
+import { Fonts } from '../../Themes/';
 
 export default StyleSheet.create({
   // Program Card
@@ -11,8 +11,6 @@ export default StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     shadowColor: 'rgba(0,0,0, 1)',
-    backgroundColor: Colors.bgColor,
-    borderColor: Colors.primaryColor,
     shadowOffset: { height: 0, width: 0 },
   },
   leftSection: {
@@ -32,14 +30,12 @@ export default StyleSheet.create({
   },
   title: {
     marginTop: 5,
-    color: Colors.text,
     fontSize: Fonts.size.h5,
     fontFamily: Fonts.type.medium,
   },
   subtitle: {
     fontFamily: Fonts.type.regular,
     fontSize: Fonts.size.small,
-    color: Colors.text,
   },
   // Modify
   modifyContainer: {
@@ -51,8 +47,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 2,
     shadowColor: 'rgba(0,0,0, 1)',
-    backgroundColor: Colors.bgColor,
-    borderColor: Colors.primaryColor,
     shadowOffset: { height: 0, width: 0 },
   },
 });

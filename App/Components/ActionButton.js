@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import { ThemeSelector } from '../Themes';
 import styles from './Styles/ActionButtonStyles';
 

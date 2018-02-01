@@ -9,20 +9,26 @@ import * as Actions from '../Redux/Actions/Program';
 import { EditProgramCard } from '../Components/ProgramCard';
 import ActionButton from '../Components/ActionButton';
 
-import styles, { gradients, textColor } from './Styles/EditProgramStyles';
+import { ThemeSelector } from '../Themes';
+import styles from './Styles/EditProgramStyles';
 
 const EditProgram = ({
+  theme,
   goBack,
   program: { showExercises },
   navigation: { state: { params: { edit, programId, item } } },
-}) => (
-  <LinearGradient style={styles.container} colors={gradients}>
-    <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-    <Header title={showExercises ? 'Add Exercise' : 'Add Workout'} />
-    <EditProgramCard edit={edit} item={item} programId={programId} />
-    <ActionButton buttons={getButtons(goBack)} />
-  </LinearGradient>
-);
+}) => {
+  const Colors = ThemeSelector(theme);
+  const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
+  return (
+    <LinearGradient style={styles.container} colors={gradients}>
+      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+      <Header title={showExercises ? 'Add Exercise' : 'Add Workout'} />
+      <EditProgramCard edit={edit} item={item} programId={programId} />
+      <ActionButton buttons={getButtons(goBack)} />
+    </LinearGradient>
+  );
+};
 
 const getButtons = goBack => [
   {
@@ -30,15 +36,11 @@ const getButtons = goBack => [
     animation: 'zoomIn',
     onPress: () => goBack(),
   },
-  // {
-  //   icon: 'check',
-  //   animation: 'zoomIn',
-  //   onPress: () => {}, // Add Program
-  // },
 ];
 
 const mapStateToProps = state => ({
   program: state.program,
+  theme: state.auth.theme,
   programs: state.programs,
 });
 

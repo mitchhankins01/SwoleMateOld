@@ -10,8 +10,8 @@ import * as Actions from '../Redux/Actions/Program';
 import { ProgramCard } from '../Components/ProgramCard';
 import ActionButton from '../Components/ActionButton';
 
-import styles, { gradients, textColor } from './Styles/ProgramStyles';
-import { Colors, Fonts } from '../Themes';
+import { ThemeSelector } from '../Themes';
+import styles from './Styles/ProgramStyles';
 
 const getProgramButtons = (props) => {
   const {
@@ -61,6 +61,7 @@ const getProgramButtons = (props) => {
 
 const Programs = (props) => {
   const {
+    theme,
     programs,
     getPrograms,
     editProgram,
@@ -69,6 +70,8 @@ const Programs = (props) => {
       days, dayKey, exercises, showExercises, loading, info,
     },
   } = props;
+  const Colors = ThemeSelector(theme);
+  const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
 
   if (loading || programs.loading) return null;
   const programId = info.map(({ id }) => id).toString();
@@ -79,7 +82,9 @@ const Programs = (props) => {
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       <Header title={title} />
       {data.length === 0 ? (
-        <Text style={styles.emptyText}>
+        <Text
+          style={[styles.emptyText, { backgroundColor: Colors.secondaryColor, color: Colors.text }]}
+        >
           {showExercises
             ? 'This Workout is empty, tap the lower right button to get started'
             : 'This Program is empty, tap the lower right button to get started'}
@@ -120,6 +125,7 @@ const Programs = (props) => {
 const mapStateToProps = state => ({
   program: state.program,
   programs: state.programs,
+  theme: state.auth.theme,
 });
 
 const mapDispatchToProps = dispatch => ({

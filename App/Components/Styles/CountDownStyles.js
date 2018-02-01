@@ -1,5 +1,5 @@
+import { Fonts } from '../../Themes/';
 import { StyleSheet } from 'react-native';
-import { Fonts, Colors, Constants } from '../../Themes/';
 
 export default StyleSheet.create({
   countDownContainer: {
@@ -37,19 +37,15 @@ export default StyleSheet.create({
     shadowRadius: 2,
     borderRadius: 25,
     shadowOpacity: 0.8,
-    borderColor: Colors.primaryColor,
-    shadowColor: Colors.primaryColor,
     shadowOffset: { width: 0, height: 2 },
   },
   countDownIcon: {
     fontSize: 35,
-    color: Colors.primaryColor,
   },
   countDownText: {
     fontSize: 80,
     alignSelf: 'center',
     position: 'absolute',
-    color: Colors.primaryColor,
     fontFamily: Fonts.type.bold,
   },
 });

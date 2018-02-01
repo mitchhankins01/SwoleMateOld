@@ -6,13 +6,13 @@ import { Icon } from 'react-native-elements';
 import * as Progress from 'react-native-progress';
 import * as Animatable from 'react-native-animatable';
 
-import { Constants, Colors } from '../Themes';
+import { Constants, ThemeSelector } from '../Themes';
 import styles from './Styles/CountDownStyles';
 import { HIDE_COUNTDOWN } from '../Redux/Types/Workout';
 
 class CountDown extends Component {
   state = {
-    timeRemaining: this.props.rest,
+    timeRemaining: this.props.exercise.rest,
   };
 
   componentDidMount() {
@@ -46,11 +46,14 @@ class CountDown extends Component {
   };
 
   render() {
+    const Colors = ThemeSelector(this.props.auth.theme);
     const { timeRemaining } = this.state;
     return (
       <View style={styles.countDownContainer}>
         <Animatable.View style={styles.progressContainer} animation="zoomIn">
-          <Text style={styles.countDownText}>{timeRemaining > 0 ? timeRemaining : 0}</Text>
+          <Text style={[styles.countDownText, { color: Colors.primaryColor }]}>
+            {timeRemaining > 0 ? timeRemaining : 0}
+          </Text>
           <View>
             <Progress.CircleSnail
               indeterminate
@@ -65,9 +68,15 @@ class CountDown extends Component {
             size={50}
             name="close"
             underlayColor="transparent"
-            iconStyle={styles.countDownIcon}
-            containerStyle={styles.buttonContainer}
+            containerStyle={[
+              styles.buttonContainer,
+              {
+                borderColor: Colors.primaryColor,
+                shadowColor: Colors.primaryColor,
+              },
+            ]}
             onPress={() => this.props.onPressClose()}
+            iconStyle={[styles.countDownIcon, { color: Colors.primaryColor }]}
           />
         </View>
       </View>
@@ -76,11 +85,11 @@ class CountDown extends Component {
 }
 
 CountDown.propTypes = {
-  rest: PropTypes.number.isRequired,
+  exercise: PropTypes.object.isRequired,
   onPressClose: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ workout: { exercise } }) => exercise;
+const mapStateToProps = ({ auth, workout: { exercise } }) => ({ auth, exercise });
 
 const mapDispatchToProps = dispatch => ({
   onPressClose: () => dispatch({ type: HIDE_COUNTDOWN }),

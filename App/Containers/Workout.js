@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import firebase from 'react-native-firebase';
-
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
@@ -18,12 +17,13 @@ import {
 } from 'react-native';
 
 import Alert from '../Components/Alert';
+import { ThemeSelector } from '../Themes';
 import Picker from '../Components/Picker';
 import Header from '../Components/Header';
+import styles from './Styles/WorkoutStyles';
 import CountDown from '../Components/CountDown';
 import * as Actions from '../Redux/Actions/Workout';
 import ActionButton from '../Components/ActionButton';
-import styles, { gradients } from './Styles/WorkoutStyles';
 import WorkoutOverview from '../Components/WorkoutOverview';
 
 const getButtons = (goBack, toggleExerciseList, onPressSave) => [
@@ -76,12 +76,14 @@ class Workout extends Component {
   }
 
   renderTextInput(type) {
-    const { setReps, setWeight, workout: { input: { reps, weight } } } = this.props;
-
+    const {
+      theme, setReps, setWeight, workout: { input: { reps, weight } },
+    } = this.props;
+    const Colors = ThemeSelector(theme);
     return (
       <TextInput
         keyboardType="numeric"
-        style={styles.textInput}
+        style={[styles.textInput, { borderColor: Colors.primaryColor }]}
         enablesReturnKeyAutomatically
         underlineColorAndroid="transparent"
         value={type === 'weight' ? weight.toString() : reps.toString()}
@@ -120,19 +122,23 @@ class Workout extends Component {
   }
 
   renderExerciselist() {
-    const { changeExercise, workout: { exercise: { exerciseList } } } = this.props;
+    const { theme, changeExercise, workout: { exercise: { exerciseList } } } = this.props;
+    const Colors = ThemeSelector(theme);
+    
     const update = (index) => {
       changeExercise(index);
       this.toggleExerciseList();
     };
     return (
-      <View style={styles.exerciseListContainer}>
-        <Text style={styles.exerciseListHeader}>Exercise List</Text>
+      <View style={[styles.exerciseListContainer, { backgroundColor: Colors.secondaryColor }]}>
+        <Text style={[styles.exerciseListHeader, { color: Colors.text }]}>
+          Exercise List
+        </Text>
         <FlatList
           data={exerciseList}
           renderItem={({ item, index }) => (
             <TouchableOpacity style={styles.exerciseListButton} onPress={() => update(index)}>
-              <Text style={styles.exerciseListText}>
+              <Text style={[styles.exerciseListText, { color: Colors.text }]}>
                 {`${index + 1}. ${item.name}`}
               </Text>
             </TouchableOpacity>
@@ -141,16 +147,20 @@ class Workout extends Component {
         <Icon
           name="close"
           underlayColor="transparent"
-          iconStyle={styles.overlayIcon}
           onPress={() => this.toggleExerciseList()}
-          containerStyle={styles.overlayButtonContainer}
+          iconStyle={[styles.overlayIcon, { color: Colors.primaryColor }]}
+          containerStyle={[
+            styles.overlayButtonContainer,
+            { borderColor: Colors.primaryColor, shadowColor: Colors.primaryColor },
+          ]}
         />
       </View>
     );
   }
 
   renderPastLogs() {
-    const { workout: { exercise: { logs, exerciseKey } } } = this.props;
+    const { theme, workout: { exercise: { logs, exerciseKey } } } = this.props;
+    const Colors = ThemeSelector(theme);
 
     const filteredLogs = [];
     logs.forEach(logCollection =>
@@ -161,14 +171,14 @@ class Workout extends Component {
       }));
 
     return (
-      <View style={styles.pastLogsContainer}>
-        <Text style={styles.pastLogsHeader}>Past Logs</Text>
+      <View style={[styles.pastLogsContainer, { backgroundColor: Colors.secondaryColor }]}>
+        <Text style={[styles.pastLogsHeader, { color: Colors.text }]}>Past Logs</Text>
         <FlatList
           data={filteredLogs}
           style={styles.pastLogsFlatList}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => (
-            <Text key={index} style={styles.pastLogsText}>
+            <Text key={index} style={[styles.pastLogsText, { color: Colors.text }]}>
               {`${item.completed}\n`}
               {item.sets.map(({ set, weight, reps }) => (
                 <Text key={set} style={styles.pastLogsText}>
@@ -181,16 +191,21 @@ class Workout extends Component {
         <Icon
           name="close"
           underlayColor="transparent"
-          iconStyle={styles.overlayIcon}
           onPress={() => this.togglePastLogs()}
-          containerStyle={styles.overlayButtonContainer}
+          iconStyle={[styles.overlayIcon, { color: Colors.primaryColor }]}
+          containerStyle={[
+            styles.overlayButtonContainer,
+            { borderColor: Colors.primaryColor, shadowColor: Colors.primaryColor },
+          ]}
         />
       </View>
     );
   }
 
   renderLogOverview(type) {
-    const { workout: { input: { performed }, exercise: { logs, exerciseKey } } } = this.props;
+    const { theme, workout: { input: { performed }, exercise: { logs, exerciseKey } } } = this.props;
+    const Colors = ThemeSelector(theme);
+    
     let pastPerformed;
     logs.forEach(logCollection => logCollection.forEach((log) => {
       if (log.exerciseKey === exerciseKey) pastPerformed = log.performed;
@@ -200,13 +215,17 @@ class Workout extends Component {
       default:
         return null;
       case 'past':
-        if (!pastPerformed) return <Text style={styles.logText}>No Past Log</Text>;
+        if (!pastPerformed) {
+          return (
+            <Text style={[styles.logText, { color: Colors.text }]}>No Past Log</Text>
+          );
+        }
         return (
           <ScrollView>
             {Object.keys(pastPerformed).map((key) => {
               const each = pastPerformed[key];
               return (
-                <Text key={each.set} style={styles.logTextSets}>
+                <Text key={each.set} style={[styles.logTextSets, { color: Colors.text }]}>
                   {`Set ${each.set}: ${each.weight}x${each.reps}`}
                 </Text>
               );
@@ -214,13 +233,13 @@ class Workout extends Component {
           </ScrollView>
         );
       case 'current':
-        if (!performed[exerciseKey]) return <Text style={styles.logText}>First Set</Text>;
+        if (!performed[exerciseKey]) return <Text style={[styles.logText, { color: Colors.text }]}>First Set</Text>;
         return (
           <ScrollView>
             {Object.keys(performed[exerciseKey]).map((key) => {
               const each = performed[exerciseKey][key];
               return (
-                <Text key={each.set} style={styles.logTextSets}>
+                <Text key={each.set} style={[styles.logTextSets, { color: Colors.text }]}>
                   {`Set ${each.set + 1}: ${each.weight}x${each.reps}`}
                 </Text>
               );
@@ -232,6 +251,7 @@ class Workout extends Component {
 
   render() {
     const {
+      theme,
       goBack,
       setReps,
       workout,
@@ -243,6 +263,8 @@ class Workout extends Component {
         },
       },
     } = this.props;
+    const Colors = ThemeSelector(theme);
+    const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
     const { showPastLogs, showCloseAlert, showExerciseList, showLastSetAlert } = this.state;
 
     if (workoutComplete) {
@@ -268,7 +290,13 @@ class Workout extends Component {
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header noMenu title={name} />
         {/* Logs */}
-        <View style={styles.logContainer} animation="mySlideInDown">
+        <View
+          style={[
+            styles.logContainer,
+            { backgroundColor: Colors.bgColor, borderColor: Colors.primaryColor },
+          ]}
+          animation="mySlideInDown"
+        >
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.logTextHeader}>Current Log</Text>
@@ -283,8 +311,15 @@ class Workout extends Component {
         </View>
         {/* Inputs */}
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
-          <View style={styles.inputContainer} animation="mySlideInLeft" delay={250}>
-            <Text style={styles.inputHeader}>Weight</Text>
+          <View
+            delay={250}
+            animation="mySlideInLeft"
+            style={[
+              styles.inputContainer,
+              { backgroundColor: Colors.bgColor, borderColor: Colors.primaryColor },
+            ]}
+          >
+            <Text style={[styles.inputHeader, { color: Colors.text }]}>Weight</Text>
             {this.renderTextInput('weight')}
             <Picker
               type="weight"
@@ -292,8 +327,15 @@ class Workout extends Component {
               setWeight={number => setWeight(number)}
             />
           </View>
-          <View style={styles.inputContainer} animation="mySlideInRight" delay={250}>
-            <Text style={styles.inputHeader}>Reps</Text>
+          <View
+            delay={250}
+            animation="mySlideInRight"
+            style={[
+              styles.inputContainer,
+              { backgroundColor: Colors.bgColor, borderColor: Colors.primaryColor },
+            ]}
+          >
+            <Text style={[styles.inputHeader, { color: Colors.text }]}>Reps</Text>
             {this.renderTextInput('reps')}
             <Picker type="reps" reps={workout.input.reps} setReps={number => setReps(number)} />
           </View>
@@ -330,6 +372,7 @@ Workout.propTypes = {
 const mapStateToProps = state => ({
   program: state.program,
   workout: state.workout,
+  theme: state.auth.theme,
 });
 
 const mapDispatchToProps = dispatch => ({

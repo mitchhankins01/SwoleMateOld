@@ -1,8 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Colors, Constants } from '../../Themes/';
-
-export const textColor = Colors.text;
-export const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
+import { Fonts, Constants } from '../../Themes/';
 
 export default StyleSheet.create({
   container: {
@@ -18,8 +15,6 @@ export default StyleSheet.create({
     shadowOpacity: 0.8,
     marginHorizontal: 15,
     shadowColor: 'rgba(0,0,0, 1)',
-    backgroundColor: Colors.bgColor,
-    borderColor: Colors.primaryColor,
     shadowOffset: { height: 0, width: 0 },
   },
   logTextHeader: {
@@ -39,12 +34,9 @@ export default StyleSheet.create({
     shadowOpacity: 0.8,
     marginBottom: 85,
     shadowColor: 'rgba(0,0,0, 1)',
-    backgroundColor: Colors.bgColor,
-    borderColor: Colors.primaryColor,
     shadowOffset: { height: 0, width: 0 },
   },
   inputHeader: {
-    color: Colors.text,
     alignSelf: 'center',
     fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.regular,
@@ -57,16 +49,13 @@ export default StyleSheet.create({
     textAlign: 'center',
     borderBottomWidth: 1,
     fontFamily: 'Exo-Regular',
-    borderColor: Colors.primaryColor,
   },
   logText: {
-    color: Colors.text,
     alignSelf: 'center',
     fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.regular,
   },
   logTextSets: {
-    color: Colors.text,
     alignSelf: 'center',
     fontSize: Fonts.size.medium,
     fontFamily: Fonts.type.regular,
@@ -80,27 +69,19 @@ export default StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.secondaryColor,
   },
   pastLogsFlatList: {
     width: Constants.DEV_WIDTH,
   },
   pastLogsHeader: {
     marginVertical: 30,
-    color: Colors.text,
     fontSize: Fonts.size.h4,
     fontFamily: Fonts.type.bold,
   },
   pastLogsText: {
-    color: Colors.text,
     alignSelf: 'center',
     fontSize: Fonts.size.h5,
     fontFamily: Fonts.type.medium,
-  },
-  pastLogsIcon: {
-    fontSize: 50,
-    marginBottom: 30,
-    color: Colors.text,
   },
   exerciseListContainer: {
     top: 0,
@@ -112,7 +93,6 @@ export default StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.secondaryColor,
   },
   overlayButtonContainer: {
     width: 50,
@@ -123,18 +103,15 @@ export default StyleSheet.create({
     shadowRadius: 2,
     borderRadius: 25,
     shadowOpacity: 0.8,
-    borderColor: Colors.primaryColor,
-    shadowColor: Colors.primaryColor,
     shadowOffset: { width: 0, height: 2 },
   },
   overlayIcon: {
     fontSize: 35,
-    color: Colors.primaryColor,
   },
   exerciseListHeader: {
     marginTop: 40,
     marginBottom: 10,
-    color: Colors.text,
+
     fontSize: Fonts.size.h4,
     fontFamily: Fonts.type.bold,
   },
@@ -143,7 +120,6 @@ export default StyleSheet.create({
     width: Constants.DEV_WIDTH,
   },
   exerciseListText: {
-    color: Colors.text,
     fontSize: Fonts.size.h5,
     fontFamily: Fonts.type.medium,
   },

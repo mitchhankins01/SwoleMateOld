@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Colors, Constants } from '../../Themes/';
+import { Fonts } from '../../Themes/';
 
 export default StyleSheet.create({
   container: {
@@ -10,12 +10,10 @@ export default StyleSheet.create({
     elevation: 1,
     position: 'absolute',
     alignItems: 'center',
-    backgroundColor: Colors.secondaryColor,
   },
   header: {
     flex: 1,
     marginVertical: 30,
-    color: Colors.text,
     alignSelf: 'center',
     fontSize: Fonts.size.h1,
     fontFamily: Fonts.type.bold,
@@ -25,13 +23,11 @@ export default StyleSheet.create({
   },
   overviewTitle: {
     marginTop: 20,
-    color: Colors.text,
     alignSelf: 'center',
     fontSize: Fonts.size.h4,
     fontFamily: Fonts.type.bold,
   },
   overviewDetail: {
-    color: Colors.text,
     alignSelf: 'center',
     fontSize: Fonts.size.h4,
     fontFamily: Fonts.type.medium,
@@ -45,12 +41,9 @@ export default StyleSheet.create({
     shadowRadius: 2,
     borderRadius: 25,
     shadowOpacity: 0.8,
-    borderColor: Colors.primaryColor,
-    shadowColor: Colors.primaryColor,
     shadowOffset: { width: 0, height: 2 },
   },
   icon: {
     fontSize: 35,
-    color: Colors.primaryColor,
   },
 });

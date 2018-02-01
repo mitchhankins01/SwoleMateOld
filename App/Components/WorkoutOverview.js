@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
+import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+import { ThemeSelector } from '../Themes';
 import styles from './Styles/WorkoutOverviewStyles';
 
 const calculateStats = (performed) => {
@@ -27,34 +29,40 @@ const calculateStats = (performed) => {
   };
 };
 
-const WorkoutOverview = ({ performed, duration, goBack }) => {
+const WorkoutOverview = ({
+  performed, duration, goBack, theme,
+}) => {
   const {
     exerciseTotal, setTotal, repsTotal, weightTotal,
   } = calculateStats(performed);
+  const Colors = ThemeSelector(theme);
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Overview</Text>
+    <View style={[styles.container, { backgroundColor: Colors.secondaryColor }]}>
+      <Text style={[styles.header, { color: Colors.text }]}>Overview</Text>
       <View style={styles.statsView}>
-        <Text style={styles.overviewTitle}>Workout Duration:</Text>
-        <Text style={styles.overviewDetail}>{duration}</Text>
-        <Text style={styles.overviewTitle}>Weight Lifted:</Text>
-        <Text style={styles.overviewDetail}>{weightTotal}</Text>
-        <Text style={styles.overviewTitle}>Sets Completed:</Text>
-        <Text style={styles.overviewDetail}>{setTotal}</Text>
-        <Text style={styles.overviewTitle}>Reps Completed:</Text>
-        <Text style={styles.overviewDetail}>{repsTotal}</Text>
-        <Text style={styles.overviewTitle}>Exercises Completed:</Text>
-        <Text style={styles.overviewDetail}>{exerciseTotal}</Text>
+        <Text style={[styles.overviewTitle, { color: Colors.text }]}>Workout Duration:</Text>
+        <Text style={[styles.overviewDetail, { color: Colors.text }]}>{duration}</Text>
+        <Text style={[styles.overviewTitle, { color: Colors.text }]}>Weight Lifted:</Text>
+        <Text style={[styles.overviewDetail, { color: Colors.text }]}>{weightTotal}</Text>
+        <Text style={[styles.overviewTitle, { color: Colors.text }]}>Sets Completed:</Text>
+        <Text style={[styles.overviewDetail, { color: Colors.text }]}>{setTotal}</Text>
+        <Text style={[styles.overviewTitle, { color: Colors.text }]}>Reps Completed:</Text>
+        <Text style={[styles.overviewDetail, { color: Colors.text }]}>{repsTotal}</Text>
+        <Text style={[styles.overviewTitle, { color: Colors.text }]}>Exercises Completed:</Text>
+        <Text style={[styles.overviewDetail, { color: Colors.text }]}>{exerciseTotal}</Text>
       </View>
       <Icon
         name="close"
-        iconStyle={styles.icon}
         onPress={() => goBack()}
         underlayColor="transparent"
-        containerStyle={styles.iconContainer}
+        iconStyle={[styles.icon, { color: Colors.primaryColor }]}
+        containerStyle={[
+          styles.iconContainer,
+          { borderColor: Colors.primaryColor, shadowColor: Colors.primaryColor },
+        ]}
       />
     </View>
   );
 };
 
-export default WorkoutOverview;
+export default connect(({ auth }) => auth)(WorkoutOverview);

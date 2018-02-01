@@ -7,9 +7,9 @@ import * as Animatable from 'react-native-animatable';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
-import { AddWorkoutFB, AddExerciseFB, EditWorkoutFB, EditExerciseFB } from '../Helpers/Firebase';
-import { Colors, Fonts } from '../Themes';
 import styles from './Styles/FormStyles';
+import { ThemeSelector, Fonts } from '../Themes';
+import { AddWorkoutFB, AddExerciseFB, EditWorkoutFB, EditExerciseFB } from '../Helpers/Firebase';
 
 const TForm = t.form.Form;
 
@@ -40,7 +40,7 @@ class EditProgram extends Component {
     return goBack();
   }
 
-  renderExerciseList() {
+  renderExerciseList(Colors) {
     const options = [
       'Show All Exercises',
       'Abs',
@@ -66,12 +66,12 @@ class EditProgram extends Component {
       <View>
         <ModalDropdown
           options={options}
-          style={styles.dropdown}
-          textStyle={styles.dropdownText}
-          dropdownStyle={styles.dropdownStyle}
           defaultValue={this.state.searchGroup}
-          dropdownTextStyle={styles.dropdownItemText}
+          textStyle={[styles.dropdownText, { color: Colors.text }]}
           onSelect={(index, value) => this.setState({ searchGroup: value })}
+          style={[styles.dropdown, { backgroundColor: Colors.tertiaryColor }]}
+          dropdownTextStyle={[styles.dropdownItemText, { color: Colors.text }]}
+          dropdownStyle={[styles.dropdownStyle, { backgroundColor: Colors.tertiaryColor }]}
         />
         <FlatList
           style={{ marginBottom: 50, marginTop: 20 }}
@@ -86,7 +86,7 @@ class EditProgram extends Component {
                 })
               }
             >
-              <Text style={styles.exerciseText}>{item.name}</Text>
+              <Text style={[styles.exerciseText, { color: Colors.text }]}>{item.name}</Text>
             </TouchableOpacity>
           )}
         />
@@ -94,7 +94,7 @@ class EditProgram extends Component {
     );
   }
 
-  renderForm() {
+  renderForm(Colors) {
     const {
       edit, programId, item, program: { showExercises },
     } = this.props;
@@ -114,7 +114,9 @@ class EditProgram extends Component {
                   style={styles.selectButton}
                   onPress={() => this.setState({ showExerciseList: true })}
                 >
-                  <Text style={styles.selectButtonText}>{this.state.exerciseName}</Text>
+                  <Text style={[styles.selectButtonText, { color: Colors.text }]}>
+                    {this.state.exerciseName}
+                  </Text>
                 </TouchableOpacity>
               </Animatable.View>
             )}
@@ -127,8 +129,14 @@ class EditProgram extends Component {
           type="entypo"
           underlayColor="transparent"
           color={Colors.text}
-          iconStyle={styles.icon}
-          containerStyle={styles.button}
+          iconStyle={[styles.icon, { color: Colors.primaryColor }]}
+          containerStyle={[
+            styles.button,
+            {
+              borderColor: Colors.primaryColor,
+              shadowColor: Colors.primaryColor,
+            },
+          ]}
           onPress={() => {
             const values = showExercises
               ? this.refs.exerciseForm.getValue()
@@ -144,14 +152,16 @@ class EditProgram extends Component {
   }
 
   render() {
+    const Colors = ThemeSelector(this.props.auth.theme);
     return (
       <View style={styles.formStyle}>
-        {this.state.showExerciseList ? this.renderExerciseList() : this.renderForm()}
+        {this.state.showExerciseList ? this.renderExerciseList(Colors) : this.renderForm(Colors)}
       </View>
     );
   }
 }
 const mapStateToProps = state => ({
+  auth: state.auth,
   program: state.program,
   programs: state.programs,
 });

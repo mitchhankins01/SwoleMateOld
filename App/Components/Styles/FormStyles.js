@@ -33,13 +33,10 @@ export default StyleSheet.create({
     borderRadius: 25,
     shadowOpacity: 0.8,
     alignSelf: 'center',
-    borderColor: Colors.primaryColor,
-    shadowColor: Colors.primaryColor,
     shadowOffset: { width: 0, height: 2 },
   },
   icon: {
     fontSize: 30,
-    color: Colors.primaryColor,
   },
   selectButton: {
     paddingVertical: 20,
@@ -47,39 +44,33 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   selectButtonText: {
-    color: Colors.text,
     fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.medium,
   },
   dropdown: {
     alignSelf: 'center',
     width: Constants.DEV_WIDTH * 0.8,
-    backgroundColor: Colors.tertiaryColor,
   },
   dropdownStyle: {
     height: 400,
     width: Constants.DEV_WIDTH * 0.8,
-    backgroundColor: Colors.tertiaryColor,
   },
   dropdownText: {
     padding: 15,
-    color: Colors.text,
-    width: Constants.DEV_WIDTH * 0.8,
-    fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.bold,
+    fontSize: Fonts.size.regular,
     backgroundColor: 'transparent',
+    width: Constants.DEV_WIDTH * 0.8,
   },
   dropdownItemText: {
-    color: Colors.text,
-    width: Constants.DEV_WIDTH * 0.8,
     fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.medium,
     backgroundColor: 'transparent',
+    width: Constants.DEV_WIDTH * 0.8,
   },
   exerciseText: {
     padding: 15,
-    fontFamily: Fonts.type.regular,
     fontSize: Fonts.size.regular,
-    color: Colors.text,
+    fontFamily: Fonts.type.regular,
   },
 });

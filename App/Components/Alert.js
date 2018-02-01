@@ -1,17 +1,19 @@
 import React from 'react';
-import { View, Text, ScrollView, TextInput } from 'react-native';
+import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
+import { View, Text, ScrollView, TextInput } from 'react-native';
 
+import { ThemeSelector } from '../Themes';
 import styles from './Styles/AlertStyles';
 
-const renderIcon = (name, size, onPress) => (
+const renderIcon = (Colors, name, size, onPress) => (
   <Icon
     name={name}
     size={size}
     type="entypo"
-    color="#EDF0F1"
     onPress={onPress}
+    color={Colors.text}
     underlayColor="transparent"
     containerStyle={styles.iconContainer}
     hitSlop={{
@@ -24,17 +26,18 @@ const renderIcon = (name, size, onPress) => (
 );
 
 const getContent = (props) => {
+  const Colors = ThemeSelector(props.theme);
   switch (props.input) {
     default:
       return (
         <ScrollView>
-          <Text style={styles.message}>{props.message}</Text>
+          <Text style={[styles.message, { color: Colors.text }]}>{props.message}</Text>
         </ScrollView>
       );
     case true:
       return (
         <ScrollView>
-          <Text style={styles.message}>{props.message}</Text>
+          <Text style={[styles.message, { color: Colors.text }]}>{props.message}</Text>
           <TextInput
             value={props.value}
             style={props.style}
@@ -46,16 +49,19 @@ const getContent = (props) => {
   }
 };
 
-const getIcons = ({ acknowledge, onPressClose, onPressSave }) => {
+const getIcons = ({
+  acknowledge, onPressClose, onPressSave, theme,
+}) => {
+  const Colors = ThemeSelector(theme);
   switch (acknowledge) {
     default:
       return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          {renderIcon('cross', 30, () => {
+          {renderIcon(Colors, 'cross', 30, () => {
             onPressClose();
             // programStore.resetError();
           })}
-          {renderIcon('check', 25, () => {
+          {renderIcon(Colors, 'check', 25, () => {
             onPressSave();
             // programStore.resetError();
           })}
@@ -64,7 +70,7 @@ const getIcons = ({ acknowledge, onPressClose, onPressSave }) => {
     case true:
       return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          {renderIcon('check', 25, () => {
+          {renderIcon(Colors, 'check', 25, () => {
             onPressSave();
             // programStore.resetError();
           })}
@@ -73,14 +79,21 @@ const getIcons = ({ acknowledge, onPressClose, onPressSave }) => {
   }
 };
 
-const Alert = props => (
-  <View style={styles.container}>
-    <Animatable.View style={styles.alertContainer} duration={500} animation="zoomIn">
-      <Text style={styles.title}>{props.title}</Text>
-      {getContent(props)}
-      {getIcons(props)}
-    </Animatable.View>
-  </View>
-);
+const Alert = (props) => {
+  const Colors = ThemeSelector(props.theme);
+  return (
+    <View style={styles.container}>
+      <Animatable.View
+        duration={500}
+        animation="zoomIn"
+        style={[styles.alertContainer, { backgroundColor: Colors.tertiaryColor }]}
+      >
+        <Text style={[styles.title, { color: Colors.text }]}>{props.title}</Text>
+        {getContent(props)}
+        {getIcons(props)}
+      </Animatable.View>
+    </View>
+  );
+};
 
-export default Alert;
+export default connect(({ auth }) => auth)(Alert);

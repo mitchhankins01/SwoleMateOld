@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Colors, Constants } from '../../Themes/';
+import { Fonts, Constants } from '../../Themes/';
 
 export default StyleSheet.create({
   container: {
@@ -20,19 +20,16 @@ export default StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     width: Constants.DEV_WIDTH,
-    backgroundColor: Colors.tertiaryColor,
     marginTop: Constants.DEV_HEIGHT * 0.35,
   },
   title: {
     marginTop: 15,
-    color: Colors.text,
     alignSelf: 'center',
     fontSize: Fonts.size.h3,
     fontFamily: Fonts.type.bold,
   },
   message: {
     marginTop: 10,
-    color: Colors.text,
     alignSelf: 'center',
     paddingHorizontal: 20,
     fontSize: Fonts.size.regular,

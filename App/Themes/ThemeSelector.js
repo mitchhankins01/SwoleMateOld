@@ -10,7 +10,7 @@ const standard2 = {
   text: '#EDF0F1',
   primaryColor: 'red',
   tertiaryColor: 'orange',
-  secondaryColor: '#4872A0',
+  secondaryColor: 'white',
   bgColor: 'rgba(0, 0, 0, 0.15)',
 };
 

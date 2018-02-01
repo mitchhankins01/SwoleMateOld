@@ -1,7 +1,4 @@
-import Color from 'color';
 import { StyleSheet } from 'react-native';
-
-import { Colors } from '../../Themes/';
 
 export default StyleSheet.create({
   actionView: {
@@ -14,7 +11,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     justifyContent: 'space-between',
-    backgroundColor: Colors.bgColor,
   },
   buttonContainer: {
     width: 50,
@@ -28,12 +24,9 @@ export default StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-end',
     justifyContent: 'center',
-    borderColor: Colors.primaryColor,
-    shadowColor: Colors.primaryColor,
     shadowOffset: { width: 0, height: 2 },
   },
   iconContainer: {
     fontSize: 30,
-    color: Colors.primaryColor,
   },
 });

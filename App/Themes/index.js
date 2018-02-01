@@ -1,6 +1,6 @@
 import Fonts from './Fonts';
 import Colors from './Colors';
 import Constants from './Constants';
-import ApplicationStyles from './ApplicationStyles';
+import ThemeSelector from './ThemeSelector';
 
-export { Colors, Constants, Fonts, ApplicationStyles };
+export { Colors, Constants, Fonts, ThemeSelector };

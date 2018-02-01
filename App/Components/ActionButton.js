@@ -1,24 +1,38 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
 import { TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
+import { ThemeSelector } from '../Themes';
 import styles from './Styles/ActionButtonStyles';
 
-const ActionButton = ({ buttons }) => (
-  <View style={styles.actionView}>
-    {buttons.map(button => (
-      <Animatable.View animation={button.animation} key={button.icon}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={button.onPress}>
-          <Icon
-            name={button.icon}
-            iconStyle={styles.iconContainer}
-            type={button.type ? button.type : 'entypo'}
-          />
-        </TouchableOpacity>
-      </Animatable.View>
-    ))}
-  </View>
-);
+const ActionButton = ({ buttons, theme }) => {
+  const Colors = ThemeSelector(theme);
+  return (
+    <View style={[styles.actionView, { backgroundColor: Colors.bgColor }]}>
+      {buttons.map(button => (
+        <Animatable.View animation={button.animation} key={button.icon}>
+          <TouchableOpacity
+            style={[
+              styles.buttonContainer,
+              {
+                borderColor: Colors.primaryColor,
+                shadowColor: Colors.primaryColor,
+              },
+            ]}
+            onPress={button.onPress}
+          >
+            <Icon
+              name={button.icon}
+              type={button.type ? button.type : 'entypo'}
+              iconStyle={[styles.iconContainer, { color: Colors.primaryColor }]}
+            />
+          </TouchableOpacity>
+        </Animatable.View>
+      ))}
+    </View>
+  );
+};
 
-export default ActionButton;
+export default connect(({ auth }) => auth)(ActionButton);

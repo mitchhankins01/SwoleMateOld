@@ -8,9 +8,17 @@ const standard = {
 
 const standard2 = {
   text: '#EDF0F1',
-  primaryColor: 'red',
-  tertiaryColor: 'orange',
-  secondaryColor: 'white',
+  primaryColor: '#CD83F8',
+  secondaryColor: '#925EB1',
+  tertiaryColor: '#67427B',
+  bgColor: 'rgba(0, 0, 0, 0.15)',
+};
+
+const standard3 = {
+  text: '#EDF0F1',
+  primaryColor: '#E69435',
+  secondaryColor: '#C56F28',
+  tertiaryColor: '#AA521E',
   bgColor: 'rgba(0, 0, 0, 0.15)',
 };
 
@@ -22,6 +30,8 @@ const selector = (theme) => {
       return standard;
     case 'standard2':
       return standard2;
+    case 'standard3':
+      return standard3;
   }
 };
 

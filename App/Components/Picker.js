@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Platform, Picker as RNPicker } from 'react-native';
 import { WheelPicker } from 'react-native-wheel-picker-android';
 
-import { Colors, Fonts, Constants } from '../Themes';
-import styles from './Styles/PickerStyles';
+import { ThemeSelector } from '../Themes';
+import { Fonts, Constants } from '../Themes';
 
 const getNumbers = (type, array) => {
   switch (type) {
@@ -32,6 +33,7 @@ const Picker = (props) => {
   const {
     type, weight, reps, setReps, setWeight,
   } = props;
+  const Colors = ThemeSelector(props.theme);
 
   let array = _.range(0, 505, 5);
   if (type === 'reps') array = _.range(0, 101, 1);
@@ -73,4 +75,4 @@ const Picker = (props) => {
   }
 };
 
-export default Picker;
+export default connect(({ auth }) => auth)(Picker);

@@ -5,21 +5,23 @@ import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Header from '../Components/Header';
+import { ThemeSelector } from '../Themes/';
 import styles from './Styles/SettingsStyles';
-import * as Actions from '../Redux/Actions/Program';
 import ActionButton from '../Components/ActionButton';
+// import * as Actions from '../Redux/Actions/Settings';
 
-const Settings = ({
-  goBack,
-  program: { showExercises },
-  navigation: { state: { params: { edit, programId, item } } },
-}) => (
-  <LinearGradient style={styles.container} colors={gradients}>
-    <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-    <Header title="Settings" />
-    <ActionButton buttons={getButtons(props)} />
-  </LinearGradient>
-);
+const Settings = (props) => {
+  const Colors = ThemeSelector(props.theme);
+  const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
+
+  return (
+    <LinearGradient style={styles.container} colors={gradients}>
+      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+      <Header title="Settings" />
+      <ActionButton buttons={getButtons(props)} />
+    </LinearGradient>
+  );
+};
 
 const getButtons = (props) => {
   const { toggleDrawer } = props;
@@ -52,8 +54,7 @@ const getButtons = (props) => {
 };
 
 const mapStateToProps = state => ({
-  program: state.program,
-  programs: state.programs,
+  theme: state.auth.theme,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -5,6 +5,7 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import Drawer from './Drawer';
 import Login from '../Containers/Login';
 import Workout from '../Containers/Workout';
+import Settings from '../Containers/Settings';
 import Programs from '../Containers/Programs';
 import EditProgram from '../Containers/EditProgram';
 // import styles from './Styles/NavigationStyles'
@@ -24,6 +25,19 @@ const PrimaryNav = StackNavigator(
                   type="ionicon"
                   color={tintColor}
                   name={focused ? 'ios-home' : 'ios-home-outline'}
+                />
+              ),
+            },
+          },
+          Settings: {
+            screen: Settings,
+            navigationOptions: {
+              drawerIcon: ({ tintColor, focused }) => (
+                <Icon
+                  size={26}
+                  type="ionicon"
+                  color={tintColor}
+                  name={focused ? 'ios-settings' : 'ios-settings-outline'}
                 />
               ),
             },

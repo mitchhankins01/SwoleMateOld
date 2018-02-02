@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { StatusBar, FlatList, Text } from 'react-native';
+import { StatusBar, FlatList, Text, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -73,7 +73,10 @@ const Programs = (props) => {
   const Colors = ThemeSelector(theme);
   const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
 
-  if (loading || programs.loading) return null;
+  if (loading || programs.loading) {
+    return <LinearGradient style={styles.container} colors={gradients} />;
+  }
+
   const programId = info.map(({ id }) => id).toString();
   const data = showExercises ? exercises.filter(e => e.day === dayKey) : days;
   const title = showExercises ? 'Exercises' : info.map(({ name }) => name).toString();

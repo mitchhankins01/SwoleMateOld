@@ -283,7 +283,10 @@ class Workout extends Component {
       });
       return <WorkoutOverview performed={this.props.workout.input.performed} duration={duration} goBack={goBack} />;
     }
-    if (!initiated) return null;
+
+    if (!initiated) {
+      return <LinearGradient style={styles.container} colors={gradients} />;
+    }
     
     return (
       <LinearGradient style={styles.container} colors={gradients}>

@@ -3,7 +3,7 @@ const standard = {
   primaryColor: '#70B2F9',
   tertiaryColor: '#38597C',
   secondaryColor: '#4872A0',
-  bgColor: 'rgba(0, 0, 0, 0.15)',
+  bgColor: 'rgba(0, 0, 0, 0.1)',
 };
 
 const standard2 = {
@@ -11,7 +11,7 @@ const standard2 = {
   primaryColor: '#CD83F8',
   secondaryColor: '#925EB1',
   tertiaryColor: '#67427B',
-  bgColor: 'rgba(0, 0, 0, 0.15)',
+  bgColor: 'rgba(0, 0, 0, 0.1)',
 };
 
 const standard3 = {
@@ -19,7 +19,7 @@ const standard3 = {
   primaryColor: '#E69435',
   secondaryColor: '#C56F28',
   tertiaryColor: '#AA521E',
-  bgColor: 'rgba(0, 0, 0, 0.15)',
+  bgColor: 'rgba(0, 0, 0, 0.1)',
 };
 
 const selector = (theme) => {

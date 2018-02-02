@@ -10,7 +10,16 @@ import styles from './Styles/ActionButtonStyles';
 const ActionButton = ({ buttons, theme }) => {
   const Colors = ThemeSelector(theme);
   return (
-    <View style={[styles.actionView, { backgroundColor: Colors.bgColor }]}>
+    <View
+      style={[
+        styles.actionView,
+        {
+          borderTopWidth: 1,
+          borderColor: Colors.primaryColor,
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        },
+      ]}
+    >
       {buttons.map(button => (
         <Animatable.View animation={button.animation} key={button.icon}>
           <TouchableOpacity

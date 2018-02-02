@@ -8,4 +8,10 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  subContainer: {
+    flex: 1,
+    margin: 15,
+    borderWidth: 2,
+    marginBottom: 85,
+  },
 });

@@ -167,7 +167,8 @@ class Workout extends Component {
     logs.forEach(logCollection =>
       logCollection.forEach((log) => {
         if (log.exerciseKey === exerciseKey) {
-          filteredLogs.push({ completed: log.completed, sets: log.completedSets });
+          const performed = Object.values(log.performed).map(({ set, reps, weight }) => ({ set, reps, weight }));
+          filteredLogs.push({ completed: log.completed, performed });
         }
       }));
 
@@ -181,7 +182,7 @@ class Workout extends Component {
           renderItem={({ item, index }) => (
             <Text key={index} style={[styles.pastLogsText, { color: Colors.text }]}>
               {`${item.completed}\n`}
-              {item.sets.map(({ set, weight, reps }) => (
+              {item.performed.map(({ set, weight, reps }) => (
                 <Text key={set} style={styles.pastLogsText}>
                   {`Set ${set}: ${weight}x${reps}\n`}
                 </Text>
@@ -279,7 +280,10 @@ class Workout extends Component {
       });
       _.mapKeys(this.props.workout.input.performed, (value, key) => {
         userLogsRef.collection('exercises').add({
-          performed: { ...value }, exerciseKey: key, logKey: userLogsRef.id,
+          exerciseKey: key,
+          logKey: userLogsRef.id,
+          performed: { ...value },
+          completed: new Date().toISOString().substr(0, 10),
         });
       });
       return <WorkoutOverview performed={this.props.workout.input.performed} duration={duration} goBack={goBack} />;

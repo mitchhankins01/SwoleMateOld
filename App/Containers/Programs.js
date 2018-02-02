@@ -4,11 +4,12 @@ import { StatusBar, FlatList, Text, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { DeleteFB, ToggleUp, ToggleDown } from '../Helpers/Firebase';
 import Header from '../Components/Header';
+import Loading from '../Components/Loading';
 import * as Actions from '../Redux/Actions/Program';
-import { ProgramCard } from '../Components/ProgramCard';
 import ActionButton from '../Components/ActionButton';
+import { ProgramCard } from '../Components/ProgramCard';
+import { DeleteFB, ToggleUp, ToggleDown } from '../Helpers/Firebase';
 
 import { ThemeSelector } from '../Themes';
 import styles from './Styles/ProgramStyles';
@@ -73,9 +74,7 @@ const Programs = (props) => {
   const Colors = ThemeSelector(theme);
   const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
 
-  if (loading || programs.loading) {
-    return <LinearGradient style={styles.container} colors={gradients} />;
-  }
+  if (loading || programs.loading) return <Loading />;
 
   const programId = info.map(({ id }) => id).toString();
   const data = showExercises ? exercises.filter(e => e.day === dayKey) : days;

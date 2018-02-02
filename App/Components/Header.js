@@ -9,7 +9,6 @@ const Header = ({
   dispatch, title, noMenu, theme,
 }) => {
   const Colors = ThemeSelector(theme);
-  console.log(Colors.secondaryColor);
   return (
     <NativeHeader
       leftComponent={

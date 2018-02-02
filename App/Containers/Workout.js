@@ -20,6 +20,7 @@ import Alert from '../Components/Alert';
 import { ThemeSelector } from '../Themes';
 import Picker from '../Components/Picker';
 import Header from '../Components/Header';
+import Loading from '../Components/Loading';
 import styles from './Styles/WorkoutStyles';
 import CountDown from '../Components/CountDown';
 import * as Actions from '../Redux/Actions/Workout';
@@ -284,10 +285,8 @@ class Workout extends Component {
       return <WorkoutOverview performed={this.props.workout.input.performed} duration={duration} goBack={goBack} />;
     }
 
-    if (!initiated) {
-      return <LinearGradient style={styles.container} colors={gradients} />;
-    }
-    
+    if (!initiated) return <Loading />;
+
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />

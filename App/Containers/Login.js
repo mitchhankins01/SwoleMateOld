@@ -9,6 +9,7 @@ import { TextInput, Text, TouchableOpacity, View, StatusBar } from 'react-native
 import { Colors, Constants } from '../Themes/';
 import Alert from '../Components/Alert';
 import * as Actions from '../Redux/Actions/Auth';
+import * as ProgramActions from '../Redux/Actions/Program';
 import styles, { gradients, textColor } from './Styles/LoginStyles';
 
 class Login extends Component {
@@ -27,6 +28,7 @@ class Login extends Component {
     this.authListener = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.props.loginSavedUser(user);
+        this.props.getPrograms();
         this.props.navigation.navigate('HomeStack');
       } else console.log('no user');
     });
@@ -94,6 +96,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   resetAuth: () => dispatch(Actions.resetAuth()),
+  getPrograms: () => dispatch(ProgramActions.getPrograms()),
   loginSavedUser: user => dispatch(Actions.loginSavedUser(user)),
   loginUser: (email, password) => {
     dispatch(Actions.loginUser(email, password));

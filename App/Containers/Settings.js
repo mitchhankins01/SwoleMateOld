@@ -1,4 +1,5 @@
 /* eslint react/prop-types: 0 */
+import { capitalize } from 'lodash';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
@@ -9,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import Header from '../Components/Header';
 import { ThemeSelector } from '../Themes/';
+import Alert from '../Components/Alert';
 import styles from './Styles/SettingsStyles';
 import ActionButton from '../Components/ActionButton';
 import { SettingsCard } from '../Components/SettingsCard';
@@ -16,10 +18,11 @@ import { SettingsCard } from '../Components/SettingsCard';
 
 class Settings extends Component {
   state = {
+    toUpdate: '',
     onScreen: 'Main',
     name: this.props.auth.name,
     email: firebase.auth().currentUser.email,
-    password: firebase.auth().currentUser.email,
+    password: 'Send Reset Password Email to:',
   };
 
   getContent() {
@@ -59,34 +62,22 @@ class Settings extends Component {
             {
               title: 'Name',
               icon: 'message',
-              onPress: () => {
-                // toggleShowInput(true);
-                // setUpdateValue('name');
-              },
+              onPress: () => this.setState({ toUpdate: 'name' }),
             },
             {
               title: 'Email',
               icon: 'email',
-              onPress: () => {
-                // toggleShowInput(true);
-                // setUpdateValue('email');
-              },
+              onPress: () => this.setState({ toUpdate: 'email' }),
             },
             {
               title: 'Password',
               icon: 'lock',
-              onPress: () => {
-                // toggleShowInput(true);
-                // setUpdateValue('password');
-              },
+              onPress: () => this.setState({ toUpdate: 'password' }),
             },
             {
               title: 'Delete Account',
               icon: 'trash',
-              onPress: () => {
-                // toggleShowInput(true);
-                // setUpdateValue('delete');
-              },
+              onPress: () => this.setState({ toUpdate: 'delete' }),
             },
             {
               title: 'Back',
@@ -143,11 +134,40 @@ class Settings extends Component {
     }
   }
 
+  renderInput() {
+    const Colors = ThemeSelector(this.props.theme);
+    const toUpdate = capitalize(this.state.toUpdate);
+
+    if (toUpdate === 'Delete') {
+      return (
+        <Alert
+          input
+          onPressClose={() => this.setState({ toUpdate: '' })}
+          style={{ height: 0, width: 0 }}
+          title="Are you Sure?"
+          message="This action cannot be undone, and your data will be permanently lost."
+        />
+      );
+    }
+    return (
+      <Alert
+        input
+        title={toUpdate}
+        onPressSave={() => {}}
+        message={`Change your ${toUpdate}`}
+        value={this.state[this.state.toUpdate]}
+        onPressClose={() => this.setState({ toUpdate: '' })}
+        style={[
+          styles.textInput,
+          { borderColor: Colors.primaryColor, backgroundColor: Colors.tertiaryColor },
+        ]}
+      />
+    );
+  }
+
   renderCard(cards) {
     const { showSubs } = this.state;
-    return cards.map(({
-      icon, title, onPress, subtitle,
-    }) => (
+    return cards.map(({ icon, title, onPress }) => (
       <SettingsCard
         key={title}
         icon={icon}
@@ -160,7 +180,7 @@ class Settings extends Component {
   }
 
   render() {
-    const { showSubs } = this.state;
+    const { toUpdate } = this.state;
     const Colors = ThemeSelector(this.props.auth.theme);
     const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
     const containerStyle = [
@@ -174,6 +194,7 @@ class Settings extends Component {
         <Header title="Settings" />
         <View style={containerStyle}>{this.renderCard(content.options)}</View>
         <ActionButton buttons={getButtons(this.props)} />
+        {toUpdate ? this.renderInput() : null}
       </LinearGradient>
     );
   }

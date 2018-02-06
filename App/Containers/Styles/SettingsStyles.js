@@ -14,4 +14,15 @@ export default StyleSheet.create({
     borderWidth: 2,
     marginBottom: 85,
   },
+  textInput: {
+    height: 40,
+    width: 300,
+    padding: 10,
+    marginTop: 20,
+    borderWidth: 1,
+    borderRadius: 5,
+    color: '#EDF0F1',
+    alignSelf: 'center',
+    fontFamily: Fonts.type.regular,
+  },
 });

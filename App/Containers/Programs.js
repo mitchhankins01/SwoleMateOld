@@ -112,17 +112,17 @@ class Programs extends Component {
               onToggleUp={() => ToggleUp(days, programId, item, exercises, dayKey)}
               onToggleDown={() => ToggleDown(days, programId, item, exercises, dayKey)}
               subtitle={
-                  showExercises
-                    ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
-                    : `${item.primaryGroup} - ${item.secondaryGroup}`
-                }
+                showExercises
+                  ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
+                  : `${item.primaryGroup} - ${item.secondaryGroup}`
+              }
               title={
-                  showExercises
-                    ? programs.allExercises.find(e => e.key === item.exerciseKey).name
-                    : item.name
-                }
+                showExercises
+                  ? programs.allExercises.find(e => e.key === item.exerciseKey).name
+                  : item.name
+              }
             />
-            )}
+          )}
         />
         <ActionButton buttons={getProgramButtons(this.props)} />
       </LinearGradient>

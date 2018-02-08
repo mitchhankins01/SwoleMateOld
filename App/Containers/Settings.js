@@ -14,7 +14,7 @@ import Alert from '../Components/Alert';
 import styles from './Styles/SettingsStyles';
 import ActionButton from '../Components/ActionButton';
 import { SettingsCard } from '../Components/SettingsCard';
-// import * as Actions from '../Redux/Actions/Settings';
+import * as Actions from '../Redux/Actions/Settings';
 
 class Settings extends Component {
   state = {
@@ -26,6 +26,7 @@ class Settings extends Component {
   };
 
   getContent() {
+    const { toggleImperial } = this.props;
     switch (this.state.onScreen) {
       default:
         return { title: 'Error', options: [{ title: 'Error' }] };
@@ -90,11 +91,13 @@ class Settings extends Component {
         return {
           title: 'General',
           options: [
-            // {
-            //   title: imperial ? 'Use Metric System (Kg)' : 'Use Imperial System (Lb)',
-            //   icon: 'suitcase',
-            //   onPress: () => toggleImperial(),
-            // },
+            {
+              title: this.props.auth.imperial
+                ? 'Use Metric System (Kg)'
+                : 'Use Imperial System (Lb)',
+              icon: 'suitcase',
+              onPress: () => Actions.toggleImperial(this.props.auth.imperial),
+            },
             {
               title: 'Back',
               icon: 'back',
@@ -110,19 +113,19 @@ class Settings extends Component {
               title: 'Male',
               icon: 'palette',
               name: 'standard',
-              onPress: () => {}, // updateTheme('standard'),
+              onPress: () => Actions.updateTheme('standard'),
             },
             {
               title: 'Female',
               icon: 'palette',
               name: 'standard2',
-              onPress: () => {},
+              onPress: () => Actions.updateTheme('standard2'),
             },
             {
               title: 'Other',
               icon: 'palette',
               name: 'standard3',
-              onPress: () => {},
+              onPress: () => Actions.updateTheme('standard3'),
             },
             {
               title: 'Back',
@@ -134,17 +137,28 @@ class Settings extends Component {
     }
   }
 
+  renderCompleteAlert() {
+    return (
+      <Alert
+        acknowledge
+        title="Change Saved"
+        message="Changes Successfully Saved"
+        onPressClose={() => this.setState({ toUpdate: '' })}
+      />
+    );
+  }
+
   renderInput() {
-    const Colors = ThemeSelector(this.props.theme);
+    const Colors = ThemeSelector(this.props.auth.theme);
     const toUpdate = capitalize(this.state.toUpdate);
 
     if (toUpdate === 'Delete') {
       return (
         <Alert
           input
-          onPressClose={() => this.setState({ toUpdate: '' })}
-          style={{ height: 0, width: 0 }}
           title="Are you Sure?"
+          style={{ height: 0, width: 0 }}
+          onPressClose={() => this.setState({ toUpdate: '' })}
           message="This action cannot be undone, and your data will be permanently lost."
         />
       );
@@ -181,6 +195,7 @@ class Settings extends Component {
 
   render() {
     const { toUpdate } = this.state;
+    const { status: { complete } } = Actions;
     const Colors = ThemeSelector(this.props.auth.theme);
     const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
     const containerStyle = [
@@ -195,6 +210,7 @@ class Settings extends Component {
         <View style={containerStyle}>{this.renderCard(content.options)}</View>
         <ActionButton buttons={getButtons(this.props)} />
         {toUpdate ? this.renderInput() : null}
+        {complete ? this.renderCompleteAlert() : null}
       </LinearGradient>
     );
   }

@@ -1,6 +1,5 @@
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { composeWithDevTools } from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose } from 'redux';
 
 export default (rootReducer) => {

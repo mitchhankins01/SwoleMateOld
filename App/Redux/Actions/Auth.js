@@ -1,4 +1,7 @@
 import firebase from 'react-native-firebase';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+import { getTheme } from './Settings';
 import { RESET_AUTH, LOGIN_USER, LOGIN_USER_FAIL, LOGIN_USER_SUCCESS } from '../Types/Auth';
 
 export const resetAuth = () => (dispatch) => {
@@ -20,10 +23,14 @@ const loginUserSuccess = (dispatch, user) => {
     .onSnapshot(
       (userDoc) => {
         const { imperial, theme, name } = userDoc.data();
+        EStyleSheet.build(getTheme(theme));
         dispatch({
           type: LOGIN_USER_SUCCESS,
           payload: {
-            user, imperial, theme, name,
+            user,
+            imperial,
+            theme,
+            name,
           },
         });
       },

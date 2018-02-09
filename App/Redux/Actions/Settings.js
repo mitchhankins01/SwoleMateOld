@@ -35,7 +35,7 @@ export const updateTheme = (theme) => {
   EStyleSheet.build(getTheme(theme));
 };
 
-const getTheme = (theme) => {
+export function getTheme(theme) {
   const standard = {
     $theme: 'standard',
     $text: '#EDF0F1',
@@ -73,4 +73,4 @@ const getTheme = (theme) => {
     case 'standard3':
       return standard3;
   }
-};
+}

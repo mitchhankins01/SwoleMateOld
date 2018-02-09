@@ -16,10 +16,19 @@ export const updateSetting = (toUpdate, value, errorCB, successCb) => {
         .doc(firebase.auth().currentUser.uid)
         .update({ name: value })
         .then(() => successCb())
-        .catch((error) => {
-          this.error = error;
-          this.showError = true;
-        });
+        .catch(error => errorCB(error.message));
+      break;
+    }
+    case 'Email': {
+      if (value.length === 0) {
+        return errorCB('Please enter a valid Email');
+      }
+
+      firebase
+        .auth()
+        .currentUser.updateEmail(value)
+        .then(() => successCb())
+        .catch(error => errorCB(error.message));
     }
   }
 };

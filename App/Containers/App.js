@@ -10,8 +10,8 @@ export default class App extends Component {
   constructor() {
     super();
     EStyleSheet.build({
+      $text: '#EDF0F1',
       $theme: 'standard',
-      $textColor: '#EDF0F1',
       $primaryColor: '#70B2F9',
       $tertiaryColor: '#38597C',
       $secondaryColor: '#4872A0',

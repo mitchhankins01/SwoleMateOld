@@ -1,12 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import styles from './Styles/ActionButtonStyles';
 
-const ActionButton = ({ buttons, theme }) => (
+const ActionButton = ({ buttons }) => (
   <View style={styles.actionView}>
     {buttons.map(button => (
       <Animatable.View animation={button.animation} key={button.icon}>
@@ -18,8 +17,8 @@ const ActionButton = ({ buttons, theme }) => (
           />
         </TouchableOpacity>
       </Animatable.View>
-      ))}
+    ))}
   </View>
 );
 
-export default connect(({ auth }) => auth)(ActionButton);
+export default ActionButton;

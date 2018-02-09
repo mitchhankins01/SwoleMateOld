@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import { Fonts, Constants } from '../../Themes/';
 
-export default StyleSheet.create({
+export default EStyleSheet.create({
   container: {
     top: 0,
     left: 0,
@@ -20,16 +20,19 @@ export default StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     width: Constants.DEV_WIDTH,
+    backgroundColor: '$tertiaryColor',
     marginTop: Constants.DEV_HEIGHT * 0.35,
   },
   title: {
     marginTop: 15,
     alignSelf: 'center',
+    color: '$text',
     fontSize: Fonts.size.h3,
     fontFamily: Fonts.type.bold,
   },
   message: {
     marginTop: 10,
+    color: '$text',
     alignSelf: 'center',
     paddingHorizontal: 20,
     fontSize: Fonts.size.regular,
@@ -42,5 +45,8 @@ export default StyleSheet.create({
     borderRadius: 20,
     marginVertical: 15,
     borderColor: '#EDF0F1',
+  },
+  icon: {
+    color: '$text',
   },
 });

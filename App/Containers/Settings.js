@@ -3,9 +3,9 @@ import { capitalize } from 'lodash';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
-import { StatusBar, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
+import { StatusBar, View, BackHandler } from 'react-native';
 
 import Header from '../Components/Header';
 import Alert from '../Components/Alert';
@@ -25,8 +25,48 @@ class Settings extends Component {
     password: 'Send Reset Password Email to:',
   };
 
+  componentWillMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (this.state.onScreen !== 'Main') {
+        this.setState({ onScreen: 'Main' });
+        return true;
+      }
+      this.props.goBack();
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
+  getButtons() {
+    const { toggleDrawer } = this.props;
+
+    if (this.state.onScreen === 'Main') {
+      return [
+        {
+          icon: 'menu',
+          animation: 'zoomIn',
+          onPress: () => toggleDrawer(),
+        },
+      ];
+    }
+    return [
+      {
+        icon: 'menu',
+        animation: 'zoomIn',
+        onPress: () => toggleDrawer(),
+      },
+      {
+        icon: 'back',
+        animation: 'zoomIn',
+        onPress: () => this.setState({ onScreen: 'Main' }),
+      },
+    ];
+  }
+
   getContent() {
-    const { toggleImperial } = this.props;
     switch (this.state.onScreen) {
       default:
         return { title: 'Error', options: [{ title: 'Error' }] };
@@ -228,7 +268,7 @@ class Settings extends Component {
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title="Settings" />
         <View style={styles.subContainer}>{this.renderCard(content.options)}</View>
-        <ActionButton buttons={getButtons(this.props)} />
+        <ActionButton buttons={this.getButtons()} />
         {toUpdate ? this.renderInput() : null}
         {error ? this.renderErrorAlert() : null}
         {showSuccessAlert ? this.renderSuccessAlert() : null}
@@ -237,41 +277,12 @@ class Settings extends Component {
   }
 }
 
-const getButtons = (props) => {
-  const { toggleDrawer } = props;
-
-  switch (true) {
-    case false:
-      return [
-        {
-          icon: 'menu',
-          animation: 'zoomIn',
-          onPress: () => toggleDrawer(),
-        },
-      ];
-    case true:
-      return [
-        {
-          icon: 'menu',
-          animation: 'zoomIn',
-          onPress: () => toggleDrawer(),
-        },
-        {
-          icon: 'back',
-          animation: 'zoomIn',
-          onPress: () => {},
-        },
-      ];
-    default:
-      return null;
-  }
-};
-
 const mapStateToProps = state => ({
   auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
+  goBack: () => dispatch(NavigationActions.navigate({ routeName: 'Programs' })),
   toggleDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerToggle' })),
 });
 

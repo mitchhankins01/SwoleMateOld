@@ -2,8 +2,8 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
+import { StatusBar, FlatList, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { StatusBar, FlatList, Text, View } from 'react-native';
 
 import Header from '../Components/Header';
 import Loading from '../Components/Loading';
@@ -12,7 +12,6 @@ import ActionButton from '../Components/ActionButton';
 import { ProgramCard } from '../Components/ProgramCard';
 import { DeleteFB, ToggleUp, ToggleDown } from '../Helpers/Firebase';
 
-import { ThemeSelector } from '../Themes';
 import styles from './Styles/ProgramStyles';
 
 const getProgramButtons = (props) => {
@@ -66,7 +65,6 @@ class Programs extends Component {
 
   render() {
     const {
-      theme,
       programs,
       editProgram,
       toggleExercises,
@@ -75,8 +73,7 @@ class Programs extends Component {
       },
     } = this.props;
     if (loading || programs.loading) return <Loading />;
-    const Colors = ThemeSelector(theme);
-    const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
+    const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
 
     const programId = info.map(({ id }) => id).toString();
     const data = showExercises ? exercises.filter(e => e.day === dayKey) : days;
@@ -87,12 +84,7 @@ class Programs extends Component {
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title={title} />
         {data.length === 0 ? (
-          <Text
-            style={[
-              styles.emptyText,
-              { backgroundColor: Colors.secondaryColor, color: Colors.text },
-            ]}
-          >
+          <Text style={styles.emptyText}>
             {showExercises
               ? 'This Workout is empty, tap the lower right button to get started'
               : 'This Program is empty, tap the lower right button to get started'}

@@ -29,6 +29,19 @@ export const updateSetting = (toUpdate, value, errorCB, successCb) => {
         .currentUser.updateEmail(value)
         .then(() => successCb())
         .catch(error => errorCB(error.message));
+      break;
+    }
+    case 'Password': {
+      if (value.length === 0) {
+        return errorCB('Please enter a valid Email');
+      }
+
+      firebase
+        .auth()
+        .sendPasswordResetEmail(value)
+        .then(() => successCb())
+        .catch(error => errorCB(error.message));
+      break;
     }
   }
 };

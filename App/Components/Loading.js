@@ -1,23 +1,31 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-import { Fonts, ThemeSelector } from '../Themes';
+import { Fonts } from '../Themes';
 
-const Loading = ({ theme }) => {
-  const Colors = ThemeSelector(theme);
-  const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
+const styles = EStyleSheet.create({
+  $primary: '$primaryColor',
+  $secondary: '$secondaryColor',
+  $tertiary: '$tertiaryColor',
+  container: {
+    color: '$text',
+    fontSize: Fonts.size.h1,
+    fontFamily: Fonts.type.bold,
+  },
+});
+
+const Loading = () => {
+  const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
   return (
     <LinearGradient
       colors={gradients}
       style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
     >
-      <Text style={{ color: Colors.text, fontFamily: Fonts.type.bold, fontSize: Fonts.size.h1 }}>
-        Loading
-      </Text>
+      <Text style={styles.container}>Loading</Text>
     </LinearGradient>
   );
 };
 
-export default connect(({ auth }) => auth)(Loading);
+export default Loading;

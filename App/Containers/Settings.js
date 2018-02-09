@@ -96,7 +96,12 @@ class Settings extends Component {
                 ? 'Use Metric System (Kg)'
                 : 'Use Imperial System (Lb)',
               icon: 'suitcase',
-              onPress: () => Actions.toggleImperial(this.props.auth.imperial),
+              onPress: () =>
+                Actions.toggleImperial(
+                  this.props.auth.imperial,
+                  error => this.setState({ error }),
+                  () => this.setState({ showSuccessAlert: true, toUpdate: '' }),
+                ),
             },
             {
               title: 'Back',
@@ -171,6 +176,7 @@ class Settings extends Component {
           input
           title="Are you Sure?"
           style={{ height: 0, width: 0 }}
+          onPressSave={() => Actions.deleteUser()}
           onPressClose={() => this.setState({ toUpdate: '' })}
           message="This action cannot be undone, and your data will be permanently lost."
         />

@@ -43,20 +43,25 @@ export const updateSetting = (toUpdate, value, errorCB, successCb) => {
         .catch(error => errorCB(error.message));
       break;
     }
+    case 'Delete': {
+      firebase
+        .auth()
+        .currentUser.delete()
+        .then(() => successCb())
+        .catch(error => errorCB(error.message));
+      break;
+    }
   }
 };
 
-export const toggleImperial = (imperial) => {
+export const toggleImperial = (imperial, errorCB, successCb) => {
   firebase
     .firestore()
     .collection('users')
     .doc(firebase.auth().currentUser.uid)
     .update({ imperial: !imperial })
-    .then(() => this.switchSuccess())
-    .catch((error) => {
-      this.error = error;
-      this.showError = true;
-    });
+    .then(() => successCb())
+    .catch(error => errorCB(error.message));
 };
 
 export const updateTheme = (theme, cb) => {

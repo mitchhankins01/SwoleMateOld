@@ -1,11 +1,17 @@
 import _ from 'lodash';
 import React from 'react';
-import { connect } from 'react-redux';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import { Platform, Picker as RNPicker } from 'react-native';
 import { WheelPicker } from 'react-native-wheel-picker-android';
 
-import { ThemeSelector } from '../Themes';
 import { Fonts, Constants } from '../Themes';
+
+const styles = EStyleSheet.create({
+  $textColor: '$text',
+  $primary: '$primaryColor',
+  $secondary: '$secondaryColor',
+  $tertiary: '$tertiaryColor',
+});
 
 const getNumbers = (type, array) => {
   switch (type) {
@@ -33,7 +39,6 @@ const Picker = (props) => {
   const {
     type, weight, reps, setReps, setWeight,
   } = props;
-  const Colors = ThemeSelector(props.theme);
 
   let array = _.range(0, 505, 5);
   if (type === 'reps') array = _.range(0, 101, 1);
@@ -45,11 +50,11 @@ const Picker = (props) => {
           isCurved
           renderIndicator
           itemTextSize={40}
-          itemTextColor={Colors.text}
           data={getNumbers(type, array)}
-          selectedItemTextColor={Colors.text}
-          indicatorColor={Colors.primaryColor}
+          indicatorColor={styles.$primary}
+          itemTextColor={styles.$textColor}
           itemTextFontFamily={Fonts.type.medium}
+          selectedItemTextColor={styles.$textColor}
           selectedItemPosition={type === 'weight' ? Number(weight / 5) : Number(reps)}
           style={{ height: Constants.DEV_HEIGHT * 0.3, marginTop: 10, width: '100%' }}
           onItemSelected={event => onChangeInput(type, event.data, setReps, setWeight)}
@@ -61,8 +66,8 @@ const Picker = (props) => {
           selectedValue={type === 'weight' ? weight.toString() : reps.toString()}
           onValueChange={number => onChangeInput(type, number, setReps, setWeight)}
           itemStyle={{
-            color: Colors.text,
             textAlign: 'center',
+            color: styles.$textColor,
             fontSize: Fonts.size.regular,
             fontFamily: Fonts.type.medium,
           }}
@@ -75,4 +80,4 @@ const Picker = (props) => {
   }
 };
 
-export default connect(({ auth }) => auth)(Picker);
+export default Picker;

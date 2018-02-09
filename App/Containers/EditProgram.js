@@ -1,25 +1,21 @@
+import React from 'react';
 import { connect } from 'react-redux';
-import React, { Component } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Header from '../Components/Header';
-import * as Actions from '../Redux/Actions/Program';
-import { EditProgramCard } from '../Components/ProgramCard';
-import ActionButton from '../Components/ActionButton';
-
-import { ThemeSelector } from '../Themes';
 import styles from './Styles/EditProgramStyles';
+import * as Actions from '../Redux/Actions/Program';
+import ActionButton from '../Components/ActionButton';
+import { EditProgramCard } from '../Components/ProgramCard';
 
 const EditProgram = ({
-  theme,
   goBack,
   program: { showExercises },
   navigation: { state: { params: { edit, programId, item } } },
 }) => {
-  const Colors = ThemeSelector(theme);
-  const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
+  const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
   return (
     <LinearGradient style={styles.container} colors={gradients}>
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -40,7 +36,6 @@ const getButtons = goBack => [
 
 const mapStateToProps = state => ({
   program: state.program,
-  theme: state.auth.theme,
   programs: state.programs,
 });
 

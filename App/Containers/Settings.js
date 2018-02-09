@@ -3,13 +3,11 @@ import { capitalize } from 'lodash';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
-import { Icon } from 'react-native-elements';
-import { StatusBar, View, Text } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Header from '../Components/Header';
-import { ThemeSelector } from '../Themes/';
 import Alert from '../Components/Alert';
 import styles from './Styles/SettingsStyles';
 import ActionButton from '../Components/ActionButton';
@@ -149,7 +147,6 @@ class Settings extends Component {
   }
 
   renderInput() {
-    const Colors = ThemeSelector(this.props.auth.theme);
     const toUpdate = capitalize(this.state.toUpdate);
 
     if (toUpdate === 'Delete') {
@@ -168,13 +165,10 @@ class Settings extends Component {
         input
         title={toUpdate}
         onPressSave={() => {}}
+        style={styles.textInput}
         message={`Change your ${toUpdate}`}
         value={this.state[this.state.toUpdate]}
         onPressClose={() => this.setState({ toUpdate: '' })}
-        style={[
-          styles.textInput,
-          { borderColor: Colors.primaryColor, backgroundColor: Colors.tertiaryColor },
-        ]}
       />
     );
   }
@@ -196,18 +190,13 @@ class Settings extends Component {
   render() {
     const { toUpdate } = this.state;
     const { status: { complete } } = Actions;
-    const Colors = ThemeSelector(this.props.auth.theme);
-    const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
-    const containerStyle = [
-      styles.subContainer,
-      { backgroundColor: Colors.bgColor, borderColor: Colors.primaryColor },
-    ];
+    const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
     const content = this.getContent();
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title="Settings" />
-        <View style={containerStyle}>{this.renderCard(content.options)}</View>
+        <View style={styles.subContainer}>{this.renderCard(content.options)}</View>
         <ActionButton buttons={getButtons(this.props)} />
         {toUpdate ? this.renderInput() : null}
         {complete ? this.renderCompleteAlert() : null}

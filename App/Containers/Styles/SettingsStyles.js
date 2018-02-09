@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { Fonts, Colors, Constants } from '../../Themes/';
+import { Fonts } from '../../Themes/';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-export const textColor = Colors.text;
-export const gradients = [Colors.primaryColor, Colors.secondaryColor, Colors.tertiaryColor];
-
-export default StyleSheet.create({
+export default EStyleSheet.create({
+  $primary: '$primaryColor',
+  $secondary: '$secondaryColor',
+  $tertiary: '$tertiaryColor',
   container: {
     flex: 1,
   },
@@ -13,6 +13,8 @@ export default StyleSheet.create({
     margin: 15,
     borderWidth: 2,
     marginBottom: 85,
+    backgroundColor: '$bgColor',
+    borderColor: '$primaryColor',
   },
   textInput: {
     height: 40,
@@ -23,6 +25,8 @@ export default StyleSheet.create({
     borderRadius: 5,
     color: '#EDF0F1',
     alignSelf: 'center',
+    borderColor: '$primaryColor',
     fontFamily: Fonts.type.regular,
+    backgroundColor: '$tertiaryColor',
   },
 });

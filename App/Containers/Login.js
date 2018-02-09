@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
@@ -6,11 +7,11 @@ import ProgressBar from 'react-native-progress/Bar';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput, Text, TouchableOpacity, View, StatusBar } from 'react-native';
 
-import { Colors, Constants } from '../Themes/';
+import { Constants } from '../Themes/';
 import Alert from '../Components/Alert';
+import styles from './Styles/LoginStyles';
 import * as Actions from '../Redux/Actions/Auth';
 import * as ProgramActions from '../Redux/Actions/Program';
-import styles, { gradients, textColor } from './Styles/LoginStyles';
 
 class Login extends Component {
   state = { email: '', password: '' };
@@ -37,7 +38,7 @@ class Login extends Component {
   render() {
     const { loginUser, resetAuth, auth: { loading, error } } = this.props;
     const { email, password } = this.state;
-
+    const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -49,8 +50,8 @@ class Login extends Component {
           autoCapitalize="none"
           value={this.state.email}
           keyboardType="email-address"
-          placeholderTextColor={textColor}
           underlineColorAndroid="transparent"
+          placeholderTextColor={styles.$textColor}
           onChangeText={input => this.setState({ email: input })}
         />
         <TextInput
@@ -59,7 +60,7 @@ class Login extends Component {
           autoCapitalize="none"
           placeholder="Password"
           value={this.state.password}
-          placeholderTextColor={textColor}
+          placeholderTextColor={styles.$textColor}
           underlineColorAndroid="transparent"
           onChangeText={input => this.setState({ password: input })}
         />
@@ -68,7 +69,7 @@ class Login extends Component {
             useNativeDriver
             indeterminate
             style={styles.progress}
-            color={Colors.primaryColor}
+            color={styles.$primary}
             width={Constants.DEV_WIDTH}
           />
         ) : null}

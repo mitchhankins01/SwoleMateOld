@@ -2,8 +2,8 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
-import { StatusBar, FlatList, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { StatusBar, FlatList, Text, BackHandler, Alert } from 'react-native';
 
 import Header from '../Components/Header';
 import Loading from '../Components/Loading';
@@ -14,17 +14,33 @@ import { DeleteFB, ToggleUp, ToggleDown } from '../Helpers/Firebase';
 
 import styles from './Styles/ProgramStyles';
 
-const getProgramButtons = (props) => {
-  const {
-    addHandler,
-    toggleDrawer,
-    launchHandler,
-    toggleExercises,
-    program: { showExercises },
-  } = props;
+class Programs extends Component {
+  state = {};
 
-  switch (showExercises) {
-    case false:
+  componentWillMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (this.props.program.showExercises) {
+        this.props.toggleExercises(false, null);
+        return true;
+      }
+      return false;
+    });
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
+  getButtons() {
+    const {
+      addHandler,
+      toggleDrawer,
+      launchHandler,
+      toggleExercises,
+      program: { showExercises },
+    } = this.props;
+
+    if (!showExercises) {
       return [
         {
           icon: 'menu',
@@ -37,31 +53,25 @@ const getProgramButtons = (props) => {
           onPress: () => addHandler(),
         },
       ];
-    case true:
-      return [
-        {
-          icon: 'back',
-          animation: 'zoomIn',
-          onPress: () => toggleExercises(false, null),
-        },
-        {
-          icon: 'rocket',
-          animation: 'zoomIn',
-          onPress: () => launchHandler(),
-        },
-        {
-          icon: 'plus',
-          animation: 'zoomIn',
-          onPress: () => addHandler(),
-        },
-      ];
-    default:
-      return null;
+    }
+    return [
+      {
+        icon: 'back',
+        animation: 'zoomIn',
+        onPress: () => toggleExercises(false, null),
+      },
+      {
+        icon: 'rocket',
+        animation: 'zoomIn',
+        onPress: () => launchHandler(),
+      },
+      {
+        icon: 'plus',
+        animation: 'zoomIn',
+        onPress: () => addHandler(),
+      },
+    ];
   }
-};
-
-class Programs extends Component {
-  state = {};
 
   render() {
     const {
@@ -116,7 +126,7 @@ class Programs extends Component {
             />
           )}
         />
-        <ActionButton buttons={getProgramButtons(this.props)} />
+        <ActionButton buttons={this.getButtons()} />
       </LinearGradient>
     );
   }

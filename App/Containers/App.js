@@ -1,11 +1,24 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import ReduxNavigation from '../Navigation/ReduxNavigation';
 import createStore from '../Redux';
+import { Provider } from 'react-redux';
+import React, { Component } from 'react';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import ReduxNavigation from '../Navigation/ReduxNavigation';
 
 const store = createStore();
 
 export default class App extends Component {
+  constructor() {
+    super();
+    EStyleSheet.build({
+      $theme: 'standard',
+      $textColor: '#EDF0F1',
+      $primaryColor: '#70B2F9',
+      $tertiaryColor: '#38597C',
+      $secondaryColor: '#4872A0',
+      $bgColor: 'rgba(0, 0, 0, 0.1)',
+    });
+  }
+
   render() {
     return (
       <Provider store={store}>

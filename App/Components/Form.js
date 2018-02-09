@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import t from 'tcomb-form-native';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
@@ -8,7 +9,6 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
 import styles from './Styles/FormStyles';
-import { ThemeSelector, Fonts } from '../Themes';
 import { AddWorkoutFB, AddExerciseFB, EditWorkoutFB, EditExerciseFB } from '../Helpers/Firebase';
 
 const TForm = t.form.Form;
@@ -40,7 +40,7 @@ class EditProgram extends Component {
     return goBack();
   }
 
-  renderExerciseList(Colors) {
+  renderExerciseList() {
     const options = [
       'Show All Exercises',
       'Abs',
@@ -66,12 +66,12 @@ class EditProgram extends Component {
       <View>
         <ModalDropdown
           options={options}
+          style={styles.dropdown}
+          textStyle={styles.dropdownText}
+          dropdownStyle={styles.dropdownStyle}
           defaultValue={this.state.searchGroup}
-          textStyle={[styles.dropdownText, { color: Colors.text }]}
+          dropdownTextStyle={styles.dropdownItemText}
           onSelect={(index, value) => this.setState({ searchGroup: value })}
-          style={[styles.dropdown, { backgroundColor: Colors.tertiaryColor }]}
-          dropdownTextStyle={[styles.dropdownItemText, { color: Colors.text }]}
-          dropdownStyle={[styles.dropdownStyle, { backgroundColor: Colors.tertiaryColor }]}
         />
         <FlatList
           style={{ marginBottom: 50, marginTop: 20 }}
@@ -86,7 +86,7 @@ class EditProgram extends Component {
                 })
               }
             >
-              <Text style={[styles.exerciseText, { color: Colors.text }]}>{item.name}</Text>
+              <Text style={styles.exerciseText}>{item.name}</Text>
             </TouchableOpacity>
           )}
         />
@@ -94,14 +94,14 @@ class EditProgram extends Component {
     );
   }
 
-  renderForm(Colors) {
+  renderForm() {
     const {
       edit, programId, item, program: { showExercises },
     } = this.props;
     return (
       <View>
         <Icon
-          color={Colors.primaryColor}
+          color={styles.$primary}
           name={showExercises ? 'dumbbell' : 'folder'}
           type={showExercises ? 'material-community' : 'entypo'}
         />
@@ -114,9 +114,7 @@ class EditProgram extends Component {
                   style={styles.selectButton}
                   onPress={() => this.setState({ showExerciseList: true })}
                 >
-                  <Text style={[styles.selectButtonText, { color: Colors.text }]}>
-                    {this.state.exerciseName}
-                  </Text>
+                  <Text style={styles.selectButtonText}>{this.state.exerciseName}</Text>
                 </TouchableOpacity>
               </Animatable.View>
             )}
@@ -128,15 +126,9 @@ class EditProgram extends Component {
           name="check"
           type="entypo"
           underlayColor="transparent"
-          color={Colors.text}
-          iconStyle={[styles.icon, { color: Colors.primaryColor }]}
-          containerStyle={[
-            styles.button,
-            {
-              borderColor: Colors.primaryColor,
-              shadowColor: Colors.primaryColor,
-            },
-          ]}
+          color={styles.$text}
+          iconStyle={styles.icon}
+          containerStyle={styles.button}
           onPress={() => {
             const values = showExercises
               ? this.refs.exerciseForm.getValue()
@@ -152,10 +144,9 @@ class EditProgram extends Component {
   }
 
   render() {
-    const Colors = ThemeSelector(this.props.auth.theme);
     return (
       <View style={styles.formStyle}>
-        {this.state.showExerciseList ? this.renderExerciseList(Colors) : this.renderForm(Colors)}
+        {this.state.showExerciseList ? this.renderExerciseList() : this.renderForm()}
       </View>
     );
   }

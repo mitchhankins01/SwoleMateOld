@@ -1,7 +1,10 @@
-import { StyleSheet } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import { Fonts, Constants } from '../../Themes/';
 
-export default StyleSheet.create({
+export default EStyleSheet.create({
+  $primary: '$primaryColor',
+  $secondary: '$secondaryColor',
+  $tertiary: '$tertiaryColor',
   container: {
     flex: 1,
   },
@@ -14,6 +17,8 @@ export default StyleSheet.create({
     borderRadius: 5,
     shadowOpacity: 0.8,
     marginHorizontal: 15,
+    backgroundColor: '$bgColor',
+    borderColor: '$primaryColor',
     shadowColor: 'rgba(0,0,0, 1)',
     shadowOffset: { height: 0, width: 0 },
   },
@@ -31,12 +36,15 @@ export default StyleSheet.create({
     elevation: 1,
     borderWidth: 2,
     borderRadius: 5,
-    shadowOpacity: 0.8,
     marginBottom: 85,
+    shadowOpacity: 0.8,
+    backgroundColor: '$bgColor',
+    borderColor: '$primaryColor',
     shadowColor: 'rgba(0,0,0, 1)',
     shadowOffset: { height: 0, width: 0 },
   },
   inputHeader: {
+    color: '$text',
     alignSelf: 'center',
     fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.regular,
@@ -49,13 +57,16 @@ export default StyleSheet.create({
     textAlign: 'center',
     borderBottomWidth: 1,
     fontFamily: 'Exo-Regular',
+    borderColor: '$primaryColor',
   },
   logText: {
+    color: '$text',
     alignSelf: 'center',
     fontSize: Fonts.size.regular,
     fontFamily: Fonts.type.regular,
   },
   logTextSets: {
+    color: '$text',
     alignSelf: 'center',
     fontSize: Fonts.size.medium,
     fontFamily: Fonts.type.regular,
@@ -69,16 +80,19 @@ export default StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '$secondaryColor',
   },
   pastLogsFlatList: {
     width: Constants.DEV_WIDTH,
   },
   pastLogsHeader: {
+    color: '$text',
     marginVertical: 30,
     fontSize: Fonts.size.h4,
     fontFamily: Fonts.type.bold,
   },
   pastLogsText: {
+    color: '$text',
     alignSelf: 'center',
     fontSize: Fonts.size.h5,
     fontFamily: Fonts.type.medium,
@@ -93,6 +107,7 @@ export default StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '$secondaryColor',
   },
   overlayButtonContainer: {
     width: 50,
@@ -103,15 +118,18 @@ export default StyleSheet.create({
     shadowRadius: 2,
     borderRadius: 25,
     shadowOpacity: 0.8,
+    shadowColor: '$primaryColor',
+    borderColor: '$primaryColor',
     shadowOffset: { width: 0, height: 2 },
   },
   overlayIcon: {
     fontSize: 35,
+    color: '$primaryColor',
   },
   exerciseListHeader: {
     marginTop: 40,
+    color: '$text',
     marginBottom: 10,
-
     fontSize: Fonts.size.h4,
     fontFamily: Fonts.type.bold,
   },
@@ -120,6 +138,7 @@ export default StyleSheet.create({
     width: Constants.DEV_WIDTH,
   },
   exerciseListText: {
+    color: '$text',
     fontSize: Fonts.size.h5,
     fontFamily: Fonts.type.medium,
   },

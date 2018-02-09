@@ -1,7 +1,8 @@
 import { Fonts } from '../../Themes/';
-import { StyleSheet } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-export default StyleSheet.create({
+export default EStyleSheet.create({
+  $progress: '$primaryColor',
   countDownContainer: {
     top: 0,
     flex: 1,
@@ -37,15 +38,19 @@ export default StyleSheet.create({
     shadowRadius: 2,
     borderRadius: 25,
     shadowOpacity: 0.8,
+    shadowColor: '$primaryColor',
+    borderColor: '$primaryColor',
     shadowOffset: { width: 0, height: 2 },
   },
   countDownIcon: {
     fontSize: 35,
+    color: '$primaryColor',
   },
   countDownText: {
     fontSize: 80,
     alignSelf: 'center',
     position: 'absolute',
+    color: '$primaryColor',
     fontFamily: Fonts.type.bold,
   },
 });

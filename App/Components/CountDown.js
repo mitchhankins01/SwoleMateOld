@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { AppState, AsyncStorage, View, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as Progress from 'react-native-progress';
 import * as Animatable from 'react-native-animatable';
+import { AppState, AsyncStorage, View, Text } from 'react-native';
 
-import { Constants, ThemeSelector } from '../Themes';
+import { Constants } from '../Themes';
 import styles from './Styles/CountDownStyles';
 import { HIDE_COUNTDOWN } from '../Redux/Types/Workout';
 
@@ -46,19 +46,16 @@ class CountDown extends Component {
   };
 
   render() {
-    const Colors = ThemeSelector(this.props.auth.theme);
     const { timeRemaining } = this.state;
     return (
       <View style={styles.countDownContainer}>
         <Animatable.View style={styles.progressContainer} animation="zoomIn">
-          <Text style={[styles.countDownText, { color: Colors.primaryColor }]}>
-            {timeRemaining > 0 ? timeRemaining : 0}
-          </Text>
+          <Text style={styles.countDownText}>{timeRemaining > 0 ? timeRemaining : 0}</Text>
           <View>
             <Progress.CircleSnail
               indeterminate
               thickness={20}
-              color={Colors.primaryColor}
+              color={styles.$progress}
               size={Constants.DEV_WIDTH * 0.7}
             />
           </View>
@@ -68,15 +65,9 @@ class CountDown extends Component {
             size={50}
             name="close"
             underlayColor="transparent"
-            containerStyle={[
-              styles.buttonContainer,
-              {
-                borderColor: Colors.primaryColor,
-                shadowColor: Colors.primaryColor,
-              },
-            ]}
+            iconStyle={styles.countDownIcon}
+            containerStyle={styles.buttonContainer}
             onPress={() => this.props.onPressClose()}
-            iconStyle={[styles.countDownIcon, { color: Colors.primaryColor }]}
           />
         </View>
       </View>

@@ -1,10 +1,27 @@
 import firebase from 'react-native-firebase';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-export const status = { complete: false };
+export const updateSetting = (toUpdate, value, errorCB, successCb) => {
+  switch (toUpdate) {
+    default:
+      return;
+    case 'Name': {
+      if (value.length === 0) {
+        return errorCB('Please enter a valid Name');
+      }
 
-export const toggleUpdate = (bool) => {
-  status.complete = bool;
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .update({ name: value })
+        .then(() => successCb())
+        .catch((error) => {
+          this.error = error;
+          this.showError = true;
+        });
+    }
+  }
 };
 
 export const toggleImperial = (imperial) => {
@@ -20,13 +37,13 @@ export const toggleImperial = (imperial) => {
     });
 };
 
-export const updateTheme = (theme) => {
+export const updateTheme = (theme, cb) => {
   firebase
     .firestore()
     .collection('users')
     .doc(firebase.auth().currentUser.uid)
     .update({ theme })
-    .then(() => toggleUpdate(true))
+    .then(() => cb())
     .catch((error) => {
       this.error = error;
       this.showError = true;

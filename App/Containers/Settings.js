@@ -16,8 +16,10 @@ import * as Actions from '../Redux/Actions/Settings';
 
 class Settings extends Component {
   state = {
+    error: '',
     toUpdate: '',
     onScreen: 'Main',
+    showSuccessAlert: false,
     name: this.props.auth.name,
     email: firebase.auth().currentUser.email,
     password: 'Send Reset Password Email to:',
@@ -111,19 +113,22 @@ class Settings extends Component {
               title: 'Male',
               icon: 'palette',
               name: 'standard',
-              onPress: () => Actions.updateTheme('standard'),
+              onPress: () =>
+                Actions.updateTheme('standard', () => this.setState({ showSuccessAlert: true })),
             },
             {
               title: 'Female',
               icon: 'palette',
               name: 'standard2',
-              onPress: () => Actions.updateTheme('standard2'),
+              onPress: () =>
+                Actions.updateTheme('standard2', () => this.setState({ showSuccessAlert: true })),
             },
             {
               title: 'Other',
               icon: 'palette',
               name: 'standard3',
-              onPress: () => Actions.updateTheme('standard3'),
+              onPress: () =>
+                Actions.updateTheme('standard3', () => this.setState({ showSuccessAlert: true })),
             },
             {
               title: 'Back',
@@ -135,20 +140,31 @@ class Settings extends Component {
     }
   }
 
-  renderCompleteAlert() {
+  renderErrorAlert() {
+    return (
+      <Alert
+        acknowledge
+        title="Whoops"
+        message={this.state.error}
+        onPressSave={() => this.setState({ error: '' })}
+      />
+    );
+  }
+
+  renderSuccessAlert() {
     return (
       <Alert
         acknowledge
         title="Change Saved"
         message="Changes Successfully Saved"
-        onPressClose={() => this.setState({ toUpdate: '' })}
+        onPressSave={() => this.setState({ showSuccessAlert: false })}
       />
     );
   }
 
   renderInput() {
     const toUpdate = capitalize(this.state.toUpdate);
-
+    const value = this.state[this.state.toUpdate];
     if (toUpdate === 'Delete') {
       return (
         <Alert
@@ -163,12 +179,21 @@ class Settings extends Component {
     return (
       <Alert
         input
+        value={value}
         title={toUpdate}
         onPressSave={() => {}}
         style={styles.textInput}
         message={`Change your ${toUpdate}`}
-        value={this.state[this.state.toUpdate]}
         onPressClose={() => this.setState({ toUpdate: '' })}
+        onChangeText={text => this.setState({ [this.state.toUpdate]: text })}
+        onPressSave={() =>
+          Actions.updateSetting(
+            toUpdate,
+            this.state[this.state.toUpdate],
+            error => this.setState({ error }),
+            () => this.setState({ showSuccessAlert: true, toUpdate: '' }),
+          )
+        }
       />
     );
   }
@@ -188,8 +213,8 @@ class Settings extends Component {
   }
 
   render() {
-    const { toUpdate } = this.state;
-    const { status: { complete } } = Actions;
+    console.log(this.state.showSuccessAlert);
+    const { toUpdate, showSuccessAlert, error } = this.state;
     const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
     const content = this.getContent();
     return (
@@ -199,7 +224,8 @@ class Settings extends Component {
         <View style={styles.subContainer}>{this.renderCard(content.options)}</View>
         <ActionButton buttons={getButtons(this.props)} />
         {toUpdate ? this.renderInput() : null}
-        {complete ? this.renderCompleteAlert() : null}
+        {error ? this.renderErrorAlert() : null}
+        {showSuccessAlert ? this.renderSuccessAlert() : null}
       </LinearGradient>
     );
   }

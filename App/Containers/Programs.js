@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
-import { StatusBar, FlatList, Text, BackHandler, Alert } from 'react-native';
+import { StatusBar, FlatList, Text, BackHandler } from 'react-native';
 
 import Header from '../Components/Header';
 import Loading from '../Components/Loading';

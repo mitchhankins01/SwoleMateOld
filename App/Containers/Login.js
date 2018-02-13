@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { Icon } from 'react-native-elements';
 import ProgressBar from 'react-native-progress/Bar';
+import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput, Text, TouchableOpacity, View, StatusBar } from 'react-native';
 
@@ -30,10 +31,19 @@ class Login extends Component {
       if (user) {
         this.props.loginSavedUser(user);
         this.props.getPrograms();
-        this.props.navigation.navigate('HomeStack');
+        // this.props.navigation.navigate('Programs');
+        this.resetNavigation('HomeStack');
       } else console.log('no user');
     });
   }
+
+  resetNavigation = (targetRoute) => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: targetRoute })],
+    });
+    this.props.resetNavigation(resetAction);
+  };
 
   render() {
     const { loginUser, resetAuth, auth: { loading, error } } = this.props;
@@ -96,9 +106,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  resetNavigation: action => dispatch(action),
   resetAuth: () => dispatch(Actions.resetAuth()),
   getPrograms: () => dispatch(ProgramActions.getPrograms()),
   loginSavedUser: user => dispatch(Actions.loginSavedUser(user)),
+  resetNav: action => dispatch(NavigationActions.back('Programs')),
   loginUser: (email, password) => {
     dispatch(Actions.loginUser(email, password));
   },

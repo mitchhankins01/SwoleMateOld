@@ -1,7 +1,8 @@
-import React from 'react';
+/* eslint react/prop-types: 0 */
 import { connect } from 'react-redux';
-import { StatusBar } from 'react-native';
+import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
+import { StatusBar, BackHandler } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Header from '../Components/Header';
@@ -10,21 +11,38 @@ import * as Actions from '../Redux/Actions/Program';
 import ActionButton from '../Components/ActionButton';
 import { EditProgramCard } from '../Components/ProgramCard';
 
-const EditProgram = ({
-  goBack,
-  program: { showExercises },
-  navigation: { state: { params: { edit, programId, item } } },
-}) => {
-  const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
-  return (
-    <LinearGradient style={styles.container} colors={gradients}>
-      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-      <Header title={showExercises ? 'Add Exercise' : 'Add Workout'} />
-      <EditProgramCard edit={edit} item={item} programId={programId} />
-      <ActionButton buttons={getButtons(goBack)} />
-    </LinearGradient>
-  );
-};
+class EditProgram extends Component {
+  componentWillMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (this.props.navigation.state.key !== 'Programs') {
+        this.props.goBack();
+        return true;
+      }
+      return false;
+    });
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
+  render() {
+    const {
+      goBack,
+      program: { showExercises },
+      navigation: { state: { params: { edit, programId, item } } },
+    } = this.props;
+    const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
+    return (
+      <LinearGradient style={styles.container} colors={gradients}>
+        <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+        <Header title={showExercises ? 'Edit Exercise' : 'Edit Workout'} />
+        <EditProgramCard edit={edit} item={item} programId={programId} />
+        <ActionButton buttons={getButtons(goBack)} />
+      </LinearGradient>
+    );
+  }
+}
 
 const getButtons = goBack => [
   {

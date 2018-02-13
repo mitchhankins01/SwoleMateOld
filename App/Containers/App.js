@@ -1,6 +1,7 @@
 import createStore from '../Redux';
 import { Provider } from 'react-redux';
 import React, { Component } from 'react';
+import { BackHandler, Alert } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ReduxNavigation from '../Navigation/ReduxNavigation';
 
@@ -17,6 +18,18 @@ export default class App extends Component {
       $secondaryColor: '#4872A0',
       $bgColor: 'rgba(0, 0, 0, 0.1)',
     });
+  }
+
+  componentWillMount() {
+    // console.log(this.props);
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      // if (this.props.)
+      console.log(this.props);
+    });
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
   }
 
   render() {

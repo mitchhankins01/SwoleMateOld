@@ -352,7 +352,7 @@ const mapDispatchToProps = dispatch => ({
   setReps: number => dispatch(Actions.setReps(number)),
   setWeight: number => dispatch(Actions.setWeight(number)),
   destroyWorkout: () => dispatch(Actions.destroyWorkout()),
-  goBack: () => dispatch(NavigationActions.back('HomeStack')),
+  goBack: () => dispatch(NavigationActions.back('Programs')),
   changeExercise: index => dispatch(Actions.changeExercise(index)),
   initWorkout: exercises => dispatch(Actions.initWorkout(exercises)),
 });

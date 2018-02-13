@@ -7,13 +7,14 @@ import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import {
-  StatusBar,
   View,
   Text,
-  TouchableOpacity,
+  FlatList,
+  StatusBar,
   TextInput,
   ScrollView,
-  FlatList,
+  BackHandler,
+  TouchableOpacity,
 } from 'react-native';
 
 import Alert from '../Components/Alert';
@@ -51,6 +52,10 @@ class Workout extends Component {
   componentWillMount() {
     const { initWorkout, program: { dayKey, exercises } } = this.props;
     const exerciseList = () => exercises.filter(q => q.day === dayKey);
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.setState({ showCloseAlert: true });
+      return true;
+    });
     initWorkout(exerciseList());
   }
 
@@ -64,6 +69,7 @@ class Workout extends Component {
   }
 
   componentWillUnmount() {
+    this.backHandler.remove();
     this.props.destroyWorkout();
   }
 

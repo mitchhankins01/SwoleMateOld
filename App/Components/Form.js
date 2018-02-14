@@ -99,7 +99,7 @@ class EditProgram extends Component {
       edit, programId, item, program: { showExercises },
     } = this.props;
     return (
-      <View>
+      <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <Icon
           color={styles.$primary}
           name={showExercises ? 'dumbbell' : 'folder'}
@@ -107,7 +107,6 @@ class EditProgram extends Component {
         />
         {showExercises ? (
           <View>
-            <TForm ref="exerciseForm" type={exerciseType} options={exerciseOptions} value={item} />
             {edit ? null : (
               <Animatable.View ref="selectButton">
                 <TouchableOpacity
@@ -118,6 +117,7 @@ class EditProgram extends Component {
                 </TouchableOpacity>
               </Animatable.View>
             )}
+            <TForm ref="exerciseForm" type={exerciseType} options={exerciseOptions} value={item} />
           </View>
         ) : (
           <TForm ref="workoutForm" type={workoutType} options={workoutOptions} value={item} />

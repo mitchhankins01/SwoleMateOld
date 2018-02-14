@@ -64,6 +64,7 @@ class Workout extends Component {
       workout: { input: { setIndex }, exercise: { sets, showCountDown } },
     } = nextProps;
     if (sets - 1 === setIndex && !showCountDown) {
+      if (sets === 1) return;
       this.setState({ showLastSetAlert: true });
     }
   }
@@ -105,11 +106,14 @@ class Workout extends Component {
   }
 
   renderLastSetAlert() {
+    const { exerciseIndex, exerciseList } = this.props.workout.exercise;
+    if (exerciseIndex === exerciseList.length) return null;
+    if (exerciseList[exerciseIndex] && exerciseList[exerciseIndex].sets === 1) return null;
     return (
       <Alert
-        message=""
         acknowledge
         title="Last Set!"
+        message="Prepare for the next exercise"
         onPressSave={() => this.setState({ showLastSetAlert: false })}
       />
     );

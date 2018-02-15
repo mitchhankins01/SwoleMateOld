@@ -61,8 +61,11 @@ class Workout extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {
-      workout: { input: { setIndex }, exercise: { sets, showCountDown } },
+      workout: { input: { setIndex, reps, weight }, exercise: { sets, showCountDown } },
     } = nextProps;
+    const repsDiffers = reps !== this.props.workout.input.reps;
+    const weightDiffers = weight !== this.props.workout.input.weight;
+    if (repsDiffers || weightDiffers) return;
     if (sets - 1 === setIndex && !showCountDown) {
       if (sets === 1) return;
       this.setState({ showLastSetAlert: true });

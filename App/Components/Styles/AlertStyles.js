@@ -42,11 +42,11 @@ export default EStyleSheet.create({
     width: 40,
     height: 40,
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 12,
     marginVertical: 15,
-    borderColor: '#EDF0F1',
+    borderColor: '$primaryColor',
   },
   icon: {
-    color: '$text',
+    color: '$primaryColor',
   },
 });

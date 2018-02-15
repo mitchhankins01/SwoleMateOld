@@ -7,7 +7,6 @@ export default EStyleSheet.create({
   // Program Card
   container: {
     height: 100,
-    elevation: 5,
     marginTop: 20,
     borderTopWidth: 2,
     borderBottomWidth: 2,

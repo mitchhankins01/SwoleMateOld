@@ -22,7 +22,7 @@ export default EStyleSheet.create({
     elevation: 3,
     borderWidth: 2,
     shadowRadius: 2,
-    borderRadius: 25,
+    borderRadius: 15,
     shadowOpacity: 0.8,
     alignItems: 'center',
     alignSelf: 'flex-end',

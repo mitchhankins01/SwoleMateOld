@@ -19,7 +19,7 @@ export default EStyleSheet.create({
     width: 50,
     margin: 15,
     height: 50,
-    elevation: 3,
+    elevation: 1,
     borderWidth: 2,
     shadowRadius: 2,
     borderRadius: 15,

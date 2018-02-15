@@ -12,14 +12,12 @@
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-animatable": "^1.2.4",
-    "react-native-background-timer": "^2.0.0",
     "react-native-elements": "^0.18.5",
     "react-native-firebase": "^3.2.2",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-modal-dropdown": "^0.6.0",
     "react-native-progress": "^3.4.0",
     "react-native-vector-icons": "^4.5.0",
-    "react-native-wheel-picker-android": "^1.0.3",
     "react-navigation": "^1.0.0-beta.23",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
@@ -43,9 +41,7 @@
     "redux-devtools-extension": "^2.13.2"
   },
   "rnpm": {
-    "assets": [
-      "./assets/fonts"
-    ]
+    "assets": ["./assets/fonts"]
   },
   "jest": {
     "preset": "react-native"

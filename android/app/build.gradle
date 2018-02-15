@@ -137,8 +137,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-background-timer')
-    compile project(':react-native-wheel-picker-android')
     compile(project(':react-native-firebase')) {
         transitive = false
     }

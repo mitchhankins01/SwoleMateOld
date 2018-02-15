@@ -3,8 +3,6 @@ package com.devpeaks.swolemate;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.ocetnik.timer.BackgroundTimerPackage;
-import com.wheelpicker.WheelPickerPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -38,25 +36,13 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new BackgroundTimerPackage(),
-            new WheelPickerPackage(),
-            new RNFirebasePackage(),
-            new LinearGradientPackage(),
-            new VectorIconsPackage(),
-            // add/remove these packages as appropriate
-            new RNFirebaseAdMobPackage(),
-            new RNFirebaseAnalyticsPackage(),
-            new RNFirebaseAuthPackage(),
-            new RNFirebaseRemoteConfigPackage(),
-            new RNFirebaseCrashPackage(),
-            new RNFirebaseDatabasePackage(),
-            new RNFirebaseFirestorePackage(),
-            new RNFirebaseMessagingPackage(),
-            new RNFirebasePerformancePackage(),
-            new RNFirebaseStoragePackage()
-      );
+      return Arrays.<ReactPackage>asList(new MainReactPackage(), new RNFirebasePackage(), new LinearGradientPackage(),
+          new VectorIconsPackage(),
+          // add/remove these packages as appropriate
+          new RNFirebaseAdMobPackage(), new RNFirebaseAnalyticsPackage(), new RNFirebaseAuthPackage(),
+          new RNFirebaseRemoteConfigPackage(), new RNFirebaseCrashPackage(), new RNFirebaseDatabasePackage(),
+          new RNFirebaseFirestorePackage(), new RNFirebaseMessagingPackage(), new RNFirebasePerformancePackage(),
+          new RNFirebaseStoragePackage());
     }
 
     @Override

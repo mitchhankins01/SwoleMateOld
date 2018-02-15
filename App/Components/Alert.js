@@ -72,7 +72,7 @@ const getIcons = ({ acknowledge, onPressClose, onPressSave }) => {
 
 const Alert = props => (
   <View style={styles.container}>
-    <Animatable.View duration={500} animation="zoomIn" style={styles.alertContainer}>
+    <Animatable.View duration={500} animation="awesomeIn" style={styles.alertContainer}>
       <Text style={styles.title}>{props.title}</Text>
       {getContent(props)}
       {getIcons(props)}

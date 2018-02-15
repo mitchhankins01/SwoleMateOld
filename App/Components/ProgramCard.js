@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
+import * as A from 'react-native-animatable';
 import { View, TouchableOpacity, Text } from 'react-native';
 
 import EditProgram from '../Components/Form';
@@ -25,7 +26,7 @@ export const ProgramCard = ({
   onToggleUp,
   onToggleDown,
 }) => (
-  <View style={styles.container}>
+  <A.View style={styles.container} animation="mySlider" duration={500}>
     <View style={styles.leftSection}>
       <Icon
         size={25}
@@ -71,5 +72,5 @@ export const ProgramCard = ({
         ontainerStyle={{ padding: 10 }}
       />
     </View>
-  </View>
+  </A.View>
 );

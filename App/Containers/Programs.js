@@ -1,6 +1,7 @@
 /* eslint react/prop-types: 0 */
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import * as A from 'react-native-animatable';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { StatusBar, FlatList, Text, BackHandler } from 'react-native';
@@ -103,7 +104,7 @@ class Programs extends Component {
         <FlatList
           extraData={this.props.program}
           data={data}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <ProgramCard
               opacity={showExercises ? 1 : 0}
               onEdit={() => editProgram(programId, item)}

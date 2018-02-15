@@ -49,7 +49,7 @@ class CountDown extends Component {
     const { timeRemaining } = this.state;
     return (
       <View style={styles.countDownContainer}>
-        <Animatable.View style={styles.progressContainer} animation="zoomIn">
+        <Animatable.View style={styles.progressContainer} animation="awesomeIn">
           <Text style={styles.countDownText}>{timeRemaining > 0 ? timeRemaining : 0}</Text>
           <View>
             <Progress.CircleSnail

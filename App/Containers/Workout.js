@@ -205,7 +205,7 @@ class Workout extends Component {
   }
 
   renderLogOverview(type) {
-    const { theme, workout: { input: { performed }, exercise: { logs, exerciseKey } } } = this.props;
+    const { workout: { input: { performed }, exercise: { logs, exerciseKey } } } = this.props;
     
     let pastPerformed;
     logs.forEach(logCollection => logCollection.forEach((log) => {
@@ -291,7 +291,10 @@ class Workout extends Component {
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-        <Header noMenu title={name} />
+        {/* <Header noMenu title={name} /> */}
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>{name}</Text>
+        </View>
         {/* Logs */}
         <View
           style={styles.logContainer}

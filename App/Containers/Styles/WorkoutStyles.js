@@ -1,5 +1,8 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { Platform, NativeModules } from 'react-native';
 import { Fonts, Constants } from '../../Themes/';
+
+const { StatusBarManager } = NativeModules;
 
 export default EStyleSheet.create({
   $primary: '$primaryColor',
@@ -8,10 +11,30 @@ export default EStyleSheet.create({
   container: {
     flex: 1,
   },
-  logContainer: {
+  header: {
+    color: '$text',
+    fontSize: Fonts.size.input,
+    fontFamily: Fonts.type.bold,
+  },
+  headerContainer: {
     flex: 1,
+    padding: 7,
+    borderWidth: 2,
+    borderRadius: 5,
+    shadowOpacity: 0.8,
+    alignItems: 'center',
+    marginHorizontal: 15,
+    justifyContent: 'center',
+    backgroundColor: '$bgColor',
+    borderColor: '$primaryColor',
+    shadowColor: '$primaryColor',
+    shadowOffset: { height: 2, width: 2 },
+    marginTop: Platform.OS === 'ios' ? 25 : StatusBarManager.HEIGHT + 5,
+  },
+  logContainer: {
+    flex: 5,
     padding: 15,
-    marginTop: 20,
+    marginTop: 10,
     borderWidth: 2,
     marginBottom: 5,
     borderRadius: 5,
@@ -19,8 +42,8 @@ export default EStyleSheet.create({
     marginHorizontal: 15,
     backgroundColor: '$bgColor',
     borderColor: '$primaryColor',
-    shadowColor: 'rgba(0,0,0, 1)',
-    shadowOffset: { height: 0, width: 0 },
+    shadowColor: '$primaryColor',
+    shadowOffset: { height: 2, width: 2 },
   },
   logTextHeader: {
     fontSize: 16,
@@ -33,15 +56,14 @@ export default EStyleSheet.create({
     flex: 1,
     margin: 5,
     padding: 15,
-    elevation: 1,
     borderWidth: 2,
     borderRadius: 5,
     marginBottom: 85,
     shadowOpacity: 0.8,
     backgroundColor: '$bgColor',
     borderColor: '$primaryColor',
-    shadowColor: 'rgba(0,0,0, 1)',
-    shadowOffset: { height: 0, width: 0 },
+    shadowColor: '$primaryColor',
+    shadowOffset: { height: 2, width: 2 },
   },
   inputHeader: {
     color: '$text',

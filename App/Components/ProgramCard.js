@@ -26,7 +26,7 @@ export const ProgramCard = ({
   onToggleUp,
   onToggleDown,
 }) => (
-  <A.View style={styles.container} animation="mySlider" duration={500}>
+  <View style={styles.container} animation="awesomeIn" duration={500}>
     <View style={styles.leftSection}>
       <Icon
         size={25}
@@ -72,5 +72,5 @@ export const ProgramCard = ({
         ontainerStyle={{ padding: 10 }}
       />
     </View>
-  </A.View>
+  </View>
 );

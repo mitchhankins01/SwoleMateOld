@@ -42,6 +42,7 @@ const Header = ({
           underlayColor: 'transparent'
         }} */
     outerContainerStyles={{
+      zIndex: 2,
       height: 70,
       elevation: 1,
       shadowOpacity: 1,

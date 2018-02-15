@@ -105,26 +105,28 @@ class Programs extends Component {
           extraData={this.props.program}
           data={data}
           renderItem={({ item, index }) => (
-            <ProgramCard
-              opacity={showExercises ? 1 : 0}
-              onEdit={() => editProgram(programId, item)}
-              icon={showExercises ? 'dumbbell' : 'folder'}
-              type={showExercises ? 'material-community' : 'entypo'}
-              onDelete={() => DeleteFB(programId, dayKey, item.type, item.key)}
-              onPress={showExercises ? null : () => toggleExercises(true, item.key)}
-              onToggleUp={() => ToggleUp(days, programId, item, exercises, dayKey)}
-              onToggleDown={() => ToggleDown(days, programId, item, exercises, dayKey)}
-              subtitle={
-                showExercises
-                  ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
-                  : `${item.primaryGroup} - ${item.secondaryGroup}`
-              }
-              title={
-                showExercises
-                  ? programs.allExercises.find(e => e.key === item.exerciseKey).name
-                  : item.name
-              }
-            />
+            <A.View key={title} animation="zoomIn" delay={index * 250}>
+              <ProgramCard
+                opacity={showExercises ? 1 : 0}
+                onEdit={() => editProgram(programId, item)}
+                icon={showExercises ? 'dumbbell' : 'folder'}
+                type={showExercises ? 'material-community' : 'entypo'}
+                onDelete={() => DeleteFB(programId, dayKey, item.type, item.key)}
+                onPress={showExercises ? null : () => toggleExercises(true, item.key)}
+                onToggleUp={() => ToggleUp(days, programId, item, exercises, dayKey)}
+                onToggleDown={() => ToggleDown(days, programId, item, exercises, dayKey)}
+                subtitle={
+                  showExercises
+                    ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
+                    : `${item.primaryGroup} - ${item.secondaryGroup}`
+                }
+                title={
+                  showExercises
+                    ? programs.allExercises.find(e => e.key === item.exerciseKey).name
+                    : item.name
+                }
+              />
+            </A.View>
           )}
         />
         <ActionButton buttons={this.getButtons()} />

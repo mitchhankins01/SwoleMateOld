@@ -153,6 +153,9 @@ class Workout extends Component {
               <Text style={styles.exerciseListText}>
                 {`${index + 1}. ${item.name}`}
               </Text>
+              <Text style={styles.exerciseListSub}>
+                {`      Sets: ${item.sets} - Reps: ${item.reps} - Rest: ${item.rest}s`}
+              </Text>
             </TouchableOpacity>
           )}
         />

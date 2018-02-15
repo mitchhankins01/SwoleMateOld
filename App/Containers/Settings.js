@@ -3,6 +3,7 @@ import { capitalize } from 'lodash';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
+import * as A from 'react-native-animatable';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { StatusBar, View, BackHandler } from 'react-native';
@@ -246,20 +247,20 @@ class Settings extends Component {
 
   renderCard(cards) {
     const { showSubs } = this.state;
-    return cards.map(({ icon, title, onPress }) => (
-      <SettingsCard
-        key={title}
-        icon={icon}
-        title={title}
-        onPress={onPress}
-        opacity={showSubs ? 1 : 0}
-        type={showSubs ? 'material-community' : 'entypo'}
-      />
+    return cards.map(({ icon, title, onPress }, index) => (
+      <A.View key={title} animation="zoomIn" delay={index * 250}>
+        <SettingsCard
+          icon={icon}
+          title={title}
+          onPress={onPress}
+          opacity={showSubs ? 1 : 0}
+          type={showSubs ? 'material-community' : 'entypo'}
+        />
+      </A.View>
     ));
   }
 
   render() {
-    console.log(this.state.showSuccessAlert);
     const { toUpdate, showSuccessAlert, error } = this.state;
     const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
     const content = this.getContent();

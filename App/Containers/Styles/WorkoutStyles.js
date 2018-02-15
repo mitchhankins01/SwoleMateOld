@@ -156,12 +156,17 @@ export default EStyleSheet.create({
     fontFamily: Fonts.type.bold,
   },
   exerciseListButton: {
-    padding: 20,
+    padding: 15,
     width: Constants.DEV_WIDTH,
   },
   exerciseListText: {
     color: '$text',
     fontSize: Fonts.size.h5,
+    fontFamily: Fonts.type.medium,
+  },
+  exerciseListSub: {
+    color: '$text',
+    fontSize: Fonts.size.small,
     fontFamily: Fonts.type.medium,
   },
 });

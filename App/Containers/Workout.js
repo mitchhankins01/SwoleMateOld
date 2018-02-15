@@ -4,6 +4,7 @@ import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
+import * as A from 'react-native-animatable';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -295,14 +296,11 @@ class Workout extends Component {
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         {/* <Header noMenu title={name} /> */}
-        <View style={styles.headerContainer}>
+        <A.View style={styles.headerContainer} animation="mySlideInDown">
           <Text style={styles.header}>{name}</Text>
-        </View>
+        </A.View>
         {/* Logs */}
-        <View
-          style={styles.logContainer}
-          animation="mySlideInDown"
-        >
+        <A.View style={styles.logContainer} animation="mySlideInDown">
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.logTextHeader}>Current Log</Text>
@@ -314,10 +312,10 @@ class Workout extends Component {
               {this.renderLogOverview('past')}
             </TouchableOpacity>
           </View>
-        </View>
+        </A.View>
         {/* Inputs */}
         <View style={{ flexDirection: 'row', marginHorizontal: 10 }}>
-          <View
+          <A.View
             delay={250}
             animation="mySlideInLeft"
             style={styles.inputContainer}
@@ -329,8 +327,8 @@ class Workout extends Component {
               weight={workout.input.weight}
               setWeight={number => setWeight(number)}
             />
-          </View>
-          <View
+          </A.View>
+          <A.View
             delay={250}
             animation="mySlideInRight"
             style={styles.inputContainer}
@@ -338,14 +336,14 @@ class Workout extends Component {
             <Text style={styles.inputHeader}>Reps</Text>
             {this.renderTextInput('reps')}
             <Picker type="reps" reps={workout.input.reps} setReps={number => setReps(number)} />
-          </View>
+          </A.View>
         </View>
         <ActionButton
           buttons={getButtons(
             () => this.setState({ showCloseAlert: true }),
             () => this.toggleExerciseList(),
             onPressSave,
-          )}
+           )}
         />
         {showCountDown ? <CountDown /> : null}
         {showPastLogs ? this.renderPastLogs() : null}

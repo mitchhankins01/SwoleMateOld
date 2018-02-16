@@ -10,7 +10,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-
+import com.zyu.ReactNativeWheelPickerPackage;
 import com.google.firebase.database.FirebaseDatabase;
 import io.invertase.firebase.admob.RNFirebaseAdMobPackage; //Firebase AdMob
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage; // Firebase Analytics
@@ -37,7 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(new MainReactPackage(), new RNFirebasePackage(), new LinearGradientPackage(),
-          new VectorIconsPackage(),
+          new VectorIconsPackage(), new ReactNativeWheelPickerPackage(),
           // add/remove these packages as appropriate
           new RNFirebaseAdMobPackage(), new RNFirebaseAnalyticsPackage(), new RNFirebaseAuthPackage(),
           new RNFirebaseRemoteConfigPackage(), new RNFirebaseCrashPackage(), new RNFirebaseDatabasePackage(),

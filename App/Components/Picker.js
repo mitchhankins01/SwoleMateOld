@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import React from 'react';
+import Picker from 'react-native-wheel-picker';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Platform, Picker as RNPicker } from 'react-native';
-import { WheelPicker } from 'react-native-wheel-picker-android';
 
-import { Fonts, Constants } from '../Themes';
+import { Fonts } from '../Themes';
+
+const PickerItem = Picker.Item;
 
 const styles = EStyleSheet.create({
   $textColor: '$text',
@@ -35,7 +37,7 @@ const onChangeInput = (type, number, setReps, setWeight) => {
   }
 };
 
-const Picker = (props) => {
+const Pickers = (props) => {
   const {
     type, weight, reps, setReps, setWeight,
   } = props;
@@ -46,19 +48,42 @@ const Picker = (props) => {
   switch (Platform.OS) {
     case 'android':
       return (
-        <WheelPicker
-          isCurved
-          renderIndicator
-          itemTextSize={40}
-          data={getNumbers(type, array)}
-          indicatorColor={styles.$primary}
-          itemTextColor={styles.$textColor}
-          itemTextFontFamily={Fonts.type.medium}
-          selectedItemTextColor={styles.$textColor}
-          selectedItemPosition={type === 'weight' ? Number(weight / 5) : Number(reps)}
-          style={{ height: Constants.DEV_HEIGHT * 0.3, marginTop: 10, width: '100%' }}
-          onItemSelected={event => onChangeInput(type, event.data, setReps, setWeight)}
-        />
+        <Picker
+          style={{ height: 250, backgroundColor: 'red' }}
+          selectedValue={type === 'weight' ? weight.toString() : reps.toString()}
+          itemStyle={{
+            color: styles.$textColor,
+            fontSize: Fonts.size.regular,
+            fontFamily: Fonts.type.medium,
+          }}
+          onValueChange={number => onChangeInput(type, number, setReps, setWeight)}
+        >
+          {array.map((value, i) => (
+            <PickerItem
+              key={value.toString()}
+              label={value.toString()}
+              value={type === 'weight' ? i * 5 : i}
+            />
+          ))}
+        </Picker>
+        // <Wheel
+        //   holeLine={0}
+        //   items={type === 'weight' ? testArray : testArray}
+        //   maskStyle={{ backgroundColor: 'transparent' }}
+        //   index={type === 'weight' ? weight.toString() : reps.toString()}
+        //   onChange={number => onChangeInput(type, number, setReps, setWeight)}
+        //   style={{ height: 200, marginTop: 10, backgroundColor: 'transparent' }}
+        //   itemStyle={{
+        //     textAlign: 'center',
+        //     color: styles.$textColor,
+        //     fontFamily: Fonts.type.medium,
+        //   }}
+        //   holeStyle={{
+        //     borderTopWidth: 1,
+        //     borderBottomWidth: 1,
+        //     borderColor: styles.$primary,
+        //   }}
+        // />
       );
     default:
       return (
@@ -80,4 +105,4 @@ const Picker = (props) => {
   }
 };
 
-export default Picker;
+export default Pickers;

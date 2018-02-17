@@ -4,7 +4,7 @@ import Picker from 'react-native-wheel-picker';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Platform, Picker as RNPicker } from 'react-native';
 
-import { Fonts } from '../Themes';
+import { Constants, Fonts } from '../Themes';
 
 const PickerItem = Picker.Item;
 
@@ -49,7 +49,7 @@ const Pickers = (props) => {
     case 'android':
       return (
         <Picker
-          style={{ height: 250, backgroundColor: 'red' }}
+          style={{ height: Constants.DEV_HEIGHT * 0.3 }}
           selectedValue={type === 'weight' ? weight.toString() : reps.toString()}
           itemStyle={{
             color: styles.$textColor,

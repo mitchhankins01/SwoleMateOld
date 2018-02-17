@@ -8,6 +8,7 @@ import { StatusBar, FlatList, Text, BackHandler } from 'react-native';
 
 import Header from '../Components/Header';
 import Loading from '../Components/Loading';
+import Onboarding from '../Components/Onboarding';
 import * as Actions from '../Redux/Actions/Program';
 import ActionButton from '../Components/ActionButton';
 import { ProgramCard } from '../Components/ProgramCard';
@@ -94,6 +95,7 @@ class Programs extends Component {
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title={title} />
+        <Onboarding />
         {data.length === 0 ? (
           <Text style={styles.emptyText}>
             {showExercises

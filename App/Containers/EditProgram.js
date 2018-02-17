@@ -36,7 +36,7 @@ class EditProgram extends Component {
     return (
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-        <Header title={showExercises ? 'Edit Exercise' : 'Edit Workout'} />
+        <Header title="SwoleMate" />
         <EditProgramCard edit={edit} item={item} programId={programId} />
         <ActionButton buttons={getButtons(goBack)} />
       </LinearGradient>

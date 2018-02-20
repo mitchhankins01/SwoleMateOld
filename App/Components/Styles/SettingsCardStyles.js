@@ -5,10 +5,11 @@ export default EStyleSheet.create({
   $textColor: '$text',
   // Program Card
   container: {
-    height: 70,
-    marginBottom: 20,
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
+    height: 60,
+    margin: 10,
+    padding: 10,
+    borderWidth: 1.5,
+    borderRadius: 15,
     flexDirection: 'row',
     backgroundColor: '$bgColor',
     borderColor: '$primaryColor',

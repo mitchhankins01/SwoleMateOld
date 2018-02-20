@@ -6,7 +6,7 @@ import firebase from 'react-native-firebase';
 import * as A from 'react-native-animatable';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
-import { StatusBar, View, BackHandler } from 'react-native';
+import { StatusBar, ScrollView, BackHandler } from 'react-native';
 
 import Header from '../Components/Header';
 import Alert from '../Components/Alert';
@@ -268,7 +268,7 @@ class Settings extends Component {
       <LinearGradient style={styles.container} colors={gradients}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title="Settings" />
-        <View style={styles.subContainer}>{this.renderCard(content.options)}</View>
+        <ScrollView style={styles.subContainer}>{this.renderCard(content.options)}</ScrollView>
         <ActionButton buttons={this.getButtons()} />
         {toUpdate ? this.renderInput() : null}
         {error ? this.renderErrorAlert() : null}

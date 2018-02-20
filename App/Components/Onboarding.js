@@ -12,6 +12,7 @@ const styles = EStyleSheet.create({
     right: 0,
     bottom: 0,
     zIndex: 2,
+    elevation: 2,
     // alignItems: 'center',
     position: 'absolute',
     // justifyContent: 'center',

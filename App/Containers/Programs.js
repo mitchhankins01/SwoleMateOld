@@ -20,13 +20,13 @@ class Programs extends Component {
   state = {};
 
   componentWillMount() {
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (this.props.program.showExercises) {
-        this.props.toggleExercises(false, null);
+    this.backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => {
+      if ( this.props.program.showExercises ) {
+        this.props.toggleExercises( false, null );
         return true;
       }
       return false;
-    });
+    } );
   }
 
   componentWillUnmount() {
@@ -42,7 +42,7 @@ class Programs extends Component {
       program: { showExercises },
     } = this.props;
 
-    if (!showExercises) {
+    if ( !showExercises ) {
       return [
         {
           icon: 'menu',
@@ -60,7 +60,7 @@ class Programs extends Component {
       {
         icon: 'back',
         animation: 'zoomIn',
-        onPress: () => toggleExercises(false, null),
+        onPress: () => toggleExercises( false, null ),
       },
       {
         icon: 'rocket',
@@ -84,80 +84,80 @@ class Programs extends Component {
         days, dayKey, exercises, showExercises, loading, info,
       },
     } = this.props;
-    if (loading || programs.loading) return <Loading />;
-    const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
+    if ( loading || programs.loading ) return <Loading />;
+    const gradients = [ styles.$primary, styles.$secondary, styles.$tertiary ];
 
-    const programId = info.map(({ id }) => id).toString();
-    const data = showExercises ? exercises.filter(e => e.day === dayKey) : days;
-    const title = showExercises ? 'Exercises' : info.map(({ name }) => name).toString();
+    const programId = info.map( ( { id } ) => id ).toString();
+    const data = showExercises ? exercises.filter( e => e.day === dayKey ) : days;
+    const title = showExercises ? 'Exercises' : info.map( ( { name } ) => name ).toString();
 
     return (
-      <LinearGradient style={styles.container} colors={gradients}>
+      <LinearGradient style={ styles.container } colors={ gradients }>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-        <Header title={title} />
+        <Header title={ title } />
         <Onboarding />
         {data.length === 0 ? (
-          <Text style={styles.emptyText}>
+          <Text style={ styles.emptyText }>
             {showExercises
               ? 'This Workout is empty, tap the lower right button to get started'
               : 'This Program is empty, tap the lower right button to get started'}
           </Text>
         ) : null}
         <FlatList
-          extraData={this.props.program}
-          data={data}
-          renderItem={({ item, index }) => (
-            <A.View key={title} animation="zoomIn" delay={index * 250}>
+          extraData={ this.props.program }
+          data={ data }
+          renderItem={ ( { item, index } ) => (
+            <A.View key={ title } animation="zoomIn" delay={ index * 250 }>
               <ProgramCard
-                opacity={showExercises ? 1 : 0}
-                onEdit={() => editProgram(programId, item)}
-                icon={showExercises ? 'dumbbell' : 'folder'}
-                type={showExercises ? 'material-community' : 'entypo'}
-                onDelete={() => DeleteFB(programId, dayKey, item.type, item.key)}
-                onPress={showExercises ? null : () => toggleExercises(true, item.key)}
-                onToggleUp={() => ToggleUp(days, programId, item, exercises, dayKey)}
-                onToggleDown={() => ToggleDown(days, programId, item, exercises, dayKey)}
+                opacity={ showExercises ? 1 : 0 }
+                onEdit={ () => editProgram( programId, item ) }
+                icon={ showExercises ? 'dumbbell' : 'folder' }
+                type={ showExercises ? 'material-community' : 'entypo' }
+                onDelete={ () => DeleteFB( programId, dayKey, item.type, item.key ) }
+                onPress={ showExercises ? null : () => toggleExercises( true, item.key ) }
+                onToggleUp={ () => ToggleUp( days, programId, item, exercises, dayKey ) }
+                onToggleDown={ () => ToggleDown( days, programId, item, exercises, dayKey ) }
                 subtitle={
                   showExercises
-                    ? `${item.sets} Sets - ${item.reps} Reps - ${item.rest}s Rest (s)`
-                    : `${item.primaryGroup} - ${item.secondaryGroup}`
+                    ? `${ item.sets } Sets - ${ item.reps } Reps - ${ item.rest }s Rest (s)`
+                    : `${ item.primaryGroup } - ${ item.secondaryGroup }`
                 }
                 title={
                   showExercises
-                    ? programs.allExercises.find(e => e.key === item.exerciseKey).name
+                    ? programs.allExercises.find( e => e.key === item.exerciseKey ).name
                     : item.name
                 }
               />
             </A.View>
-          )}
+          ) }
         />
-        <ActionButton buttons={this.getButtons()} />
+        <ActionButton buttons={ this.getButtons() } />
       </LinearGradient>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => ( {
   program: state.program,
   programs: state.programs,
   theme: state.auth.theme,
-});
+} );
 
-const mapDispatchToProps = dispatch => ({
-  toggleExercises: (bool, dayKey) => dispatch(Actions.toggleExercises(bool, dayKey)),
-  launchHandler: () => dispatch(NavigationActions.navigate({ routeName: 'Workout' })),
+const mapDispatchToProps = dispatch => ( {
+  toggleExercises: ( bool, dayKey ) => dispatch( Actions.toggleExercises( bool, dayKey ) ),
+  launchHandler: () => dispatch( NavigationActions.navigate( { routeName: 'Workout' } ) ),
   addHandler: () =>
-    dispatch(NavigationActions.navigate({ routeName: 'EditProgram', params: { edit: false } })),
-  toggleDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerToggle' })),
-  editProgram: (programId, item) =>
-    dispatch(NavigationActions.navigate({
+    dispatch( NavigationActions.navigate( { routeName: 'EditProgram', params: { edit: false } } ) ),
+  toggleDrawer: () => dispatch( NavigationActions.navigate( { routeName: 'DrawerToggle' } ) ),
+  editProgram: ( programId, item ) =>
+    dispatch( NavigationActions.navigate( {
       routeName: 'EditProgram',
       params: {
         item,
         programId,
         edit: true,
       },
-    })),
-});
+    } ) ),
+} );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Programs);
+export default connect( mapStateToProps, mapDispatchToProps )( Programs );

@@ -3,12 +3,21 @@ import { Icon } from 'react-native-elements';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import Drawer from './Drawer';
+import Logs from '../Containers/Logs';
 import Login from '../Containers/Login';
 import Workout from '../Containers/Workout';
 import Settings from '../Containers/Settings';
 import Programs from '../Containers/Programs';
 import EditProgram from '../Containers/EditProgram';
 // import styles from './Styles/NavigationStyles'
+
+function getIcon( selected, unselected ) {
+  return {
+    drawerIcon: ( { tintColor, focused } ) => (
+      <Icon size={ 26 } type="ionicon" color={ tintColor } name={ focused ? selected : unselected } />
+    ),
+  };
+}
 
 const PrimaryNav = StackNavigator(
   {
@@ -18,41 +27,23 @@ const PrimaryNav = StackNavigator(
         {
           Programs: {
             screen: Programs,
-            navigationOptions: {
-              drawerIcon: ({ tintColor, focused }) => (
-                <Icon
-                  size={26}
-                  type="ionicon"
-                  color={tintColor}
-                  name={focused ? 'ios-home' : 'ios-home-outline'}
-                />
-              ),
-            },
+            navigationOptions: getIcon( 'ios-home', 'ios-home-outline' ),
+          },
+          Logs: {
+            screen: Logs,
+            navigationOptions: getIcon( 'ios-calendar', 'ios-calendar-outline' ),
           },
           Settings: {
             screen: Settings,
-            navigationOptions: {
-              drawerIcon: ({ tintColor, focused }) => (
-                <Icon
-                  size={26}
-                  type="ionicon"
-                  color={tintColor}
-                  name={focused ? 'ios-settings' : 'ios-settings-outline'}
-                />
-              ),
-            },
+            navigationOptions: getIcon( 'ios-settings', 'ios-settings-outline' ),
           },
           EditProgram: {
             screen: EditProgram,
-            navigationOptions: {
-              drawerLabel: () => null,
-            },
+            navigationOptions: { drawerLabel: () => null },
           },
           Workout: {
             screen: Workout,
-            navigationOptions: {
-              drawerLabel: () => null,
-            },
+            navigationOptions: { drawerLabel: () => null },
           },
         },
         {

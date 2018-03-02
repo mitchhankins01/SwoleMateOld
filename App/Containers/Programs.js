@@ -95,7 +95,7 @@ class Programs extends Component {
       <LinearGradient style={ styles.container } colors={ gradients }>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title={ title } />
-        <Onboarding />
+        {/* <Onboarding /> */}
         {data.length === 0 ? (
           <Text style={ styles.emptyText }>
             {showExercises

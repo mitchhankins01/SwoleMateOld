@@ -15,7 +15,7 @@ import { SettingsCard } from '../Components/SettingsCard';
 import * as Actions from '../Redux/Actions/Settings';
 
 class Logs extends Component {
-  state = { onScreen: 'main' };
+  state = { showCalendar: false };
 
   componentWillMount() {
     // this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -29,7 +29,24 @@ class Logs extends Component {
   }
 
   componentWillUnmount() {
-    this.backHandler.remove();
+    // this.backHandler.remove();
+  }
+
+  getButtons() {
+    const { toggleDrawer } = this.props;
+    return [
+      {
+        icon: 'menu',
+        animation: 'zoomIn',
+        onPress: () => toggleDrawer(),
+      },
+      {
+        icon: 'calendar',
+        type: 'font-awesome',
+        animation: 'zoomIn',
+        onPress: () => this.setState( { showCalendar: true } ),
+      },
+    ];
   }
 
   render() {
@@ -38,6 +55,9 @@ class Logs extends Component {
       <LinearGradient style={ styles.container } colors={ gradients }>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title="Logs" />
+        <ScrollView style={ styles.subContainer } />
+        <ActionButton buttons={ this.getButtons() } />
+        {this.state.showCalendar && <Header title="" />}
       </LinearGradient>
     );
   }

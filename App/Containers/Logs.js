@@ -7,9 +7,10 @@ import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { StatusBar, ScrollView, BackHandler } from 'react-native';
 
-import Header from '../Components/Header';
 import Alert from '../Components/Alert';
-import styles from './Styles/SettingsStyles';
+import Header from '../Components/Header';
+import styles from './Styles/LogsStyles';
+import Calendar from '../Components/Calendar';
 import ActionButton from '../Components/ActionButton';
 import { SettingsCard } from '../Components/SettingsCard';
 import * as Actions from '../Redux/Actions/Settings';
@@ -44,7 +45,7 @@ class Logs extends Component {
         icon: 'calendar',
         type: 'font-awesome',
         animation: 'zoomIn',
-        onPress: () => this.setState( { showCalendar: true } ),
+        onPress: () => this.setState( { showCalendar: !this.state.showCalendar } ),
       },
     ];
   }
@@ -55,9 +56,10 @@ class Logs extends Component {
       <LinearGradient style={ styles.container } colors={ gradients }>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title="Logs" />
-        <ScrollView style={ styles.subContainer } />
+        <ScrollView style={ styles.subContainer }>
+          {this.state.showCalendar && <Calendar />}
+        </ScrollView>
         <ActionButton buttons={ this.getButtons() } />
-        {this.state.showCalendar && <Header title="" />}
       </LinearGradient>
     );
   }

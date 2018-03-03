@@ -8,19 +8,18 @@ export default EStyleSheet.create( {
   container: {
     flex: 1,
     justifyContent: 'space-around',
-    paddingBottom: 20,
-  },
-  logTitle: {
-    color: '$text',
-    alignSelf: 'center',
-    fontSize: Fonts.size.h5,
-    fontFamily: Fonts.type.medium,
   },
   sectionTitle: {
     color: '$text',
     alignSelf: 'center',
-    marginHorizontal: 10,
     fontSize: Fonts.size.h5,
     fontFamily: Fonts.type.medium,
+  },
+  section: {
+    padding: 15,
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    borderColor: '$primaryColor',
+    backgroundColor: '$bgColor',
   },
 } );

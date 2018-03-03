@@ -1,88 +1,88 @@
 import firebase from 'react-native-firebase';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-export const updateSetting = (toUpdate, value, errorCB, successCb) => {
-  switch (toUpdate) {
+export const updateSetting = ( toUpdate, value, errorCB, successCb ) => {
+  switch ( toUpdate ) {
     default:
       return;
     case 'Name': {
-      if (value.length === 0) {
-        return errorCB('Please enter a valid Name');
+      if ( value.length === 0 ) {
+        return errorCB( 'Please enter a valid Name' );
       }
 
       firebase
         .firestore()
-        .collection('users')
-        .doc(firebase.auth().currentUser.uid)
-        .update({ name: value })
-        .then(() => successCb())
-        .catch(error => errorCB(error.message));
+        .collection( 'users' )
+        .doc( firebase.auth().currentUser.uid )
+        .update( { name: value } )
+        .then( () => successCb() )
+        .catch( error => errorCB( error.message ) );
       break;
     }
     case 'Email': {
-      if (value.length === 0) {
-        return errorCB('Please enter a valid Email');
+      if ( value.length === 0 ) {
+        return errorCB( 'Please enter a valid Email' );
       }
 
       firebase
         .auth()
-        .currentUser.updateEmail(value)
-        .then(() => successCb())
-        .catch(error => errorCB(error.message));
+        .currentUser.updateEmail( value )
+        .then( () => successCb() )
+        .catch( error => errorCB( error.message ) );
       break;
     }
     case 'Password': {
-      if (value.length === 0) {
-        return errorCB('Please enter a valid Email');
+      if ( value.length === 0 ) {
+        return errorCB( 'Please enter a valid Email' );
       }
 
       firebase
         .auth()
-        .sendPasswordResetEmail(value)
-        .then(() => successCb())
-        .catch(error => errorCB(error.message));
+        .sendPasswordResetEmail( value )
+        .then( () => successCb() )
+        .catch( error => errorCB( error.message ) );
       break;
     }
     case 'Delete': {
       firebase
         .auth()
         .currentUser.delete()
-        .then(() => successCb())
-        .catch(error => errorCB(error.message));
+        .then( () => successCb() )
+        .catch( error => errorCB( error.message ) );
       break;
     }
   }
 };
 
-export const toggleImperial = (imperial, errorCB, successCb) => {
+export const toggleImperial = ( imperial, errorCB, successCb ) => {
   firebase
     .firestore()
-    .collection('users')
-    .doc(firebase.auth().currentUser.uid)
-    .update({ imperial: !imperial })
-    .then(() => successCb())
-    .catch(error => errorCB(error.message));
+    .collection( 'users' )
+    .doc( firebase.auth().currentUser.uid )
+    .update( { imperial: !imperial } )
+    .then( () => successCb() )
+    .catch( error => errorCB( error.message ) );
 };
 
-export const updateTheme = (theme, cb) => {
+export const updateTheme = ( theme, cb ) => {
   firebase
     .firestore()
-    .collection('users')
-    .doc(firebase.auth().currentUser.uid)
-    .update({ theme })
-    .then(() => cb())
-    .catch((error) => {
+    .collection( 'users' )
+    .doc( firebase.auth().currentUser.uid )
+    .update( { theme } )
+    .then( () => cb() )
+    .catch( ( error ) => {
       this.error = error;
       this.showError = true;
-    });
+    } );
 
-  EStyleSheet.build(getTheme(theme));
+  EStyleSheet.build( getTheme( theme ) );
 };
 
-export function getTheme(theme) {
+export function getTheme( theme ) {
   const standard = {
     $theme: 'standard',
-    $text: '#EDF0F1',
+    $text: '#e7f2fe',
     $primaryColor: '#70B2F9',
     $tertiaryColor: '#38597C',
     $secondaryColor: '#4872A0',
@@ -91,7 +91,7 @@ export function getTheme(theme) {
 
   const standard2 = {
     $theme: 'standard2',
-    $text: '#EDF0F1',
+    $text: '#EFD6FF',
     $primaryColor: '#CD83F8',
     $secondaryColor: '#925EB1',
     $tertiaryColor: '#67427B',
@@ -100,14 +100,14 @@ export function getTheme(theme) {
 
   const standard3 = {
     $theme: 'standard3',
-    $text: '#EDF0F1',
+    $text: '#f4cfa4',
     $primaryColor: '#E69435',
     $secondaryColor: '#C56F28',
     $tertiaryColor: '#AA521E',
     $bgColor: 'rgba(0, 0, 0, 0.1)',
   };
 
-  switch (theme) {
+  switch ( theme ) {
     default:
       return standard;
     case 'standard':

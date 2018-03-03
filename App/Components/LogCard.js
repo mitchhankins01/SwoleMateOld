@@ -1,9 +1,7 @@
 import React from 'react';
-// import { connect } from 'react-redux';
-import { Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-import { Fonts } from '../Themes';
 import styles from './Styles/LogCardStyles';
 
 const sections = [
@@ -14,9 +12,8 @@ const sections = [
 
 const LogCard = () => (
   <View style={ styles.container }>
-    <Text style={ styles.logTitle }>{`  ${ new Date().toDateString() } `}</Text>
     {sections.map( ( { title, icon, type } ) => (
-      <TouchableOpacity>
+      <TouchableOpacity key={ title }>
         <Icon name={ icon } type={ type } color={ styles.$textColor } size={ 60 } />
         <Text style={ styles.sectionTitle }>{title}</Text>
       </TouchableOpacity>
@@ -24,5 +21,4 @@ const LogCard = () => (
   </View>
 );
 
-// export default connect( ( { auth } ) => auth )( LogCard );
 export default LogCard;

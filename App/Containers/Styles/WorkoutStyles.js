@@ -4,7 +4,7 @@ import { Fonts, Constants } from '../../Themes/';
 
 const { StatusBarManager } = NativeModules;
 
-export default EStyleSheet.create({
+export default EStyleSheet.create( {
   $primary: '$primaryColor',
   $secondary: '$secondaryColor',
   $tertiary: '$tertiaryColor',
@@ -48,7 +48,7 @@ export default EStyleSheet.create({
   logTextHeader: {
     fontSize: 16,
     marginBottom: 5,
-    color: '#EDF0F1',
+    color: '$text',
     alignSelf: 'center',
     fontFamily: 'Exo-Medium',
   },
@@ -75,7 +75,7 @@ export default EStyleSheet.create({
     margin: 5,
     padding: 3,
     fontSize: 14,
-    color: '#EDF0F1',
+    color: '$text',
     textAlign: 'center',
     borderBottomWidth: 1,
     fontFamily: 'Exo-Regular',
@@ -169,4 +169,4 @@ export default EStyleSheet.create({
     fontSize: Fonts.size.small,
     fontFamily: Fonts.type.medium,
   },
-});
+} );

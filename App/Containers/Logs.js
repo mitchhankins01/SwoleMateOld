@@ -55,7 +55,7 @@ class Logs extends Component {
     return (
       <LinearGradient style={ styles.container } colors={ gradients }>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-        <Header title={ this.state.showCalendar ? 'Select Date' : 'Logs' } />
+        <Header title={ this.state.showCalendar ? 'Select Date' : new Date().toDateString() } />
         <View style={ styles.subContainer }>
           {this.state.showCalendar ? <Calendar /> : <LogCard />}
         </View>

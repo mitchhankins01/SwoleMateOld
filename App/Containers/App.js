@@ -7,28 +7,28 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import ReduxNavigation from '../Navigation/ReduxNavigation';
 
 const store = createStore();
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const DEVICE_HEIGHT = Dimensions.get('window').height;
+const DEVICE_WIDTH = Dimensions.get( 'window' ).width;
+const DEVICE_HEIGHT = Dimensions.get( 'window' ).height;
 
 export default class App extends Component {
   constructor() {
     super();
-    EStyleSheet.build({
-      $text: '#EDF0F1',
+    EStyleSheet.build( {
       $theme: 'standard',
+      $text: '#e7f2fe',
       $primaryColor: '#70B2F9',
       $tertiaryColor: '#38597C',
       $secondaryColor: '#4872A0',
       $bgColor: 'rgba(0, 0, 0, 0.1)',
-    });
+    } );
   }
 
   componentWillMount() {
     // console.log(this.props);
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+    this.backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => {
       // if (this.props.)
-      console.log(this.props);
-    });
+      console.log( this.props );
+    } );
   }
 
   componentWillUnmount() {
@@ -37,14 +37,14 @@ export default class App extends Component {
 
   render() {
     return (
-      <Provider store={store}>
+      <Provider store={ store }>
         <ReduxNavigation />
       </Provider>
     );
   }
 }
 
-Animatable.initializeRegistryWithDefinitions({
+Animatable.initializeRegistryWithDefinitions( {
   awesomeOut: {
     from: {
       translateX: 0,
@@ -143,4 +143,4 @@ Animatable.initializeRegistryWithDefinitions({
       translateX: -500,
     },
   },
-});
+} );

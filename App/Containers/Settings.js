@@ -27,14 +27,14 @@ class Settings extends Component {
   };
 
   componentWillMount() {
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (this.state.onScreen !== 'Main') {
-        this.setState({ onScreen: 'Main' });
+    this.backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => {
+      if ( this.state.onScreen !== 'Main' ) {
+        this.setState( { onScreen: 'Main' } );
         return true;
       }
       this.props.goBack();
       return true;
-    });
+    } );
   }
 
   componentWillUnmount() {
@@ -44,7 +44,7 @@ class Settings extends Component {
   getButtons() {
     const { toggleDrawer } = this.props;
 
-    if (this.state.onScreen === 'Main') {
+    if ( this.state.onScreen === 'Main' ) {
       return [
         {
           icon: 'menu',
@@ -62,15 +62,15 @@ class Settings extends Component {
       {
         icon: 'back',
         animation: 'zoomIn',
-        onPress: () => this.setState({ onScreen: 'Main' }),
+        onPress: () => this.setState( { onScreen: 'Main' } ),
       },
     ];
   }
 
   getContent() {
-    switch (this.state.onScreen) {
+    switch ( this.state.onScreen ) {
       default:
-        return { title: 'Error', options: [{ title: 'Error' }] };
+        return { title: 'Error', options: [ { title: 'Error' } ] };
       case 'Main':
         return {
           title: 'Main',
@@ -78,17 +78,17 @@ class Settings extends Component {
             {
               title: 'Profile',
               icon: 'user',
-              onPress: () => this.setState({ onScreen: 'Profile' }),
+              onPress: () => this.setState( { onScreen: 'Profile' } ),
             },
             {
               title: 'General',
               icon: 'list',
-              onPress: () => this.setState({ onScreen: 'General' }),
+              onPress: () => this.setState( { onScreen: 'General' } ),
             },
             {
               title: 'Theme',
               icon: 'palette',
-              onPress: () => this.setState({ onScreen: 'Theme' }),
+              onPress: () => this.setState( { onScreen: 'Theme' } ),
             },
             {
               title: 'Logout',
@@ -104,27 +104,27 @@ class Settings extends Component {
             {
               title: 'Name',
               icon: 'message',
-              onPress: () => this.setState({ toUpdate: 'name' }),
+              onPress: () => this.setState( { toUpdate: 'name' } ),
             },
             {
               title: 'Email',
               icon: 'email',
-              onPress: () => this.setState({ toUpdate: 'email' }),
+              onPress: () => this.setState( { toUpdate: 'email' } ),
             },
             {
               title: 'Password',
               icon: 'lock',
-              onPress: () => this.setState({ toUpdate: 'password' }),
+              onPress: () => this.setState( { toUpdate: 'password' } ),
             },
             {
               title: 'Delete Account',
               icon: 'trash',
-              onPress: () => this.setState({ toUpdate: 'delete' }),
+              onPress: () => this.setState( { toUpdate: 'delete' } ),
             },
             {
               title: 'Back',
               icon: 'back',
-              onPress: () => this.setState({ onScreen: 'Main' }),
+              onPress: () => this.setState( { onScreen: 'Main' } ),
             },
           ],
         };
@@ -140,14 +140,14 @@ class Settings extends Component {
               onPress: () =>
                 Actions.toggleImperial(
                   this.props.auth.imperial,
-                  error => this.setState({ error }),
-                  () => this.setState({ showSuccessAlert: true, toUpdate: '' }),
+                  error => this.setState( { error } ),
+                  () => this.setState( { showSuccessAlert: true, toUpdate: '' } ),
                 ),
             },
             {
               title: 'Back',
               icon: 'back',
-              onPress: () => this.setState({ onScreen: 'Main' }),
+              onPress: () => this.setState( { onScreen: 'Main' } ),
             },
           ],
         };
@@ -160,26 +160,26 @@ class Settings extends Component {
               icon: 'palette',
               name: 'standard',
               onPress: () =>
-                Actions.updateTheme('standard', () => this.setState({ showSuccessAlert: true })),
+                Actions.updateTheme( 'standard', () => this.setState( { showSuccessAlert: true } ) ),
             },
             {
               title: 'Female',
               icon: 'palette',
               name: 'standard2',
               onPress: () =>
-                Actions.updateTheme('standard2', () => this.setState({ showSuccessAlert: true })),
+                Actions.updateTheme( 'standard2', () => this.setState( { showSuccessAlert: true } ) ),
             },
             {
               title: 'Other',
               icon: 'palette',
               name: 'standard3',
               onPress: () =>
-                Actions.updateTheme('standard3', () => this.setState({ showSuccessAlert: true })),
+                Actions.updateTheme( 'standard3', () => this.setState( { showSuccessAlert: true } ) ),
             },
             {
               title: 'Back',
               icon: 'back',
-              onPress: () => this.setState({ onScreen: 'Main' }),
+              onPress: () => this.setState( { onScreen: 'Main' } ),
             },
           ],
         };
@@ -191,8 +191,8 @@ class Settings extends Component {
       <Alert
         acknowledge
         title="Whoops"
-        message={this.state.error}
-        onPressSave={() => this.setState({ error: '' })}
+        message={ this.state.error }
+        onPressSave={ () => this.setState( { error: '' } ) }
       />
     );
   }
@@ -203,22 +203,22 @@ class Settings extends Component {
         acknowledge
         title="Change Saved"
         message="Changes Successfully Saved"
-        onPressSave={() => this.setState({ showSuccessAlert: false })}
+        onPressSave={ () => this.setState( { showSuccessAlert: false } ) }
       />
     );
   }
 
   renderInput() {
-    const toUpdate = capitalize(this.state.toUpdate);
-    const value = this.state[this.state.toUpdate];
-    if (toUpdate === 'Delete') {
+    const toUpdate = capitalize( this.state.toUpdate );
+    const value = this.state[ this.state.toUpdate ];
+    if ( toUpdate === 'Delete' ) {
       return (
         <Alert
           input
           title="Are you Sure?"
-          style={{ height: 0, width: 0 }}
-          onPressSave={() => Actions.deleteUser()}
-          onPressClose={() => this.setState({ toUpdate: '' })}
+          style={ { height: 0, width: 0 } }
+          onPressSave={ () => Actions.deleteUser() }
+          onPressClose={ () => this.setState( { toUpdate: '' } ) }
           message="This action cannot be undone, and your data will be permanently lost."
         />
       );
@@ -226,50 +226,50 @@ class Settings extends Component {
     return (
       <Alert
         input
-        value={value}
-        title={toUpdate}
-        onPressSave={() => {}}
-        style={styles.textInput}
-        message={`Change your ${toUpdate}`}
-        onPressClose={() => this.setState({ toUpdate: '' })}
-        onChangeText={text => this.setState({ [this.state.toUpdate]: text })}
-        onPressSave={() =>
+        value={ value }
+        title={ toUpdate }
+        onPressSave={ () => {} }
+        style={ styles.textInput }
+        message={ `Change your ${ toUpdate }` }
+        onPressClose={ () => this.setState( { toUpdate: '' } ) }
+        onChangeText={ text => this.setState( { [ this.state.toUpdate ]: text } ) }
+        onPressSave={ () =>
           Actions.updateSetting(
             toUpdate,
-            this.state[this.state.toUpdate],
-            error => this.setState({ error }),
-            () => this.setState({ showSuccessAlert: true, toUpdate: '' }),
+            this.state[ this.state.toUpdate ],
+            error => this.setState( { error } ),
+            () => this.setState( { showSuccessAlert: true, toUpdate: '' } ),
           )
         }
       />
     );
   }
 
-  renderCard(cards) {
+  renderCard( cards ) {
     const { showSubs } = this.state;
-    return cards.map(({ icon, title, onPress }, index) => (
-      <A.View key={title} animation="zoomIn" delay={index * 250}>
+    return cards.map( ( { icon, title, onPress }, index ) => (
+      <A.View key={ title } animation="zoomIn" delay={ index * 250 }>
         <SettingsCard
-          icon={icon}
-          title={title}
-          onPress={onPress}
-          opacity={showSubs ? 1 : 0}
-          type={showSubs ? 'material-community' : 'entypo'}
+          icon={ icon }
+          title={ title }
+          onPress={ onPress }
+          opacity={ showSubs ? 1 : 0 }
+          type={ showSubs ? 'material-community' : 'entypo' }
         />
       </A.View>
-    ));
+    ) );
   }
 
   render() {
     const { toUpdate, showSuccessAlert, error } = this.state;
-    const gradients = [styles.$primary, styles.$secondary, styles.$tertiary];
+    const gradients = [ styles.$primary, styles.$secondary, styles.$tertiary ];
     const content = this.getContent();
     return (
-      <LinearGradient style={styles.container} colors={gradients}>
+      <LinearGradient style={ styles.container } colors={ gradients }>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <Header title="Settings" />
-        <ScrollView style={styles.subContainer}>{this.renderCard(content.options)}</ScrollView>
-        <ActionButton buttons={this.getButtons()} />
+        <ScrollView style={ styles.subContainer }>{this.renderCard( content.options )}</ScrollView>
+        <ActionButton buttons={ this.getButtons() } />
         {toUpdate ? this.renderInput() : null}
         {error ? this.renderErrorAlert() : null}
         {showSuccessAlert ? this.renderSuccessAlert() : null}
@@ -278,13 +278,13 @@ class Settings extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => ( {
   auth: state.auth,
-});
+} );
 
-const mapDispatchToProps = dispatch => ({
-  goBack: () => dispatch(NavigationActions.navigate({ routeName: 'Programs' })),
-  toggleDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerToggle' })),
-});
+const mapDispatchToProps = dispatch => ( {
+  goBack: () => dispatch( NavigationActions.navigate( { routeName: 'Programs' } ) ),
+  toggleDrawer: () => dispatch( NavigationActions.navigate( { routeName: 'DrawerToggle' } ) ),
+} );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect( mapStateToProps, mapDispatchToProps )( Settings );

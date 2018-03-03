@@ -13,7 +13,7 @@ const styles = EStyleSheet.create( {
   calendarContainer: {
     margin: 15,
     elevation: 1,
-    marginTop: 50,
+    marginTop: 30,
   },
 } );
 

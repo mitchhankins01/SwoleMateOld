@@ -5,15 +5,15 @@ import firebase from 'react-native-firebase';
 import * as A from 'react-native-animatable';
 import { NavigationActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
-import { StatusBar, ScrollView, BackHandler } from 'react-native';
+import { StatusBar, ScrollView, BackHandler, Text, View, TouchableOpacity } from 'react-native';
 
 import Alert from '../Components/Alert';
 import Header from '../Components/Header';
 import styles from './Styles/LogsStyles';
 import Calendar from '../Components/Calendar';
 import ActionButton from '../Components/ActionButton';
-import { SettingsCard } from '../Components/SettingsCard';
-import * as Actions from '../Redux/Actions/Settings';
+import LogCard from '../Components/LogCard';
+// import * as Actions from '../Redux/Actions/Settings';
 
 class Logs extends Component {
   state = { showCalendar: false };
@@ -55,9 +55,9 @@ class Logs extends Component {
     return (
       <LinearGradient style={ styles.container } colors={ gradients }>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-        <Header title="Logs" />
-        <ScrollView style={ styles.subContainer }>
-          {this.state.showCalendar && <Calendar />}
+        <Header title={ this.state.showCalendar ? 'Select Date' : 'Logs' } />
+        <ScrollView contentContainerStyle={ { flex: 1 } } style={ styles.subContainer }>
+          {this.state.showCalendar ? <Calendar /> : <LogCard />}
         </ScrollView>
         <ActionButton buttons={ this.getButtons() } />
       </LinearGradient>

@@ -1,7 +1,7 @@
 import { Fonts } from '../../Themes/';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-export default EStyleSheet.create({
+export default EStyleSheet.create( {
   $primary: '$primaryColor',
   $secondary: '$secondaryColor',
   $tertiary: '$tertiaryColor',
@@ -10,11 +10,8 @@ export default EStyleSheet.create({
   },
   subContainer: {
     flex: 1,
-    margin: 15,
-    borderWidth: 2,
+    marginTop: 15,
     marginBottom: 85,
-    backgroundColor: '$bgColor',
-    borderColor: '$primaryColor',
   },
   textInput: {
     height: 40,
@@ -22,11 +19,11 @@ export default EStyleSheet.create({
     padding: 10,
     marginTop: 20,
     borderWidth: 1,
+    color: '$text',
     borderRadius: 5,
-    color: '#EDF0F1',
     alignSelf: 'center',
     borderColor: '$primaryColor',
     fontFamily: Fonts.type.regular,
     backgroundColor: '$tertiaryColor',
   },
-});
+} );

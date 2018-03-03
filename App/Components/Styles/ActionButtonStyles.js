@@ -1,6 +1,6 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-export default EStyleSheet.create({
+export default EStyleSheet.create( {
   actionView: {
     left: 0,
     right: 0,
@@ -35,4 +35,4 @@ export default EStyleSheet.create({
     fontSize: 30,
     color: '$primaryColor',
   },
-});
+} );

@@ -10,10 +10,6 @@ export default EStyleSheet.create( {
   },
   subContainer: {
     flex: 1,
-    margin: 15,
-    borderWidth: 2,
-    marginBottom: 85,
-    backgroundColor: '$bgColor',
-    borderColor: '$primaryColor',
+    marginBottom: 84,
   },
 } );
